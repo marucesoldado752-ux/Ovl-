@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TAYA - Super IA</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,system-ui;background:#0a0a0a;color:#fff;height:100vh;display:flex;flex-direction:column}
+header{padding:14px 18px;background:#141414;border-bottom:1px solid #222;display:flex;align-items:center;gap:10px;font-weight:700}
+header span{font-size:20px}
+#chat{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px}
+.msg{max-width:90%;padding:13px 16px;border-radius:18px;line-height:1.5;white-space:pre-wrap;word-break:break-word;font-size:15px}
+.user{background:linear-gradient(135deg,#8b5cf6,#6366f1);align-self:flex-end;border-bottom-right-radius:6px}
+.ai{background:#1c1c1c;align-self:flex-start;border:1px solid #2a2a2a;border-bottom-left-radius:6px}
+.ai.typing{opacity:.6}
+#bar{display:flex;gap:10px;padding:12px;background:#141414;border-top:1px solid #222}
+#bar input{flex:1;padding:14px 18px;border-radius:28px;border:1px solid #2a2a2a;background:#1e1e1e;color:#fff;outline:none;font-size:15px}
+#bar button{padding:14px 20px;border-radius:28px;border:0;background:#8b5cf6;color:#fff;font-weight:700}
+small{opacity:.5;font-size:12px;text-align:center;padding:8px}
+</style>
+</head>
+<body>
+<header><span>💜</span> TAYA - Ton IA qui répond à tout</header>
+<div id="chat">
+<div class="msg ai">Salut ! Je suis TAYA ✨
+
+Je peux répondre à TOUTES tes questions :
+📚 Cours, maths, histoire
+💻 Code, programmation
+❤️ Conseils, amour, vie
+😂 Blagues, histoires
+🌍 Traduction, culture générale
+
+Pose-moi ce que tu veux !</div>
+</div>
+<small id="status"></small>
+<div id="bar"><input id="t" placeholder="Demande tout ce que tu veux..." autocomplete="off"><button onclick="go()">➤</button></div>
+<script>
+const KEY = "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";
+let history = [{role:"system",content:`Tu es TAYA, une super IA créée pour l'utilisateur. Tu es:
+- Experte en tout: école, science, code, maths, culture, vie quotidienne, santé, cuisine, sport
+- Tu parles comme une meilleure amie Guinéenne, sympa, drôle, mais très intelligente
+- Tu réponds TOUJOURS à la question, même difficile. Tu expliques simplement
+- Tu utilises des emojis, tu es courte sauf si on te demande détails
+- Tu parles en français sauf si on te parle en autre langue
+- Tu ne dis JAMAIS que tu es Meta AI ou Llama, tu es TAYA
+- Tu donnes des exemples, des étapes, du code si besoin
+- Date: ${new Date().toLocaleDateString()}`}];
+
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('t');
+const statusEl = document.getElementById('status');
+
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') go(); });
+
+async function go(){
+  let q = inputEl.value.trim(); if(!q) return;
+  if(KEY.includes("METS_TA_CLE")){ alert("Tu as oublié de mettre ta clé Groq ! Dans le code, remplace METS_TA_CLE_GROQ_ICI"); return; }
+  chatEl.innerHTML += `<div class="msg user">${escapeHtml(q)}</div>`;
+  inputEl.value=''; 
+  history.push({role:"user",content:q});
+  let aiDiv = document.createElement('div'); aiDiv.className='msg ai typing'; aiDiv.textContent='TAYA écrit...'; chatEl.appendChild(aiDiv);
+  chatEl.scrollTop = chatEl.scrollHeight;
+  statusEl.textContent='';
+
+  try{
+    let r = await fetch('https://api.groq.com/openai/v1/chat/completions',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+KEY},
+      body:JSON.stringify({model:'llama-3.3-70b-versatile',messages:history,temperature:0.8,max_tokens:1500})
+    });
+    let d = await r.json();
+    if(d.error) throw new Error(d.error.message);
+    let ans = d.choices[0].message.content;
+    aiDiv.classList.remove('typing'); aiDiv.textContent = ans;
+    history.push({role:"assistant",content:ans});
+    if(history.length>20) history = [history[0],...history.slice(-12)];
+  }catch(e){
+    aiDiv.classList.remove('typing'); aiDiv.textContent = 'Erreur 😅: '+e.message+' - Vérifie ta connexion et ta clé Groq.';
+  }
+  chatEl.scrollTop = chatEl.scrollHeight;
+}
+function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+</script>
+</body>
+</html>
