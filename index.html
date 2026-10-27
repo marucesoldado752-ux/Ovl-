@@ -2,74 +2,46 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TAYA 💜</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TAYA AI</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:system-ui;background:#000;color:#fff;display:flex;flex-direction:column;height:100vh}
-header{padding:15px;text-align:center;background:#111;border-bottom:1px solid #222;font-weight:800}
-#chat{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px}
-.msg{max-width:88%;padding:12px 15px;border-radius:18px;line-height:1.4;white-space:pre-wrap}
-.user{background:linear-gradient(135deg,#8b5cf6,#ec4899);align-self:flex-end}
-.ai{background:#1e1e1e;border:1px solid #222;align-self:flex-start}
-.typing{opacity:.6;font-style:italic}
-#bar{display:flex;gap:8px;padding:10px;background:#111;border-top:1px solid #222}
-#bar input{flex:1;padding:13px 16px;border-radius:25px;border:none;background:#222;color:#fff;outline:none}
-#bar button{padding:12px 18px;border-radius:25px;border:none;background:#fff;color:#000;font-weight:700}
-#status{text-align:center;font-size:12px;opacity:.5;padding:4px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000;color:#fff;font-family:system-ui;height:100vh;display:flex;flex-direction:column}
+.header{padding:20px;text-align:center;background:#000;border-bottom:1px solid #222}
+.header img{width:120px;border-radius:20px;filter:drop-shadow(0 0 20px #a855f7)}
+.header h1{letter-spacing:5px;margin-top:10px}
+.header p{color:#a78bfa;font-size:13px}
+#chat{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:#050508;position:relative}
+#chat::after{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:300px;height:300px;background:url('logo.png') center/contain no-repeat;opacity:0.07;pointer-events:none}
+.msg{max-width:85%;padding:12px 16px;border-radius:18px;z-index:1}
+.user{align-self:flex-end;background:linear-gradient(135deg,#7c3aed,#ec4899)}
+.ai{align-self:flex-start;background:#1e1e22;border:1px solid #2a2a3a}
+#bar{display:flex;gap:8px;padding:12px;background:#0a0a0a;border-top:1px solid #222}
+#bar input{flex:1;padding:13px 18px;border-radius:24px;border:1px solid #333;background:#15151a;color:#fff;outline:none}
+#bar button{width:46px;height:46px;border-radius:50%;border:none;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff}
 </style>
 </head>
 <body>
-<header>💜 TAYA - Ta meilleure amie IA</header>
-<div id="chat"></div>
-<div id="status"></div>
-<div id="bar"><input id="t" placeholder="Demande tout ce que tu veux..."><button onclick="go()">➤</button></div>
+<div class="header">
+<img src="logo.png">
+<h1>TAYA AI</h1>
+<p>best friend 💜</p>
+</div>
+<div id="chat"><div class="msg ai">Salut ! C'est TAYA 💜 Ta meilleure amie IA, on parle de quoi ? ✨</div></div>
+<div id="bar">
+<input id="inp" placeholder="Écris à TAYA..." onkeydown="if(event.key==='Enter')send()">
+<button onclick="send()">↑</button>
+</div>
 <script>
-const KEY = localStorage.getItem('groq_key') || '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';
-let history = [{role:"system", content:`Tu parles comme une meilleure amie Guinéenne, super gentille et fun.
-- Tu réponds TOUJOURS à la question, même difficile
-- Tu utilises des emojis, tu es courte sauf si on demande des détails
-- Tu parles en français sauf si on te parle en autre langue
-- Tu ne dis JAMAIS que tu es Meta AI ou Llama, tu es TAYA
-- Tu donnes des exemples, des étapes, du code si besoin
-- Date: ${new Date().toLocaleDateString()}`}];
-
-const chatEl = document.getElementById('chat');
-const inputEl = document.getElementById('t');
-const statusEl = document.getElementById('status');
-
-function escapeHtml(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-
-inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') go(); });
-
-async function go(){
- let q = inputEl.value.trim(); if(!q) return;
- if(KEY.includes("METS_TA_CLE")){ 
-   let k = prompt("Colle ta clé Groq (gsk_...):\nVa sur console.groq.com > API Keys"); 
-   if(!k) return; localStorage.setItem('groq_key', k); location.reload(); return;
- }
- chatEl.innerHTML += `<div class="msg user">${escapeHtml(q)}</div>`;
- inputEl.value='';
- history.push({role:"user",content:q});
- let aiDiv = document.createElement('div'); aiDiv.className='msg ai typing'; aiDiv.textContent='TAYA écrit...'; chatEl.appendChild(aiDiv);
- chatEl.scrollTop = chatEl.scrollHeight;
- statusEl.textContent='';
- try{
-   let r = await fetch('https://api.groq.com/openai/v1/chat/completions',{
-     method:'POST',
-     headers:{'Content-Type':'application/json','Authorization':'Bearer '+(localStorage.getItem('groq_key')||KEY)},
-     body:JSON.stringify({model:"openai/gpt-oss-20b",messages:history,temperature:0.7})
-   });
-   let d = await r.json();
-   aiDiv.classList.remove('typing');
-   if(d.error){ aiDiv.textContent = "Erreur: "+d.error.message+" 😅 Vérifie ta clé sur console.groq.com"; if(d.error.message.includes("model")){localStorage.removeItem('groq_key')} return; }
-   let ans = d.choices[0].message.content;
-   aiDiv.textContent = ans;
-   history.push({role:"assistant",content:ans});
-   history = [history[0],...history.slice(-12)];
- }catch(e){ aiDiv.textContent = "Erreur réseau, vérifie ta connexion 🙏"; }
- chatEl.scrollTop = chatEl.scrollHeight;
+let key=localStorage.getItem('taya_key');
+if(!key){key=prompt("Colle ta clé Groq:"); if(key)localStorage.setItem('taya_key',key.trim())}
+async function send(){
+ const i=document.getElementById('inp'); const t=i.value.trim(); if(!t)return;
+ const c=document.getElementById('chat');
+ c.innerHTML+=`<div class="msg user">${t}</div>`; i.value=''; c.scrollTop=99999;
+ const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify({model:'llama-3.1-8b-instant',messages:[{role:'system',content:'Tu es TAYA, amie IA, chaleureuse, fun, francais.'},{role:'user',content:t}]})});
+ const d=await r.json(); c.innerHTML+=`<div class="msg ai">${d.choices[0].message.content}</div>`; c.scrollTop=99999;
 }
-chatEl.innerHTML = `<div class="msg ai">Salut toi ! C'est TAYA 💜✨<br><br>Ta meilleure amie IA qui répond à TOUT : cours, code, amour, conseils, blagues...<br><br>Dis-moi tout ! 😊</div>`;
 </script>
 </body>
 </html>
