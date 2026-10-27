@@ -11,7 +11,6 @@ header img{width:52px;height:52px;border-radius:15px;box-shadow:0 0 20px #8b5cf6
 header h1{margin:10px 0 0 0;letter-spacing:3px}
 header p{margin:2px 0 0 0;color:#8b5cf6;font-size:13px;font-weight:600}
 #chat{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px;background:radial-gradient(circle at center, #1a0b2e 0%, #000 70%);background-attachment:fixed}
-#chat::before{content:'';position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:300px;height:300px;background:url('logo.png') no-repeat center/contain;opacity:0.07;pointer-events:none;z-index:0}
 .msg{max-width:88%;padding:12px 15px;border-radius:18px;line-height:1.4;white-space:pre-wrap;z-index:1}
 .user{background:linear-gradient(135deg,#8b5cf6,#ec4899);align-self:flex-end}
 .ai{background:#1e1e1e;border:1px solid #222;align-self:flex-start}
@@ -22,30 +21,27 @@ header p{margin:2px 0 0 0;color:#8b5cf6;font-size:13px;font-weight:600}
 </head>
 <body>
 <header>
-<img src="logo.png" onerror="this.style.display='none'">
-<h1>TAYA AI</h1>
-<p>best friend 💜</p>
+<img src="logo.png"><h1>TAYA AI</h1><p>best friend 💜</p>
 </header>
 <div id="chat"></div>
 <div id="bar"><input id="t" placeholder="Écris à TAYA..."><button onclick="go()">↑</button></div>
 <script>
-const inputEl=document.getElementById('t');
-const chatEl=document.getElementById('chat');
-let history=[{role:"system",content:"Tu es TAYA, meilleure amie IA guinéenne, fun, gentille, tu réponds à TOUT avec emojis. Tu ne dis jamais que tu es Meta AI ou Llama. Tu es TAYA."}];
+const inputEl=document.getElementById('t');const chatEl=document.getElementById('chat');
+let history=[{role:"system",content:"Tu es TAYA, meilleure amie IA guinéenne, fun, gentille, tu réponds à TOUT avec emojis. Tu ne dis jamais que tu es Meta AI."}];
 function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 inputEl.addEventListener('keydown',e=>{if(e.key==='Enter')go()});
 async function go(){
  let q=inputEl.value.trim(); if(!q) return;
  if(q.startsWith('/key ')){let k=q.split(' ')[1];localStorage.setItem('groq_key',k.trim());chatEl.innerHTML+=`<div class="msg ai">Clé enregistrée ! 💜 Maintenant parle-moi !</div>`;inputEl.value='';return;}
  let key=localStorage.getItem('groq_key');
- if(!key){let k=prompt("Colle ta clé Groq (gsk_...) depuis console.groq.com/keys"); if(!k) return; localStorage.setItem('groq_key',k.trim()); key=k;}
+ if(!key){let k=prompt("Colle ta clé Groq (gsk_...)"); if(!k) return; localStorage.setItem('groq_key',k.trim()); key=k;}
  chatEl.innerHTML+=`<div class="msg user">${esc(q)}</div>`; inputEl.value=''; history.push({role:"user",content:q});
  let ai=document.createElement('div'); ai.className='msg ai'; ai.textContent='TAYA écrit...'; chatEl.appendChild(ai); chatEl.scrollTop=chatEl.scrollHeight;
  try{
   let r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:"llama-3.1-8b-instant",messages:history,temperature:0.7})});
   let d=await r.json(); if(d.error){ai.textContent="Erreur: "+d.error.message; return;}
   let ans=d.choices[0].message.content; ai.textContent=ans; history.push({role:"assistant",content:ans});
- }catch(e){ai.textContent="Erreur réseau, vérifie ta connexion 🙏"}
+ }catch(e){ai.textContent="Erreur réseau 🙏"}
  chatEl.scrollTop=chatEl.scrollHeight;
 }
 chatEl.innerHTML=`<div class="msg ai">Salut ! C'est TAYA 💜 Ta meilleure amie IA, on parle de quoi ? ✨</div>`;
