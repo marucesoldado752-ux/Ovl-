@@ -3,23 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OVL AI Agent V3 - By Maruce</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Anton&display=swap" rel="stylesheet">
+<title>TAYA IA - By Maruce</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700&family=Anton&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#050505;color:#fff;font-family:'Syne',sans-serif;height:100vh;display:flex;flex-direction:column}
+body{background:#050505;color:#fff;font-family:Syne,sans-serif;height:100vh;display:flex;flex-direction:column}
 .header{padding:16px 24px;border-bottom:1px solid #151515;display:flex;justify-content:space-between;align-items:center;background:#080808}
-.logo{font-family:'Anton';font-size:24px}.logo b{color:#ff2a1a}
-.live{display:flex;align-items:center;gap:8px;background:#111;border:1px solid #222;padding:6px 12px;border-radius:100px;font-size:11px}
-.dot{width:7px;height:7px;background:#00ff88;border-radius:50%;box-shadow:0 0 12px #00ff88;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.logo{font-family:Anton;font-size:26px}
+.logo b{color:#ff2a1a}
+.live{display:flex;align-items:center;gap:8px;background:#111;border:1px solid #222;padding:6px 12px;border-radius:100px;font-size:11px;color:#00ff88}
+.dot{width:7px;height:7px;background:#00ff88;border-radius:50%;box-shadow:0 0 12px #00ff88;animation:p 2s infinite}
+@keyframes p{0%,100%{opacity:1}50%{opacity:.4}}
 .chat{flex:1;overflow:auto;padding:20px;max-width:850px;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:16px}
-.msg{max-width:78%;padding:14px 18px;border-radius:22px;font-size:14.5px;line-height:1.6;animation:in .25s ease}
-@keyframes in{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+.msg{max-width:80%;padding:14px 18px;border-radius:22px;font-size:14.5px;line-height:1.6;animation:a .25s ease}
+@keyframes a{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
 .msg.ai{background:#141414;border:1px solid #222;align-self:flex-start;border-bottom-left-radius:6px}
 .msg.user{background:#fff;color:#000;font-weight:700;align-self:flex-end;border-bottom-right-radius:6px}
-.msg.ai b{color:#ff2a1a}
-.typing{font-size:12px;color:#666;padding:0 10px;display:none}
+.typing{max-width:850px;margin:0 auto;width:100%;padding:0 20px 6px;font-size:12px;color:#666;display:none}
 .typing.show{display:block}
 .input-area{padding:14px;background:#080808;border-top:1px solid #151515}
 .box{max-width:850px;margin:0 auto;display:flex;gap:10px;background:#151515;border:1px solid #222;border-radius:100px;padding:6px 6px 6px 20px;align-items:center}
@@ -28,47 +28,54 @@ body{background:#050505;color:#fff;font-family:'Syne',sans-serif;height:100vh;di
 .chips{display:flex;gap:8px;margin-bottom:10px;overflow:auto;max-width:850px;margin:0 auto 10px auto}
 .chip{background:#111;border:1px solid #222;padding:7px 13px;border-radius:100px;font-size:11px;white-space:nowrap;cursor:pointer}
 .chip:hover{background:#fff;color:#000}
+.contact-bar{max-width:850px;margin:12px auto 0 auto;width:100%;display:flex;gap:8px}
+.contact-bar a{flex:1;text-align:center;padding:10px;border-radius:100px;font-size:11px;font-weight:700;text-decoration:none}
+.wa{background:#25D366;color:#fff}
+.tel{background:#fff;color:#000}
 .welcome{margin:auto;text-align:center;padding:30px}
-.welcome h1{font-family:Anton;font-size:52px;line-height:.85}
+.welcome h1{font-family:Anton;font-size:56px;line-height:.85}
 .welcome h1 span{-webkit-text-stroke:1.5px #fff;color:transparent}
 </style>
 </head>
 <body>
-<div class="header"><div class="logo">OVL <b>AGENT V3</b></div><div class="live"><span class="dot"></span> IA CONNECTÉE • MARUCE</div></div>
+<div class="header"><div class="logo">TAYA <b>IA</b></div><div class="live"><span class="dot"></span> VRAIE IA CONNECTÉE</div></div>
 
 <div class="chat" id="chat">
 <div class="welcome" id="welcome">
-<h1>OVL AI<br><span>AGENT V3</span></h1>
-<p style="color:#666;margin-top:14px;line-height:1.6;max-width:500px">Je suis l'agent IA officiel de Maruce. Je réponds à toutes les questions, je parle avec tout le monde, 24h/24. Essaie-moi !</p>
-<div style="margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:500px;text-align:left">
-<div style="background:#111;border:1px solid #1a1a1a;padding:12px;border-radius:12px;font-size:11px"><b style="color:#ff2a1a">⚡ VRAIE IA</b><br><span style="color:#555">Connectée à l'intelligence artificielle</span></div>
-<div style="background:#111;border:1px solid #1a1a1a;padding:12px;border-radius:12px;font-size:11px"><b style="color:#ff2a1a">💬 HUMAIN</b><br><span style="color:#555">Je parle comme Maruce</span></div>
+<h1>TAYA<br><span>IA</span></h1>
+<p style="color:#666;margin-top:14px;line-height:1.6;max-width:500px">Salut bienvenue c'est TAYA IA. Vraie intelligence créée par Maruce. Je réponds à tout !</p>
+<div class="contact-bar">
+<a class="wa" href="https://wa.me/224663401157?text=Salut%20Maruce%20c'est%20depuis%20TAYA%20IA">💬 WhatsApp: +224 663 40 11 57</a>
+<a class="tel" href="tel:+224612768878">📞 Appel: +224 612 76 88 78</a>
 </div>
 </div>
 </div>
 
-<div class="typing" id="typing">OVL AI écrit...</div>
+<div class="typing" id="typing">TAYA IA écrit...</div>
 
 <div class="input-area">
 <div class="chips">
-<div class="chip" onclick="quick('C\'est qui Maruce ?')">C'est qui Maruce ?</div>
-<div class="chip" onclick="quick('C\'est quoi OVL ?')">C'est quoi OVL ?</div>
-<div class="chip" onclick="quick('Tu fais quoi exactement ?')">Tes capacités ?</div>
-<div class="chip" onclick="quick('Comment contacter Maruce ?')">Contact</div>
+<div class="chip" onclick="q('C\'est qui Maruce ?')">C'est qui Maruce ?</div>
+<div class="chip" onclick="q('Raconte une blague')">Raconte une blague</div>
+<div class="chip" onclick="q('C\'est quoi ton travail ?')">C'est quoi ton travail ?</div>
+<div class="chip" onclick="q('Donne moi ton contact')">Ton contact ?</div>
 </div>
 <div class="box">
-<input id="input" placeholder="Parle avec ton agent IA...">
+<input id="input" placeholder="Parle avec TAYA IA...">
 <button onclick="send()">➤</button>
 </div>
+<div class="contact-bar">
+<a class="wa" href="https://wa.me/224663401157">WhatsApp +224 663401157</a>
+<a class="tel" href="tel:+224612768878">Tél +224 612768878</a>
+</div>
+<p style="text-align:center;color:#333;font-size:10px;margin-top:8px">TAYA IA • Vraie IA by Maruce • Conakry 224</p>
 </div>
 
 <script>
 const chatEl=document.getElementById('chat');
 const inputEl=document.getElementById('input');
 const typingEl=document.getElementById('typing');
-
-function quick(t){inputEl.value=t;send();}
-
+function q(t){inputEl.value=t;send();}
 function add(text, who){
 let w=document.getElementById('welcome');
 if(w) w.remove();
@@ -78,40 +85,26 @@ d.innerHTML=text;
 chatEl.appendChild(d);
 chatEl.scrollTop=chatEl.scrollHeight;
 }
-
 async function send(){
 let txt=inputEl.value.trim();
 if(!txt)return;
 add(txt,'user');
 inputEl.value='';
 typingEl.classList.add('show');
-
 try{
-// VRAIE IA GRATUITE - Pollinations AI
-let prompt=`Tu es OVL AI, l'agent IA officiel de Maruce, créateur de la marque streetwear OVL à Conakry Guinée 224. Tu es sympa, street, tu parles comme un jeune de Conakry mais pro. Tu aides les gens, tu réponds à leurs questions sur OVL, sur Maruce, ou sur tout autre sujet. Réponds en français, court et cool (max 3 phrases). Question: ${txt}`;
-
-let res=await fetch('https://text.pollinations.ai/'+encodeURIComponent(prompt));
+let system=`Tu es TAYA IA, vraie IA créée par Maruce à Conakry. Maruce contacts: WhatsApp +224 663401157, Tel +224 612768878. Tu parles comme humain, sympa, drôle. Tu réponds à TOUTES questions. Si on demande contact de Maruce, donne WhatsApp +224 663401157 et Tel +224 612768878. Tu es TAYA IA pas OVL. Sois naturelle, courte. Question: `+txt;
+let res=await fetch('https://text.pollinations.ai/'+encodeURIComponent(system));
 let aiText=await res.text();
-
 typingEl.classList.remove('show');
 if(!aiText || aiText.length<2) throw new Error();
 add(aiText,'ai');
-
 }catch(e){
-// Fallback si l'IA externe bug - réponses locales intelligentes
 typingEl.classList.remove('show');
-let t=txt.toLowerCase();
-let r="";
-if(t.includes('maruce')) r="Maruce c'est le créateur de <b>OVL®</b> 🔥 Dev, designer, entrepreneur à Conakry. Il a créé OVL AI pour parler avec vous 24h/24. C'est un boss du 224 !";
-else if(t.includes('ovl')) r="<b>OVL® = Original Vision Legacy</b>. Marque streetwear 224 créée par Maruce. Hoodie, Tee, Cargo en édition limitée. 100% Conakry style, pas de restock !";
-else if(t.includes('faire')||t.includes('capacit')) r="Je suis ton agent de communication :<br>• Je réponds à toutes les questions<br>• J'accueille les visiteurs<br>• Je présente OVL et Maruce<br>• Je redirige vers WhatsApp<br>Je suis là 24h/24 !";
-else if(t.includes('contact')||t.includes('whatsapp')) r="Pour parler direct à Maruce, dis-moi ta question et je te connecte. Tu veux son WhatsApp ? Donne-moi ton sujet ! 📱";
-else r="Yes je t'écoute ! 👂 Je suis OVL AI V3, l'agent de Maruce. Je peux parler de tout : OVL, Maruce, Conakry, ou autre chose. C'est quoi ta question ?";
-add(r,'ai');
+add("Oups coupure réseau, réessaie ! C'est TAYA IA 😊 WhatsApp Maruce: +224 663401157",'ai');
 }
 }
-
 inputEl.addEventListener('keydown',e=>{if(e.key==='Enter')send()});
+setTimeout(()=>{if(document.getElementById('welcome')){add("Salut bienvenue c'est TAYA IA 👋 Vraie IA de Maruce ! Je réponds à tout, même aux questions compliquées. <br><br>📱 <b>WhatsApp Maruce:</b> +224 663401157<br>📞 <b>Tél:</b> +224 612768878<br><br>Tu veux parler de quoi ?",'ai')}},800);
 </script>
 </body>
 </html>
