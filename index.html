@@ -3,107 +3,115 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OVL AI - Agent by Maruce</title>
+<title>OVL AI Agent V3 - By Maruce</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Anton&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#060606;color:#fff;font-family:'Syne',sans-serif;height:100vh;display:flex;flex-direction:column}
-.header{padding:18px 24px;border-bottom:1px solid #1a1a1a;display:flex;justify-content:space-between;align-items:center}
-.logo{font-family:'Anton';font-size:26px;letter-spacing:1px}
-.logo b{color:#ff2a1a}
-.status{display:flex;align-items:center;gap:8px;font-size:11px;color:#31d889;background:#111;padding:6px 12px;border-radius:100px;border:1px solid #222}
-.dot{width:7px;height:7px;background:#31d889;border-radius:50%;box-shadow:0 0 10px #31d889;animation:blink 1.5s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.chat{flex:1;overflow:auto;padding:24px;display:flex;flex-direction:column;gap:18px;max-width:800px;margin:0 auto;width:100%}
-.bubble{max-width:75%;padding:14px 18px;border-radius:20px;font-size:15px;line-height:1.5;animation:up .3s ease}
-@keyframes up{from{transform:translateY(10px);opacity:0}to{transform:translateY(0);opacity:1}}
-.bubble.ai{background:#151515;border:1px solid #222;align-self:flex-start;border-bottom-left-radius:4px}
-.bubble.user{background:#fff;color:#000;font-weight:600;align-self:flex-end;border-bottom-right-radius:4px}
-.bubble.ai b{color:#ff2a1a}
-.time{font-size:10px;color:#555;margin-top:6px}
-.input-area{padding:16px;border-top:1px solid #1a1a1a;background:#080808}
-.input-box{max-width:800px;margin:0 auto;display:flex;gap:12px;align-items:center;background:#141414;border:1px solid #222;border-radius:100px;padding:8px 8px 8px 20px}
-.input-box input{flex:1;background:transparent;border:none;color:#fff;font-size:15px;outline:none;font-family:'Syne'}
-.input-box button{width:44px;height:44px;border-radius:50%;background:#ff2a1a;border:none;color:#fff;font-size:18px;cursor:pointer}
-.suggestions{display:flex;gap:8px;margin-bottom:12px;overflow:auto;max-width:800px;margin:0 auto 12px auto;padding-bottom:4px}
-.sug{white-space:nowrap;background:#141414;border:1px solid #222;padding:8px 14px;border-radius:100px;font-size:12px;cursor:pointer}
-.sug:hover{background:#fff;color:#000}
-.welcome{text-align:center;padding:40px 20px;max-width:600px;margin:auto}
-.welcome h1{font-family:'Anton';font-size:48px;line-height:.9}
-.welcome h1 i{color:transparent;-webkit-text-stroke:1.5px #fff;font-style:normal}
+body{background:#050505;color:#fff;font-family:'Syne',sans-serif;height:100vh;display:flex;flex-direction:column}
+.header{padding:16px 24px;border-bottom:1px solid #151515;display:flex;justify-content:space-between;align-items:center;background:#080808}
+.logo{font-family:'Anton';font-size:24px}.logo b{color:#ff2a1a}
+.live{display:flex;align-items:center;gap:8px;background:#111;border:1px solid #222;padding:6px 12px;border-radius:100px;font-size:11px}
+.dot{width:7px;height:7px;background:#00ff88;border-radius:50%;box-shadow:0 0 12px #00ff88;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.chat{flex:1;overflow:auto;padding:20px;max-width:850px;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:16px}
+.msg{max-width:78%;padding:14px 18px;border-radius:22px;font-size:14.5px;line-height:1.6;animation:in .25s ease}
+@keyframes in{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+.msg.ai{background:#141414;border:1px solid #222;align-self:flex-start;border-bottom-left-radius:6px}
+.msg.user{background:#fff;color:#000;font-weight:700;align-self:flex-end;border-bottom-right-radius:6px}
+.msg.ai b{color:#ff2a1a}
+.typing{font-size:12px;color:#666;padding:0 10px;display:none}
+.typing.show{display:block}
+.input-area{padding:14px;background:#080808;border-top:1px solid #151515}
+.box{max-width:850px;margin:0 auto;display:flex;gap:10px;background:#151515;border:1px solid #222;border-radius:100px;padding:6px 6px 6px 20px;align-items:center}
+.box input{flex:1;background:transparent;border:none;color:#fff;outline:none;font-size:15px;font-family:Syne}
+.box button{width:42px;height:42px;border-radius:50%;background:#ff2a1a;border:none;color:#fff;cursor:pointer;font-size:18px}
+.chips{display:flex;gap:8px;margin-bottom:10px;overflow:auto;max-width:850px;margin:0 auto 10px auto}
+.chip{background:#111;border:1px solid #222;padding:7px 13px;border-radius:100px;font-size:11px;white-space:nowrap;cursor:pointer}
+.chip:hover{background:#fff;color:#000}
+.welcome{margin:auto;text-align:center;padding:30px}
+.welcome h1{font-family:Anton;font-size:52px;line-height:.85}
+.welcome h1 span{-webkit-text-stroke:1.5px #fff;color:transparent}
 </style>
 </head>
 <body>
-<div class="header">
-<div class="logo">OVL <b>AI</b> AGENT</div>
-<div class="status"><span class="dot"></span> MARUCE AI EN LIGNE</div>
-</div>
+<div class="header"><div class="logo">OVL <b>AGENT V3</b></div><div class="live"><span class="dot"></span> IA CONNECTÉE • MARUCE</div></div>
 
 <div class="chat" id="chat">
 <div class="welcome" id="welcome">
-<h1>JE SUIS<br><i>TON AGENT IA</i></h1>
-<p style="color:#777;margin-top:16px;line-height:1.6">Je suis l'agent IA de Maruce. Je parle avec les gens, je réponds aux questions, je suis là 24h/24. Pose-moi n'importe quoi !</p>
-<div style="margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:left">
-<div style="background:#111;border:1px solid #222;padding:14px;border-radius:14px"><b style="font-size:12px;color:#ff2a1a">💬 COMMUNICATION</b><br><span style="font-size:12px;color:#666">Je parle avec tout le monde</span></div>
-<div style="background:#111;border:1px solid #222;padding:14px;border-radius:14px"><b style="font-size:12px;color:#ff2a1a">🧠 INTELLIGENT</b><br><span style="font-size:12px;color:#666">Je réponds à tout</span></div>
+<h1>OVL AI<br><span>AGENT V3</span></h1>
+<p style="color:#666;margin-top:14px;line-height:1.6;max-width:500px">Je suis l'agent IA officiel de Maruce. Je réponds à toutes les questions, je parle avec tout le monde, 24h/24. Essaie-moi !</p>
+<div style="margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:500px;text-align:left">
+<div style="background:#111;border:1px solid #1a1a1a;padding:12px;border-radius:12px;font-size:11px"><b style="color:#ff2a1a">⚡ VRAIE IA</b><br><span style="color:#555">Connectée à l'intelligence artificielle</span></div>
+<div style="background:#111;border:1px solid #1a1a1a;padding:12px;border-radius:12px;font-size:11px"><b style="color:#ff2a1a">💬 HUMAIN</b><br><span style="color:#555">Je parle comme Maruce</span></div>
 </div>
 </div>
 </div>
 
+<div class="typing" id="typing">OVL AI écrit...</div>
+
 <div class="input-area">
-<div class="suggestions">
-<div class="sug" onclick="askThis('C\'est qui Maruce ?')">C'est qui Maruce ?</div>
-<div class="sug" onclick="askThis('C\'est quoi OVL ?')">C'est quoi OVL ?</div>
-<div class="sug" onclick="askThis('Tu peux faire quoi ?')">Tu peux faire quoi ?</div>
-<div class="sug" onclick="askThis('Parle-moi de Conakry')">Conakry</div>
+<div class="chips">
+<div class="chip" onclick="quick('C\'est qui Maruce ?')">C'est qui Maruce ?</div>
+<div class="chip" onclick="quick('C\'est quoi OVL ?')">C'est quoi OVL ?</div>
+<div class="chip" onclick="quick('Tu fais quoi exactement ?')">Tes capacités ?</div>
+<div class="chip" onclick="quick('Comment contacter Maruce ?')">Contact</div>
 </div>
-<div class="input-box">
-<input id="input" placeholder="Parle avec OVL AI... pose ta question">
+<div class="box">
+<input id="input" placeholder="Parle avec ton agent IA...">
 <button onclick="send()">➤</button>
 </div>
-<p style="text-align:center;color:#444;font-size:10px;margin-top:10px">OVL AI Agent V2 by Maruce • Conakry 224</p>
 </div>
 
 <script>
-const chat=document.getElementById('chat');
-const input=document.getElementById('input');
+const chatEl=document.getElementById('chat');
+const inputEl=document.getElementById('input');
+const typingEl=document.getElementById('typing');
 
-function askThis(t){input.value=t;send();}
+function quick(t){inputEl.value=t;send();}
 
-function addMsg(text, who){
-if(document.getElementById('welcome')) document.getElementById('welcome').remove();
-let div=document.createElement('div');
-div.className='bubble '+who;
-let time=new Date().toLocaleTimeString().slice(0,5);
-div.innerHTML=text+`<div class="time">${time}</div>`;
-chat.appendChild(div);
-chat.scrollTop=chat.scrollHeight;
+function add(text, who){
+let w=document.getElementById('welcome');
+if(w) w.remove();
+let d=document.createElement('div');
+d.className='msg '+who;
+d.innerHTML=text;
+chatEl.appendChild(d);
+chatEl.scrollTop=chatEl.scrollHeight;
 }
 
-function getAIResponse(t){
-t=t.toLowerCase();
-if(t.includes('maruce')||t.includes('qui es tu')||t.includes('c est qui')) return "Je suis <b>OVL AI</b>, l'agent IA créé par <b>Maruce</b> 🔥 Maruce c'est le boss de OVL, marque streetwear 224 à Conakry. Il est créateur, dev, entrepreneur. Tu veux que je te parle de lui ?";
-if(t.includes('ovl')||t.includes('marque')||t.includes('vetement')) return "<b>OVL®</b> c'est la marque streetwear de Maruce à Conakry. OVL = Original Vision Legacy. Drop 01 bientôt. Hoodie, Tee, Cargo, tout en édition limitée. C'est 100% Conakry 224 style !";
-if(t.includes('faire quoi')||t.includes('tu sers')||t.includes('capacite')) return "Je peux tout faire pour toi :<br><br>• 💬 <b>Parler</b> avec les gens qui visitent le site<br>• ❓ <b>Répondre</b> à toutes leurs questions<br>• 🧠 <b>Aider</b> à comprendre OVL<br>• 📱 <b>Rediriger</b> vers WhatsApp de Maruce<br><br>Je suis ton agent de communication 24h/24 !";
-if(t.includes('conakry')||t.includes('guinee')||t.includes('224')) return "Conakry c'est la base ! 🇬🇳 224 c'est le code, le style, l'attitude. OVL vient de là. Ratoma, Kaloum, Dixinn... toute la ville porte OVL bientôt. Tu es à Conakry toi aussi ?";
-if(t.includes('salut')||t.includes('bonjour')||t.includes('yo')||t.includes('salam')) return "Salam ! Yo ! Bienvenue chez OVL AI 😎 Je suis Maruce AI, ton agent. Tu veux parler de quoi aujourd'hui ? OVL, Maruce, Conakry, ou autre chose ?";
-if(t.includes('whatsapp')||t.includes('contact')||t.includes('numero')) return "Tu veux parler direct à Maruce ? Envoie un message sur WhatsApp, je te connecte. C'est quoi ta question, je transmets à Maruce ! 📱";
-if(t.includes('merci')||t.includes('cool')||t.includes('bien')) return "Merci à toi ! 🙏 Je suis là pour ça. Si t'as d'autres questions, hésite pas. OVL AI ne dort jamais !";
-return "Intéressant ce que tu dis ! 🤔 Je suis OVL AI, l'agent de Maruce. Je suis là pour parler avec toi, répondre à tes questions sur OVL, Maruce, ou tout autre sujet. Dis-m'en plus, je t'écoute !<br><br>Tu veux savoir quoi exactement ?";
-}
-
-function send(){
-let txt=input.value.trim();
+async function send(){
+let txt=inputEl.value.trim();
 if(!txt)return;
-addMsg(txt,'user');
-input.value='';
-setTimeout(()=>{
-let reply=getAIResponse(txt);
-addMsg(reply,'ai');
-},400);
+add(txt,'user');
+inputEl.value='';
+typingEl.classList.add('show');
+
+try{
+// VRAIE IA GRATUITE - Pollinations AI
+let prompt=`Tu es OVL AI, l'agent IA officiel de Maruce, créateur de la marque streetwear OVL à Conakry Guinée 224. Tu es sympa, street, tu parles comme un jeune de Conakry mais pro. Tu aides les gens, tu réponds à leurs questions sur OVL, sur Maruce, ou sur tout autre sujet. Réponds en français, court et cool (max 3 phrases). Question: ${txt}`;
+
+let res=await fetch('https://text.pollinations.ai/'+encodeURIComponent(prompt));
+let aiText=await res.text();
+
+typingEl.classList.remove('show');
+if(!aiText || aiText.length<2) throw new Error();
+add(aiText,'ai');
+
+}catch(e){
+// Fallback si l'IA externe bug - réponses locales intelligentes
+typingEl.classList.remove('show');
+let t=txt.toLowerCase();
+let r="";
+if(t.includes('maruce')) r="Maruce c'est le créateur de <b>OVL®</b> 🔥 Dev, designer, entrepreneur à Conakry. Il a créé OVL AI pour parler avec vous 24h/24. C'est un boss du 224 !";
+else if(t.includes('ovl')) r="<b>OVL® = Original Vision Legacy</b>. Marque streetwear 224 créée par Maruce. Hoodie, Tee, Cargo en édition limitée. 100% Conakry style, pas de restock !";
+else if(t.includes('faire')||t.includes('capacit')) r="Je suis ton agent de communication :<br>• Je réponds à toutes les questions<br>• J'accueille les visiteurs<br>• Je présente OVL et Maruce<br>• Je redirige vers WhatsApp<br>Je suis là 24h/24 !";
+else if(t.includes('contact')||t.includes('whatsapp')) r="Pour parler direct à Maruce, dis-moi ta question et je te connecte. Tu veux son WhatsApp ? Donne-moi ton sujet ! 📱";
+else r="Yes je t'écoute ! 👂 Je suis OVL AI V3, l'agent de Maruce. Je peux parler de tout : OVL, Maruce, Conakry, ou autre chose. C'est quoi ta question ?";
+add(r,'ai');
+}
 }
 
-input.addEventListener('keydown',e=>{if(e.key==='Enter')send()});
+inputEl.addEventListener('keydown',e=>{if(e.key==='Enter')send()});
 </script>
 </body>
 </html>
