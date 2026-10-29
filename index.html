@@ -3,34 +3,80 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TAYA AI 🇬🇳 - By Maruce</title>
+<title>OVL - Streetwear Guineen | By Maruce</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box}body{background:#000;color:#fff;font-family:system-ui;margin:0;padding:0;display:flex;flex-direction:column;height:100vh}
-.header{padding:15px;border-bottom:1px solid #222;font-weight:bold}
-#chat{flex:1;overflow:auto;padding:15px}
-.msg{background:#1a1a1a;padding:12px 16px;border-radius:18px;margin:8px 0;max-width:85%;line-height:1.4}
-.me{background:#fff;color:#000;margin-left:auto}
-.bot{border:1px solid #333}
-.bar{display:flex;gap:8px;padding:12px;background:#000;border-top:1px solid #222}
-input{flex:1;padding:14px 18px;border-radius:25px;border:1px solid #333;background:#111;color:#fff}
-button{padding:14px 20px;border-radius:25px;background:#fff;color:#000;font-weight:bold;border:none}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#fff;font-family:'Space Grotesk',sans-serif}
+.header{position:fixed;top:0;width:100%;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:18px 28px;background:rgba(10,10,10,0.9);backdrop-filter:blur(12px);border-bottom:1px solid #222}
+.logo{font-family:'Anton',sans-serif;font-size:32px;letter-spacing:2px}
+.logo span{color:#ff3b30}
+.hero{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:0 20px}
+.hero h1{font-family:'Anton',sans-serif;font-size:14vw;line-height:0.9;letter-spacing:-2px;text-transform:uppercase}
+.hero h1 .outline{-webkit-text-stroke:2px #fff;color:transparent}
+.hero p{margin-top:20px;max-width:520px;color:#aaa;font-size:16px;line-height:1.5}
+.btn{margin-top:28px;background:#fff;color:#000;padding:16px 36px;font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:14px;border:none;cursor:pointer;text-decoration:none;display:inline-block}
+.btn:hover{background:#ff3b30;color:#fff}
+.marquee{background:#ff3b30;color:#000;overflow:hidden;white-space:nowrap;padding:10px 0;font-family:'Anton';font-size:18px;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:#222;margin-top:2px}
+.card{position:relative;height:75vh;background:#111;overflow:hidden}
+.card img{width:100%;height:100%;object-fit:cover;opacity:0.8}
+.card-info{position:absolute;bottom:20px;left:20px;right:20px;display:flex;justify-content:space-between;align-items:end}
+.card-title{font-family:'Anton';font-size:28px;text-transform:uppercase;line-height:0.9}
+.card-price{font-size:14px;background:#fff;color:#000;padding:6px 12px;font-weight:700}
+.section{padding:80px 28px}
+.section h2{font-family:'Anton';font-size:56px;text-transform:uppercase;margin-bottom:20px;line-height:0.9}
+.footer{padding:60px 28px;border-top:1px solid #222;display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;color:#666;font-size:13px}
+.tag{border:1px solid #333;padding:8px 14px;border-radius:100px;font-size:12px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.hero h1{font-size:20vw}.section h2{font-size:38px}}
 </style>
 </head>
 <body>
-<div class="header">🇬🇳 TAYA AI - By Maruce</div>
-<div id="chat"><div class="msg bot">Salam Maruce ! Je suis TAYA AI, la première IA de Guinée 🇬🇳 Pose-moi tout ce que tu veux !</div></div>
-<div class="bar"><input id="t" placeholder="Ton message..." onkeydown="if(event.key==='Enter')go()"><button onclick="go()">Envoyer</button></div>
-<script>
-async function go(){
- let i=document.getElementById('t');let q=i.value.trim();if(!q)return;
- let c=document.getElementById('chat');c.innerHTML+=`<div class='msg me'>${q}</div>`;i.value='';
- let d=document.createElement('div');d.className='msg bot';d.textContent='TAYA réfléchit...';c.appendChild(d);c.scrollTop=c.scrollHeight;
- try{
-  let r=await fetch(`https://text.pollinations.ai/${encodeURIComponent("Tu es TAYA AI, une IA créée par Maruce en Guinée. Réponds en français, court, cool, avec un peu d'humour guinéen. Question: "+q)}`);
-  let txt=await r.text();d.textContent=txt;
- }catch(e){d.textContent="TAYA a un petit bug de connexion, réessaie ! 🇬🇳";}
- c.scrollTop=c.scrollHeight;
-}
-</script>
+<header class="header">
+<div class="logo">OVL<span>.</span></div>
+<div style="font-size:12px;letter-spacing:1px">SHOP 224 - CONAKRY</div>
+</header>
+
+<section class="hero">
+<h1>OVL<br><span class="outline">STREETWEAR</span></h1>
+<p>La premiere marque street guineenne par Maruce. Concu a Conakry, porte partout. Drop 01 - Edition Limitee. Pas de restock.</p>
+<a href="#shop" class="btn">Voir la Collection</a>
+</section>
+
+<div class="marquee">OVL STREETWEAR - CONAKRY - 224 - OVL STREETWEAR - CONAKRY - 224 - OVL STREETWEAR - CONAKRY - 224 - </div>
+
+<section id="shop" class="grid">
+<div class="card">
+<img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800&q=80">
+<div class="card-info"><div class="card-title">Hoodie<br>OVL Black</div><div class="card-price">250.000 GNF</div></div>
+</div>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&q=80">
+<div class="card-info"><div class="card-title">Tee<br>224 Legacy</div><div class="card-price">150.000 GNF</div></div>
+</div>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80">
+<div class="card-info"><div class="card-title">Cargo<br>OVL Utility</div><div class="card-price">300.000 GNF</div></div>
+</div>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=800&q=80">
+<div class="card-info"><div class="card-title">Cap<br>Conakry</div><div class="card-price">100.000 GNF</div></div>
+</div>
+</section>
+
+<section class="section">
+<h2>Made in<br>Conakry.</h2>
+<p style="max-width:500px;color:#aaa;line-height:1.6">OVL c'est plus qu'une marque. C'est l'energie de la rue de Conakry, le 224 dans le sang. Chaque piece est designee par Maruce et produite en serie limitee.</p>
+<div style="margin-top:24px;display:flex;gap:10px;flex-wrap:wrap">
+<span class="tag">GUINEE</span><span class="tag">LIMITED EDITION</span><span class="tag">BY MARUCE</span>
+</div>
+<br><br>
+<a class="btn" href="https://wa.me/22400000000?text=Salam%20Maruce%20je%20veux%20commander%20OVL%20Streetwear%20!" target="_blank">Commander sur WhatsApp</a>
+</section>
+
+<footer class="footer">
+<div>2026 OVL STREETWEAR - By Maruce - Conakry</div>
+<div>Instagram: @ovl.224</div>
+</footer>
 </body>
 </html>
