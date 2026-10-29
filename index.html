@@ -5,145 +5,244 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TAYA IA - By Maruce</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700&family=Anton&display=swap" rel="stylesheet">
-<link rel="preconnect" href="https://text.pollinations.ai">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#050505;color:#fff;font-family:Syne,sans-serif;height:100vh;overflow:hidden}
-.header{padding:12px 14px;border-bottom:1px solid #151515;display:flex;justify-content:space-between;align-items:center;background:#080808}
+.header{padding:12px 14px;border-bottom:1px solid #151515;display:flex;justify-content:space-between;align-items:center;background:#080808;z-index:20}
 .logo{font-family:Anton;font-size:22px}.logo b{color:#ff2a1a}
 .live{display:flex;align-items:center;gap:6px;background:#111;border:1px solid #222;padding:5px 10px;border-radius:100px;font-size:9px;color:#00ff88}
 .dot{width:6px;height:6px;background:#00ff88;border-radius:50%;box-shadow:0 0 8px #00ff88;animation:p 2s infinite}
 @keyframes p{0%,100%{opacity:1}50%{opacity:.4}}
 .icon-btn{width:36px;height:36px;border-radius:50%;background:#141414;border:1px solid #222;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px}
 .right{display:flex;gap:6px;align-items:center}
-.settings-btn{color:#ff2a1a;border-color:#3a1515;background:#1a1010}
-.home{height:calc(100vh - 60px);display:flex;align-items:center;justify-content:center;padding:20px;transition:.3s}
+.home{height:calc(100vh - 60px);display:flex;align-items:center;justify-content:center;padding:20px;transition:.35s;background:#050505}
 .home.hide{transform:translateY(-100%);opacity:0;pointer-events:none;position:absolute;inset:0;top:60px}
 .home-content{text-align:center;max-width:600px}
 .home-content h1{font-family:Anton;font-size:68px;line-height:.85;letter-spacing:-2px}
 .home-content h1 span{-webkit-text-stroke:1.5px #fff;color:transparent}
-.home-content p{color:#666;margin:16px auto;line-height:1.6;font-size:14px;max-width:400px}
-.btn-launch{background:#fff;color:#000;border:none;padding:14px 28px;border-radius:100px;font-weight:800;font-size:14px;cursor:pointer;margin-top:16px}
-.badges{display:flex;gap:6px;justify-content:center;margin-top:18px;flex-wrap:wrap}
-.badge{background:#111;border:1px solid #1a1a1a;padding:7px 12px;border-radius:100px;font-size:9px;color:#555}
-.reactor{margin-top:18px;background:#0f0f0f;border:1px solid #1e1e1e;border-radius:14px;padding:11px;font-size:11px;display:flex;justify-content:space-between}
-.reactor b{color:#ff2a1a}
-.app{height:calc(100vh - 60px);display:flex;flex-direction:column;transform:translateY(100%);opacity:0;pointer-events:none;transition:.3s;position:absolute;inset:0;top:60px;background:#050505}
+.home-content p{color:#777;margin:18px auto;line-height:1.6;font-size:14px;max-width:420px}
+.btn-launch{background:#fff;color:#000;border:none;padding:16px 32px;border-radius:100px;font-weight:800;font-size:15px;cursor:pointer;margin-top:18px;box-shadow:0 10px 30px rgba(255,255,255,.15)}
+.badges{display:flex;gap:6px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+.badge{background:#111;border:1px solid #1a1a1a;padding:7px 12px;border-radius:100px;font-size:10px;color:#555}
+.reactor{margin-top:20px;background:#0f0f0f;border:1px solid #1e1e1e;border-radius:14px;padding:12px;font-size:11px;display:flex;justify-content:space-between;align-items:center}
+.app{height:calc(100vh - 60px);display:flex;flex-direction:column;transform:translateY(100%);opacity:0;pointer-events:none;transition:.35s;position:absolute;inset:0;top:60px;background:#050505}
 .app.show{transform:translateY(0);opacity:1;pointer-events:all}
-.chat{flex:1;overflow:auto;padding:16px;max-width:850px;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:10px}
-.msg{max-width:80%;padding:12px 16px;border-radius:20px;font-size:14px;line-height:1.5;animation:a .1s}
-@keyframes a{from{transform:translateY(4px);opacity:0}to{transform:none;opacity:1}}
+.chat{flex:1;overflow-y:auto;overflow-x:hidden;padding:16px;padding-bottom:90px;max-width:850px;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:12px;scrollbar-width:thin;scrollbar-color:#222 #050505}
+.chat::-webkit-scrollbar{width:6px}
+.chat::-webkit-scrollbar-thumb{background:#222;border-radius:10px}
+.chat::-webkit-scrollbar-track{background:#050505}
+.msg{max-width:80%;padding:12px 16px;border-radius:20px;font-size:14px;line-height:1.5;animation:a .15s;position:relative;touch-action:pan-y;user-select:none}
+@keyframes a{from{transform:translateY(6px);opacity:0}to{transform:none;opacity:1}}
 .msg.ai{background:#141414;border:1px solid #222;align-self:flex-start;border-bottom-left-radius:6px}
 .msg.user{background:#fff;color:#000;font-weight:700;align-self:flex-end;border-bottom-right-radius:6px}
-.typing{max-width:850px;margin:0 auto;width:100%;padding:0 16px 4px;font-size:11px;color:#00ff88;display:none}
+.msg.replying{transform:translateX(20px);border-left:3px solid #ff2a1a}
+.msg-actions{position:absolute;bottom:-32px;right:10px;background:#1e1e1e;border:1px solid #333;border-radius:100px;padding:4px 8px;display:none;gap:6px;z-index:5;font-size:11px}
+.msg-actions.show{display:flex}
+.msg-actions button{background:#2a2a2a;border:none;color:#fff;padding:6px 10px;border-radius:100px;cursor:pointer;font-size:11px}
+.reply-preview{background:#111;border-left:3px solid #ff2a1a;padding:8px 12px;border-radius:8px;margin-bottom:8px;font-size:12px;color:#888;max-width:850px;margin:0 auto;width:100%;display:none}
+.reply-preview.show{display:block}
+.typing{max-width:850px;margin:0 auto;width:100%;padding:0 16px 8px;font-size:11px;color:#00ff88;display:none}
 .typing.show{display:block}
-.input-area{padding:8px 12px 12px;background:#080808;border-top:1px solid #151515}
-.box{max-width:850px;margin:0 auto;display:flex;gap:6px;background:#151515;border:1px solid #222;border-radius:100px;padding:5px 5px 5px 14px;align-items:center}
-.box input{flex:1;background:transparent;border:none;color:#fff;outline:none;font-size:14px;font-family:Syne}
-.box button{width:40px;height:40px;border-radius:50%;background:#ff2a1a;border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.input-area{position:fixed;bottom:0;left:0;right:0;padding:10px 12px 18px;background:#080808;border-top:1px solid #151515;z-index:15}
+.box{max-width:850px;margin:0 auto;display:flex;gap:8px;background:#151515;border:1px solid #222;border-radius:28px;padding:6px 6px 6px 14px;align-items:center;box-shadow:0 -4px 20px rgba(0,0,0,.3)}
+.box input{flex:1;background:transparent;border:none;color:#fff;outline:none;font-size:15px;font-family:Syne;padding:10px 0}
+.box button{width:42px;height:42px;border-radius:50%;background:#ff2a1a;border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.attach-btn{background:#222!important;font-size:18px}
 .mic-btn{background:#222!important}
 .mic-btn.recording{background:#ff2a1a!important;animation:pulse 1s infinite}
 @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
-.chips{display:flex;gap:6px;margin-bottom:8px;overflow:auto;max-width:850px;margin:0 auto 8px}
-.chip{background:#111;border:1px solid #222;padding:6px 11px;border-radius:100px;font-size:11px;white-space:nowrap;cursor:pointer}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999}
+.chips{display:flex;gap:6px;margin-bottom:10px;overflow:auto;max-width:850px;margin:0 auto 10px;scrollbar-width:none}
+.chip{background:#111;border:1px solid #222;padding:7px 12px;border-radius:100px;font-size:11px;white-space:nowrap;cursor:pointer;flex-shrink:0}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999;padding:20px}
 .modal.open{display:flex}
-.modal-box{background:#111;border:1px solid #222;border-radius:20px;padding:22px;width:90%;max-width:360px;text-align:center}
+.modal-box{background:#111;border:1px solid #222;border-radius:20px;padding:22px;width:100%;max-width:380px;text-align:center;max-height:90vh;overflow:auto}
+.modal-box input{width:100%;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:12px 14px;color:#fff;outline:none;margin:8px 0;font-family:Syne}
 .drawer{position:fixed;inset:0;z-index:1000;display:none}
 .drawer.open{display:block}
 .drawer-bg{position:absolute;inset:0;background:rgba(0,0,0,.6)}
-.drawer-panel{position:absolute;left:0;top:0;bottom:0;width:280px;background:#0a0a0a;border-right:1px solid #1a1a1a;padding:20px;display:flex;flex-direction:column;animation:slide .2s}
+.drawer-panel{position:absolute;left:0;top:0;bottom:0;width:300px;background:#0a0a0a;border-right:1px solid #1a1a1a;padding:20px;display:flex;flex-direction:column;animation:slide .25s;overflow:auto}
 @keyframes slide{from{transform:translateX(-100%)}to{transform:translateX(0)}}
-.menu-item{display:flex;align-items:center;gap:14px;padding:14px;border-radius:12px;cursor:pointer;font-size:15px;font-weight:600;color:#bbb;margin:4px 0}
+.menu-item{display:flex;align-items:center;gap:14px;padding:14px;border-radius:12px;cursor:pointer;font-size:14px;font-weight:600;color:#bbb;margin:4px 0}
 .menu-item:hover{background:#151515;color:#fff}
 .menu-item b{font-size:18px;width:26px;text-align:center}
 .menu-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #1a1a1a}
 .menu-foot{margin-top:auto;padding-top:16px;border-top:1px solid #1a1a1a}
+.opt{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #1a1a1a;font-size:13px;text-align:left}
+.admin-box{background:#0f0f0f;border:1px solid #1e1e1e;border-radius:14px;padding:14px;margin:10px 0;text-align:left}
+.admin-box b{color:#00ff88}
+.context-menu{position:fixed;background:#1e1e1e;border:1px solid #333;border-radius:14px;padding:6px;z-index:1001;display:none;min-width:160px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.context-menu.show{display:block}
+.context-menu button{display:block;width:100%;text-align:left;background:transparent;border:none;color:#fff;padding:10px 12px;border-radius:8px;cursor:pointer;font-size:13px}
+.context-menu button:hover{background:#2a2a2a}
 </style>
 </head>
 <body>
-<div class="drawer" id="drawer"><div class="drawer-bg" onclick="closeDrawer()"></div><div class="drawer-panel"><div class="menu-head"><div class="logo">TAYA <b>IA</b></div><div class="icon-btn" onclick="closeDrawer()">✕</div></div><div class="menu-item" onclick="menuClick('Images')"><b>🎨</b> Images</div><div class="menu-item" onclick="menuClick('Bibliothèque')"><b>📚</b> Bibliothèque</div><div class="menu-item" onclick="menuClick('Projets')"><b>📁</b> Projets</div><div class="menu-item" onclick="menuClick('Planifié')"><b>🕒</b> Planifié</div><div class="menu-item" onclick="menuClick('Plus')"><b>•••</b> Plus</div><div class="menu-foot"><div class="menu-item" onclick="openSettings()"><b style="color:#ff2a1a">⚙️</b> Paramètres</div></div></div></div>
 
-<div class="header"><div style="display:flex;gap:8px;align-items:center"><div class="icon-btn" onclick="openDrawer()">☰</div><div class="logo">TAYA <b>IA</b></div></div><div class="right"><div class="icon-btn" onclick="goHome()">←</div><div class="icon-btn" onclick="resumeChat()">↺</div><div class="icon-btn settings-btn" onclick="openSettings()">⚙️</div><div class="live"><span class="dot"></span> TURBO</div></div></div>
+<div class="context-menu" id="ctxMenu">
+<button onclick="copyMsg()">📋 Copier</button>
+<button onclick="replyMsg()">↩️ Répondre</button>
+<button onclick="deleteMsg()" style="color:#ff4d4d">🗑️ Supprimer</button>
+</div>
 
-<div class="home" id="home"><div class="home-content"><h1>TAYA<br><span>IA</span></h1><p>⚡ V4.4 TURBO - Réponse instantanée. Parle ou écris, je réponds direct sans attendre !</p><button class="btn-launch" onclick="launch()">🚀 Lancer TURBO →</button><div class="badges"><div class="badge">⚡ 0.2s réponse</div><div class="badge">🎤 Vocal auto</div><div class="badge">🧠 Maruce TAYA AI</div></div><div class="reactor"><span>Réacteur: <b>Maruce TAYA AI TURBO</b></span><span style="color:#00ff88">● Ultra rapide</span></div></div></div>
+<div class="drawer" id="drawer"><div class="drawer-bg" onclick="closeDrawer()"></div>
+<div class="drawer-panel">
+<div class="menu-head"><div class="logo">TAYA <b>IA</b></div><div class="icon-btn" onclick="closeDrawer()">✕</div></div>
+<div class="menu-item" onclick="menuClick('Images')"><b>🎨</b> Générer Images / Fonds d'écran</div>
+<div class="menu-item" onclick="menuClick('Bibliothèque')"><b>📚</b> Bibliothèque - Stockage</div>
+<div class="menu-item" onclick="menuClick('Projets')"><b>📁</b> Projets - Mes décisions</div>
+<div class="menu-item" onclick="menuClick('Admin')"><b>📊</b> Tableau - Connectés</div>
+<div class="menu-item" onclick="menuClick('Plus')"><b>•••</b> Plus</div>
+<div class="menu-foot">
+<div id="userInfo" style="font-size:11px;color:#666;margin-bottom:10px"></div>
+<div class="menu-item" onclick="openSettings()"><b style="color:#ff2a1a">⚙️</b> Paramètres</div>
+<div class="menu-item" onclick="logout()"><b>🚪</b> Déconnexion</div>
+</div>
+</div>
+</div>
 
-<div class="app" id="app"><div class="chat" id="chat"></div><div class="typing" id="typing">⚡ TAYA IA écrit...</div><div class="input-area"><div class="chips"><div class="chip" onclick="q('C est qui Maruce ?')">C'est qui Maruce ?</div><div class="chip" onclick="toggleVoice()">🔊 <span id="voiceState">ON</span></div><div class="chip" onclick="q('Salut')">Salut</div><div class="chip" onclick="goHome()">🏠 Accueil</div></div><div class="box"><button class="mic-btn" id="micBtn" onclick="startVoice()">🎤</button><input id="input" placeholder="Écris, j réponds instantanément..."><button onclick="send()">➤</button></div></div></div>
+<div class="header"><div style="display:flex;gap:8px;align-items:center"><div class="icon-btn" onclick="openDrawer()">☰</div><div class="logo">TAYA <b>IA</b></div></div><div class="right"><div class="icon-btn" onclick="goHome()">←</div><div class="icon-btn" onclick="resumeChat()">↺</div><div class="icon-btn" style="color:#ff2a1a;border-color:#3a1515;background:#1a1010" onclick="openSettings()">⚙️</div><div class="live"><span class="dot"></span> MARUCE AI</div></div></div>
 
-<div class="modal" id="modalSettings" onclick="if(event.target==this)closeSettings()"><div class="modal-box"><h3 style="font-family:Anton;color:#ff2a1a">⚙️ PARAMÈTRES TURBO</h3><div style="text-align:left;margin-top:14px"><div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #1a1a1a;font-size:13px"><span>Vitesse</span><b style="color:#00ff88">⚡ 0.2s</b></div><div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #1a1a1a;font-size:13px"><span>Vocal</span><button onclick="toggleVoice()" id="voiceBtn" style="background:#00ff88;border:none;color:#000;padding:6px 12px;border-radius:20px;font-weight:800">ON</button></div><div style="display:flex;justify-content:space-between;padding:12px 0;font-size:13px"><span>Effacer</span><button onclick="clearHistory()" style="background:#ff2a1a;border:none;color:#fff;padding:6px 12px;border-radius:20px">Effacer</button></div></div><button onclick="closeSettings()" style="margin-top:16px;background:#fff;color:#000;border:none;padding:10px 20px;border-radius:100px;width:100%;font-weight:800">Fermer</button></div></div>
+<div class="home" id="home"><div class="home-content"><h1>TAYA<br><span>IA</span></h1><p>Chat avec TAYA IA. Ton IA de Conakry qui répond à tout : conseils, images, blagues, code, drague, fonds d'écran. Rapide et sympa.</p><button class="btn-launch" onclick="launch()">💬 Chat avec TAYA IA →</button><div class="badges"><div class="badge">⚡ Vitesse normale</div><div class="badge">🎤 Vocal dans paramètres</div><div class="badge">🧠 Maruce TAYA AI</div></div><div class="reactor"><span>Réacteur: <b>Maruce TAYA AI</b></span><span style="color:#00ff88">● En ligne</span></div></div></div>
+
+<div class="app" id="app">
+<div class="chat" id="chat"></div>
+<div class="reply-preview" id="replyPreview"><span id="replyText"></span> <span onclick="cancelReply()" style="float:right;cursor:pointer;color:#ff2a1a">✕</span></div>
+<div class="typing" id="typing">TAYA IA écrit...</div>
+<div class="input-area">
+<div class="chips"><div class="chip" onclick="q('Genere une image de Conakry')">🎨 Générer image</div><div class="chip" onclick="q('C est qui Maruce ?')">C'est qui Maruce ?</div><div class="chip" onclick="openSettings()">⚙️ Vocal OFF</div></div>
+<div class="box">
+<input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleImage(this)">
+<button class="attach-btn" onclick="document.getElementById('fileInput').click()">📎</button>
+<button class="mic-btn" id="micBtn" onclick="startVoice()">🎤</button>
+<input id="input" placeholder="Écris ton message...">
+<button onclick="send()">➤</button>
+</div>
+</div>
+</div>
+
+<div class="modal" id="modalLogin"><div class="modal-box"><h3 style="font-family:Anton">BIENVENUE</h3><p style="color:#666;font-size:12px;margin:10px 0">Connecte-toi pour avoir ton compte TAYA IA</p><input id="loginName" placeholder="Ton nom"><input id="loginPhone" placeholder="Ton numéro WhatsApp"><button onclick="doLogin()" style="margin-top:12px;background:#fff;color:#000;border:none;padding:12px;border-radius:100px;width:100%;font-weight:800;cursor:pointer">Se connecter →</button><p style="font-size:10px;color:#444;margin-top:10px">Tes chats seront sauvegardés</p></div></div>
+
+<div class="modal" id="modalSettings" onclick="if(event.target==this)closeSettings()"><div class="modal-box"><h3 style="font-family:Anton;color:#ff2a1a">⚙️ PARAMÈTRES</h3><div style="text-align:left;margin-top:14px">
+<div class="opt"><span>Réacteur</span><b style="color:#ff2a1a">Maruce TAYA AI</b></div>
+<div class="opt"><span>Mode vocal (parler)</span><button onclick="toggleVoice()" id="voiceBtn" style="background:#333;border:none;color:#fff;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:800">OFF</button></div>
+<div class="opt"><span>Vitesse de réponse</span><b style="color:#00ff88">Normale (4s)</b></div>
+<div class="opt"><span>Effacer chat</span><button onclick="clearHistory()" style="background:#ff2a1a;border:none;color:#fff;padding:6px 12px;border-radius:20px;font-size:11px">Effacer</button></div>
+</div>
+<div class="admin-box" id="adminBox" style="display:none"><div style="font-weight:800;margin-bottom:8px">📊 DASHBOARD CREATEUR</div><div>👥 Inscrits: <b id="countUsers">0</b></div><div>🟢 En ligne maintenant: <b id="countOnline">1</b></div><div>💬 Messages: <b id="countMsg">0</b></div><div style="margin-top:8px;font-size:11px;color:#888" id="listUsers"></div></div>
+<button onclick="closeSettings()" style="margin-top:16px;background:#fff;color:#000;border:none;padding:10px 20px;border-radius:100px;width:100%;font-weight:800;cursor:pointer">Fermer</button></div></div>
 
 <script>
 const chatEl=document.getElementById('chat'),inputEl=document.getElementById('input'),typingEl=document.getElementById('typing'),micBtn=document.getElementById('micBtn'),home=document.getElementById('home'),app=document.getElementById('app');
-let lastCall=0,voiceOn=true,recognition=null,cache={};
+let lastCall=0,voiceOn=false,recognition=null,replyTo=null,selectedMsg=null,currentUser=null,cache={};
+let startX=0;
 
-// CACHE INSTANTANE
-const FAST_REPLIES={
-'salut':"Salut toi ! 👋 C'est TAYA IA, réacteur Maruce TAYA AI. On parle de quoi ?",
-'ca va':"Ça va super ! Et toi ? Je suis TAYA IA, prête à tout 🔥",
-'maruce':"Maruce c'est le boss ! 🔥 Dev 224 Conakry, créateur de TAYA IA, réacteur Maruce TAYA AI !",
-'qui es tu':"Je suis TAYA IA, vraie IA créée par Maruce à Conakry ! Réacteur Maruce TAYA AI 🚀",
-'blague':"Pourquoi les devs n'aiment pas la nature ? Trop de bugs 😂",
-'conakry':"Conakry 224 ! 🇬🇳 La base de Maruce TAYA AI !",
-'aide':"Je peux tout faire : code, devoirs, drague, conseils, blagues, images... Dis-moi !",
-'merci':"De rien champion ! 😊 Toujours là, TAYA IA !",
-'ton travail':"Je suis TAYA IA, réacteur Maruce TAYA AI. Je réponds à tout, ultra vite !",
-'images':"🎨 Dis-moi quelle image tu veux et je te la décris / génère !",
-};
-
+function initUser(){
+let u=localStorage.getItem('taya_user');
+if(u){currentUser=JSON.parse(u);document.getElementById('userInfo').innerText='👤 '+currentUser.name+' • '+currentUser.phone;updateAdmin()}
+else{document.getElementById('modalLogin').classList.add('open')}
+}
+function doLogin(){
+let n=document.getElementById('loginName').value.trim(),p=document.getElementById('loginPhone').value.trim();
+if(!n||!p){alert('Nom et numéro obligatoires');return}
+currentUser={name:n,phone:p,date:new Date().toISOString()};
+localStorage.setItem('taya_user',JSON.stringify(currentUser));
+let users=JSON.parse(localStorage.getItem('taya_all_users')||'[]');users.push(currentUser);localStorage.setItem('taya_all_users',JSON.stringify(users));
+document.getElementById('modalLogin').classList.remove('open');
+document.getElementById('userInfo').innerText='👤 '+n+' • '+p;
+updateAdmin();launch();
+}
+function logout(){localStorage.removeItem('taya_user');location.reload()}
+function updateAdmin(){
+let users=JSON.parse(localStorage.getItem('taya_all_users')||'[]');
+document.getElementById('countUsers').innerText=users.length;
+document.getElementById('countOnline').innerText=users.length>0?users.length:1;
+document.getElementById('countMsg').innerText=(localStorage.getItem('taya_chat_'+(currentUser?.phone||'default'))||'').split('msg').length;
+document.getElementById('listUsers').innerHTML=users.slice(-5).map(u=>'• '+u.name+' ('+u.phone+')').join('<br>');
+if(currentUser && currentUser.name.toLowerCase().includes('maruce')){document.getElementById('adminBox').style.display='block'}
+}
+function save(){let key='taya_chat_'+(currentUser?.phone||'default');localStorage.setItem(key,chatEl.innerHTML);localStorage.setItem('taya_last_chat',chatEl.innerHTML);let proj=JSON.parse(localStorage.getItem('taya_projects')||'[]');if(chatEl.innerHTML.length>50){proj[0]=chatEl.innerHTML;localStorage.setItem('taya_projects',JSON.stringify(proj))}}
+function load(){let key='taya_chat_'+(currentUser?.phone||'default');return localStorage.getItem(key)||localStorage.getItem('taya_last_chat')}
 function openDrawer(){document.getElementById('drawer').classList.add('open')}
 function closeDrawer(){document.getElementById('drawer').classList.remove('open')}
-function menuClick(n){closeDrawer();launch();if(n=='Images')add("🎨 Mode Images actif ! Décris ton image.",'ai');else if(n=='Bibliothèque'){let o=localStorage.getItem('taya_turbo');if(o)chatEl.innerHTML=o} else if(n=='Plus')openSettings()}
-function save(){localStorage.setItem('taya_turbo',chatEl.innerHTML)}
-function load(){return localStorage.getItem('taya_turbo')}
-function openSettings(){closeDrawer();document.getElementById('modalSettings').classList.add('open')}
+function menuClick(t){
+closeDrawer();
+if(t=='Images'){launch();add("🎨 Je peux générer des images ! Dis : 'genere une image de...' et je te fais un fond d'écran.",'ai')}
+else if(t=='Bibliothèque'){let lib=localStorage.getItem('taya_library')||'Vide pour le moment. Tes images générées iront ici.';launch();add("📚 BIBLIOTHÈQUE<br>"+lib,'ai')}
+else if(t=='Projets'){let p=JSON.parse(localStorage.getItem('taya_projects')||'[]');launch();if(p[0]){chatEl.innerHTML=p[0];save()}else add("📁 PROJETS - Tes décisions sauvegardées apparaîtront ici. Chaque chat est auto-sauvegardé.",'ai')}
+else if(t=='Admin'){openSettings();document.getElementById('adminBox').style.display='block';updateAdmin()}
+else if(t=='Plus'){openSettings()}
+}
+function openSettings(){closeDrawer();document.getElementById('modalSettings').classList.add('open');updateAdmin()}
 function closeSettings(){document.getElementById('modalSettings').classList.remove('open')}
-function clearHistory(){localStorage.removeItem('taya_turbo');chatEl.innerHTML='';save();add("Effacé ✅",'ai');closeSettings()}
-function launch(){home.classList.add('hide');app.classList.add('show');let old=load();if(old&&old.length>20&&chatEl.innerHTML.length<20){chatEl.innerHTML=old;chatEl.scrollTop=chatEl.scrollHeight}else if(chatEl.innerHTML.length<20){add("Salut ! ⚡ TURBO activé - Je réponds instantanément ! Parle ou écris.",'ai')}}
-function goHome(){save();app.classList.remove('show');home.classList.remove('hide');window.speechSynthesis.cancel()}
-function resumeChat(){let old=load();if(!old){alert('Pas de conv');return}home.classList.add('hide');app.classList.add('show');chatEl.innerHTML=old}
+function clearHistory(){chatEl.innerHTML='';save();add("Effacé ✅",'ai');closeSettings()}
+function launch(){home.classList.add('hide');app.classList.add('show');let old=load();if(old&&old.length>20&&chatEl.innerHTML.length<20){chatEl.innerHTML=old;chatEl.scrollTop=chatEl.scrollHeight;attachEvents()}else if(chatEl.innerHTML.length<20){add("Salut "+(currentUser?.name||"")+" ! C'est TAYA IA 👋 Chat avec moi, je réponds en vitesse normale.",'ai')}}
+function goHome(){save();app.classList.remove('show');home.classList.remove('hide');speechSynthesis.cancel()}
+function resumeChat(){let old=load();if(!old){alert('Pas de conv');return}home.classList.add('hide');app.classList.add('show');chatEl.innerHTML=old;attachEvents()}
 function q(t){inputEl.value=t;send()}
-function add(text,who){let d=document.createElement('div');d.className='msg '+who;d.innerHTML=text;chatEl.appendChild(d);chatEl.scrollTop=chatEl.scrollHeight;save();if(who=='ai')speak(text)}
 
-// VOCAL
+function attachEvents(){
+document.querySelectorAll('.msg').forEach(m=>{
+m.addEventListener('touchstart',e=>{startX=e.touches[0].clientX},{passive:true});
+m.addEventListener('touchend',e=>{
+let diff=e.changedTouches[0].clientX-startX;
+if(diff>80){replyTo=m.innerText.slice(0,60);showReply(replyTo)}
+if(diff<-80){replyTo=m.innerText.slice(0,60);showReply(replyTo)}
+});
+m.addEventListener('contextmenu',e=>{e.preventDefault();selectedMsg=m;showCtx(e.clientX,e.clientY)});
+let pressTimer;
+m.addEventListener('touchstart',()=>{pressTimer=setTimeout(()=>{selectedMsg=m;showCtx(100,200)},700)});
+m.addEventListener('touchend',()=>clearTimeout(pressTimer));
+});
+}
+function showReply(t){document.getElementById('replyText').innerText='↩️ Réponse à: '+t;document.getElementById('replyPreview').classList.add('show')}
+function cancelReply(){replyTo=null;document.getElementById('replyPreview').classList.remove('show')}
+function showCtx(x,y){let menu=document.getElementById('ctxMenu');menu.style.left=x+'px';menu.style.top=y+'px';menu.classList.add('show');setTimeout(()=>{document.addEventListener('click',hideCtx,{once:true})},100)}
+function hideCtx(){document.getElementById('ctxMenu').classList.remove('show')}
+function copyMsg(){if(selectedMsg){navigator.clipboard.writeText(selectedMsg.innerText);hideCtx();add("📋 Copié !",'ai')}}
+function replyMsg(){if(selectedMsg){replyTo=selectedMsg.innerText.slice(0,60);showReply(replyTo);hideCtx()}}
+function deleteMsg(){if(selectedMsg){selectedMsg.remove();save();hideCtx()}}
+function handleImage(inp){
+let file=inp.files[0];if(!file)return;
+let reader=new FileReader();
+reader.onload=e=>{add('<img src="'+e.target.result+'" style="max-width:200px;border-radius:12px">','user');let lib=localStorage.getItem('taya_library')||'';localStorage.setItem('taya_library',lib+'<br><img src="'+e.target.result+'" style="width:80px;border-radius:8px;margin:4px">');save()}
+reader.readAsDataURL(file);
+}
+
+function add(text,who){
+let d=document.createElement('div');d.className='msg '+who;
+if(replyTo){d.innerHTML='<div style="font-size:10px;color:#ff2a1a;border-left:2px solid #ff2a1a;padding-left:8px;margin-bottom:6px">'+replyTo+'</div>'+text;cancelReply()}else d.innerHTML=text;
+chatEl.appendChild(d);chatEl.scrollTop=chatEl.scrollHeight;attachEvents();save();
+if(who=='ai'&&voiceOn)speak(text);
+}
+
 function initVoice(){let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){micBtn.innerText='🚫';return}recognition=new SR();recognition.lang='fr-FR';recognition.onstart=()=>{micBtn.classList.add('recording');micBtn.innerText='🔴';typingEl.innerText='🎤 Écoute...';typingEl.classList.add('show')} 
 recognition.onend=()=>{micBtn.classList.remove('recording');micBtn.innerText='🎤';typingEl.classList.remove('show')}
 recognition.onresult=(e)=>{inputEl.value=e.results[0][0].transcript;send()}
 }
 function startVoice(){if(!recognition)initVoice();try{recognition.start()}catch{}}
-function speak(t){if(!voiceOn)return;let c=t.replace(/<[^>]*>/g,'').slice(0,180);speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(c);u.lang='fr-FR';u.rate=1.15;speechSynthesis.speak(u)}
-function toggleVoice(){voiceOn=!voiceOn;document.getElementById('voiceState').innerText=voiceOn?'ON':'OFF';document.getElementById('voiceBtn').innerText=voiceOn?'ON':'OFF';document.getElementById('voiceBtn').style.background=voiceOn?'#00ff88':'#333';if(!voiceOn)speechSynthesis.cancel()}
+function speak(t){if(!voiceOn)return;let c=t.replace(/<[^>]*>/g,'').slice(0,200);speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(c);u.lang='fr-FR';u.rate=1;u.pitch=1.05;speechSynthesis.speak(u)}
+function toggleVoice(){voiceOn=!voiceOn;document.getElementById('voiceBtn').innerText=voiceOn?'ON':'OFF';document.getElementById('voiceBtn').style.background=voiceOn?'#00ff88':'#333';document.getElementById('voiceBtn').style.color=voiceOn?'#000':'#fff';if(!voiceOn)speechSynthesis.cancel()}
 
 async function send(){
 let txt=inputEl.value.trim();if(!txt)return;
-let now=Date.now();if(now-lastCall<200)return;lastCall=now; // 0.2s seulement
+let now=Date.now();if(now-lastCall<4000){add("⏳ Attends 4 secondes... vitesse normale !",'ai');return}lastCall=now;
 let low=txt.toLowerCase().trim();
-
-// 1. CACHE -> 0ms
 if(cache[low]){add(txt,'user');inputEl.value='';add(cache[low],'ai');return}
-
-// 2. REPONSES RAPIDES LOCALES -> 0ms
-let fast=null;
-for(let k in FAST_REPLIES){if(low.includes(k)){fast=FAST_REPLIES[k];break}}
-if(fast || low.length<6){
 add(txt,'user');inputEl.value='';
-add(fast || "Je suis là ! Dis-moi tout, TAYA IA t'écoute ⚡",'ai');
-if(low.length>2)cache[low]=fast||"Je suis là !";
-return;
-}
-
-// 3. SINON API RAPIDE
-add(txt,'user');inputEl.value='';
-typingEl.innerText='⚡ Réponse...';typingEl.classList.add('show');
+typingEl.innerText='TAYA IA écrit...';typingEl.classList.add('show');
 try{
-let prompt=`Tu es TAYA IA, reacteur Maruce TAYA AI, cree par Maruce a Conakry. Reponds tres court et vite, en francais. Question: ${txt}`;
-let controller=new AbortController();setTimeout(()=>controller.abort(),8000);
-let res=await fetch('https://text.pollinations.ai/'+encodeURIComponent(prompt),{signal:controller.signal});
+let prompt=`Tu es TAYA IA, reacteur Maruce TAYA AI, cree par Maruce a Conakry. Reponds court, francais. Question: ${txt}`;
+let res=await fetch('https://text.pollinations.ai/'+encodeURIComponent(prompt));
 let aiText=await res.text();typingEl.classList.remove('show');
-if(aiText.length>5){cache[low]=aiText;add(aiText,'ai')}else{add("Dis-moi plus !",'ai')}
-}catch(e){typingEl.classList.remove('show');add("Je suis là ! Réessaie vite ⚡",'ai')}
+if(txt.toLowerCase().includes('genere')&&txt.toLowerCase().includes('image')){
+let imgUrl='https://image.pollinations.ai/prompt/'+encodeURIComponent(txt.replace('genere','').trim())+'?width=512&height=512&nologo=true';
+aiText+='<br><br><img src="'+imgUrl+'" style="max-width:100%;border-radius:14px;margin-top:10px" onload="let lib=localStorage.getItem(\'taya_library\')||\'\';localStorage.setItem(\'taya_library\',lib+\'<br><img src=\\\''+imgUrl+'\\\' style=\\\'width:80px;border-radius:8px;margin:4px\\\'>\')">';
+}
+cache[low]=aiText;add(aiText,'ai');
+}catch(e){typingEl.classList.remove('show');add("Coupure, réessaie dans 4 sec !",'ai')}
 }
 inputEl.addEventListener('keydown',e=>{if(e.key==='Enter')send()});
-initVoice();
+initUser();initVoice();
 </script>
 </body>
 </html>
