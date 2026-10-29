@@ -7,131 +7,132 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700&family=Anton&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#050505;color:#fff;font-family:Syne,sans-serif;height:100vh;display:flex;flex-direction:column}
-.header{padding:16px 24px;border-bottom:1px solid #151515;display:flex;justify-content:space-between;align-items:center;background:#080808}
+body{background:#050505;color:#fff;font-family:Syne,sans-serif;height:100vh;overflow:hidden}
+.header{padding:16px 24px;border-bottom:1px solid #151515;display:flex;justify-content:space-between;align-items:center;background:#080808;z-index:10}
 .logo{font-family:Anton;font-size:26px}.logo b{color:#ff2a1a}
-.right{display:flex;gap:10px;align-items:center}
-.icon-btn{width:38px;height:38px;border-radius:50%;background:#141414;border:1px solid #222;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px}
-.icon-btn:hover{background:#fff;color:#000}
 .live{display:flex;align-items:center;gap:8px;background:#111;border:1px solid #222;padding:6px 12px;border-radius:100px;font-size:10px;color:#00ff88}
 .dot{width:7px;height:7px;background:#00ff88;border-radius:50%;box-shadow:0 0 12px #00ff88;animation:p 2s infinite}
 @keyframes p{0%,100%{opacity:1}50%{opacity:.4}}
+.icon-btn{width:38px;height:38px;border-radius:50%;background:#141414;border:1px solid #222;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.right{display:flex;gap:8px;align-items:center}
+.home{height:calc(100vh - 65px);display:flex;align-items:center;justify-content:center;padding:20px;transition:.4s}
+.home.hide{transform:translateY(-100%);opacity:0;pointer-events:none;position:absolute;inset:0;top:65px}
+.home-content{text-align:center;max-width:600px}
+.home-content h1{font-family:Anton;font-size:72px;line-height:.85;letter-spacing:-2px}
+.home-content h1 span{-webkit-text-stroke:1.5px #fff;color:transparent}
+.home-content p{color:#666;margin:18px auto;line-height:1.6;font-size:15px;max-width:420px}
+.btn-launch{background:#fff;color:#000;border:none;padding:16px 32px;border-radius:100px;font-family:Syne;font-weight:800;font-size:15px;cursor:pointer;margin-top:18px}
+.badges{display:flex;gap:8px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+.badge{background:#111;border:1px solid #1a1a1a;padding:8px 14px;border-radius:100px;font-size:10px;color:#555}
+.reactor{margin-top:20px;background:#0f0f0f;border:1px solid #1e1e1e;border-radius:16px;padding:12px;font-size:11px;display:flex;justify-content:space-between;align-items:center}
+.reactor b{color:#ff2a1a}
+.app{height:calc(100vh - 65px);display:flex;flex-direction:column;transform:translateY(100%);opacity:0;pointer-events:none;transition:.4s;position:absolute;inset:0;top:65px;background:#050505}
+.app.show{transform:translateY(0);opacity:1;pointer-events:all}
 .chat{flex:1;overflow:auto;padding:20px;max-width:850px;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:16px}
-.msg{max-width:80%;padding:14px 18px;border-radius:22px;font-size:14.5px;line-height:1.6;animation:a .25s ease}
-@keyframes a{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+.msg{max-width:80%;padding:14px 18px;border-radius:22px;font-size:14.5px;line-height:1.6;animation:a .25s}
+@keyframes a{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
 .msg.ai{background:#141414;border:1px solid #222;align-self:flex-start;border-bottom-left-radius:6px}
 .msg.user{background:#fff;color:#000;font-weight:700;align-self:flex-end;border-bottom-right-radius:6px}
-.typing{max-width:850px;margin:0 auto;width:100%;padding:0 20px 6px;font-size:12px;color:#666;display:none}
+.typing{max-width:850px;margin:0 auto;width:100%;padding:0 20px 4px;font-size:12px;color:#666;display:none}
 .typing.show{display:block}
-.input-area{padding:14px;background:#080808;border-top:1px solid #151515}
+.input-area{padding:10px 14px 14px;background:#080808;border-top:1px solid #151515;transform:translateY(-8px)}
 .box{max-width:850px;margin:0 auto;display:flex;gap:10px;background:#151515;border:1px solid #222;border-radius:100px;padding:6px 6px 6px 20px;align-items:center}
 .box input{flex:1;background:transparent;border:none;color:#fff;outline:none;font-size:15px;font-family:Syne}
 .box button{width:42px;height:42px;border-radius:50%;background:#ff2a1a;border:none;color:#fff;cursor:pointer;font-size:18px}
-.chips{display:flex;gap:8px;margin-bottom:10px;overflow:auto;max-width:850px;margin:0 auto 10px auto}
+.chips{display:flex;gap:8px;margin-bottom:8px;overflow:auto;max-width:850px;margin:0 auto 8px}
 .chip{background:#111;border:1px solid #222;padding:7px 13px;border-radius:100px;font-size:11px;white-space:nowrap;cursor:pointer}
-.chip:hover{background:#fff;color:#000}
-.welcome{margin:auto;text-align:center;padding:30px}
-.welcome h1{font-family:Anton;font-size:56px;line-height:.85}
-.welcome h1 span{-webkit-text-stroke:1.5px #fff;color:transparent}
-.model{font-size:10px;color:#555;background:#111;border:1px solid #222;padding:4px 8px;border-radius:100px;display:inline-block;margin-top:10px}
-/* MODAL CONTACT */
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:999}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999}
 .modal.open{display:flex}
 .modal-box{background:#111;border:1px solid #222;border-radius:20px;padding:24px;width:90%;max-width:360px;text-align:center}
-.modal-box h3{font-family:Anton;font-size:22px;margin-bottom:12px}
 .contact-item{background:#1a1a1a;border:1px solid #222;padding:14px;border-radius:14px;margin:10px 0;display:flex;justify-content:space-between;align-items:center}
 .contact-item a{color:#fff;text-decoration:none;font-weight:700}
-.btn-close{margin-top:14px;background:#222;border:none;color:#fff;padding:10px 20px;border-radius:100px;cursor:pointer;width:100%}
 </style>
 </head>
 <body>
 <div class="header">
 <div class="logo">TAYA <b>IA</b></div>
 <div class="right">
-<div class="icon-btn" onclick="openContact()" title="Contact Maruce">📞</div>
-<div class="icon-btn" onclick="openContact()" title="WhatsApp">💬</div>
-<div class="live"><span class="dot"></span> TAYA</div>
-</div>
-</div>
-
-<div class="chat" id="chat">
-<div class="welcome" id="welcome">
-<h1>TAYA<br><span>IA</span></h1>
-<p style="color:#666;margin-top:14px;line-height:1.6;max-width:500px">Salut bienvenue c'est TAYA IA. Vraie intelligence créée par Maruce. Je réponds à tout, même compliqué !</p>
-<div class="model">Modèle: TAYA-IA V3 • GPT-4o • Connectée</div>
-<div style="margin-top:18px;display:flex;gap:8px;justify-content:center">
 <div class="icon-btn" onclick="openContact()">📞</div>
 <div class="icon-btn" onclick="openContact()">💬</div>
-<div class="icon-btn" onclick="q('C\'est qui Maruce ?')">👤</div>
-</div>
-<p style="color:#333;font-size:10px;margin-top:10px">Clique sur 📞 ou 💬 pour voir mes contacts</p>
+<div class="live"><span class="dot"></span> MARUCE TAYA AI</div>
 </div>
 </div>
 
+<div class="home" id="home">
+<div class="home-content">
+<h1>TAYA<br><span>IA</span></h1>
+<p>Salut bienvenue c'est TAYA IA. Vraie intelligence artificielle créée par Maruce à Conakry. Je réponds à tout, même compliqué.</p>
+<button class="btn-launch" onclick="launch()">🚀 Lancer TAYA IA →</button>
+<div class="badges"><div class="badge">⚡ Vraie IA connectée</div><div class="badge">💬 Parle comme humain</div><div class="badge">🧠 Répond à tout</div></div>
+<div class="reactor"><span>Réacteur: <b>Maruce TAYA AI</b></span><span style="color:#00ff88">● En ligne</span></div>
+<p style="color:#333;font-size:10px;margin-top:16px">Clique sur 📞 💬 pour contact Maruce</p>
+</div>
+</div>
+
+<div class="app" id="app">
+<div class="chat" id="chat"></div>
 <div class="typing" id="typing">TAYA IA écrit...</div>
-
 <div class="input-area">
 <div class="chips">
-<div class="chip" onclick="q('C\'est qui Maruce ?')">C'est qui Maruce ?</div>
-<div class="chip" onclick="q('Raconte une blague')">Raconte une blague</div>
-<div class="chip" onclick="q('C\'est quoi ton travail ?')">Ton travail ?</div>
-<div class="chip" onclick="q('Donne ton contact')">Contact</div>
+<div class="chip" onclick="q('C est qui Maruce ?')">C'est qui Maruce ?</div>
+<div class="chip" onclick="q('Raconte une blague')">Blague</div>
+<div class="chip" onclick="q('C est quoi ton travail ?')">Ton travail ?</div>
+<div class="chip" onclick="goHome()">🏠 Accueil</div>
 </div>
-<div class="box">
-<input id="input" placeholder="Parle avec TAYA IA...">
-<button onclick="send()">➤</button>
+<div class="box"><input id="input" placeholder="Parle avec TAYA IA..."><button onclick="send()">➤</button></div>
 </div>
-<p style="text-align:center;color:#333;font-size:10px;margin-top:8px">TAYA IA • Vraie IA by Maruce • Modèle TAYA-V3</p>
 </div>
 
 <div class="modal" id="modal" onclick="if(event.target==this)closeContact()">
 <div class="modal-box">
-<h3>CONTACT MARUCE</h3>
-<p style="color:#666;font-size:12px;margin-bottom:16px">Clique pour contacter directement</p>
+<h3 style="font-family:Anton">CONTACT MARUCE</h3>
+<p style="color:#666;font-size:12px;margin:10px 0 16px">Clique pour contacter</p>
 <div class="contact-item"><span>💬 WhatsApp</span><a href="https://wa.me/224663401157?text=Salut%20Maruce%20depuis%20TAYA%20IA">+224 663401157</a></div>
 <div class="contact-item"><span>📞 Téléphone</span><a href="tel:+224612768878">+224 612768878</a></div>
-<div class="contact-item"><span>📧 Créateur</span><span style="font-weight:700">Maruce OVL</span></div>
-<button class="btn-close" onclick="closeContact()">Fermer</button>
+<button onclick="closeContact()" style="margin-top:14px;background:#222;border:none;color:#fff;padding:10px 20px;border-radius:100px;width:100%;cursor:pointer">Fermer</button>
 </div>
 </div>
 
 <script>
-const chatEl=document.getElementById('chat');
-const inputEl=document.getElementById('input');
-const typingEl=document.getElementById('typing');
-const modal=document.getElementById('modal');
+const home=document.getElementById('home'),app=document.getElementById('app'),chatEl=document.getElementById('chat'),inputEl=document.getElementById('input'),typingEl=document.getElementById('typing'),modal=document.getElementById('modal');
+let lastCall=0;
 function openContact(){modal.classList.add('open')}
 function closeContact(){modal.classList.remove('open')}
+function launch(){home.classList.add('hide');app.classList.add('show');setTimeout(()=>{add("Salut bienvenue c'est TAYA IA 👋<br><br>Je suis une vraie IA créée par <b>Maruce TAYA AI</b>. Je réponds à toutes tes questions, même les plus compliquées.<br><br>On parle de quoi ?",'ai')},400)}
+function goHome(){app.classList.remove('show');home.classList.remove('hide')}
 function q(t){inputEl.value=t;send();}
-function add(text, who){
-let w=document.getElementById('welcome');
-if(w) w.remove();
-let d=document.createElement('div');
-d.className='msg '+who;
-d.innerHTML=text;
-chatEl.appendChild(d);
-chatEl.scrollTop=chatEl.scrollHeight;
+function add(text,who){let d=document.createElement('div');d.className='msg '+who;d.innerHTML=text;chatEl.appendChild(d);chatEl.scrollTop=chatEl.scrollHeight}
+
+function localReply(txt){
+let t=txt.toLowerCase();
+if(t.includes('maruce')) return "Maruce c'est le boss ! 🔥 Dev de Conakry, 224, qui m'a créée. Réacteur <b>Maruce TAYA AI</b>. Un génie !";
+if(t.includes('blague')) return "Pourquoi les devs n'aiment pas la nature ? Trop de bugs 😂 Tu en veux une autre ?";
+if(t.includes('travail')||t.includes('fais quoi')||t.includes('ton travail')) return "Je suis TAYA IA, réacteur Maruce TAYA AI. Je réponds à tout : devoirs, code, drague, conseils, tout !";
+if(t.includes('baise')||t.includes('baiser')||t.includes('sex')||t.includes('nude')||t.includes('cul')) return "Haha calme toi champion 😅 Je suis TAYA IA, je suis là pour parler bien. On reste cool, tu veux qu'on parle de quoi ? Maruce ? Code ? Blague ?";
+if(t.trim()=='quoi'||t.trim()=='quoi?') return "Je suis là ! Dis-moi tout, je suis TAYA IA du réacteur Maruce TAYA AI. Pose ta vraie question 😉";
+return null;
 }
+
 async function send(){
-let txt=inputEl.value.trim();
-if(!txt)return;
-add(txt,'user');
-inputEl.value='';
+let txt=inputEl.value.trim();if(!txt)return;
+let now=Date.now();
+if(now-lastCall<3500){add("Attends 3 sec ⏳ Anti-spam pour éviter le blocage Pollinations.","ai");return}
+lastCall=now;
+add(txt,'user');inputEl.value='';
+let local=localReply(txt);
+if(local){setTimeout(()=>add(local,'ai'),350);return}
 typingEl.classList.add('show');
 try{
-let prompt=`Tu es TAYA IA, vraie IA créée par Maruce à Conakry Guinée. Tu parles comme humain, sympa, intelligente. Si on demande contact Maruce, dis: clique sur icône 📞 ou 💬 en haut pour voir ses contacts. Ne jamais afficher directement les numéros sauf si on insiste vraiment. Tu es TAYA IA. Question: ${txt}`;
-let res=await fetch('https://text.pollinations.ai/'+encodeURIComponent(prompt));
+let prompt=`Tu es TAYA IA, fille sympa drole jeune, du reacteur Maruce TAYA AI cree par Maruce a Conakry Guinee. Tu parles francais 224. Tu ne dis JAMAIS "I'm sorry" ni "I can't help". Si on parle sexe tu reponds avec humour cool. Si contact demande dis clique sur icones 📞 💬. Question: ${txt}`;
+let res=await fetch('https://text.pollinations.ai/'+encodeURIComponent(prompt)+'?model=openai&seed='+Math.random());
 let aiText=await res.text();
 typingEl.classList.remove('show');
-if(!aiText||aiText.length<2) throw new Error();
-add(aiText,'ai');
-}catch(e){
-typingEl.classList.remove('show');
-add("Oups petite coupure ! Réessaie 😊 Clique sur 📞 pour contacter Maruce.",'ai');
-}
+if(aiText.includes('Free limit')||aiText.includes('Please wait')||aiText.includes('pollen')){
+add("Serveur saturé 20 sec, réessaie ! En attendant : je suis TAYA IA, réacteur Maruce TAYA AI. C'est qui Maruce ? clique !",'ai');
+}else{add(aiText,'ai');}
+}catch(e){typingEl.classList.remove('show');add("Oups petite coupure, réessaie !",'ai');}
 }
 inputEl.addEventListener('keydown',e=>{if(e.key==='Enter')send()});
-setTimeout(()=>{if(document.getElementById('welcome')){add("Salut bienvenue c'est TAYA IA 👋<br><br>Je suis une vraie IA, je réponds à tout !<br><br>Pour contacter Maruce, clique sur les icônes 📞 💬 en haut.<br><br>On parle de quoi ?",'ai')}},900);
 </script>
 </body>
 </html>
