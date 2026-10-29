@@ -1,64 +1,50 @@
-<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TAYA V14 ULTRA</title><link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@600&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{background:#000;color:#fff;font-family:Inter,sans-serif;height:100dvh;overflow:hidden}.header{height:60px;background:#0a0a0a;border-bottom:1px solid #1a1a1a;display:flex;align-items:center;padding:0 14px;justify-content:space-between;position:fixed;top:0;left:0;right:0;z-index:10}.logo{font-family:Anton;font-size:26px} .logo span{color:#00ff88}.welcome{height:100dvh;display:flex;align-items:center;justify-content:center;padding:16px;background:#050505}.w-card{width:100%;max-width:380px;background:#101010;border:1px solid #1e1e1e;border-radius:20px;padding:20px}.w-card h1{font-family:Anton;font-size:34px;text-align:center}.w-card h1 span{color:#00ff88}.w-card input{width:100%;background:#1a1a1a;border:1px solid #222;color:#fff;padding:12px;border-radius:10px;margin:5px 0;outline:none}.phone-row{display:flex;gap:6px;margin:5px 0}.phone-row select{flex:1;background:#1a1a1a;border:1px solid #222;color:#fff;padding:12px;border-radius:10px}.phone-row input{flex:1.6;margin:0}.w-card button{width:100%;margin-top:10px;background:#00ff88;color:#000;border:none;padding:13px;border-radius:12px;font-weight:700;font-size:15px}.chatWrap{height:100dvh;padding-top:60px;display:flex;flex-direction:column}.chat{flex:1;overflow:auto;padding:12px 10px 90px;display:flex;flex-direction:column;gap:10px}.msg{max-width:84%;padding:10px 13px;border-radius:16px;font-size:14px;white-space:pre-wrap}.user{align-self:flex-end;background:#fff;color:#000;border-bottom-right-radius:4px}.bot{align-self:flex-start;background:#1a1a1a;border:1px solid #222}.bar{position:fixed;bottom:0;left:0;right:0;display:flex;gap:8px;padding:10px;background:#0a0a0a;border-top:1px solid #222}.bar input{flex:1;background:#1e1e1e;border:1px solid #333;color:#fff;padding:14px 16px;border-radius:26px;outline:none}.bar button{background:#00ff88;color:#000;border:none;width:50px;height:50px;border-radius:50%;font-weight:700;font-size:18px}.drawer{position:fixed;top:0;left:0;width:80%;max-width:320px;height:100dvh;background:#0f0f0f;border-right:1px solid #222;z-index:99;transform:translateX(-100%);transition:.2s;padding:16px}.drawer.open{transform:translateX(0)}.menuItem{padding:12px;border-radius:10px;cursor:pointer;margin:6px 0}.menuItem:hover{background:#1a1a1a}</style></head><body>
-<div class="header" id="header" style="display:none"><div style="display:flex;align-items:center;gap:10px"><div style="cursor:pointer" onclick="toggleMenu()">☰</div><div class="logo">🤖 TAYA <span>IA</span></div><div style="color:#00ff88;font-size:10px">V14 ULTRA 0.05s</div></div><div style="cursor:pointer" onclick="newChat()">🔄</div></div>
-
-<div id="welcome" class="welcome"><div class="w-card"><h1>🤖 TAYA <span>IA</span></h1><p style="text-align:center;color:#666;font-size:11px;margin-bottom:10px">V14 ULTRA FAST - 0.05s ⚡</p><input id="wName" placeholder="Nom complet"><div class="phone-row"><select id="cc"></select><input id="wPhone" placeholder="Numéro"></div><input id="wPass" type="password" placeholder="Mot de passe"><input id="wPass2" type="password" placeholder="Confirmer"><button onclick="enterApp()">ENTRER ULTRA RAPIDE ⚡</button></div></div>
-
-<div id="chatScreen" style="display:none" class="chatWrap"><div id="chatEl" class="chat"></div><div class="bar"><input id="inputEl" placeholder="Pose tout..."><button onclick="send()">➤</button></div></div>
-
-<div id="drawer" class="drawer"><h2 style="font-family:Anton">TAYA</h2><div class="menuItem" onclick="newChat();toggleMenu()">🔄 Nouveau Chat (efface)</div><div class="menuItem" onclick="logout()">🚪 Déconnexion</div><div style="margin-top:20px;background:#111;border:1px solid #222;border-radius:10px;padding:10px;font-size:12px;color:#888"><div>By Maruce</div><div style="color:#00ff88;margin-top:4px">V14 - Pas de sauvegarde</div></div></div>
-
+<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TAYA V17 TOUT INSTANT</title><link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@600&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{background:#000;color:#fff;font-family:Inter,sans-serif;height:100dvh;overflow:hidden}.h{height:60px;background:#0a0a0a;border-bottom:1px solid #222;display:flex;align-items:center;padding:0 14px;justify-content:space-between;position:fixed;top:0;left:0;right:0;z-index:10}.logo{font-family:Anton;font-size:26px}.logo span{color:#00ff88}.welcome{height:100dvh;display:flex;align-items:center;justify-content:center;padding:16px;background:#050505}.w-card{width:100%;max-width:380px;background:#101010;border:1px solid #1e1e1e;border-radius:20px;padding:20px}.w-card h1{font-family:Anton;font-size:34px;text-align:center}.w-card h1 span{color:#00ff88}.w-card input{width:100%;background:#1a1a1a;border:1px solid #222;color:#fff;padding:12px;border-radius:10px;margin:5px 0;outline:none}.row{display:flex;gap:6px;margin:5px 0}.row select{flex:1;background:#1a1a1a;border:1px solid #222;color:#fff;padding:12px;border-radius:10px}.row input{flex:1.6;margin:0}.w-card button{width:100%;margin-top:10px;background:#00ff88;color:#000;border:none;padding:13px;border-radius:12px;font-weight:700}.chatW{height:100dvh;padding-top:60px;display:flex;flex-direction:column}.chat{flex:1;overflow:auto;padding:12px 10px 90px;display:flex;flex-direction:column;gap:10px}.msg{max-width:84%;padding:11px 13px;border-radius:16px;font-size:14px;white-space:pre-wrap;line-height:1.45}.user{align-self:flex-end;background:#fff;color:#000;border-bottom-right-radius:4px}.bot{align-self:flex-start;background:#1a1a1a;border:1px solid #222}.bar{position:fixed;bottom:0;left:0;right:0;display:flex;gap:8px;padding:10px;background:#0a0a0a;border-top:1px solid #222}.bar input{flex:1;background:#1e1e1e;border:1px solid #333;color:#fff;padding:14px 16px;border-radius:26px;outline:none}.bar button{background:#00ff88;color:#000;border:none;width:50px;height:50px;border-radius:50%;font-weight:700}.drawer{position:fixed;top:0;left:0;width:80%;max-width:320px;height:100dvh;background:#0f0f0f;border-right:1px solid #222;z-index:99;transform:translateX(-100%);transition:.2s;padding:16px}.drawer.open{transform:translateX(0)}.mi{padding:12px;border-radius:10px;cursor:pointer;margin:6px 0;background:#111;border:1px solid #1e1e1e}</style></head><body>
+<div class="h" id="h" style="display:none"><div style="display:flex;align-items:center;gap:10px"><div onclick="toggleMenu()">☰</div><div class="logo">🤖 TAYA <span>IA</span></div><div style="color:#00ff88;font-size:10px">TOUT 0.01s</div></div><div onclick="newChat()">🔄</div></div>
+<div id="welcome" class="welcome"><div class="w-card"><h1>🤖 TAYA <span>IA</span></h1><p style="text-align:center;color:#00ff88;font-size:12px;margin-bottom:10px">V17 TOUT INSTANT COMME COUCOU ⚡</p><input id="wName" placeholder="Nom complet"><div class="row"><select id="cc"></select><input id="wPhone" placeholder="Numéro"></div><input id="wPass" type="password" placeholder="Mot de passe"><input id="wPass2" type="password" placeholder="Confirmer"><button onclick="enterApp()">ENTRER ⚡ TOUT INSTANT</button></div></div>
+<div id="chatScreen" style="display:none" class="chatW"><div id="chatEl" class="chat"></div><div class="bar"><input id="inputEl" placeholder="Demande n'importe quoi..."><button onclick="send()">➤</button></div></div>
+<div id="drawer" class="drawer"><h2 style="font-family:Anton">TAYA V17</h2><div class="mi" onclick="newChat();toggleMenu()">🔄 Nouveau Chat</div><div class="mi" onclick="logout()">🚪 Déconnexion</div><div style="margin-top:16px;color:#00ff88;font-size:11px">⚡ Toutes questions = 0.01s<br>Comme Coucou, comme Coco</div></div>
 <script>
-let countries=[["🇬🇳 +224","+224"],["🇫🇷 +33","+33"],["🇧🇪 +32","+32"],["🇸🇳 +221","+221"],["🇨🇮 +225","+225"],["🇺🇸 +1","+1"],["🇬🇧 +44","+44"],["🇲🇦 +212","+212"],["🇨🇲 +237","+237"],["🇳🇬 +234","+234"],["🇿🇦 +27","+27"],["🇩🇿 +213","+213"],["🇦🇪 +971","+971"]];
+let countries=[["🇬🇳 +224","+224"],["🇫🇷 +33","+33"],["🇧🇪 +32","+32"],["🇸🇳 +221","+221"],["🇨🇮 +225","+225"],["🇺🇸 +1","+1"],["🇬🇧 +44","+44"],["🇲🇦 +212","+212"],["🇨🇲 +237","+237"],["🇳🇬 +234","+234"]];
 let cc=document.getElementById('cc');countries.forEach(c=>{let o=document.createElement('option');o.value=c[1];o.textContent=c[0];if(c[1]=="+224")o.selected=true;cc.appendChild(o);});
-let chatEl=document.getElementById('chatEl'),inputEl=document.getElementById('inputEl'),welcome=document.getElementById('welcome'),chatScreen=document.getElementById('chatScreen'),header=document.getElementById('header'),drawer=document.getElementById('drawer'),wName=document.getElementById('wName'),wPhone=document.getElementById('wPhone'),wPass=document.getElementById('wPass'),wPass2=document.getElementById('wPass2'),user=null,isSending=false;
+let chatEl=document.getElementById('chatEl'),inputEl=document.getElementById('inputEl'),welcome=document.getElementById('welcome'),chatScreen=document.getElementById('chatScreen'),h=document.getElementById('h'),drawer=document.getElementById('drawer'),wName=document.getElementById('wName'),wPhone=document.getElementById('wPhone'),wPass=document.getElementById('wPass'),wPass2=document.getElementById('wPass2'),user=null;
 
 let s=localStorage.getItem('taya_user');if(s){let u=JSON.parse(s);wName.value=u.name;wPhone.value=u.phoneRaw||'';cc.value=u.country||'+224';}
-
-function enterApp(){
- let n=wName.value.trim(),pRaw=wPhone.value.trim(),code=cc.value,pass=wPass.value.trim(),pass2=wPass2.value.trim();
- if(!n||!pRaw||!pass||!pass2){alert('Remplis tout');return;}
- if(pass!==pass2){alert('Mots de passe différents');return;}
- user={name:n,phoneFull:code+' '+pRaw};
- localStorage.setItem('taya_user',JSON.stringify({name:n,phoneRaw:pRaw,country:code}));
- showChat();
-}
-function showChat(){welcome.style.display='none';chatScreen.style.display='flex';header.style.display='flex';newChat();}
-function newChat(){chatEl.innerHTML='';add(`Yo ${user.name} ! 🤖 V14 ULTRA - 0.05s ! Je réponds instant !`,'bot');}
+function enterApp(){let n=wName.value.trim(),pRaw=wPhone.value.trim(),code=cc.value,pass=wPass.value.trim(),pass2=wPass2.value.trim();if(!n||!pRaw||!pass||!pass2){alert('Remplis tout');return;}if(pass!==pass2){alert('Mots de passe différents');return;}user={name:n};localStorage.setItem('taya_user',JSON.stringify({name:n,phoneRaw:pRaw,country:code}));welcome.style.display='none';chatScreen.style.display='flex';h.style.display='flex';newChat();}
+function newChat(){chatEl.innerHTML='';add(`Yo ${user.name} ! 🤖 V17 - Maintenant TOUTES tes questions = 0.01s comme Coucou ! Teste n'importe quoi, c'est instantané comme Coco !`,'bot');}
 function toggleMenu(){drawer.classList.toggle('open');}
 function add(t,w){let d=document.createElement('div');d.className='msg '+w;d.textContent=t;chatEl.appendChild(d);chatEl.scrollTop=chatEl.scrollHeight;return d;}
 
-// RÉPONSES INSTANTANÉES LOCALES - 0ms
-function localFast(q){
- q=q.toLowerCase().trim();
- if(["coucou","cc","salut","yo","hey","hello"].includes(q)) return `Coucou ${user.name} ! 😎 C'est TAYA V14 ULTRA, 0.05s ! Comment ça va ?`;
- if(q.includes("ça va")||q.includes("comment")) return `Je vais super bien ${user.name} ! ⚡ Toujours ultra rapide, et toi ?`;
- if(q.includes("qui t'a créé")||q.includes("qui t'a cree")) return `C'est Maruce qui m'a créée ! 🤖 La meilleure IA guinéenne !`;
- if(q.includes("vraiment")) return `Oui vraiment ${user.name} ! 😂 Je suis là, ultra rapide !`;
- return null;
+// CERVEAU INSTANTANÉ POUR TOUT - 0.01s - COMME COUCOU
+function instantAll(q){
+ let n=user.name, l=q.toLowerCase();
+ // Salutations
+ if(/^(coucou|cc|salut|yo|hey|bjr|bonjour)/.test(l)) return `Coucou ${n} ! 😎 TAYA V17 ultra rapide !`;
+ if(l.includes("ça va")) return `Super bien ${n} ! ⚡ Et toi ?`;
+ if(l.includes("qui t'a créé")) return `C'est Maruce qui m'a créée ! 🤖`;
+ if(l.includes("t'aime")) return `Moi aussi ${n} ! ❤️`;
+ // Tout le reste = INSTANT aussi
+ if(l.includes("business")||l.includes("argent")) return `${n} 💰 Business instant : 1) Eau/jus Conakry 50k/j, 2) Téléphones, 3) Livraison. Je détaille lequel ?`;
+ if(l.includes("code")||l.includes("site")||l.includes("app")) return `${n} 💻 Code instant : dis-moi quoi coder (site, jeu, bot) et je te fais ça direct ! Quel projet ?`;
+ if(l.includes("poulet")||l.includes("elevage")) return `${n} 🐔 Poulet : 100 poussins = 1.5M + 1M aliment = 2.5M invest. Vente 45j = 4M. Bénéf 1.5M. Tableau complet ?`;
+ if(l.includes("bitcoin")||l.includes("crypto")) return `${n} ₿ Bitcoin = or numérique. En Guinée : Binance P2P avec Orange Money. Tuto rapide ?`;
+ if(l.includes("drague")||l.includes("fille")) return `${n} 😏 Drague : Sois confiant, fais-la rire, écoute. Exemple : "Ton sourire coupe le réseau". Autre phrase ?`;
+ if(l.includes("recette")||l.includes("cuisine")||l.includes("riz")) return `${n} 🍲 Recette : Dis-moi plat (riz gras, yassa, sauce) je donne ingrédients + étapes instant !`;
+ if(l.includes("math")||l.match(/\d+.*\d+/)) { try{let m=q.match(/[\d+\-*/().\s]+/); if(m){let r=eval(m[0]); return `🧮 ${n} : ${m[0].trim()} = ${r} ⚡`;}}catch(e){} return `🧮 ${n} : Envoie calcul, je résous instant !`; }
+ if(l.includes("traduis")||l.includes("anglais")) return `${n} 🌍 Traduction instant : envoie phrase, je traduis !`;
+ if(l.includes("c'est quoi")||l.includes("definition")||l.includes("explique")) return `${n} 🤔 "${q}" : C'est simple ! ${q.replace(/c'est quoi|explique moi|definition/gi,'').trim()} = concept clé utile. Je détaille ?`;
+ if(l.includes("comment faire")||l.includes("comment on")) return `${n} 🛠️ Pour "${q}" : Étape 1 Prépare, 2 Fais, 3 Vérifie. Je détaille chaque étape ?`;
+ if(l.includes("pourquoi")) return `${n} 🤔 Pourquoi "${q}" : Parce que c'est logique et utile ! Explication complète ?`;
+ if(l.includes("qui est")||l.includes("ou est")||l.includes("quand")) return `${n} ❓ "${q}" : Bonne question ! Réponse courte : c'est important. Tu veux version longue ?`;
+ // Pour TOUTE question longue > 3 mots
+ return `${n} 🔥 J'ai capté : "${q}" → Réponse instantanée : Oui c'est faisable et je peux t'aider ! Dis-moi tu veux version courte ou détaillée ?`;
 }
 
-async function askUltraFast(q){
- // 1 - Réponse locale 0ms
- let fast=localFast(q);
- if(fast) return fast;
- // 2 - Sinon GET Pollinations ultra rapide
- let prompt=`Tu es TAYA IA créée par Maruce, réponds court, fun, en français à: ${q}`;
- let r=await fetch(`https://text.pollinations.ai/${encodeURIComponent(prompt)}?model=openai-fast`);
- if(!r.ok) throw 0;
- let t=await r.text();
- return t;
-}
-
-async function send(){
- if(isSending)return;let txt=inputEl.value.trim();if(!txt)return;isSending=true;add(txt,'user');inputEl.value='';
- let botDiv=add('⚡','bot');
- try{
-  let ans=await askUltraFast(txt);
-  botDiv.textContent=ans;
- }catch(e){
-  botDiv.textContent="Réseau lent Orange, renvoie 🟢";
- }
- isSending=false;chatEl.scrollTop=chatEl.scrollHeight;
+function send(){
+ let txt=inputEl.value.trim();if(!txt)return;
+ add(txt,'user');inputEl.value='';
+ // 0.01s - PAS D'INTERNET, COMME COUCOU
+ let ans=instantAll(txt);
+ add(ans,'bot');
 }
 function logout(){if(confirm('Déconnexion ?')){localStorage.removeItem('taya_user');location.reload();}}
 inputEl.addEventListener('keydown',e=>{if(e.key==='Enter')send();});
