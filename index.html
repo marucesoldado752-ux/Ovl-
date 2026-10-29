@@ -12,16 +12,20 @@ body{background:#050505;color:#fff;font-family:Inter,sans-serif;height:100dvh;ov
 .h-left{display:flex;align-items:center;gap:10px}
 .icon-btn{width:38px;height:38px;border-radius:50%;background:#1a1a1a;border:1px solid #222;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px}
 .logo{font-family:Anton;font-size:20px}.logo span{color:#00ff88}
-.call-btn{background:#00ff88;color:#000;text-decoration:none}
 .welcome{height:100dvh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(600px at 50% -20%,#0f2a1f,transparent),#050505;overflow:auto}
-.w-card{width:100%;max-width:420px;background:#101010;border:1px solid #1e1e1e;border-radius:24px;padding:26px;margin-top:20px}
-.w-card h1{font-family:Anton;font-size:38px}.w-card h1 span{color:#00ff88}
-.w-card p{color:#888;margin:10px 0 16px;font-size:14px}
-.w-card input{width:100%;background:#1a1a1a;border:1px solid #222;color:#fff;padding:14px 16px;border-radius:12px;margin:7px 0;outline:none}
+.w-card{width:100%;max-width:420px;background:#101010;border:1px solid #1e1e1e;border-radius:24px;padding:26px;margin-top:10px}
+.w-card h1{font-family:Anton;font-size:38px;text-align:center}.w-card h1 span{color:#00ff88}
+.w-card p.sub{color:#888;margin:8px 0 16px;font-size:14px;text-align:center}
+.w-card input{width:100%;background:#1a1a1a;border:1px solid #222;color:#fff;padding:14px 16px;border-radius:12px;margin:7px 0;outline:none;font-size:15px}
 .phone-row{display:flex;gap:8px;margin:7px 0}
-.phone-row select{background:#1a1a1a;border:1px solid #222;color:#fff;padding:14px 10px;border-radius:12px;outline:none;flex:1;max-width:200px}
+.phone-row select{background:#1a1a1a;border:1px solid #222;color:#fff;padding:14px 10px;border-radius:12px;outline:none;flex:1;max-width:190px}
 .phone-row input{flex:1;margin:0}
 .w-card button{width:100%;margin-top:14px;background:#fff;color:#000;border:none;padding:15px;border-radius:14px;font-weight:700;font-size:16px;cursor:pointer}
+.contact-box{margin-top:18px;background:#0a0a0a;border:1px solid #1e1e1e;border-radius:14px;padding:14px}
+.contact-box .line{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:14px}
+.contact-box .line + .line{border-top:1px solid #1a1a1a}
+.wa-icon{width:28px;height:28px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px}
+.tel-icon{width:28px;height:28px;background:#00ff88;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#000}
 .home{padding:84px 20px 20px;display:flex;flex-direction:column;gap:16px;overflow:auto;height:100dvh}
 .cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .card{background:linear-gradient(180deg,#141414,#0f0f0f);border:1px solid #222;border-radius:18px;padding:18px;cursor:pointer}
@@ -48,65 +52,52 @@ body{background:#050505;color:#fff;font-family:Inter,sans-serif;height:100dvh;ov
 <div class="logo">TAYA <span>IA</span></div>
 </div>
 <div class="h-right">
-<a class="icon-btn call-btn" href="tel:+224612768878">📞</a>
+<a class="icon-btn" href="tel:+224612768878" style="background:#00ff88;color:#000;text-decoration:none">📞</a>
 </div>
 </div>
 
 <div id="welcome" class="welcome">
 <div class="w-card">
 <h1>TAYA <span>IA</span></h1>
-<p>By Maruce - IA Guinéenne</p>
+<p class="sub">By Maruce - IA Guinéenne</p>
 <input id="wName" placeholder="Ton nom complet">
+
 <div class="phone-row">
 <select id="countryCode">
-<option value="+224" selected>🇬🇳 +224 Guinée</option>
-<option value="+33">🇫🇷 +33 France</option>
-<option value="+32">🇧🇪 +32 Belgique</option>
-<option value="+41">🇨🇭 +41 Suisse</option>
-<option value="+1">🇺🇸 +1 USA / Canada</option>
-<option value="+44">🇬🇧 +44 UK</option>
-<option value="+49">🇩🇪 +49 Allemagne</option>
-<option value="+34">🇪🇸 +34 Espagne</option>
-<option value="+39">🇮🇹 +39 Italie</option>
-<option value="+351">🇵🇹 +351 Portugal</option>
-<option value="+221">🇸🇳 +221 Sénégal</option>
-<option value="+225">🇨🇮 +225 Côte d'Ivoire</option>
-<option value="+223">🇲🇱 +223 Mali</option>
-<option value="+226">🇧🇫 +226 Burkina</option>
-<option value="+229">🇧🇯 +229 Bénin</option>
-<option value="+228">🇹🇬 +228 Togo</option>
-<option value="+227">🇳🇪 +227 Niger</option>
-<option value="+237">🇨🇲 +237 Cameroun</option>
-<option value="+241">🇬🇦 +241 Gabon</option>
-<option value="+242">🇨🇬 +242 Congo</option>
-<option value="+243">🇨🇩 +243 RDC</option>
-<option value="+244">🇦🇴 +244 Angola</option>
-<option value="+212">🇲🇦 +212 Maroc</option>
-<option value="+213">🇩🇿 +213 Algérie</option>
-<option value="+216">🇹🇳 +216 Tunisie</option>
-<option value="+20">🇪🇬 +20 Egypte</option>
-<option value="+233">🇬🇭 +233 Ghana</option>
-<option value="+234">🇳🇬 +234 Nigeria</option>
-<option value="+231">🇱🇷 +231 Liberia</option>
-<option value="+232">🇸🇱 +232 Sierra Leone</option>
-<option value="+220">🇬🇲 +220 Gambie</option>
-<option value="+245">🇬🇼 +245 Guinée-Bissau</option>
-<option value="+250">🇷🇼 +250 Rwanda</option>
-<option value="+255">🇹🇿 +255 Tanzanie</option>
-<option value="+27">🇿🇦 +27 Afrique du Sud</option>
-<option value="+971">🇦🇪 +971 Dubai</option>
-<option value="+966">🇸🇦 +966 Arabie</option>
-<option value="+90">🇹🇷 +90 Turquie</option>
-<option value="+86">🇨🇳 +86 Chine</option>
-<option value="+91">🇮🇳 +91 Inde</option>
-<option value="+81">🇯🇵 +81 Japon</option>
-<option value="+55">🇧🇷 +55 Brésil</option>
+<option value="+224" selected>🇬🇳 +224</option>
+<option value="+33">🇫🇷 +33</option>
+<option value="+32">🇧🇪 +32</option>
+<option value="+1">🇺🇸 +1</option>
+<option value="+44">🇬🇧 +44</option>
+<option value="+221">🇸🇳 +221</option>
+<option value="+225">🇨🇮 +225</option>
+<option value="+223">🇲🇱 +223</option>
+<option value="+212">🇲🇦 +212</option>
+<option value="+213">🇩🇿 +213</option>
+<option value="+216">🇹🇳 +216</option>
+<option value="+234">🇳🇬 +234</option>
+<option value="+233">🇬🇭 +233</option>
+<option value="+971">🇦🇪 +971</option>
+<option value="+966">🇸🇦 +966</option>
 </select>
-<input id="wPhone" placeholder="663 40 11 57">
+<input id="wPhone" placeholder="Numéro seulement (ex: 663401157)">
 </div>
+
 <input id="wPass" type="password" placeholder="Mot de passe (min 4)">
+
 <button onclick="enterApp()">🔐 Entrer dans TAYA</button>
-<p style="margin-top:14px;font-size:11px;color:#555;text-align:center">Contact Maruce<br>+224 612-76-88-78<br>+224 663-40-11-57</p>
+
+<div class="contact-box">
+<div class="line">
+<div class="wa-icon">💬</div>
+<div><b>WhatsApp:</b> +224 663-40-11-57</div>
+</div>
+<div class="line">
+<div class="tel-icon">📞</div>
+<div><b>Téléphone:</b> +224 612-76-88-78</div>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -127,23 +118,22 @@ body{background:#050505;color:#fff;font-family:Inter,sans-serif;height:100dvh;ov
 <div id="drawer" class="drawer">
 <h2>TAYA <span style="color:#00ff88">MENU</span></h2>
 <div class="menuItem" onclick="newChat();toggleMenu()">💬 Nouveau Chat</div>
-<div class="menuItem" onclick="toggleMenu();goHome()">📁 Projets sauvegardés</div>
-<div class="menuItem" onclick="showAdmin()">👑 Admin - Clients</div>
+<div class="menuItem" onclick="toggleMenu();goHome()">📁 Projets</div>
+<div class="menuItem" onclick="showAdmin()">👑 Admin</div>
 <div id="adminBox" class="adminBox"><div id="adminList"></div></div>
 <div class="menuItem" onclick="logout()">🚪 Déconnexion</div>
 <div style="margin-top:20px;padding-top:16px;border-top:1px solid #222;font-size:13px;color:#888">
-Contact Maruce<br><br>
-+224 612-76-88-78<br>
-+224 663-40-11-57
+<div style="display:flex;gap:8px;align-items:center;margin:6px 0"><span style="background:#25D366;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center">💬</span> +224 663-40-11-57</div>
+<div style="display:flex;gap:8px;align-items:center;margin:6px 0"><span style="background:#00ff88;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#000">📞</span> +224 612-76-88-78</div>
 </div>
 </div>
 
 <script>
-let chatEl=document.getElementById('chatEl'),inputEl=document.getElementById('inputEl'),welcome=document.getElementById('welcome'),homeScreen=document.getElementById('homeScreen'),chatScreen=document.getElementById('chatScreen'),header=document.getElementById('header'),drawer=document.getElementById('drawer'),wName=document.getElementById('wName'),wPhone=document.getElementById('wPhone'),wPass=document.getElementById('wPass'),countryCode=document.getElementById('countryCode'),uName=document.getElementById('uName'),adminBox=document.getElementById('adminBox'),projectsList=document.getElementById('projectsList'),adminList=document.getElementById('adminList'),projCount=document.getElementById('projCount'),user=null,projects=JSON.parse(localStorage.getItem('taya_projects')||'[]'),allUsers=JSON.parse(localStorage.getItem('taya_users')||'[]');
+let chatEl=document.getElementById('chatEl'),inputEl=document.getElementById('inputEl'),welcome=document.getElementById('welcome'),homeScreen=document.getElementById('homeScreen'),chatScreen=document.getElementById('chatScreen'),header=document.getElementById('header'),drawer=document.getElementById('drawer'),wName=document.getElementById('wName'),wPhone=document.getElementById('wPhone'),wPass=document.getElementById('wPass'),countryCode=document.getElementById('countryCode'),uName=document.getElementById('uName'),adminBox=document.getElementById('adminBox'),adminList=document.getElementById('adminList'),projectsList=document.getElementById('projectsList'),projCount=document.getElementById('projCount'),user=null,projects=JSON.parse(localStorage.getItem('taya_projects')||'[]'),allUsers=JSON.parse(localStorage.getItem('taya_users')||'[]');
 let saved=localStorage.getItem('taya_user');if(saved){let u=JSON.parse(saved);wName.value=u.name;countryCode.value=u.country||'+224';wPhone.value=u.phoneRaw||'';}
 function enterApp(){
 let n=wName.value.trim(),pRaw=wPhone.value.trim().replace(/\s/g,''),code=countryCode.value,pass=wPass.value.trim();
-if(!n||!pRaw||!pass){alert('Remplis tout');return;}if(pass.length<4){alert('Mot de passe min 4');return;}
+if(!n||!pRaw||!pass){alert('Remplis nom, numéro et mot de passe');return;}if(pass.length<4){alert('Min 4');return;}
 let full=code+' '+pRaw;let s=localStorage.getItem('taya_user');if(s){let u=JSON.parse(s);if(u.phoneFull===full&&u.password!==pass){alert('Mot de passe incorrect');return;}}
 user={name:n,phoneRaw:pRaw,country:code,phoneFull:full,phone:code.replace('+','')+pRaw,password:pass,date:new Date().toLocaleString()};
 localStorage.setItem('taya_user',JSON.stringify(user));let idx=allUsers.findIndex(x=>x.phoneFull===full);if(idx>=0)allUsers[idx]=user;else allUsers.push(user);localStorage.setItem('taya_users',JSON.stringify(allUsers));showHome();
