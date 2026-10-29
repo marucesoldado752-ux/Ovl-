@@ -2,35 +2,208 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TAYA IA - By Maruce V4.8</title>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>TAYA IA - By Maruce</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#050505;color:#fff;font-family:Inter,sans-serif;overflow:hidden}
-.header{padding:28px 20px 18px;display:flex;justify-content:space-between;align-items:center;background:#0a0a0a;border-bottom:1px solid #1a1a1a}
-.logo{font-family:Anton;font-size:22px}.logo span{color:#00ff88}
-.live{display:flex;align-items:center;gap:6px;font-size:12px;color:#00ff88}
-.dot{width:6px;height:6px;background:#00ff88;border-radius:50%}
-.chat{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px}
-.msg{max-width:85%;padding:12px 16px;border-radius:18px;font-size:14px}
-.msg.user{align-self:flex-end;background:#fff;color:#000}
-.msg.bot{align-self:flex-start;background:#1a1a1a;color:#fff}
-.input-bar{display:flex;gap:10px;padding:12px 16px;background:#0a0a0a;border-top:1px solid #1a1a1a}
-.input-bar input{flex:1;background:#1a1a1a;border:none;color:#fff;padding:14px 18px;border-radius:25px;outline:none}
-.input-bar button{background:#fff;color:#000;border:none;width:44px;height:44px;border-radius:50%;cursor:pointer}
+body{background:#050505;color:#fff;font-family:Inter,sans-serif;height:100dvh;overflow:hidden}
+.header{height:64px;padding:0 14px;display:flex;align-items:center;justify-content:space-between;background:#0a0a0a;border-bottom:1px solid #1a1a1a;position:fixed;top:0;left:0;right:0;z-index:10}
+.h-left{display:flex;align-items:center;gap:10px}
+.icon-btn{width:38px;height:38px;border-radius:50%;background:#1a1a1a;border:1px solid #222;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px}
+.logo{font-family:Anton;font-size:20px;letter-spacing:.5px}.logo span{color:#00ff88}
+.h-right{display:flex;gap:8px}
+.call-btn{background:#00ff88;color:#000}.wa-btn{background:#25D366;color:#fff}
+.welcome{height:100dvh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(600px at 50% -20%,#0f2a1f,transparent),#050505}
+.w-card{width:100%;max-width:400px;background:#101010;border:1px solid #1e1e1e;border-radius:24px;padding:28px}
+.w-card h1{font-family:Anton;font-size:38px;line-height:.95}.w-card h1 span{color:#00ff88}
+.w-card p{color:#888;margin:12px 0 20px;font-size:14px}
+.w-card input{width:100%;background:#1a1a1a;border:1px solid #222;color:#fff;padding:14px 16px;border-radius:12px;margin:7px 0;outline:none}
+.w-card button{width:100%;margin-top:14px;background:#fff;color:#000;border:none;padding:15px;border-radius:14px;font-weight:700;font-size:16px;cursor:pointer}
+.home{padding:84px 20px 20px;display:flex;flex-direction:column;gap:16px;overflow:auto;height:100dvh}
+.greet{font-size:22px;font-weight:700}.greet span{color:#00ff88}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+.card{background:linear-gradient(180deg,#141414,#0f0f0f);border:1px solid #222;border-radius:18px;padding:18px;cursor:pointer}
+.chatWrap{height:100dvh;padding-top:64px;display:flex;flex-direction:column}
+.chat{flex:1;overflow-y:auto;padding:16px 14px;display:flex;flex-direction:column;gap:12px}
+.msg{max-width:82%;padding:11px 14px;border-radius:18px;font-size:14px;line-height:1.35}
+.msg.user{align-self:flex-end;background:#fff;color:#000;border-bottom-right-radius:4px}
+.msg.bot{align-self:flex-start;background:#1e1e1e;color:#fff;border-bottom-left-radius:4px;border:1px solid #252525}
+.inputBar{position:fixed;bottom:0;left:0;right:0;display:flex;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#0a0a0a;border-top:1px solid #1a1a1a;align-items:center;z-index:5}
+.inputBar input{flex:1;background:#1a1a1a;border:1px solid #222;color:#fff;padding:13px 16px;border-radius:24px;outline:none}
+.send{background:#fff;color:#000;width:42px;height:42px;border-radius:50%;border:none;font-weight:700;cursor:pointer}
+.drawer{position:fixed;top:0;left:0;width:84%;max-width:330px;height:100dvh;background:#0f0f0f;border-right:1px solid #222;z-index:100;transform:translateX(-100%);transition:.3s;padding:20px}
+.drawer.open{transform:translateX(0)}
+.menuItem{padding:14px 12px;border-radius:12px;cursor:pointer;display:flex;align-items:center;gap:10px}
+.menuItem:hover{background:#1a1a1a}
+.adminBox{margin-top:12px;background:#111;border:1px solid #222;border-radius:12px;padding:12px;display:none}
+.adminBox.show{display:block}
+.badge{font-size:10px;background:#00ff88;color:#000;padding:3px 6px;border-radius:6px;font-weight:700}
+.projItem{background:#151515;border:1px solid #222;border-radius:12px;padding:12px;margin:8px 0;cursor:pointer}
 </style>
 </head>
 <body>
-<div class="header"><div class="logo">TAYA <span>IA</span></div><div class="live"><div class="dot"></div> LIVE 1000+</div></div>
-<div id="home" style="height:calc(100vh - 80px);display:flex;align-items:center;justify-content:center;text-align:center"><div><h1 style="font-family:Anton;font-size:52px">TAYA IA</h1><p style="color:#777;margin:18px">L'IA Guinéenne par Maruce</p><button style="background:#fff;color:#000;padding:16px 32px;border-radius:30px;font-weight:700;border:none" onclick="launchNew()">🚀 Lancer TAYA</button></div></div>
-<div id="app" style="height:calc(100vh - 80px);display:none;flex-direction:column"><div id="chatEl" class="chat"></div><div class="input-bar"><input id="inputEl" placeholder="Écris un message..."><button onclick="send()">➤</button></div></div>
+<div class="header" id="header" style="display:none">
+<div class="h-left">
+<div class="icon-btn" onclick="goBack()">←</div>
+<div class="icon-btn" onclick="toggleMenu()">☰</div>
+<div class="logo">TAYA <span>IA</span></div>
+</div>
+<div class="h-right">
+<a class="icon-btn call-btn" href="tel:+224612768878" style="text-decoration:none">📞</a>
+<a class="icon-btn wa-btn" href="https://wa.me/224663401157?text=Salut%20Maruce%20je%20viens%20de%20TAYA%20IA" target="_blank" style="text-decoration:none">💬</a>
+</div>
+</div>
+
+<div id="welcome" class="welcome">
+<div class="w-card">
+<h1>TAYA <span>IA</span></h1>
+<p>By Maruce - IA Guinéenne</p>
+<input id="wName" placeholder="Ton nom complet">
+<input id="wPhone" placeholder="Numéro WhatsApp">
+<input id="wPass" type="password" placeholder="Mot de passe (min 4)">
+<button onclick="enterApp()">🔐 Entrer dans TAYA</button>
+<p style="margin-top:14px;font-size:11px;color:#555;text-align:center">Contact Maruce<br>📞 +224 612-76-88-78<br>💬 +224 663-40-11-57</p>
+<div id="loginHint" style="display:none;margin-top:12px;color:#00ff88;font-size:13px;text-align:center">Compte trouvé, entre ton mot de passe</div>
+</div>
+</div>
+
+<div id="homeScreen" style="display:none">
+<div class="home">
+<div class="greet">Salut <span id="uName">toi</span> 👋</div>
+<div style="color:#777;font-size:13px">Bienvenue dans ton IA</div>
+<div class="cards">
+<div class="card" onclick="newChat()"><h3>💬 Nouveau Chat</h3><p>Parler à TAYA</p></div>
+<div class="card" onclick="focusProjects()"><h3>📁 Mes Projets</h3><p id="projCount">0 projets</p></div>
+</div>
+<div id="projectsList"></div>
+</div>
+</div>
+
+<div id="chatScreen" style="display:none" class="chatWrap">
+<div id="chatEl" class="chat" style="padding-bottom:80px"></div>
+<div class="inputBar">
+<input id="inputEl" placeholder="Écris à TAYA..." autocomplete="off">
+<button class="send" onclick="send()">➤</button>
+<button style="width:42px;height:42px;border-radius:50%;background:#1a1a1a;color:#fff;border:1px solid #222;cursor:pointer" onclick="speakLast()">🔊</button>
+</div>
+</div>
+
+<div id="drawer" class="drawer">
+<h2>TAYA <span>MENU</span></h2>
+<div class="menuItem" onclick="newChat();toggleMenu()">💬 Nouveau Chat</div>
+<div class="menuItem" onclick="focusProjects();toggleMenu();goHome()">📁 Projets sauvegardés</div>
+<div class="menuItem" onclick="showAdmin()">👑 Admin - Voir tous les clients <span class="badge">MARUCE SEUL</span></div>
+<div id="adminBox" class="adminBox">
+<div style="font-weight:700;margin-bottom:8px">Clients connectés</div>
+<div id="adminList" style="font-size:13px;color:#aaa"></div>
+</div>
+<div class="menuItem" onclick="settings()">⚙️ Vitesse vocale lente</div>
+<div class="menuItem" onclick="logout()">🚪 Déconnexion</div>
+<div style="margin-top:20px;padding-top:16px;border-top:1px solid #222;font-size:13px">
+Contact Maruce<br>📞 +224 612-76-88-78<br>💬 +224 663-40-11-57
+</div>
+</div>
+
 <script>
-let chatEl=document.getElementById('chatEl');let inputEl=document.getElementById('inputEl');let home=document.getElementById('home');let app=document.getElementById('app');
-function launchNew(){home.style.display='none';app.style.display='flex';add('Salut c est TAYA ! Pose-moi ta question 👇','bot');}
-function add(text,who){let d=document.createElement('div');d.className='msg '+who;d.textContent=text;chatEl.appendChild(d);chatEl.scrollTop=chatEl.scrollHeight;}
-async function send(){let txt=inputEl.value.trim();if(!txt)return;add(txt,'user');inputEl.value='';let d=document.createElement('div');d.className='msg bot';d.textContent='TAYA écrit...';chatEl.appendChild(d);try{let r=await fetch('https://maruce-taya.onrender.com/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:txt})});let j=await r.json();d.remove();add(j.reply||j.response||'Erreur','bot');}catch(e){d.remove();add('Erreur: serveur OFF - vérifie Render','bot');}}
+let chatEl=document.getElementById('chatEl');
+let inputEl=document.getElementById('inputEl');
+let welcome=document.getElementById('welcome');
+let homeScreen=document.getElementById('homeScreen');
+let chatScreen=document.getElementById('chatScreen');
+let header=document.getElementById('header');
+let drawer=document.getElementById('drawer');
+let wName=document.getElementById('wName');
+let wPhone=document.getElementById('wPhone');
+let wPass=document.getElementById('wPass');
+let uName=document.getElementById('uName');
+let adminBox=document.getElementById('adminBox');
+let projectsList=document.getElementById('projectsList');
+let adminList=document.getElementById('adminList');
+let projCount=document.getElementById('projCount');
+let loginHint=document.getElementById('loginHint');
+let lastBotText='';
+let user=null;
+let projects=JSON.parse(localStorage.getItem('taya_projects')||'[]');
+let allUsers=JSON.parse(localStorage.getItem('taya_users')||'[]');
+
+function load(){
+let saved=localStorage.getItem('taya_user');
+if(saved){
+let u=JSON.parse(saved);
+wName.value=u.name;wPhone.value=u.phone;loginHint.style.display='block';
+}
+}
+load();
+
+function enterApp(){
+let n=wName.value.trim();let p=wPhone.value.trim();let pass=wPass.value.trim();
+if(!n||!p||!pass){alert('Remplis nom, numéro et mot de passe');return;}
+if(pass.length<4){alert('Mot de passe min 4 caractères');return;}
+let saved=localStorage.getItem('taya_user');
+if(saved){
+let u=JSON.parse(saved);
+if(u.phone===p && u.password!==pass){alert('Mot de passe incorrect');return;}
+}
+user={name:n,phone:p,password:pass,date:new Date().toLocaleString()};
+localStorage.setItem('taya_user',JSON.stringify(user));
+let exists=allUsers.findIndex(x=>x.phone===p);
+if(exists>=0) allUsers[exists]=user; else allUsers.push(user);
+localStorage.setItem('taya_users',JSON.stringify(allUsers));
+showHome();
+}
+
+function showHome(){
+welcome.style.display='none';chatScreen.style.display='none';homeScreen.style.display='block';header.style.display='flex';
+uName.textContent=user.name;updateProjectsUI();
+}
+function goHome(){chatScreen.style.display='none';homeScreen.style.display='block';}
+function goBack(){if(chatScreen.style.display!=='none'){saveCurrentChat();goHome();}}
+function newChat(){
+chatEl.innerHTML='';homeScreen.style.display='none';chatScreen.style.display='flex';
+add('Salut '+user.name+' ! C est TAYA, l IA de Maruce. Comment je peux t aider ?','bot');
+}
+function toggleMenu(){drawer.classList.toggle('open');}
+function showAdmin(){
+let isAdmin=user.phone.replace(/[^0-9]/g,'').includes('612768878')||user.phone.includes('663401157')||user.name.toLowerCase().includes('maruce');
+if(!isAdmin){alert('Accès Admin réservé à Maruce');return;}
+adminBox.classList.toggle('show');
+adminList.innerHTML=allUsers.map(u=>`<div style="padding:10px 0;border-bottom:1px solid #222"><b>${u.name}</b> - ${u.phone}<br><small style="color:#666">${u.date}</small><br><div style="margin-top:6px;display:flex;gap:6px"><a href="https://wa.me/${u.phone.replace(/[^0-9]/g,'')}?text=Salut%20${u.name}%20c%20est%20Maruce%20de%20TAYA%20IA" target="_blank" style="background:#25D366;color:#fff;padding:6px 10px;border-radius:8px;text-decoration:none;font-size:12px">WhatsApp</a><a href="tel:${u.phone}" style="background:#00ff88;color:#000;padding:6px 10px;border-radius:8px;text-decoration:none;font-size:12px">Appeler</a></div></div>`).join('')||'Aucun client';
+}
+function focusProjects(){updateProjectsUI();document.getElementById('projectsList').scrollIntoView();}
+function updateProjectsUI(){
+projCount.textContent=projects.length+' projet(s)';
+projectsList.innerHTML=projects.map((p,i)=>`<div class="projItem" onclick="openProj(${i})"><b>${p.title}</b><br><small style="color:#777">${p.date}</small></div>`).join('')||'<div style="color:#777;margin-top:10px">Aucun projet. Parle à TAYA, ça sauvegarde auto.</div>';
+}
+function openProj(i){let p=projects[i];chatEl.innerHTML='';homeScreen.style.display='none';chatScreen.style.display='flex';p.msgs.forEach(m=>add(m.text,m.who,true));}
+function saveCurrentChat(){
+let msgs=[...chatEl.querySelectorAll('.msg')].map(el=>({who:el.classList.contains('user')?'user':'bot',text:el.textContent}));
+if(msgs.length<2)return;
+let title=msgs.find(m=>m.who==='user')?.text.slice(0,35)||'Chat TAYA';
+projects.unshift({title,date:new Date().toLocaleString(),msgs});localStorage.setItem('taya_projects',JSON.stringify(projects));updateProjectsUI();
+}
+function add(text,who,noSave){
+let d=document.createElement('div');d.className='msg '+who;d.textContent=text;chatEl.appendChild(d);chatEl.scrollTop=chatEl.scrollHeight;
+if(who==='bot'){lastBotText=text;let rate=parseFloat(localStorage.getItem('taya_rate')||'0.85');speak(text,rate);}
+}
+function speak(t,rate){
+if(!('speechSynthesis' in window))return;speechSynthesis.cancel();
+let u=new SpeechSynthesisUtterance(t);u.lang='fr-FR';u.rate=rate||0.85;u.pitch=1;speechSynthesis.speak(u);
+}
+function speakLast(){if(lastBotText){let rate=parseFloat(localStorage.getItem('taya_rate')||'0.85');speak(lastBotText,rate);}}
+async function send(){
+let txt=inputEl.value.trim();if(!txt)return;
+add(txt,'user');inputEl.value='';
+let d=document.createElement('div');d.className='msg bot';d.textContent='TAYA écrit...';chatEl.appendChild(d);chatEl.scrollTop=chatEl.scrollHeight;
+try{
+let r=await fetch('https://maruce-taya.onrender.com/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:txt,user:user.name})});
+let j=await r.json();d.remove();add(j.reply||j.response||'Erreur','bot');
+}catch(e){d.remove();add('Serveur OFF - réveille sur maruce-taya.onrender.com puis réessaie','bot');}
+}
+function settings(){let r=prompt('Vitesse vocale lente conseillée 0.8 - Actuelle 0.85','0.85');if(r){localStorage.setItem('taya_rate',r);alert('Sauvegardé '+r);}}
+function logout(){if(confirm('Déconnexion ?')){localStorage.removeItem('taya_user');location.reload();}}
 inputEl.addEventListener('keydown',e=>{if(e.key==='Enter')send();});
+document.addEventListener('click',e=>{if(drawer.classList.contains('open')&&!drawer.contains(e.target)&&!e.target.closest('.icon-btn'))drawer.classList.remove('open');});
 </script>
 </body>
 </html>
