@@ -3,23 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TAYA IA - Finale</title>
+<title>TAYA IA</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,sans-serif}
 body{background:#000;color:#fff;height:100vh;display:flex;flex-direction:column}
-header{padding:14px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #222;background:#000}
+header{padding:14px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #222}
 .back,.menu{width:40px;height:40px;border-radius:50%;background:#111;display:flex;align-items:center;justify-content:center;border:1px solid #222}
 h1{font-size:28px;font-weight:900}h1 span{color:#00ff66}
-.dot{width:10px;height:10px;background:#00ff66;border-radius:50%;box-shadow:0 0 10px #00ff66;display:inline-block;margin-left:4px;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.dot{width:10px;height:10px;background:#00ff66;border-radius:50%;display:inline-block;margin-left:4px}
 #chat{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
-.msg{max-width:82%;padding:12px 14px;border-radius:18px;font-size:15px;line-height:1.4;white-space:pre-wrap;word-break:break-word}
-.bot{align-self:flex-start;background:#1c1c1e;border-bottom-left-radius:4px}
-.user{align-self:flex-end;background:#0a84ff;border-bottom-right-radius:4px}
+.msg{max-width:82%;padding:12px 14px;border-radius:18px;font-size:15px;line-height:1.4;white-space:pre-wrap}
+.bot{align-self:flex-start;background:#1c1c1e}
+.user{align-self:flex-end;background:#0a84ff}
 #inputBar{padding:10px 12px 26px;display:flex;gap:10px;background:#000;border-top:1px solid #111}
 #msgInput{flex:1;background:#1c1c1e;border:none;border-radius:24px;padding:12px 18px;color:#fff;font-size:16px;outline:none}
-#sendBtn{width:48px;height:48px;border-radius:50%;background:#fff;border:none;font-size:20px;cursor:pointer}
-.typing{font-size:13px;color:#888}
+#sendBtn{width:48px;height:48px;border-radius:50%;background:#fff;border:none;font-size:20px}
 </style>
 </head>
 <body>
@@ -28,37 +26,24 @@ h1{font-size:28px;font-weight:900}h1 span{color:#00ff66}
 <h1>TAYA <span>IA</span><span class="dot"></span></h1>
 </header>
 <div id="chat">
-<div class="msg bot">Wé Maruce ! TAYA version FINALE 🟢 Plus de Google, plus de limite !</div>
+<div class="msg bot">Wé ! TAYA au service, Maruce. Tu vas bien ?</div>
 </div>
 <div id="inputBar">
-<input id="msgInput" placeholder="Écris à TAYA..." autocomplete="off"/>
+<input id="msgInput" placeholder="Écris à TAYA..."/>
 <button id="sendBtn">➤</button>
 </div>
 <script>
 const chat=document.getElementById('chat');
 const input=document.getElementById('msgInput');
 const btn=document.getElementById('sendBtn');
-const SYSTEM="Tu es TAYA, IA guinéenne créée par Maruce. Parle français, fun, directe, expressions guinéennes. Toujours en ligne.";
-let history=[{role:'system',content:SYSTEM}];
+const SYSTEM="Tu es TAYA, IA guinéenne créée par Maruce. Parle français, jeune, fun, directe.";
 function addMsg(t,w){const d=document.createElement('div');d.className='msg '+w;d.textContent=t;chat.appendChild(d);chat.scrollTop=chat.scrollHeight}
-async function askTAYA(userText){
-addMsg(userText,'user');input.value='';history.push({role:'user',content:userText});
-const typing=document.createElement('div');typing.className='typing';typing.id='typing';typing.textContent='TAYA écrit...';chat.appendChild(typing);chat.scrollTop=chat.scrollHeight;
+async function askTAYA(q){
+addMsg(q,'user');input.value='';
 try{
-const res=await fetch("https://ai.hackclub.com/chat/completions",{
-method:"POST",headers:{"Content-Type":"application/json"},
-body:JSON.stringify({model:"qwen/qwen3-32b",messages:history,temperature:0.7,max_tokens:500})
-});
-const data=await res.json();
-let ans=data.choices?.[0]?.message?.content||"Je suis là Maruce 🟢";
-document.getElementById('typing')?.remove();addMsg(ans,'bot');history.push({role:'assistant',content:ans});
-}catch(e){
-try{
-const r2=await fetch(`https://text.pollinations.ai/${encodeURIComponent(userText)}?model=openai&system=${encodeURIComponent(SYSTEM)}`);
-let a2=await r2.text();
-document.getElementById('typing')?.remove();addMsg(a2,'bot');
-}catch(e2){document.getElementById('typing')?.remove();addMsg("Wé Maruce je suis là en direct 🟢 réessaye !",'bot');}
-}
+const r=await fetch(`https://text.pollinations.ai/${encodeURIComponent(q)}?model=openai&system=${encodeURIComponent(SYSTEM)}`);
+const a=await r.text();addMsg(a,'bot');
+}catch(e){addMsg("Wé Maruce je suis là 🟢",'bot');}
 }
 btn.onclick=()=>{if(input.value.trim())askTAYA(input.value.trim())};
 input.onkeydown=(e)=>{if(e.key==='Enter'&&input.value.trim())askTAYA(input.value.trim())};
