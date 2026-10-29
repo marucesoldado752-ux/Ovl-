@@ -12,35 +12,31 @@ body{background:#050505;color:#fff;font-family:Inter,sans-serif;height:100dvh;ov
 .h-left{display:flex;align-items:center;gap:10px}
 .icon-btn{width:38px;height:38px;border-radius:50%;background:#1a1a1a;border:1px solid #222;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px}
 .logo{font-family:Anton;font-size:20px}.logo span{color:#00ff88}
-.h-right{display:flex;gap:8px}
-.call-btn{background:#00ff88;color:#000}.wa-btn{background:#25D366;color:#fff}
-.welcome{height:100dvh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(600px at 50% -20%,#0f2a1f,transparent),#050505}
-.w-card{width:100%;max-width:400px;background:#101010;border:1px solid #1e1e1e;border-radius:24px;padding:28px}
+.call-btn{background:#00ff88;color:#000;text-decoration:none}
+.welcome{height:100dvh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(600px at 50% -20%,#0f2a1f,transparent),#050505;overflow:auto}
+.w-card{width:100%;max-width:420px;background:#101010;border:1px solid #1e1e1e;border-radius:24px;padding:26px;margin-top:20px}
 .w-card h1{font-family:Anton;font-size:38px}.w-card h1 span{color:#00ff88}
-.w-card p{color:#888;margin:10px 0 18px;font-size:14px}
-.w-card input,.phone-row input{width:100%;background:#1a1a1a;border:1px solid #222;color:#fff;padding:14px 16px;border-radius:12px;margin:7px 0;outline:none}
+.w-card p{color:#888;margin:10px 0 16px;font-size:14px}
+.w-card input{width:100%;background:#1a1a1a;border:1px solid #222;color:#fff;padding:14px 16px;border-radius:12px;margin:7px 0;outline:none}
 .phone-row{display:flex;gap:8px;margin:7px 0}
-.phone-row select{background:#1a1a1a;border:1px solid #222;color:#fff;padding:14px 10px;border-radius:12px;outline:none;min-width:110px}
+.phone-row select{background:#1a1a1a;border:1px solid #222;color:#fff;padding:14px 10px;border-radius:12px;outline:none;flex:1;max-width:200px}
+.phone-row input{flex:1;margin:0}
 .w-card button{width:100%;margin-top:14px;background:#fff;color:#000;border:none;padding:15px;border-radius:14px;font-weight:700;font-size:16px;cursor:pointer}
 .home{padding:84px 20px 20px;display:flex;flex-direction:column;gap:16px;overflow:auto;height:100dvh}
-.greet{font-size:22px;font-weight:700}.greet span{color:#00ff88}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .card{background:linear-gradient(180deg,#141414,#0f0f0f);border:1px solid #222;border-radius:18px;padding:18px;cursor:pointer}
 .chatWrap{height:100dvh;padding-top:64px;display:flex;flex-direction:column}
 .chat{flex:1;overflow-y:auto;padding:16px 14px 90px;display:flex;flex-direction:column;gap:12px}
-.msg{max-width:82%;padding:11px 14px;border-radius:18px;font-size:14px;line-height:1.35}
+.msg{max-width:82%;padding:11px 14px;border-radius:18px;font-size:14px}
 .msg.user{align-self:flex-end;background:#fff;color:#000;border-bottom-right-radius:4px}
 .msg.bot{align-self:flex-start;background:#1e1e1e;color:#fff;border-bottom-left-radius:4px;border:1px solid #252525}
 .inputBar{position:fixed;bottom:0;left:0;right:0;display:flex;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#0a0a0a;border-top:1px solid #1a1a1a;z-index:5}
 .inputBar input{flex:1;background:#1a1a1a;border:1px solid #222;color:#fff;padding:13px 16px;border-radius:24px;outline:none}
-.send{background:#fff;color:#000;width:46px;height:46px;border-radius:50%;border:none;font-weight:700;cursor:pointer;font-size:18px}
+.send{background:#fff;color:#000;width:46px;height:46px;border-radius:50%;border:none;font-weight:700;cursor:pointer}
 .drawer{position:fixed;top:0;left:0;width:84%;max-width:330px;height:100dvh;background:#0f0f0f;border-right:1px solid #222;z-index:100;transform:translateX(-100%);transition:.3s;padding:20px}
 .drawer.open{transform:translateX(0)}
-.menuItem{padding:14px 12px;border-radius:12px;cursor:pointer}
-.menuItem:hover{background:#1a1a1a}
-.adminBox{margin-top:12px;background:#111;border:1px solid #222;border-radius:12px;padding:12px;display:none}
-.adminBox.show{display:block}
-.badge{font-size:10px;background:#00ff88;color:#000;padding:3px 6px;border-radius:6px;font-weight:700}
+.menuItem{padding:14px 12px;border-radius:12px;cursor:pointer}.menuItem:hover{background:#1a1a1a}
+.adminBox{margin-top:12px;background:#111;border:1px solid #222;border-radius:12px;padding:12px;display:none}.adminBox.show{display:block}
 .projItem{background:#151515;border:1px solid #222;border-radius:12px;padding:12px;margin:8px 0;cursor:pointer}
 </style>
 </head>
@@ -52,8 +48,7 @@ body{background:#050505;color:#fff;font-family:Inter,sans-serif;height:100dvh;ov
 <div class="logo">TAYA <span>IA</span></div>
 </div>
 <div class="h-right">
-<a class="icon-btn call-btn" href="tel:+224612768878" style="text-decoration:none">📞</a>
-<a class="icon-btn wa-btn" href="https://wa.me/224663401157" target="_blank" style="text-decoration:none">💬</a>
+<a class="icon-btn call-btn" href="tel:+224612768878">📞</a>
 </div>
 </div>
 
@@ -67,114 +62,92 @@ body{background:#050505;color:#fff;font-family:Inter,sans-serif;height:100dvh;ov
 <option value="+224" selected>🇬🇳 +224 Guinée</option>
 <option value="+33">🇫🇷 +33 France</option>
 <option value="+32">🇧🇪 +32 Belgique</option>
-<option value="+1">🇺🇸 +1 USA</option>
+<option value="+41">🇨🇭 +41 Suisse</option>
+<option value="+1">🇺🇸 +1 USA / Canada</option>
+<option value="+44">🇬🇧 +44 UK</option>
+<option value="+49">🇩🇪 +49 Allemagne</option>
+<option value="+34">🇪🇸 +34 Espagne</option>
+<option value="+39">🇮🇹 +39 Italie</option>
+<option value="+351">🇵🇹 +351 Portugal</option>
 <option value="+221">🇸🇳 +221 Sénégal</option>
 <option value="+225">🇨🇮 +225 Côte d'Ivoire</option>
 <option value="+223">🇲🇱 +223 Mali</option>
+<option value="+226">🇧🇫 +226 Burkina</option>
+<option value="+229">🇧🇯 +229 Bénin</option>
+<option value="+228">🇹🇬 +228 Togo</option>
+<option value="+227">🇳🇪 +227 Niger</option>
+<option value="+237">🇨🇲 +237 Cameroun</option>
+<option value="+241">🇬🇦 +241 Gabon</option>
+<option value="+242">🇨🇬 +242 Congo</option>
+<option value="+243">🇨🇩 +243 RDC</option>
+<option value="+244">🇦🇴 +244 Angola</option>
 <option value="+212">🇲🇦 +212 Maroc</option>
-<option value="+216">🇹🇳 +216 Tunisie</option>
 <option value="+213">🇩🇿 +213 Algérie</option>
+<option value="+216">🇹🇳 +216 Tunisie</option>
+<option value="+20">🇪🇬 +20 Egypte</option>
+<option value="+233">🇬🇭 +233 Ghana</option>
+<option value="+234">🇳🇬 +234 Nigeria</option>
+<option value="+231">🇱🇷 +231 Liberia</option>
+<option value="+232">🇸🇱 +232 Sierra Leone</option>
+<option value="+220">🇬🇲 +220 Gambie</option>
+<option value="+245">🇬🇼 +245 Guinée-Bissau</option>
+<option value="+250">🇷🇼 +250 Rwanda</option>
+<option value="+255">🇹🇿 +255 Tanzanie</option>
+<option value="+27">🇿🇦 +27 Afrique du Sud</option>
+<option value="+971">🇦🇪 +971 Dubai</option>
+<option value="+966">🇸🇦 +966 Arabie</option>
+<option value="+90">🇹🇷 +90 Turquie</option>
+<option value="+86">🇨🇳 +86 Chine</option>
+<option value="+91">🇮🇳 +91 Inde</option>
+<option value="+81">🇯🇵 +81 Japon</option>
+<option value="+55">🇧🇷 +55 Brésil</option>
 </select>
-<input id="wPhone" placeholder="663 40 11 57" style="margin:0">
+<input id="wPhone" placeholder="663 40 11 57">
 </div>
 <input id="wPass" type="password" placeholder="Mot de passe (min 4)">
 <button onclick="enterApp()">🔐 Entrer dans TAYA</button>
-<p style="margin-top:14px;font-size:11px;color:#555;text-align:center">Contact Maruce<br>📞 +224 612-76-88-78<br>💬 +224 663-40-11-57</p>
-<div id="loginHint" style="display:none;margin-top:12px;color:#00ff88;font-size:13px;text-align:center">Compte trouvé, entre ton mot de passe</div>
+<p style="margin-top:14px;font-size:11px;color:#555;text-align:center">Contact Maruce<br>+224 612-76-88-78<br>+224 663-40-11-57</p>
 </div>
 </div>
 
-<div id="homeScreen" style="display:none">
-<div class="home">
-<div class="greet">Salut <span id="uName">toi</span> 👋</div>
-<div style="color:#777;font-size:13px">Bienvenue dans ton IA</div>
+<div id="homeScreen" style="display:none"><div class="home">
+<div style="font-size:22px;font-weight:700">Salut <span id="uName" style="color:#00ff88">toi</span> 👋</div>
 <div class="cards">
 <div class="card" onclick="newChat()"><h3>💬 Nouveau Chat</h3><p>Parler à TAYA</p></div>
-<div class="card" onclick="focusProjects()"><h3>📁 Mes Projets</h3><p id="projCount">0 projets</p></div>
+<div class="card" onclick="updateProjectsUI()"><h3>📁 Mes Projets</h3><p id="projCount">0 projets</p></div>
 </div>
 <div id="projectsList"></div>
-</div>
-</div>
+</div></div>
 
 <div id="chatScreen" style="display:none" class="chatWrap">
 <div id="chatEl" class="chat"></div>
-<div class="inputBar">
-<input id="inputEl" placeholder="Écris à TAYA..." autocomplete="off">
-<button class="send" onclick="send()">➤</button>
-</div>
+<div class="inputBar"><input id="inputEl" placeholder="Écris à TAYA..."><button class="send" onclick="send()">➤</button></div>
 </div>
 
 <div id="drawer" class="drawer">
 <h2>TAYA <span style="color:#00ff88">MENU</span></h2>
 <div class="menuItem" onclick="newChat();toggleMenu()">💬 Nouveau Chat</div>
-<div class="menuItem" onclick="focusProjects();toggleMenu();goHome()">📁 Projets sauvegardés</div>
-<div class="menuItem" onclick="showAdmin()">👑 Admin - Clients <span class="badge">MARUCE</span></div>
-<div id="adminBox" class="adminBox">
-<div style="font-weight:700;margin-bottom:8px">Clients connectés</div>
-<div id="adminList" style="font-size:13px;color:#aaa"></div>
-</div>
+<div class="menuItem" onclick="toggleMenu();goHome()">📁 Projets sauvegardés</div>
+<div class="menuItem" onclick="showAdmin()">👑 Admin - Clients</div>
+<div id="adminBox" class="adminBox"><div id="adminList"></div></div>
 <div class="menuItem" onclick="logout()">🚪 Déconnexion</div>
-<div style="margin-top:20px;padding-top:16px;border-top:1px solid #222;font-size:13px">
-Contact Maruce<br>📞 +224 612-76-88-78<br>💬 +224 663-40-11-57
+<div style="margin-top:20px;padding-top:16px;border-top:1px solid #222;font-size:13px;color:#888">
+Contact Maruce<br><br>
++224 612-76-88-78<br>
++224 663-40-11-57
 </div>
 </div>
 
 <script>
-let chatEl=document.getElementById('chatEl');
-let inputEl=document.getElementById('inputEl');
-let welcome=document.getElementById('welcome');
-let homeScreen=document.getElementById('homeScreen');
-let chatScreen=document.getElementById('chatScreen');
-let header=document.getElementById('header');
-let drawer=document.getElementById('drawer');
-let wName=document.getElementById('wName');
-let wPhone=document.getElementById('wPhone');
-let wPass=document.getElementById('wPass');
-let countryCode=document.getElementById('countryCode');
-let uName=document.getElementById('uName');
-let adminBox=document.getElementById('adminBox');
-let projectsList=document.getElementById('projectsList');
-let adminList=document.getElementById('adminList');
-let projCount=document.getElementById('projCount');
-let loginHint=document.getElementById('loginHint');
-let user=null;
-let projects=JSON.parse(localStorage.getItem('taya_projects')||'[]');
-let allUsers=JSON.parse(localStorage.getItem('taya_users')||'[]');
-
-function load(){
-let saved=localStorage.getItem('taya_user');
-if(saved){
-let u=JSON.parse(saved);
-wName.value=u.name;
-let code=u.country||'+224';
-countryCode.value=code;
-wPhone.value=u.phoneRaw||u.phone;
-loginHint.style.display='block';
-}
-}
-load();
-
+let chatEl=document.getElementById('chatEl'),inputEl=document.getElementById('inputEl'),welcome=document.getElementById('welcome'),homeScreen=document.getElementById('homeScreen'),chatScreen=document.getElementById('chatScreen'),header=document.getElementById('header'),drawer=document.getElementById('drawer'),wName=document.getElementById('wName'),wPhone=document.getElementById('wPhone'),wPass=document.getElementById('wPass'),countryCode=document.getElementById('countryCode'),uName=document.getElementById('uName'),adminBox=document.getElementById('adminBox'),projectsList=document.getElementById('projectsList'),adminList=document.getElementById('adminList'),projCount=document.getElementById('projCount'),user=null,projects=JSON.parse(localStorage.getItem('taya_projects')||'[]'),allUsers=JSON.parse(localStorage.getItem('taya_users')||'[]');
+let saved=localStorage.getItem('taya_user');if(saved){let u=JSON.parse(saved);wName.value=u.name;countryCode.value=u.country||'+224';wPhone.value=u.phoneRaw||'';}
 function enterApp(){
-let n=wName.value.trim();
-let pRaw=wPhone.value.trim().replace(/\s/g,'');
-let code=countryCode.value;
-let pass=wPass.value.trim();
-if(!n||!pRaw||!pass){alert('Remplis nom, numéro et mot de passe');return;}
-if(pass.length<4){alert('Mot de passe min 4');return;}
-let fullPhone=code+' '+pRaw;
-let saved=localStorage.getItem('taya_user');
-if(saved){
-let u=JSON.parse(saved);
-if(u.phoneFull===fullPhone && u.password!==pass){alert('Mot de passe incorrect');return;}
+let n=wName.value.trim(),pRaw=wPhone.value.trim().replace(/\s/g,''),code=countryCode.value,pass=wPass.value.trim();
+if(!n||!pRaw||!pass){alert('Remplis tout');return;}if(pass.length<4){alert('Mot de passe min 4');return;}
+let full=code+' '+pRaw;let s=localStorage.getItem('taya_user');if(s){let u=JSON.parse(s);if(u.phoneFull===full&&u.password!==pass){alert('Mot de passe incorrect');return;}}
+user={name:n,phoneRaw:pRaw,country:code,phoneFull:full,phone:code.replace('+','')+pRaw,password:pass,date:new Date().toLocaleString()};
+localStorage.setItem('taya_user',JSON.stringify(user));let idx=allUsers.findIndex(x=>x.phoneFull===full);if(idx>=0)allUsers[idx]=user;else allUsers.push(user);localStorage.setItem('taya_users',JSON.stringify(allUsers));showHome();
 }
-user={name:n,phoneRaw:pRaw,country:code,phoneFull:fullPhone,phone:code.replace('+','')+pRaw,password:pass,date:new Date().toLocaleString()};
-localStorage.setItem('taya_user',JSON.stringify(user));
-let idx=allUsers.findIndex(x=>x.phoneFull===fullPhone);
-if(idx>=0) allUsers[idx]=user; else allUsers.push(user);
-localStorage.setItem('taya_users',JSON.stringify(allUsers));
-showHome();
-}
-
 function showHome(){welcome.style.display='none';chatScreen.style.display='none';homeScreen.style.display='block';header.style.display='flex';uName.textContent=user.name;updateProjectsUI();}
 function goHome(){chatScreen.style.display='none';homeScreen.style.display='block';}
 function goBack(){if(chatScreen.style.display!=='none'){saveCurrentChat();goHome();}}
@@ -182,34 +155,14 @@ function newChat(){chatEl.innerHTML='';homeScreen.style.display='none';chatScree
 function toggleMenu(){drawer.classList.toggle('open');}
 function showAdmin(){
 let isAdmin=user.phone.includes('612768878')||user.phone.includes('663401157')||user.name.toLowerCase().includes('maruce');
-if(!isAdmin){alert('Admin réservé à Maruce');return;}
-adminBox.classList.toggle('show');
-adminList.innerHTML=allUsers.map(u=>`<div style="padding:10px 0;border-bottom:1px solid #222"><b>${u.name}</b><br>📱 ${u.phoneFull}<br><small style="color:#666">${u.date}</small><br><div style="margin-top:6px;display:flex;gap:6px"><a href="https://wa.me/${u.phone}?text=Salut%20${encodeURIComponent(u.name)}" target="_blank" style="background:#25D366;color:#fff;padding:6px 10px;border-radius:8px;text-decoration:none;font-size:12px">WhatsApp</a><a href="tel:${u.phone}" style="background:#00ff88;color:#000;padding:6px 10px;border-radius:8px;text-decoration:none;font-size:12px">Appeler</a></div></div>`).join('')||'Aucun client';
+if(!isAdmin){alert('Admin réservé à Maruce');return;}adminBox.classList.toggle('show');
+adminList.innerHTML=allUsers.map(u=>`<div style="padding:10px 0;border-bottom:1px solid #222"><b>${u.name}</b><br>${u.phoneFull}<br><small style="color:#666">${u.date}</small><br><div style="margin-top:6px;display:flex;gap:6px"><a href="https://wa.me/${u.phone}?text=Salut%20${encodeURIComponent(u.name)}" target="_blank" style="background:#25D366;color:#fff;padding:6px 10px;border-radius:8px;text-decoration:none;font-size:12px">WhatsApp</a><a href="tel:${u.phone}" style="background:#00ff88;color:#000;padding:6px 10px;border-radius:8px;text-decoration:none;font-size:12px">Appeler</a></div></div>`).join('')||'Aucun client';
 }
-function focusProjects(){updateProjectsUI();projectsList.scrollIntoView();}
-function updateProjectsUI(){
-projCount.textContent=projects.length+' projet(s)';
-projectsList.innerHTML=projects.map((p,i)=>`<div class="projItem" onclick="openProj(${i})"><b>${p.title}</b><br><small style="color:#777">${p.date}</small></div>`).join('')||'<div style="color:#777;margin-top:10px">Aucun projet. Parle à TAYA, ça sauvegarde auto.</div>';
-}
+function updateProjectsUI(){projCount.textContent=projects.length+' projet(s)';projectsList.innerHTML=projects.map((p,i)=>`<div class="projItem" onclick="openProj(${i})"><b>${p.title}</b><br><small style="color:#777">${p.date}</small></div>`).join('')||'<div style="color:#777;margin-top:10px">Aucun projet</div>';}
 function openProj(i){let p=projects[i];chatEl.innerHTML='';homeScreen.style.display='none';chatScreen.style.display='flex';p.msgs.forEach(m=>add(m.text,m.who,true));}
-function saveCurrentChat(){
-let msgs=[...chatEl.querySelectorAll('.msg')].map(el=>({who:el.classList.contains('user')?'user':'bot',text:el.textContent}));
-if(msgs.length<2)return;
-let title=msgs.find(m=>m.who==='user')?.text.slice(0,35)||'Chat TAYA';
-projects.unshift({title,date:new Date().toLocaleString(),msgs});localStorage.setItem('taya_projects',JSON.stringify(projects));updateProjectsUI();
-}
-function add(text,who){
-let d=document.createElement('div');d.className='msg '+who;d.textContent=text;chatEl.appendChild(d);chatEl.scrollTop=chatEl.scrollHeight;
-}
-async function send(){
-let txt=inputEl.value.trim();if(!txt)return;
-add(txt,'user');inputEl.value='';
-let d=document.createElement('div');d.className='msg bot';d.textContent='TAYA écrit...';chatEl.appendChild(d);chatEl.scrollTop=chatEl.scrollHeight;
-try{
-let r=await fetch('https://maruce-taya.onrender.com/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:txt,user:user.name})});
-let j=await r.json();d.remove();add(j.reply||j.response||'Erreur','bot');
-}catch(e){d.remove();add('Serveur OFF - va sur maruce-taya.onrender.com pour réveiller puis réessaie','bot');}
-}
+function saveCurrentChat(){let msgs=[...chatEl.querySelectorAll('.msg')].map(el=>({who:el.classList.contains('user')?'user':'bot',text:el.textContent}));if(msgs.length<2)return;let title=msgs.find(m=>m.who==='user')?.text.slice(0,35)||'Chat TAYA';projects.unshift({title,date:new Date().toLocaleString(),msgs});localStorage.setItem('taya_projects',JSON.stringify(projects));updateProjectsUI();}
+function add(text,who){let d=document.createElement('div');d.className='msg '+who;d.textContent=text;chatEl.appendChild(d);chatEl.scrollTop=chatEl.scrollHeight;}
+async function send(){let txt=inputEl.value.trim();if(!txt)return;add(txt,'user');inputEl.value='';let d=document.createElement('div');d.className='msg bot';d.textContent='TAYA écrit...';chatEl.appendChild(d);chatEl.scrollTop=chatEl.scrollHeight;try{let r=await fetch('https://maruce-taya.onrender.com/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:txt,user:user.name})});let j=await r.json();d.remove();add(j.reply||j.response||'Erreur','bot');}catch(e){d.remove();add('Serveur OFF - va sur maruce-taya.onrender.com pour réveiller','bot');}}
 function logout(){if(confirm('Déconnexion ?')){localStorage.removeItem('taya_user');location.reload();}}
 inputEl.addEventListener('keydown',e=>{if(e.key==='Enter')send();});
 document.addEventListener('click',e=>{if(drawer.classList.contains('open')&&!drawer.contains(e.target)&&!e.target.closest('.icon-btn'))drawer.classList.remove('open');});
