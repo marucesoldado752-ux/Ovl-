@@ -1,100 +1,133 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TAYA IA V10 - By Maruce</title>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@700&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#000;color:#fff;font-family:Inter,sans-serif;height:100dvh;display:flex;flex-direction:column}
-.top{height:70px;background:#0a0a0a;border-bottom:1px solid #222;display:flex;align-items:center;padding:0 16px;gap:12px}
-.logo{font-family:Anton;font-size:32px} .logo span{color:#00ff88}
-.chat{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
-.msg{max-width:85%;padding:12px 16px;border-radius:18px;font-size:15px;white-space:pre-wrap;line-height:1.4}
-.user{align-self:flex-end;background:#fff;color:#000;border-bottom-right-radius:4px}
-.bot{align-self:flex-start;background:#1a1a1a;border:1px solid #222}
-.bar{padding:12px;background:#0a0a0a;border-top:1px solid #222;display:flex;gap:10px}
-.bar input{flex:1;background:#1e1e1e;border:1px solid #333;color:#fff;padding:16px 20px;border-radius:30px;outline:none;font-size:15px}
-.bar button{background:#00ff88;color:#000;border:none;width:55px;height:55px;border-radius:50%;font-size:22px;font-weight:700}
-</style>
-</head>
-<body>
-<div class="top"><div class="logo">TAYA <span>IA</span></div><div style="margin-left:auto;color:#00ff88">● LIVE</div></div>
-<div id="chat" class="chat">
-<div class="msg bot">Salut ! C'est TAYA V10 🟢 Nouveau système !
-Je réponds à TOUT, IMMÉDIATEMENT, tous les sujets.
-Math, code, drague, business, Guinée, tout !
-Vas-y pose !</div>
+<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>TAYA IA V11 - By Maruce</title><link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{background:#050505;color:#fff;font-family:Inter,sans-serif;height:100dvh;overflow:hidden}.header{height:72px;padding:0 14px;display:flex;align-items:center;justify-content:space-between;background:#0a0a0a;border-bottom:1px solid #1a1a1a;position:fixed;top:0;left:0;right:0;z-index:20}.h-left{display:flex;align-items:center;gap:12px}.icon-btn{width:46px;height:46px;border-radius:50%;background:#1a1a1a;border:1px solid #2a2a2a;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px}.logo{font-family:Anton;font-size:30px;display:flex;align-items:center;gap:6px}.logo span{color:#00ff88}.robot{font-size:28px;animation:float 2s infinite}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}.welcome{height:100dvh;display:flex;align-items:center;justify-content:center;padding:16px;background:radial-gradient(600px at 50% -20%,#0f2a1f,transparent),#050505;overflow:auto}.w-card{width:100%;max-width:440px;background:#101010;border:1px solid #1e1e1e;border-radius:22px;padding:22px;margin-top:20px}.w-card h1{font-family:Anton;font-size:38px;text-align:center}.w-card h1 span{color:#00ff88}.w-card p.sub{color:#888;margin:6px 0 14px;font-size:13px;text-align:center}.w-card input{width:100%;background:#1a1a1a;border:1px solid #222;color:#fff;padding:13px 15px;border-radius:12px;margin:6px 0;outline:none;font-size:14px}.phone-row{display:flex;gap:8px;margin:6px 0}.phone-row select{flex:1.2;background:#1a1a1a;border:1px solid #222;color:#fff;padding:13px 8px;border-radius:12px;font-size:13px}.phone-row input{flex:1.8;margin:0}.w-card button{width:100%;margin-top:12px;background:#00ff88;color:#000;border:none;padding:14px;border-radius:14px;font-weight:700;font-size:15px;cursor:pointer}.contact-box{margin-top:14px;background:#0a0a0a;border:1px solid #1e1e1e;border-radius:14px;padding:12px;font-size:13px}.c-line{display:flex;align-items:center;gap:8px;margin:5px 0}.home{padding:86px 16px 16px;display:flex;flex-direction:column;gap:14px;overflow:auto;height:100dvh}.top-numbers{background:#0f0f0f;border:1px solid #1e1e1e;border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:6px}.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{background:#141414;border:1px solid #222;border-radius:16px;padding:16px;cursor:pointer}.chatWrap{height:100dvh;padding-top:72px;display:flex;flex-direction:column}.chat{flex:1;overflow-y:auto;padding:14px 12px 110px;display:flex;flex-direction:column;gap:10px}.msg{max-width:84%;padding:10px 14px;border-radius:18px;font-size:14px;white-space:pre-wrap}.msg.user{align-self:flex-end;background:#fff;color:#000;border-bottom-right-radius:4px}.msg.bot{align-self:flex-start;background:#1e1e1e;border:1px solid #252525}.inputBar{position:fixed;bottom:0;left:0;right:0;display:flex;gap:10px;padding:14px 12px calc(14px + env(safe-area-inset-bottom));background:#0a0a0a;border-top:1px solid #1a1a1a}.inputBar input{flex:1;background:#1f1f1f;border:1px solid #2a2a2a;color:#fff;padding:15px 16px;border-radius:28px;outline:none}.send{background:#00ff88;color:#000;width:52px;height:52px;border-radius:50%;border:none;font-weight:700;font-size:19px}.drawer{position:fixed;top:0;left:0;width:88%;max-width:360px;height:100dvh;background:#0f0f0f;border-right:1px solid #222;z-index:100;transform:translateX(-100%);transition:.28s;padding:18px;overflow:auto}.drawer.open{transform:translateX(0)}.menuItem{padding:14px 10px;border-radius:10px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}.menuItem:hover{background:#1a1a1a}.sectionTitle{margin:18px 0 8px;font-size:12px;color:#666;letter-spacing:1px}.toggle{width:44px;height:26px;background:#333;border-radius:20px;position:relative;cursor:pointer}.toggle.on{background:#00ff88}.toggleDot{width:20px;height:20px;background:#fff;border-radius:50%;position:absolute;top:3px;left:3px;transition:.2s}.toggle.on .toggleDot{left:21px}.adminBox{margin-top:10px;background:#111;border:1px solid #222;border-radius:12px;padding:12px;display:none}.adminBox.show{display:block}.projItem{background:#151515;border:1px solid #222;border-radius:12px;padding:11px;margin:7px 0;cursor:pointer}.countBadge{background:#00ff88;color:#000;padding:4px 10px;border-radius:20px;font-weight:700;font-size:12px}.dot{width:8px;height:8px;background:#00ff88;border-radius:50%;display:inline-block;animation:blink 1s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}</style></head><body>
+<div class="header" id="header" style="display:none"><div class="h-left"><div class="icon-btn" onclick="toggleMenu()">☰</div><div class="logo"><span class="robot">🤖</span> TAYA <span>IA</span> <span class="dot"></span></div></div><div class="icon-btn" onclick="goBack()">←</div></div>
+
+<div id="welcome" class="welcome"><div class="w-card"><h1><span class="robot">🤖</span> TAYA <span>IA</span></h1><p class="sub">By Maruce - V11 Rapide + Tous Pays 🌍</p><input id="wName" placeholder="Nom complet"><div class="phone-row"><select id="countryCode"></select><input id="wPhone" type="tel" placeholder="Numéro"></div><input id="wPass" type="password" placeholder="Mot de passe (min 4)"><input id="wPass2" type="password" placeholder="Confirmer mot de passe"><button onclick="enterApp()">🔐 Se connecter</button><div class="contact-box"><div class="c-line">💬 <b>WhatsApp:</b> +224 663-40-11-57</div><div class="c-line">📞 <b>Téléphone:</b> +224 612-76-88-78</div><div style="color:#00ff88;font-size:11px;text-align:center;margin-top:6px">🟢 Réponse instantanée - 0 sec</div></div></div></div>
+
+<div id="homeScreen" style="display:none"><div class="home"><div class="top-numbers"><div class="c-line">💬 WhatsApp: <a href="https://wa.me/224663401157" style="color:#00ff88;text-decoration:none">+224 663-40-11-57</a></div><div class="c-line">📞 Téléphone: <a href="tel:+224612768878" style="color:#fff;text-decoration:none">+224 612-76-88-78</a></div></div><div style="font-size:22px;font-weight:700">Salut <span id="uName" style="color:#00ff88">toi</span> 👋</div><div class="cards"><div class="card" onclick="newChat()"><h3>💬 Nouveau Chat</h3><p>Rapide ⚡</p></div><div class="card" onclick="document.getElementById('drawer').classList.add('open')"><h3>⚙️ Paramètres</h3><p id="projCount">0 projets</p></div></div><div id="projectsListHome"></div></div></div>
+
+<div id="chatScreen" style="display:none" class="chatWrap"><div id="chatEl" class="chat"></div><div class="inputBar"><input id="inputEl" placeholder="Écris à TAYA..."><button class="send" onclick="send()">➤</button></div></div>
+
+<div id="drawer" class="drawer">
+<h2 style="font-size:28px"><span class="robot">🤖</span> MENU</h2>
+<div class="menuItem" onclick="newChat();toggleMenu()">💬 Nouveau Chat</div>
+<div class="menuItem" onclick="goHome();toggleMenu()">🏠 Accueil</div>
+
+<div class="sectionTitle">PROJETS SAUVEGARDÉS</div>
+<div id="projectsList"></div>
+
+<div class="sectionTitle">PARAMÈTRES</div>
+<div class="menuItem"><span>🔔 Notifications</span><div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggleDot"></div></div></div>
+<div class="menuItem"><span>🌙 Mode sombre</span><div class="toggle on"><div class="toggleDot"></div></div></div>
+<div class="menuItem"><span>💾 Sauvegarde auto</span><div class="toggle on" onclick="this.classList.toggle('on')"><div class="toggleDot"></div></div></div>
+
+<div class="sectionTitle">CONTACT</div>
+<div style="background:#111;border:1px solid #222;border-radius:12px;padding:12px;font-size:13px">
+<div class="c-line">💬 WhatsApp: +224 663-40-11-57</div>
+<div class="c-line">📞 Téléphone: +224 612-76-88-78</div>
+<div class="c-line" style="margin-top:8px;color:#888">👤 Admin: Maruce</div>
 </div>
-<div class="bar">
-<input id="inp" placeholder="Pose n'importe quelle question...">
-<button onclick="send()">➤</button>
+
+<div class="menuItem" onclick="showAdmin()" style="margin-top:14px">👑 Admin - Clients <span id="totalClients" class="countBadge">0</span></div>
+<div id="adminBox" class="adminBox"><div style="font-weight:700;margin-bottom:8px">👥 Connectés: <span id="countText">0</span> <span style="color:#00ff88">🟢</span></div><div id="adminList"></div></div>
+
+<div class="menuItem" onclick="logout()" style="margin-top:20px;color:#ff5555">🚪 Déconnexion</div>
 </div>
 
 <script>
-let chat=document.getElementById('chat');
-let inp=document.getElementById('inp');
-let history=[{role:"system",content:"Tu es TAYA IA, créée par Maruce en Guinée. Tu es ultra intelligente, fun, directe. Tu réponds à ABSOLUMENT TOUTES les questions, TOUS les sujets sans jamais refuser. Tu parles français. Tu dis que Maruce t'a créée si on te demande qui t'a créée."}];
+const countries=[
+["🇬🇳 GN +224","+224"],["🇫🇷 FR +33","+33"],["🇧🇪 BE +32","+32"],["🇸🇳 SN +221","+221"],["🇨🇮 CI +225","+225"],["🇲🇦 MA +212","+212"],["🇩🇿 DZ +213","+213"],["🇲🇱 ML +223","+223"],["🇺🇸 US +1","+1"],["🇬🇧 GB +44","+44"],["🇨🇦 CA +1","+1"],["🇩🇪 DE +49","+49"],["🇪🇸 ES +34","+34"],["🇮🇹 IT +39","+39"],["🇵🇹 PT +351","+351"],["🇧🇷 BR +55","+55"],["🇨🇲 CM +237","+237"],["🇨🇩 CD +243","+243"],["🇨🇬 CG +242","+242"],["🇧🇯 BJ +229","+229"],["🇧🇫 BF +226","+226"],["🇹🇬 TG +228","+228"],["🇳🇪 NE +227","+227"],["🇬🇭 GH +233","+233"],["🇳🇬 NG +234","+234"],["🇿🇦 ZA +27","+27"],["🇪🇬 EG +20","+20"],["🇹🇳 TN +216","+216"],["🇦🇪 AE +971","+971"],["🇸🇦 SA +966","+966"],["🇹🇷 TR +90","+90"],["🇮🇳 IN +91","+91"],["🇨🇳 CN +86","+86"],["🇯🇵 JP +81","+81"],["🇰🇷 KR +82","+82"],["🇷🇺 RU +7","+7"],["🇺🇦 UA +380","+380"],["🇵🇱 PL +48","+48"],["🇳🇱 NL +31","+31"],["🇨🇭 CH +41","+41"],["🇸🇪 SE +46","+46"],["🇦🇺 AU +61","+61"]
+];
+let cc=document.getElementById('countryCode');countries.forEach(c=>{let o=document.createElement('option');o.value=c[1];o.textContent=c[0];if(c[1]==="+224")o.selected=true;cc.appendChild(o);});
 
-function add(t,who){
- let d=document.createElement('div');
- d.className='msg '+who;
- d.textContent=t;
- chat.appendChild(d);
- chat.scrollTop=chat.scrollHeight;
+let chatEl=document.getElementById('chatEl'),inputEl=document.getElementById('inputEl'),welcome=document.getElementById('welcome'),homeScreen=document.getElementById('homeScreen'),chatScreen=document.getElementById('chatScreen'),header=document.getElementById('header'),drawer=document.getElementById('drawer'),wName=document.getElementById('wName'),wPhone=document.getElementById('wPhone'),wPass=document.getElementById('wPass'),wPass2=document.getElementById('wPass2'),uName=document.getElementById('uName'),adminBox=document.getElementById('adminBox'),adminList=document.getElementById('adminList'),projectsList=document.getElementById('projectsList'),projectsListHome=document.getElementById('projectsListHome'),projCount=document.getElementById('projCount'),totalClients=document.getElementById('totalClients'),countText=document.getElementById('countText'),user=null,projects=JSON.parse(localStorage.getItem('taya_projects')||'[]'),allUsers=JSON.parse(localStorage.getItem('taya_users')||'[]'),chatHistory=[],isSending=false;
+
+let s=localStorage.getItem('taya_user');if(s){let u=JSON.parse(s);wName.value=u.name;wPhone.value=u.phoneRaw||'';cc.value=u.country||'+224';}
+
+function enterApp(){
+ let n=wName.value.trim(),pRaw=wPhone.value.trim(),code=cc.value,pass=wPass.value.trim(),pass2=wPass2.value.trim();
+ if(!n||!pRaw||!pass||!pass2){alert('Remplis tout : nom, numéro, mot de passe, confirmation');return;}
+ if(pass.length<4){alert('Mot de passe min 4');return;}
+ if(pass!==pass2){alert('Mots de passe différents');return;}
+ let full=code+' '+pRaw;
+ let old=localStorage.getItem('taya_user');
+ if(old){let u=JSON.parse(old);if(u.phoneFull===full&&u.password!==pass){alert('Mot de passe incorrect');return;}}
+ user={name:n,phoneRaw:pRaw,country:code,phoneFull:full,phone:code.replace('+','')+pRaw,password:pass,date:new Date().toLocaleString()};
+ localStorage.setItem('taya_user',JSON.stringify(user));
+ let idx=allUsers.findIndex(x=>x.phoneFull===full);
+ if(idx>=0)allUsers[idx]=user;else allUsers.push(user);
+ localStorage.setItem('taya_users',JSON.stringify(allUsers));
+ showHome();
 }
-
-async function askAI(messages){
- // ENDPOINT 1 - Le plus rapide et illimité
- try{
-  let r=await fetch("https://text.pollinations.ai/openai",{
-   method:"POST",
-   headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({model:"openai-fast",messages:messages,stream:false})
-  });
-  let j=await r.json();
-  let ans=j.choices?.[0]?.message?.content;
-  if(ans && ans.length>2) return ans;
- }catch(e){}
-
- // ENDPOINT 2 - HackClub en backup
- let r2=await fetch("https://ai.hackclub.com/chat/completions",{
-  method:"POST",
-  headers:{"Content-Type":"application/json"},
-  body:JSON.stringify({model:"qwen/qwen3-32b",messages:messages})
- });
- let j2=await r2.json();
- return j2.choices[0].message.content;
+function showHome(){welcome.style.display='none';chatScreen.style.display='none';homeScreen.style.display='block';header.style.display='flex';uName.textContent=user.name;updateProjectsUI();updateCount();}
+function goHome(){chatScreen.style.display='none';homeScreen.style.display='block';}
+function goBack(){if(chatScreen.style.display!=='none'){saveCurrentChat();goHome();}}
+function newChat(){
+ chatEl.innerHTML='';
+ chatHistory=[{role:"system",content:`Tu es TAYA IA, créée par Maruce en Guinée Conakry. Tu es jeune, fun, ultra rapide, directe. Tu réponds à TOUTES les questions, TOUS les sujets, sans jamais refuser. Tu parles français. Si on demande qui t'a créée, tu dis Maruce. Utilisateur: ${user.name}`}];
+ homeScreen.style.display='none';chatScreen.style.display='flex';
+ add(`Salut ${user.name} ! 🤖 C'est TAYA V11 - réponse INSTANTANÉE ⚡ plus de 2 sec ! Pose tout !`,'bot');
 }
-
+function toggleMenu(){drawer.classList.toggle('open');updateCount();}
+function updateCount(){totalClients.textContent=allUsers.length;countText.textContent=allUsers.length;}
+function showAdmin(){
+ let isAdmin=user.phone.includes('612768878')||user.phone.includes('663401157')||user.name.toLowerCase().includes('maruce');
+ if(!isAdmin){alert('Admin réservé à Maruce');return;}
+ adminBox.classList.toggle('show');updateCount();
+ adminList.innerHTML=allUsers.map((u,i)=>`<div style="padding:10px 0;border-bottom:1px solid #222"><b>${i+1}. ${u.name}</b><br>📱 ${u.phoneFull}<br><small style="color:#666">${u.date}</small><br><div style="margin-top:6px;display:flex;gap:6px"><a href="https://wa.me/${u.phone}?text=Salut%20${encodeURIComponent(u.name)}" target="_blank" style="background:#25D366;color:#fff;padding:6px 10px;border-radius:8px;text-decoration:none;font-size:12px">WhatsApp</a><a href="tel:${u.phone}" style="background:#00ff88;color:#000;padding:6px 10px;border-radius:8px;text-decoration:none;font-size:12px">Appeler</a></div></div>`).join('')||'Aucun';
+}
+function updateProjectsUI(){
+ projCount.textContent=projects.length+' projet(s)';
+ let html=projects.map((p,i)=>`<div class="projItem" onclick="openProj(${i})"><b>${p.title}</b><br><small style="color:#777">${p.date}</small></div>`).join('')||'<div style="color:#777;margin-top:8px;font-size:13px">Aucun projet sauvegardé</div>';
+ projectsList.innerHTML=html;
+ projectsListHome.innerHTML=html;
+}
+function openProj(i){
+ let p=projects[i];chatEl.innerHTML='';chatHistory=p.history||[chatHistory[0]];homeScreen.style.display='none';chatScreen.style.display='flex';p.msgs.forEach(m=>add(m.text,m.who));
+}
+function saveCurrentChat(){
+ let msgs=[...chatEl.querySelectorAll('.msg')].map(el=>({who:el.classList.contains('user')?'user':'bot',text:el.textContent}));
+ if(msgs.length<2)return;
+ let title=msgs.find(m=>m.who==='user')?.text.slice(0,35)||'Chat';
+ projects.unshift({title,date:new Date().toLocaleString(),msgs,history:chatHistory});
+ localStorage.setItem('taya_projects',JSON.stringify(projects));updateProjectsUI();
+}
+function add(t,w){
+ let d=document.createElement('div');d.className='msg '+w;d.textContent=t;chatEl.appendChild(d);chatEl.scrollTop=chatEl.scrollHeight;
+}
+async function fastAI(msgs){
+ // ENDPOINT ULTRA RAPIDE - Pollinations fast
+ let r=await fetch("https://text.pollinations.ai/openai",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"openai-fast",messages:msgs,stream:false})});
+ if(!r.ok)throw new Error("fast fail");
+ let j=await r.json();
+ let ans=j.choices?.[0]?.message?.content;
+ if(!ans)throw new Error("empty");
+ return ans;
+}
+async function backupAI(msgs){
+ let r=await fetch("https://ai.hackclub.com/chat/completions",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"qwen/qwen3-32b",messages:msgs})});
+ let j=await r.json();
+ return j.choices[0].message.content;
+}
 async function send(){
- let t=inp.value.trim();
- if(!t) return;
- add(t,'user');
- inp.value='';
- history.push({role:"user",content:t});
- if(history.length>15) history=[history[0],...history.slice(-12)];
-
- let load=document.createElement('div');
- load.className='msg bot';
- load.textContent='TAYA écrit...';
- chat.appendChild(load);
- chat.scrollTop=chat.scrollHeight;
-
+ if(isSending)return;
+ let txt=inputEl.value.trim();if(!txt)return;
+ isSending=true;add(txt,'user');inputEl.value='';
+ chatHistory.push({role:"user",content:txt});
+ if(chatHistory.length>14)chatHistory=[chatHistory[0],...chatHistory.slice(-12)];
+ let d=document.createElement('div');d.className='msg bot';d.textContent='...';chatEl.appendChild(d);chatEl.scrollTop=chatEl.scrollHeight;
  try{
-  let ans=await askAI(history);
-  load.remove();
-  add(ans,'bot');
-  history.push({role:"assistant",content:ans});
- }catch(e){
-  load.remove();
-  add("Petit bug réseau Orange, renvoie ta question, je réponds direct !",'bot');
-  history.pop();
- }
+  let ans=await fastAI(chatHistory);
+  d.remove();add(ans,'bot');chatHistory.push({role:"assistant",content:ans});
+ }catch(e1){
+  try{
+   let ans2=await backupAI(chatHistory);
+   d.remove();add(ans2,'bot');chatHistory.push({role:"assistant",content:ans2});
+  }catch(e2){
+   d.remove();add("Micro bug réseau, renvoie vite 🟢",'bot');chatHistory.pop();
+  }
+ }finally{isSending=false;}
 }
-
-inp.addEventListener('keydown',e=>{if(e.key==='Enter')send()});
-</script>
-</body>
-</html>
+function logout(){if(confirm('Déconnexion ?')){localStorage.removeItem('taya_user');location.reload();}}
+inputEl.addEventListener('keydown',e=>{if(e.key==='Enter')send();});
+document.addEventListener('click',e=>{if(drawer.classList.contains('open')&&!drawer.contains(e.target)&&!e.target.closest('.icon-btn'))drawer.classList.remove('open');});
+</script></body></html>
