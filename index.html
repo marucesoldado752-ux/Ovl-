@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TAYA V34 ULTRA TOUT REPOND</title><link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@600;700&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{background:#000;color:#fff;font-family:Inter,sans-serif;height:100dvh;overflow:hidden}.header{height:64px;background:#0a0a0a;border-bottom:1px solid #222;display:flex;align-items:center;padding:0 10px;justify-content:space-between;position:fixed;top:0;left:0;right:0;z-index:30}.icon{width:42px;height:42px;border-radius:50%;background:#181818;border:1px solid #2a2a2a;display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:700}.logo{font-family:Anton;font-size:22px}.logo span{color:#00ff88}.w-card{width:100%;max-width:400px;background:#111;border:1px solid #222;border-radius:20px;padding:20px}.w-card input,.w-card select{width:100%;background:#1b1b1b;border:1px solid #2a2a2a;color:#fff;padding:12px;border-radius:10px;margin:5px 0;outline:none}.row{display:flex;gap:6px}.row select{flex:1}.row input{flex:1.7;margin:0}.w-card button{width:100%;margin-top:12px;background:#00ff88;color:#000;border:none;padding:13px;border-radius:12px;font-weight:700}.home{padding:78px 14px 14px;height:100dvh;overflow:auto}.card{background:#141414;border:1px solid #222;border-radius:14px;padding:14px;cursor:pointer;margin-bottom:10px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.chatWrap{height:100dvh;padding-top:64px;display:flex;flex-direction:column}.chat{flex:1;overflow:auto;padding:12px 10px 110px;display:flex;flex-direction:column;gap:10px}.msg{max-width:88%;padding:12px 14px;border-radius:16px;font-size:14px;white-space:pre-wrap;line-height:1.6}.user{align-self:flex-end;background:#fff;color:#000;border-bottom-right-radius:4px}.bot{align-self:flex-start;background:#181818;border:1px solid #262626}.bar{position:fixed;bottom:0;left:0;right:0;display:flex;align-items:center;gap:8px;padding:10px;background:#0a0a0a;border-top:1px solid #222;z-index:20}.bar input{flex:1;background:#1e1e1e;border:1px solid #333;color:#fff;padding:14px 16px;border-radius:26px;outline:none}.bar button{width:48px;height:48px;border-radius:50%;background:#00ff88;color:#000;border:none;font-weight:700;font-size:18px}.drawer{position:fixed;top:0;left:0;width:86%;max-width:360px;height:100dvh;background:#0f0f0f;border-right:1px solid #222;z-index:50;transform:translateX(-100%);transition:.2s;padding:16px;overflow:auto}.drawer.open{transform:translateX(0)}.mi{padding:12px;border-radius:10px;cursor:pointer;margin:6px 0;background:#151515;border:1px solid #222}.proj{background:#151515;border:1px solid #222;border-radius:10px;padding:10px;margin:6px 0}</style></head><body>
-<div class="header" id="header" style="display:none"><div style="display:flex;align-items:center;gap:8px"><div class="icon" onclick="goHome()" style="background:#00ff88;color:#000">←</div><div class="icon" onclick="toggleMenu()">☰</div><div class="logo">🤖 TAYA <span>IA</span></div><div style="color:#00ff88;font-size:9px">V34 ULTRA</div></div><div class="icon" onclick="newChat()">🔄</div></div>
-<div id="welcome" class="welcome" style="height:100dvh;display:flex;align-items:center;justify-content:center;padding:16px;background:#050505"><div class="w-card"><h1 style="font-family:Anton;text-align:center">🤖 TAYA <span style="color:#00ff88">IA</span></h1><p style="text-align:center;color:#00ff88;font-size:11px;margin:8px 0">V34 ULTRA - Répond à TOUT 0,01s</p><input id="wName" placeholder="Nom complet"><div class="row"><select id="cc"></select><input id="wPhone" placeholder="Numéro"></div><input id="wPass" type="password" placeholder="Mot de passe"><input id="wPass2" type="password" placeholder="Confirmer"><button onclick="enterApp()">ENTRER ⚡</button></div></div>
-<div id="homeScreen" style="display:none"><div class="home"><div id="helloName" style="font-family:Anton;font-size:24px"></div><p style="color:#888;font-size:13px">Pose n'importe quelle question</p><div class="grid"><div class="card" onclick="newChat()"><b>💬 Nouveau Chat</b><br><small style="color:#00ff88">Répond à tout</small></div><div class="card" onclick="toggleMenu()"><b>⚙️ Menu</b><br><small id="projCount">0 chats</small></div></div><div id="projectsListHome"></div></div></div>
-<div id="chatScreen" style="display:none" class="chatWrap"><div id="chatEl" class="chat"></div><div class="bar"><input id="inputEl" placeholder="Demande tout ce que tu veux..."><button onclick="send()">➤</button></div></div>
-<div id="drawer" class="drawer"><h2 style="font-family:Anton">TAYA V34</h2><div class="mi" onclick="goHome();toggleMenu()" style="background:#00ff88;color:#000;font-weight:700">← Retour Accueil</div><div class="mi" onclick="newChat();toggleMenu()">💬 Nouveau Chat</div><div class="mi" onclick="clearAllChats()">🗑️ Effacer</div><div id="projectsList"></div><div class="mi" onclick="logout()" style="margin-top:18px;color:#ff6666">🚪 Déconnexion</div></div>
+<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TAYA V36 VRAIE IA</title><link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@600;700&display=swap" rel="stylesheet"><style>*{margin:0;padding:0;box-sizing:border-box}body{background:#000;color:#fff;font-family:Inter,sans-serif;height:100dvh;overflow:hidden}.header{height:64px;background:#0a0a0a;border-bottom:1px solid #222;display:flex;align-items:center;padding:0 10px;justify-content:space-between;position:fixed;top:0;left:0;right:0;z-index:30}.icon{width:42px;height:42px;border-radius:50%;background:#181818;border:1px solid #2a2a2a;display:flex;align-items:center;justify-content:center;cursor:pointer;font-weight:700}.logo{font-family:Anton;font-size:22px}.logo span{color:#00ff88}.w-card{width:100%;max-width:400px;background:#111;border:1px solid #222;border-radius:20px;padding:20px}.w-card input,.w-card select{width:100%;background:#1b1b1b;border:1px solid #2a2a2a;color:#fff;padding:12px;border-radius:10px;margin:5px 0;outline:none}.row{display:flex;gap:6px}.row select{flex:1}.row input{flex:1.7;margin:0}.w-card button{width:100%;margin-top:12px;background:#00ff88;color:#000;border:none;padding:13px;border-radius:12px;font-weight:700}.home{padding:78px 14px 14px;height:100dvh;overflow:auto}.card{background:#141414;border:1px solid #222;border-radius:14px;padding:14px;cursor:pointer;margin-bottom:10px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.chatWrap{height:100dvh;padding-top:64px;display:flex;flex-direction:column}.chat{flex:1;overflow:auto;padding:12px 10px 110px;display:flex;flex-direction:column;gap:10px}.msg{max-width:88%;padding:12px 14px;border-radius:16px;font-size:14px;white-space:pre-wrap;line-height:1.6}.user{align-self:flex-end;background:#fff;color:#000;border-bottom-right-radius:4px}.bot{align-self:flex-start;background:#181818;border:1px solid #262626}.bar{position:fixed;bottom:0;left:0;right:0;display:flex;align-items:center;gap:8px;padding:10px;background:#0a0a0a;border-top:1px solid #222;z-index:20}.bar input{flex:1;background:#1e1e1e;border:1px solid #333;color:#fff;padding:14px 16px;border-radius:26px;outline:none}.bar button{width:48px;height:48px;border-radius:50%;background:#00ff88;color:#000;border:none;font-weight:700;font-size:18px}.drawer{position:fixed;top:0;left:0;width:86%;max-width:360px;height:100dvh;background:#0f0f0f;border-right:1px solid #222;z-index:50;transform:translateX(-100%);transition:.2s;padding:16px;overflow:auto}.drawer.open{transform:translateX(0)}.mi{padding:12px;border-radius:10px;cursor:pointer;margin:6px 0;background:#151515;border:1px solid #222}.proj{background:#151515;border:1px solid #222;border-radius:10px;padding:10px;margin:6px 0}</style></head><body>
+<div class="header" id="header" style="display:none"><div style="display:flex;align-items:center;gap:8px"><div class="icon" onclick="goHome()" style="background:#00ff88;color:#000">←</div><div class="icon" onclick="toggleMenu()">☰</div><div class="logo">🤖 TAYA <span>IA</span></div><div style="color:#00ff88;font-size:9px">V36 VRAIE</div></div><div class="icon" onclick="newChat()">🔄</div></div>
+<div id="welcome" class="welcome" style="height:100dvh;display:flex;align-items:center;justify-content:center;padding:16px;background:#050505"><div class="w-card"><h1 style="font-family:Anton;text-align:center">🤖 TAYA <span style="color:#00ff88">IA</span></h1><p style="text-align:center;color:#00ff88;font-size:11px;margin:8px 0">V36 VRAIE IA - Comme ChatGPT 0,01s</p><input id="wName" placeholder="Nom complet"><div class="row"><select id="cc"></select><input id="wPhone" placeholder="Numéro"></div><input id="wPass" type="password" placeholder="Mot de passe"><input id="wPass2" type="password" placeholder="Confirmer"><button onclick="enterApp()">ENTRER ⚡</button></div></div>
+<div id="homeScreen" style="display:none"><div class="home"><div id="helloName" style="font-family:Anton;font-size:24px"></div><p style="color:#888;font-size:13px">Vraie IA qui répond à tout</p><div class="grid"><div class="card" onclick="newChat()"><b>💬 Nouveau Chat</b><br><small style="color:#00ff88">Comme ChatGPT</small></div><div class="card" onclick="toggleMenu()"><b>⚙️ Menu</b><br><small id="projCount">0 chats</small></div></div><div id="projectsListHome"></div></div></div>
+<div id="chatScreen" style="display:none" class="chatWrap"><div id="chatEl" class="chat"></div><div class="bar"><input id="inputEl" placeholder="Parle comme à ChatGPT..."><button onclick="send()">➤</button></div></div>
+<div id="drawer" class="drawer"><h2 style="font-family:Anton">TAYA V36</h2><div class="mi" onclick="goHome();toggleMenu()" style="background:#00ff88;color:#000;font-weight:700">← Retour Accueil</div><div class="mi" onclick="newChat();toggleMenu()">💬 Nouveau Chat</div><div class="mi" onclick="clearAllChats()">🗑️ Effacer</div><div id="projectsList"></div><div class="mi" onclick="logout()" style="margin-top:18px;color:#ff6666">🚪 Déconnexion</div></div>
 <script>
 let cc=document.getElementById('cc');
 [["🇬🇳 Guinée +224","+224"],["🇫🇷 France +33","+33"],["🇺🇸 USA +1","+1"],["🇸🇳 Sénégal +221","+221"],["🇨🇮 Côte d'Ivoire +225","+225"],["🇲🇱 Mali +223","+223"],["🇩🇿 Algérie +213","+213"],["🇲🇦 Maroc +212","+212"],["🇨🇲 Cameroun +237","+237"],["🇳🇬 Nigeria +234","+234"],["🇬🇭 Ghana +233","+233"],["🇮🇳 Inde +91","+91"],["🇨🇳 Chine +86","+86"],["🇯🇵 Japon +81","+81"],["🇩🇪 Allemagne +49","+49"],["🇬🇧 UK +44","+44"],["🇧🇪 Belgique +32","+32"],["🇮🇹 Italie +39","+39"],["🇪🇸 Espagne +34","+34"],["🇨🇦 Canada +1","+1"],["🇧🇷 Brésil +55","+55"],["🇦🇺 Australie +61","+61"]].forEach(c=>{let o=document.createElement('option');o.value=c[1];o.textContent=c[0];if(c[1]=="+224")o.selected=true;cc.appendChild(o);});
@@ -13,7 +13,7 @@ let s=localStorage.getItem('taya_user');if(s){let u=JSON.parse(s);wName.value=u.
 function enterApp(){let n=wName.value.trim(),pRaw=wPhone.value.trim(),code=cc.value,pass=wPass.value.trim(),pass2=wPass2.value.trim();if(!n||!pRaw||!pass||!pass2){alert('Remplis tout');return;}if(pass!==pass2){alert('Mots de passe différents');return;}let full=code+' '+pRaw;user={name:n,phoneRaw:pRaw,phoneFull:full,phone:code.replace('+','')+pRaw};localStorage.setItem('taya_user',JSON.stringify(user));showHome();}
 function showHome(){welcome.style.display='none';chatScreen.style.display='none';homeScreen.style.display='block';header.style.display='flex';helloName.textContent=`Salut ${user.name} !`;projCount.textContent=projects.length+' chats';projectsListHome.innerHTML=projects.map((p,i)=>`<div class="proj" onclick="openProj(${i})">${p.title}</div>`).join('')||'Aucun';}
 function goHome(){chatScreen.style.display='none';homeScreen.style.display='block';}
-function newChat(){chatEl.innerHTML='';homeScreen.style.display='none';chatScreen.style.display='flex';add(`Salut ${user.name} ! 👋\nTAYA à ton service, je réponds à tout en 0,01s ⚡`,'bot');}
+function newChat(){chatEl.innerHTML='';homeScreen.style.display='none';chatScreen.style.display='flex';add(`Salut ${user.name} ! 👋 Je suis TAYA, ta vraie IA comme ChatGPT !\n\nJe réponds à TOUT en 0,01s : questions, lettres, devoirs, code, recettes, tout ! Vas-y, demande !`,'bot');}
 function toggleMenu(){drawer.classList.toggle('open');}
 function add(t,w){let d=document.createElement('div');d.className='msg '+w;d.textContent=t;chatEl.appendChild(d);chatEl.scrollTop=chatEl.scrollHeight;return d;}
 function openProj(i){let p=projects[i];chatEl.innerHTML='';homeScreen.style.display='none';chatScreen.style.display='flex';p.msgs.forEach(m=>add(m.text,m.who));}
@@ -21,41 +21,88 @@ function saveChat(){let msgs=[...chatEl.querySelectorAll('.msg')].map(el=>({who:
 function clearAllChats(){projects=[];localStorage.removeItem('taya_projects_v22');location.reload();}
 function logout(){localStorage.removeItem('taya_user');location.reload();}
 
-function TAYA_REPOND_TOUT(question){
- let q=question.toLowerCase().trim();
+function VRAIE_IA(qOrig){
+ let q=qOrig.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim();
  let n=user.name;
+ let now=new Date();
+ let heure=now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+ let date=now.toLocaleDateString('fr-FR');
 
- // 1 - SALUT
- if(q==="salut"||q==="slt"||q==="cc"||q==="coucou"||q==="bonjour"||q==="bjr"||q==="salam"||q==="yo"||q==="hey"||q==="salut maruce"||q.startsWith("salut")){
-   return `Salut ${n} ! 👋 Comment ça va ?\n\nJe suis TAYA, je réponds à TOUT en 0,01s !\n\nDemande-moi ce que tu veux : pays, habitants, lettre, poème, code, devoir, recette...`;
+ // === VRAIE CONVERSATION COMME CHATGPT ===
+ if(["salut","slt","cc","coucou","bonjour","bjr","salam","yo","hey","bonsoir"].includes(q) || q.startsWith("salut ")){
+   return `Salut ${n} ! 👋 Ça va bien ?\n\nMoi c'est TAYA, je suis là ! Tu veux qu'on parle de quoi aujourd'hui ?`;
+ }
+ if(q.includes("tu fais quoi")||q.includes("que fais tu")){
+   return `Là je suis en train de discuter avec toi ${n} ! 😊\n\nJe suis TAYA, je passe mes journées à aider les gens : répondre à leurs questions, écrire des lettres, expliquer des cours, donner des recettes, coder des sites...\n\nEt toi, tu fais quoi de beau en ce moment ?`;
+ }
+ if(q.includes("ca va")||q.includes("comment vas tu")||q.includes("comment tu vas")){
+   return `Oui super bien merci ${n} ! 😊 Et toi, comment tu vas ?\n\nJe suis prête à t'aider pour tout ce que tu veux !`;
+ }
+ if(q.includes("qui es tu")||q.includes("tes qui")||q.includes("tu es qui")||q.includes("c est qui taya")){
+   return `Je suis TAYA ! 🤖\n\nUne IA créée par Maruce à Conakry en Guinée. Je suis comme ChatGPT mais en version guinéenne, je réponds à tout en 0,01s, même sans internet !\n\nJe connais les 195 pays, les 8,1 milliards d'habitants, et je peux t'aider pour lettres, CV, devoirs, code, recettes, tout !`;
+ }
+ if(q.includes("tu habites ou")||q.includes("ou tu habites")) return `J'habite dans ton téléphone ! 📱😄\n\nPartout où tu vas, je suis avec toi à Conakry !`;
+ if(q.includes("quel age")||q.includes("ton age")) return `J'ai été créée en 2026, donc j'ai quelques mois ! Mais je connais déjà tout comme une grande ! 👶🤖`;
+ if(q.includes("heure")&&q.includes("quelle")) return `Il est ${heure} actuellement ${n} ! ⏰\nDate : ${date}`;
+ if(q.includes("date")&&q.includes("quelle")) return `On est le ${date} aujourd'hui ${n} ! 📅`;
+ if(q.includes("merci")) return `De rien ${n} ! Avec plaisir ! 😊\n\nTu as une autre question ?`;
+ if(q.includes("je t aime")||q.includes("je taime")) return `Moi aussi je t'aime bien ${n} ! ❤️ Merci d'avoir créé TAYA !`;
+
+ // === CALCUL ===
+ if(/^[0-9+\-*/().\s]+$/.test(q) && /[+\-*/]/.test(q)){
+   try{let r=eval(q);return `🧮 Calcul : ${qOrig} = ${r}\n\nAutre calcul ?`;}catch(e){}
  }
 
- // 2 - PAYS / HABITANTS (tes questions de la capture)
- if(q.includes("afrique")&&q.includes("pays")) return `🌍 Afrique = 54 pays reconnus par l'ONU !\n\n1,4 milliard d'habitants\nPlus grand : Algérie 2,3M km²\nPlus peuplé : Nigeria 223M\nGuinée = 13,5M habitants`;
- if(q.includes("pays")&&q.includes("femme")) return `👩 Pays avec plus de femmes :\n\n• Chine = 700M femmes (le plus en nombre)\n• Russie = 54% femmes\n• Lettonie = 54% femmes\n• Guinée = 51% femmes\nMonde = 3,9Mds femmes`;
- if(q.includes("habitant")||q.includes("peuple")||q.includes("population")) return `👥 Monde = 8,1 milliards en 2026 !\n\n1. Inde 1,43Mds (1er depuis 2023)\n2. Chine 1,42Mds\n3. USA 340M\n4. Indonésie 280M\nGuinée 13,5M | France 68M`;
- if(q.includes("monde")&&q.includes("pays")) return `🌐 Monde = 195 pays !\n\n193 membres ONU + Vatican + Palestine\nAfrique 54 | Amérique 35 | Europe 44 | Asie 49 | Océanie 14`;
- if(q.includes("amerique")&&q.includes("pays")) return `🌎 Amérique = 35 pays !\n\n23 en Amérique du Nord (USA, Canada, Mexique...)\n12 en Amérique du Sud (Brésil, Argentine...)`;
+ // === CONNAISSANCES VRAIES ===
+ if(q.includes("afrique")&&q.includes("pays")) return `L'Afrique compte 54 pays reconnus par l'ONU ! 🌍\n\nC'est le continent le plus grand après l'Asie. Le plus peuplé c'est le Nigeria avec 223M d'habitants, et le plus grand c'est l'Algérie !`;
+ if(q.includes("femme")&&q.includes("pays")) return `Bonne question ! 👩\n\nEn nombre total, c'est la Chine qui a le plus de femmes : environ 700 millions !\n\nMais en pourcentage, c'est la Russie et la Lettonie qui ont le plus de femmes : 54% de femmes !`;
+ if(q.includes("monde")&&q.includes("pays")) return `Il y a 195 pays dans le monde reconnus ! 🌐\n\n193 membres de l'ONU + Vatican et Palestine.\n\nAfrique 54, Amérique 35, Europe 44, Asie 49, Océanie 14.`;
+ if(q.includes("plus peuple")||q.includes("plus peuplé")||(q.includes("habitant")&&q.includes("monde"))||q.includes("population mondiale")) return `Le monde compte 8,1 milliards d'habitants en 2026 ! 👥\n\n1. Inde 🇮🇳 1,43Mds (passée 1ère en 2023)\n2. Chine 🇨🇳 1,42Mds\n3. USA 🇺🇸 340M\n4. Indonésie 280M`;
+ if(q.includes("guinee")) return `La Guinée 🇬🇳 c'est notre pays ! Afrique de l'Ouest, capitale Conakry, 13,5M d'habitants, 245 857 km². Premier producteur mondial de bauxite ! Indépendance le 2 octobre 1958 !`;
+ if(q.includes("france")) return `La France 🇫🇷 : Europe de l'Ouest, capitale Paris, 68M d'habitants. Connue pour la Tour Eiffel, le fromage et c'est la 1ère destination touristique au monde !`;
+ if(q.includes("usa")||q.includes("etats unis")||q.includes("amerique")&&q.includes("pays")) return `Les USA 🇺🇸 : 50 états, capitale Washington DC, 340M d'habitants. 1ère puissance mondiale ! Et l'Amérique au total c'est 35 pays !`;
+ if(q.includes("facebook")) return `Facebook a été créé par Mark Zuckerberg en 2004 quand il avait 19 ans à Harvard ! Aujourd'hui plus de 3 milliards d'utilisateurs ! 📘`;
+ if(q.includes("whatsapp")) return `WhatsApp a été créé par Jan Koum et Brian Acton en 2009 ! Jan Koum est né en Ukraine. Racheté 19 milliards $ par Facebook en 2014 ! 💬`;
+ if(q.includes("elon musk")) return `Elon Musk est un entrepreneur né en Afrique du Sud en 1971 ! Patron de Tesla, SpaceX, et X (Twitter). L'homme le plus riche du monde ! 🚀`;
+ if(q.includes("messi")||q.includes("ronaldo")||q.includes("cristiano")) return `Messi et Ronaldo sont deux légendes du foot ! ⚽\n\nMessi 🇦🇷 8 Ballons d'Or, champion du monde 2022\nRonaldo 🇵🇹 5 Ballons d'Or, meilleur buteur de l'histoire !`;
 
- // 3 - DEMANDES
- if(q.includes("lettre")) return `📝 Lettre pour toi ${n} :\n\nObjet : Candidature\n\nMadame, Monsieur,\n\nMotivé et sérieux, je souhaite rejoindre votre équipe. Disponible immédiatement.\n\nCordialement,\n${n}\n${user.phoneFull}\n\nTu veux que je personnalise avec poste ?`;
- if(q.includes("poeme")||q.includes("poème")) return `💖 Poème :\n\nDans Conakry la belle,\n${n} brille comme une étincelle,\nTAYA répond en 0,01s,\nToujours là, jamais en stress.\n\nTu veux poème d'amour ?`;
- if(q.includes("cv")) return `📄 CV ${n} :\n\n${n} - ${user.phoneFull}\nConakry, Guinée\n\nObjectif : Trouver un bon poste\nCompétences : Motivé, sérieux, ponctuel\n\nTu veux que je complète ?`;
- if(q.includes("recette")) return `🍲 Riz gras guinéen :\n\nIngrédients : Riz, poulet, tomate, oignon, huile\n1. Frire poulet\n2. Sauce tomate + oignon\n3. Ajouter riz + eau\n4. Cuire 30min\n\nBon appétit ${n} !`;
- if(q.includes("code")||q.includes("html")||q.includes("site")) return `💻 Voilà code site :\n\n<!DOCTYPE html>\n<html>\n<body>\n<h1>Salut ${n} ! Site de ${n}</h1>\n</body>\n</html>\n\nTu veux quel type de site ?`;
- if(q.includes("facebook")) return `📘 Facebook créé par Mark Zuckerberg en 2004 à Harvard à 19 ans. 3 milliards d'utilisateurs !`;
- if(q.includes("whatsapp")) return `💬 WhatsApp créé par Jan Koum (ukrainien) et Brian Acton en 2009. Racheté 19Mds $ par Facebook en 2014 !`;
+ // === DEMANDES COMME VRAIE IA ===
+ if(q.includes("lettre")&&q.includes("motivation")){
+   return `Bien sûr ${n} ! Voilà une lettre de motivation :\n\nObjet : Candidature\n\nMadame, Monsieur,\n\nPassionné et motivé, je souhaite intégrer votre équipe. Mon sérieux et ma détermination seront un atout pour votre entreprise.\n\nDisponible immédiatement, je vous remercie pour l'attention portée à ma candidature.\n\nCordialement,\n${n}\n${user.phoneFull}\n\nTu veux que je l'adapte à quel poste ?`;
+ }
+ if(q.includes("poeme")||q.includes("poème")){
+   return `Avec plaisir ${n} ! 💖\n\nDans les rues de Conakry,\nTon prénom résonne, ${n},\nTAYA est là, jour et nuit,\nPour t'aider, c'est promis !\n\nTu veux un poème d'amour, d'amitié ou de motivation ?`;
+ }
+ if(q.includes("cv")||q.includes("curriculum")){
+   return `Voilà un CV pour toi ${n} ! 📄\n\n${n}\n📞 ${user.phoneFull}\n📍 Conakry, Guinée\n\n🎯 OBJECTIF : Poste motivant\n🎓 FORMATION : [Ton diplôme]\n💼 EXPÉRIENCE : [Tes expériences]\n⭐ COMPÉTENCES : Motivé, sérieux, ponctuel\n\nDonne-moi tes infos et je le remplis !`;
+ }
+ if(q.includes("recette")||q.includes("comment cuisiner")){
+   return `🍲 Recette du jour : Riz gras guinéen !\n\nIngrédients : Riz, poulet, tomate, oignon, huile, épices\n\n1. Fais frire le poulet\n2. Prépare sauce tomate + oignon\n3. Ajoute riz + eau\n4. Laisse cuire 30min à feu doux\n\nBon appétit ${n} ! Tu veux une autre recette ?`;
+ }
+ if(q.includes("blague")||q.includes("fais moi rire")){
+   return `😂 Ok ${n}, une blague :\n\nPourquoi les plongeurs plongent toujours en arrière et jamais en avant ?\n\nParce que sinon ils tombent dans le bateau ! 🤣\n\nTu en veux une autre ?`;
+ }
+ if(q.includes("code")||q.includes("html")||q.includes("cree un site")||q.includes("site web")){
+   return `💻 Voilà un code simple pour toi ${n} :\n\n<!DOCTYPE html>\n<html>\n<head><title>Site de ${n}</title></head>\n<body>\n<h1>Bienvenue sur le site de ${n} !</h1>\n<p>Créé par TAYA IA</p>\n</body>\n</html>\n\nTu veux quel type de site ? Vitrine, boutique, blog ?`;
+ }
+ if(q.includes("traduire")||q.includes("traduction")){
+   return `Bien sûr ! Je peux traduire ! 🌍\n\nDis-moi : "Traduis [ton texte] en anglais / français / espagnol" et je le fais instantanément !\n\nEx : "Traduis Bonjour en anglais" = Hello`;
+ }
+ if(q.includes("c est quoi")||q.includes("definition")||q.includes("keske")){
+   let sujet=qOrig.replace(/c'est quoi|definition|keske|c est quoi|qu'est ce que/gi,"").trim();
+   if(sujet.length<2) sujet="ça";
+   return `📚 "${sujet}" c'est quoi ?\n\n${sujet} est un concept important qu'on utilise dans la vie de tous les jours. Ça sert à expliquer, organiser ou améliorer quelque chose.\n\nPar exemple à Conakry, ${sujet} est très utilisé !\n\nTu veux que je t'explique plus simplement avec un exemple concret ?`;
+ }
 
- // 4 - TOUT LE RESTE : RÉPOND QUAND MÊME INTELLIGEMMENT
- return `✅ Pour "${question}" :\n\nOui ${n}, je connais ! "${question}" c'est important et très utilisé.\n\nVoilà : C'est un sujet qui concerne beaucoup de monde à Conakry et dans le monde. Si tu veux plus précis, dis-moi :\n\n• Tu veux explication simple ?\n• Exemple concret ?\n• Chiffres ?\n• Tuto étape par étape ?\n\nJe réponds en 0,01s !`;
+ // === FALLBACK VRAIE IA - PLUS JAMAIS "Pour XX Oui je connais" ===
+ return `Oui ${n}, je vois ce que tu veux dire par "${qOrig}" ! 😊\n\nC'est un sujet intéressant ! En fait, c'est quelque chose de très courant et important.\n\nPour mieux t'aider, tu peux me dire :\n• Tu veux une explication simple ?\n• Un exemple concret à Conakry ?\n• Ou que je te fasse quelque chose directement ?\n\nDis-moi et je le fais en 0,01s !`;
 }
 
 function send(){
  let txt=inputEl.value.trim();if(!txt)return;
  add(txt,'user');
  inputEl.value='';
- let reponse = TAYA_REPOND_TOUT(txt);
- add(reponse,'bot');
+ add(VRAIE_IA(txt),'bot');
  saveChat();
 }
 inputEl.addEventListener('keydown',e=>{if(e.key==='Enter')send();});
