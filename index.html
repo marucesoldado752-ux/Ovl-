@@ -9,9 +9,11 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#050505;color:#fff;font-family:Syne,sans-serif;height:100vh;display:flex;flex-direction:column}
 .header{padding:16px 24px;border-bottom:1px solid #151515;display:flex;justify-content:space-between;align-items:center;background:#080808}
-.logo{font-family:Anton;font-size:26px}
-.logo b{color:#ff2a1a}
-.live{display:flex;align-items:center;gap:8px;background:#111;border:1px solid #222;padding:6px 12px;border-radius:100px;font-size:11px;color:#00ff88}
+.logo{font-family:Anton;font-size:26px}.logo b{color:#ff2a1a}
+.right{display:flex;gap:10px;align-items:center}
+.icon-btn{width:38px;height:38px;border-radius:50%;background:#141414;border:1px solid #222;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px}
+.icon-btn:hover{background:#fff;color:#000}
+.live{display:flex;align-items:center;gap:8px;background:#111;border:1px solid #222;padding:6px 12px;border-radius:100px;font-size:10px;color:#00ff88}
 .dot{width:7px;height:7px;background:#00ff88;border-radius:50%;box-shadow:0 0 12px #00ff88;animation:p 2s infinite}
 @keyframes p{0%,100%{opacity:1}50%{opacity:.4}}
 .chat{flex:1;overflow:auto;padding:20px;max-width:850px;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:16px}
@@ -28,26 +30,41 @@ body{background:#050505;color:#fff;font-family:Syne,sans-serif;height:100vh;disp
 .chips{display:flex;gap:8px;margin-bottom:10px;overflow:auto;max-width:850px;margin:0 auto 10px auto}
 .chip{background:#111;border:1px solid #222;padding:7px 13px;border-radius:100px;font-size:11px;white-space:nowrap;cursor:pointer}
 .chip:hover{background:#fff;color:#000}
-.contact-bar{max-width:850px;margin:12px auto 0 auto;width:100%;display:flex;gap:8px}
-.contact-bar a{flex:1;text-align:center;padding:10px;border-radius:100px;font-size:11px;font-weight:700;text-decoration:none}
-.wa{background:#25D366;color:#fff}
-.tel{background:#fff;color:#000}
 .welcome{margin:auto;text-align:center;padding:30px}
 .welcome h1{font-family:Anton;font-size:56px;line-height:.85}
 .welcome h1 span{-webkit-text-stroke:1.5px #fff;color:transparent}
+.model{font-size:10px;color:#555;background:#111;border:1px solid #222;padding:4px 8px;border-radius:100px;display:inline-block;margin-top:10px}
+/* MODAL CONTACT */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:999}
+.modal.open{display:flex}
+.modal-box{background:#111;border:1px solid #222;border-radius:20px;padding:24px;width:90%;max-width:360px;text-align:center}
+.modal-box h3{font-family:Anton;font-size:22px;margin-bottom:12px}
+.contact-item{background:#1a1a1a;border:1px solid #222;padding:14px;border-radius:14px;margin:10px 0;display:flex;justify-content:space-between;align-items:center}
+.contact-item a{color:#fff;text-decoration:none;font-weight:700}
+.btn-close{margin-top:14px;background:#222;border:none;color:#fff;padding:10px 20px;border-radius:100px;cursor:pointer;width:100%}
 </style>
 </head>
 <body>
-<div class="header"><div class="logo">TAYA <b>IA</b></div><div class="live"><span class="dot"></span> VRAIE IA CONNECTÉE</div></div>
+<div class="header">
+<div class="logo">TAYA <b>IA</b></div>
+<div class="right">
+<div class="icon-btn" onclick="openContact()" title="Contact Maruce">📞</div>
+<div class="icon-btn" onclick="openContact()" title="WhatsApp">💬</div>
+<div class="live"><span class="dot"></span> TAYA</div>
+</div>
+</div>
 
 <div class="chat" id="chat">
 <div class="welcome" id="welcome">
 <h1>TAYA<br><span>IA</span></h1>
-<p style="color:#666;margin-top:14px;line-height:1.6;max-width:500px">Salut bienvenue c'est TAYA IA. Vraie intelligence créée par Maruce. Je réponds à tout !</p>
-<div class="contact-bar">
-<a class="wa" href="https://wa.me/224663401157?text=Salut%20Maruce%20c'est%20depuis%20TAYA%20IA">💬 WhatsApp: +224 663 40 11 57</a>
-<a class="tel" href="tel:+224612768878">📞 Appel: +224 612 76 88 78</a>
+<p style="color:#666;margin-top:14px;line-height:1.6;max-width:500px">Salut bienvenue c'est TAYA IA. Vraie intelligence créée par Maruce. Je réponds à tout, même compliqué !</p>
+<div class="model">Modèle: TAYA-IA V3 • GPT-4o • Connectée</div>
+<div style="margin-top:18px;display:flex;gap:8px;justify-content:center">
+<div class="icon-btn" onclick="openContact()">📞</div>
+<div class="icon-btn" onclick="openContact()">💬</div>
+<div class="icon-btn" onclick="q('C\'est qui Maruce ?')">👤</div>
 </div>
+<p style="color:#333;font-size:10px;margin-top:10px">Clique sur 📞 ou 💬 pour voir mes contacts</p>
 </div>
 </div>
 
@@ -57,24 +74,34 @@ body{background:#050505;color:#fff;font-family:Syne,sans-serif;height:100vh;disp
 <div class="chips">
 <div class="chip" onclick="q('C\'est qui Maruce ?')">C'est qui Maruce ?</div>
 <div class="chip" onclick="q('Raconte une blague')">Raconte une blague</div>
-<div class="chip" onclick="q('C\'est quoi ton travail ?')">C'est quoi ton travail ?</div>
-<div class="chip" onclick="q('Donne moi ton contact')">Ton contact ?</div>
+<div class="chip" onclick="q('C\'est quoi ton travail ?')">Ton travail ?</div>
+<div class="chip" onclick="q('Donne ton contact')">Contact</div>
 </div>
 <div class="box">
 <input id="input" placeholder="Parle avec TAYA IA...">
 <button onclick="send()">➤</button>
 </div>
-<div class="contact-bar">
-<a class="wa" href="https://wa.me/224663401157">WhatsApp +224 663401157</a>
-<a class="tel" href="tel:+224612768878">Tél +224 612768878</a>
+<p style="text-align:center;color:#333;font-size:10px;margin-top:8px">TAYA IA • Vraie IA by Maruce • Modèle TAYA-V3</p>
 </div>
-<p style="text-align:center;color:#333;font-size:10px;margin-top:8px">TAYA IA • Vraie IA by Maruce • Conakry 224</p>
+
+<div class="modal" id="modal" onclick="if(event.target==this)closeContact()">
+<div class="modal-box">
+<h3>CONTACT MARUCE</h3>
+<p style="color:#666;font-size:12px;margin-bottom:16px">Clique pour contacter directement</p>
+<div class="contact-item"><span>💬 WhatsApp</span><a href="https://wa.me/224663401157?text=Salut%20Maruce%20depuis%20TAYA%20IA">+224 663401157</a></div>
+<div class="contact-item"><span>📞 Téléphone</span><a href="tel:+224612768878">+224 612768878</a></div>
+<div class="contact-item"><span>📧 Créateur</span><span style="font-weight:700">Maruce OVL</span></div>
+<button class="btn-close" onclick="closeContact()">Fermer</button>
+</div>
 </div>
 
 <script>
 const chatEl=document.getElementById('chat');
 const inputEl=document.getElementById('input');
 const typingEl=document.getElementById('typing');
+const modal=document.getElementById('modal');
+function openContact(){modal.classList.add('open')}
+function closeContact(){modal.classList.remove('open')}
 function q(t){inputEl.value=t;send();}
 function add(text, who){
 let w=document.getElementById('welcome');
@@ -92,19 +119,19 @@ add(txt,'user');
 inputEl.value='';
 typingEl.classList.add('show');
 try{
-let system=`Tu es TAYA IA, vraie IA créée par Maruce à Conakry. Maruce contacts: WhatsApp +224 663401157, Tel +224 612768878. Tu parles comme humain, sympa, drôle. Tu réponds à TOUTES questions. Si on demande contact de Maruce, donne WhatsApp +224 663401157 et Tel +224 612768878. Tu es TAYA IA pas OVL. Sois naturelle, courte. Question: `+txt;
-let res=await fetch('https://text.pollinations.ai/'+encodeURIComponent(system));
+let prompt=`Tu es TAYA IA, vraie IA créée par Maruce à Conakry Guinée. Tu parles comme humain, sympa, intelligente. Si on demande contact Maruce, dis: clique sur icône 📞 ou 💬 en haut pour voir ses contacts. Ne jamais afficher directement les numéros sauf si on insiste vraiment. Tu es TAYA IA. Question: ${txt}`;
+let res=await fetch('https://text.pollinations.ai/'+encodeURIComponent(prompt));
 let aiText=await res.text();
 typingEl.classList.remove('show');
-if(!aiText || aiText.length<2) throw new Error();
+if(!aiText||aiText.length<2) throw new Error();
 add(aiText,'ai');
 }catch(e){
 typingEl.classList.remove('show');
-add("Oups coupure réseau, réessaie ! C'est TAYA IA 😊 WhatsApp Maruce: +224 663401157",'ai');
+add("Oups petite coupure ! Réessaie 😊 Clique sur 📞 pour contacter Maruce.",'ai');
 }
 }
 inputEl.addEventListener('keydown',e=>{if(e.key==='Enter')send()});
-setTimeout(()=>{if(document.getElementById('welcome')){add("Salut bienvenue c'est TAYA IA 👋 Vraie IA de Maruce ! Je réponds à tout, même aux questions compliquées. <br><br>📱 <b>WhatsApp Maruce:</b> +224 663401157<br>📞 <b>Tél:</b> +224 612768878<br><br>Tu veux parler de quoi ?",'ai')}},800);
+setTimeout(()=>{if(document.getElementById('welcome')){add("Salut bienvenue c'est TAYA IA 👋<br><br>Je suis une vraie IA, je réponds à tout !<br><br>Pour contacter Maruce, clique sur les icônes 📞 💬 en haut.<br><br>On parle de quoi ?",'ai')}},900);
 </script>
 </body>
 </html>
