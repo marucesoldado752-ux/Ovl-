@@ -168,31 +168,70 @@ function generateLocalAnswer(q){
   if(lower==="salut"||lower==="bonjour") return "Salut "+name+" ! 👋 C'est TAYA CLOUD connecté à Render ! Pose ta question !";
   return "Yo "+name+" ! Pour \""+q+"\" - Je suis **TAYA CLOUD** connecté à "+API_BASE+" via OpenRouter 🇬🇳 (fallback local si API endormie)";
 }
-async function askAI(question, botDiv){
-  if(isGenerating) return; isGenerating=true; $('sendBtn').disabled=true;
-  chatHistory.push({role:'user',content:question});
-  botDiv.innerHTML='<div class="typing"><span></span><span></span><span></span></div> TAYA CLOUD via Render...';
-  try{
-    let cloudAnswer=await tryRealAI(question);
-    botDiv.innerHTML=DOMPurify.sanitize(marked.parse(cloudAnswer));
-    chatHistory.push({role:'assistant',content:cloudAnswer});
-  }catch(e){
-    await new Promise(r=>setTimeout(r,600));
-    let answer=generateLocalAnswer(question);
-    botDiv.innerHTML=DOMPurify.sanitize(marked.parse(answer+"\n\n*_(Local)_*"));
-    chatHistory.push({role:'assistant',content:answer});
-  }
-  let msgs=[...$('chatEl').querySelectorAll('.msg')].map(el=>({who:el.classList.contains('user')?'user':'bot',text:el.innerText}));
-  let title=msgs.find(m=>m.who==='user')?.text.slice(0,40)||'Chat';
-  let idx=projects.findIndex(p=>p.id===currentConvId);let obj={id:currentConvId,title,msgs,history:chatHistory};
-  if(idx>=0)projects[idx]=obj;else projects.unshift(obj);saveData();updateUI();
-  isGenerating=false; $('sendBtn').disabled=false;
+async function askAI(question, botDiv) {
+    if (isGenerating) return;
+
+    isGenerating = true;
+    $('sendBtn').disabled = true;
+    $('sendBtn').textContent = '⏳';
+
+    chatHistory.push({
+        role: 'user',
+        content: question
+    });
+
+    botDiv.innerHTML =
+        '<div class="typing"><span></span><span></span><span></span></div> TAYA AI réfléchit...';
+
+    try {
+        const response = await fetch(
+            'https://taya-ai-api.onrender.com/api/chat',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    messages: chatHistory.slice(-30)
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || 'Erreur du serveur IA');
+        }
+
+        if (!data.reply) {
+            throw new Error('Aucune réponse reçue');
+        }
+
+        const answer = data.reply;
+
+        botDiv.innerHTML = DOMPurify.sanitize(
+            marked.parse(answer)
+        );
+
+        chatHistory.push({
+            role: 'assistant',
+            content: answer
+        });
+
+        saveCurrent();
+
+    } catch (error) {
+        console.error('TAYA AI ERROR:', error);
+
+        botDiv.textContent =
+            '⚠️ Impossible de contacter TAYA AI pour le moment. Vérifie ta connexion et réessaie. Détail : ' +
+            error.message;
+
+        chatHistory.pop();
+
+    } finally {
+        isGenerating = false;
+        $('sendBtn').disabled = false;
+        $('sendBtn').textContent = '➤';
+    }
 }
-window.send=async function(){
-  let txt=$('inputEl').value.trim();if(!txt)return;
-  add(txt,'user');$('inputEl').value='';let b=add('','bot');await askAI(txt,b);
-}
-$('inputEl').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});
-</script>
-</body>
-</html>
