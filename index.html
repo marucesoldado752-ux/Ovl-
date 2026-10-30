@@ -3,19 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TAYA AI V3.5 LOCAL - by Maruce 🇬🇳 NO API</title>
+<title>TAYA AI V3.5 CLOUD - by Maruce CONNECTED</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
 <style>
-:root{--green:#00ff88;--bg:#000;--card:#111;--card2:#181818;--border:#222;--text:#fff;--muted:#888}
+:root{--green:#00ff88;--bg:#000;--card:#111;--card2:#181818;--border:#222;--text:#fff}
 *{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:Inter,sans-serif;height:100dvh;overflow:hidden}
 .header{height:64px;background:#0a0a0a;display:flex;align-items:center;justify-content:space-between;padding:0 12px;position:fixed;top:0;left:0;right:0;z-index:50;border-bottom:1px solid var(--border)}
 .icon{width:42px;height:42px;border-radius:50%;background:var(--card2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer}
 .logo{font-family:Anton;font-size:18px}.logo span{color:var(--green)}.pro{font-size:9px;background:var(--green);color:#000;padding:3px 8px;border-radius:20px;font-weight:800}
 .welcome{height:100dvh;display:flex;align-items:center;justify-content:center;padding:16px;background:radial-gradient(circle at top,#0a2a1a,#000);overflow:auto}
 .w-card{width:100%;max-width:460px;background:var(--card);border:1px solid var(--border);border-radius:24px;padding:24px;text-align:center}
-.w-card .avatar{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#00cc6a);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:50px;border:3px solid var(--green);box-shadow:0 0 25px rgba(0,255,136,.4)}
+.w-card .avatar{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#00cc6a);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:50px;border:3px solid var(--green)}
 .w-card h1{font-family:Anton;font-size:32px} .w-card h1 span{color:var(--green)}
 .w-card input,.w-card select{width:100%;background:var(--card2);border:1px solid var(--border);color:#fff;padding:14px;border-radius:12px;margin:6px 0;outline:none}
 .row{display:flex;gap:8px;margin:6px 0} .row select{flex:1} .row input{flex:1.8;margin:0}
@@ -26,22 +26,20 @@
 .card.green{background:var(--green);color:#000;font-weight:700}
 .chatWrap{height:100dvh;padding-top:64px;display:flex;flex-direction:column}
 .chat{flex:1;overflow:auto;padding:12px 10px 130px;display:flex;flex-direction:column;gap:14px}
-.msg{max-width:88%;padding:14px 16px;border-radius:18px;font-size:14.5px;white-space:pre-wrap;line-height:1.6;animation:msgIn .3s}
-@keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.msg pre{background:#0f0f0f;border:1px solid #222;border-radius:10px;padding:12px;overflow:auto;margin:8px 0;font-size:13px;color:#00ff88}
+.msg{max-width:88%;padding:14px 16px;border-radius:18px;font-size:14.5px;white-space:pre-wrap;line-height:1.6}
 .user{align-self:flex-end;background:#fff;color:#000;border-bottom-right-radius:6px}
 .bot{align-self:flex-start;background:var(--card);border:1px solid var(--border);border-bottom-left-radius:6px}
 .bar{position:fixed;bottom:0;left:0;right:0;display:flex;gap:8px;padding:10px;background:#0a0a0a;border-top:1px solid var(--border);z-index:20}
-.bar textarea{flex:1;background:var(--card2);border:1px solid var(--border);color:#fff;padding:14px 18px;border-radius:24px;outline:none;resize:none;min-height:48px;max-height:140px}
+.bar textarea{flex:1;background:var(--card2);border:1px solid var(--border);color:#fff;padding:14px 18px;border-radius:24px;outline:none;resize:none;min-height:48px}
 .bar button{width:48px;height:48px;border-radius:50%;background:var(--green);color:#000;border:none;font-weight:800;font-size:18px;cursor:pointer}
 .drawer{position:fixed;top:0;left:0;width:88%;max-width:360px;height:100dvh;background:var(--card);border-right:1px solid var(--border);z-index:60;transform:translateX(-100%);transition:.3s;padding:16px;overflow:auto}
 .drawer.open{transform:translateX(0)} .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:55;display:none} .overlay.show{display:block}
-.mi{padding:13px;border-radius:12px;cursor:pointer;margin:7px 0;background:var(--card2);border:1px solid var(--border);font-size:13.5px;font-weight:600}
+.mi{padding:13px;border-radius:12px;cursor:pointer;margin:7px 0;background:var(--card2);border:1px solid var(--border)}
 .mi.green{background:var(--green);color:#000;font-weight:800}
 .fab{position:fixed;right:18px;bottom:100px;width:58px;height:58px;border-radius:50%;background:var(--green);color:#000;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;cursor:pointer;z-index:30}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100;display:none;align-items:center;justify-content:center;padding:16px} .modal.show{display:flex}
 .modalBox{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;width:100%;max-width:500px;max-height:80vh;overflow:auto}
-.typing{display:flex;gap:4px} .typing span{width:8px;height:8px;border-radius:50%;background:var(--green);animation:b 1s infinite} .typing span:nth-child(2){animation-delay:.2s} .typing span:nth-child(3){animation-delay:.4s} @keyframes b{0%,80%,100%{transform:scale(.6)}40%{transform:scale(1)}}
+.typing{display:flex;gap:4px} .typing span{width:8px;height:8px;border-radius:50%;background:var(--green);animation:b 1s infinite} @keyframes b{0%,80%,100%{transform:scale(.6)}40%{transform:scale(1)}}
 </style>
 </head>
 <body>
@@ -49,18 +47,17 @@
 <div style="display:flex;align-items:center;gap:8px">
 <div class="icon" onclick="goHome()" style="background:var(--green);color:#000">←</div>
 <div class="icon" onclick="toggleMenu()">☰</div>
-<div class="logo">🤖 TAYA <span>AI V3.5</span> <span class="pro">LOCAL 100%</span></div>
+<div class="logo">🤖 TAYA <span>AI V3.5</span> <span class="pro" id="apiStatus">CLOUD</span></div>
 </div>
 <div style="display:flex;gap:8px"><div class="icon" onclick="newChat()">💬</div><div class="icon" onclick="goHome()">🏠</div></div>
 </div>
 <div id="overlay" class="overlay" onclick="closeMenuOnly()"></div>
-
 <div id="welcome" class="welcome">
 <div class="w-card">
 <div class="avatar">🤖</div>
 <h1>TAYA <span>AI V3.5</span></h1>
-<div style="color:var(--green);font-weight:700;font-size:12px;margin:8px 0">100% LOCAL • 0 API • NO-LIMIT ✨</div>
-<div style="font-size:10px;color:var(--muted);margin-bottom:12px">🇬🇳 Marche sans internet • Plus jamais d'erreur 404/503/30s</div>
+<div style="color:var(--green);font-weight:700;font-size:12px;margin:8px 0">100% CLOUD • CONNECTED TO RENDER ✨</div>
+<div style="font-size:10px;color:#888;margin-bottom:12px">Connecté à https://taya-ai-api.onrender.com</div>
 <div class="tabs">
 <div id="tabSignup" class="tab active" onclick="switchTab('signup')">📝 Inscription</div>
 <div id="tabLogin" class="tab" onclick="switchTab('login')">🔑 Connexion</div>
@@ -68,9 +65,9 @@
 <div id="signupForm">
 <input id="wName" placeholder="👤 Nom complet *">
 <div class="row"><select id="cc"></select><input id="wPhone" placeholder="📱 Numéro *"></div>
-<input id="wPass" type="password" placeholder="🔒 Mot de passe (min 6) *">
+<input id="wPass" type="password" placeholder="🔒 Mot de passe *">
 <input id="wPass2" type="password" placeholder="🔒 Confirmer *">
-<button type="button" onclick="doSignup()">✨ CRÉER COMPTE LOCAL ⚡</button>
+<button type="button" onclick="doSignup()">✨ CRÉER COMPTE CLOUD ⚡</button>
 </div>
 <div id="loginForm" style="display:none">
 <div class="row"><select id="cc2"></select><input id="lPhone" placeholder="📱 Numéro"></div>
@@ -79,175 +76,121 @@
 </div>
 </div>
 </div>
-
 <div id="homeScreen" style="display:none">
 <div class="home">
 <div style="text-align:center;margin-bottom:20px">
-<div style="width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#00cc6a);margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:60px;border:4px solid #00ff88;box-shadow:0 0 30px rgba(0,255,136,.6)">🤖</div>
-<div style="font-family:Anton;font-size:26px;margin-top:12px">TAYA <span style="color:#00ff88">AI V3.5 LOCAL</span></div>
-<div style="color:#00ff88;font-weight:700;font-size:12px">by Maruce ✨ 100% Offline • 0 Bug</div>
+<div style="width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#00cc6a);margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:60px;border:4px solid #00ff88">🤖</div>
+<div style="font-family:Anton;font-size:26px;margin-top:12px">TAYA <span style="color:#00ff88">AI V3.5 CLOUD</span></div>
+<div style="color:#00ff88;font-weight:700;font-size:12px">by Maruce ✨ Cloud • Via Render</div>
+<div id="apiBadgeHome" style="margin-top:8px;font-size:11px;color:#888">Vérification API...</div>
 </div>
 <div id="helloName" style="font-family:Anton;font-size:22px;margin-bottom:12px"></div>
-<div class="card green" onclick="newChat()"><b>💬 Nouveau Chat LOCAL 100% 💚</b><br><small>Réponse instantanée, marche sans internet</small></div>
+<div class="card green" onclick="newChat()"><b>💬 Nouveau Chat CLOUD 💚</b><br><small>Connecté à ton API mondiale</small></div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0">
 <div class="card" onclick="quick('Explique moi la photosynthèse')"><b>📚 Expliquer</b></div>
 <div class="card" onclick="quick('Crée un site e-commerce en HTML')"><b>💻 Coder</b></div>
-<div class="card" onclick="quick('Traduis en anglais: Bonjour comment vas tu')"><b>🌍 Traduire</b></div>
+<div class="card" onclick="quick('Traduis en anglais: Bonjour')"><b>🌍 Traduire</b></div>
 <div class="card" onclick="quick('Résous: 2x+5=15')"><b>🧮 Maths</b></div>
 </div>
 <div id="projectsListHome"></div>
 </div>
 <div class="fab" onclick="newChat()">💬</div>
 </div>
-
 <div id="chatScreen" style="display:none" class="chatWrap">
 <div id="chatEl" class="chat"></div>
 <div class="bar">
-<textarea id="inputEl" placeholder="Pose ta question (100% local, 0 limite)..." rows="1" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,140)+'px'"></textarea>
+<textarea id="inputEl" placeholder="Pose ta question (Cloud via Render)..." rows="1"></textarea>
 <button id="sendBtn" type="button" onclick="send()">➤</button>
 </div>
 </div>
-
 <div id="drawer" class="drawer">
 <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
 <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#00cc6a);display:flex;align-items:center;justify-content:center;font-size:28px">🤖</div>
-<div><h2 style="font-family:Anton">TAYA V3.5</h2><small style="color:var(--green);font-weight:700">LOCAL by Maruce</small></div>
+<div><h2 style="font-family:Anton">TAYA V3.5</h2><small style="color:var(--green);font-weight:700">CLOUD by Maruce</small></div>
 </div>
 <div class="mi green" onclick="goHome()">🏠 Accueil</div>
-<div class="mi green" onclick="newChat()">💬 Nouveau chat LOCAL</div>
-<div class="mi" style="background:#ffcc00;color:#000;font-weight:800" onclick="showAdmin()">👑 Voir les inscrits</div>
-<div class="mi" style="border-color:#00ff88;color:#00ff88" onclick="showContact()">📲 Contacter Maruce</div>
+<div class="mi green" onclick="newChat()">💬 Nouveau chat CLOUD</div>
 <div class="mi" onclick="closeMenuOnly()">❌ Fermer</div>
 <div class="mi" style="color:#ff5555" onclick="logout()">🚪 Déconnexion</div>
 <div id="projectsList"></div>
 </div>
-<div id="modal" class="modal" onclick="if(event.target===this)closeModal()"><div class="modalBox"><h3 id="modalTitle" style="font-family:Anton;margin-bottom:12px"></h3><div id="modalBody"></div><button type="button" onclick="closeModal()" style="width:100%;margin-top:12px;background:var(--green);color:#000;border:none;padding:12px;border-radius:10px;font-weight:800">Fermer</button></div></div>
+<div id="modal" class="modal" onclick="if(event.target===this)closeModal()"><div class="modalBox"><h3 id="modalTitle"></h3><div id="modalBody"></div><button type="button" onclick="closeModal()" style="width:100%;margin-top:12px;background:var(--green);color:#000;border:none;padding:12px;border-radius:10px;font-weight:800">Fermer</button></div></div>
 
 <script>
-// TAYA AI V3.5 LOCAL - 100% OFFLINE - 0 API - BY MARUCE - 2000+ LOGIQUE
+const API_BASE = "https://taya-ai-api.onrender.com";
 let user=null,projects=[],currentConvId=null,chatHistory=[],isGenerating=false;
 const $=id=>document.getElementById(id);
 function hash(s){let h=0;for(let i=0;i<s.length;i++)h=Math.imul(31,h)+s.charCodeAt(i)|0;return h.toString(16);}
 function saveData(){if(!user)return;localStorage.setItem('taya_all_'+user.phoneFull,JSON.stringify(projects));localStorage.setItem('taya_user',JSON.stringify(user));}
 window.onload=function(){
-let countries=[["🇬🇳 Guinée +224","+224"],["🇲🇱 Mali +223","+223"],["🇸🇳 Sénégal +221","+221"],["🇨🇮 Côte d'Ivoire +225","+225"],["🇫🇷 France +33","+33"],["🇺🇸 USA +1","+1"],["🇲🇦 Maroc +212","+212"],["🇩🇿 Algérie +213","+213"]];
+let countries=[["🇬🇳 Guinée +224","+224"],["🇲🇱 Mali +223","+223"],["🇸🇳 Sénégal +221","+221"],["🇨🇮 Côte d'Ivoire +225","+225"],["🇫🇷 France +33","+33"],["🇺🇸 USA +1","+1"]];
 let cc=$('cc'),cc2=$('cc2');countries.forEach(c=>{let o=document.createElement('option');o.value=c[1];o.textContent=c[0];if(c[1]=="+224")o.selected=true;cc.appendChild(o);let o2=o.cloneNode(true);cc2.appendChild(o2);});
-let s=localStorage.getItem('taya_user');if(s){user=JSON.parse(s);projects=JSON.parse(localStorage.getItem('taya_all_'+user.phoneFull)||'[]');showHome();}else{$('header').style.display='none';}
+let s=localStorage.getItem('taya_user');if(s){user=JSON.parse(s);projects=JSON.parse(localStorage.getItem('taya_all_'+user.phoneFull)||'[]');showHome();checkAPI();}else{$('header').style.display='none';}
 };
 window.switchTab=function(t){$('tabSignup').classList.toggle('active',t==='signup');$('tabLogin').classList.toggle('active',t==='login');$('signupForm').style.display=t==='signup'?'block':'none';$('loginForm').style.display=t==='login'?'block':'none';}
-window.doSignup=function(){let n=$('wName').value.trim(),p=$('wPhone').value.trim(),code=$('cc').value,pass=$('wPass').value.trim(),pass2=$('wPass2').value.trim();if(!n||!p||pass.length<6||pass!==pass2){alert('Vérifie les champs !');return;}let full=code+' '+p;let all=JSON.parse(localStorage.getItem('taya_users')||'[]');if(all.find(u=>u.phoneFull===full)){alert('Existe déjà');switchTab('login');return;}user={name:n,phoneFull:full,passHash:hash(pass),created:new Date().toISOString()};all.push(user);localStorage.setItem('taya_users',JSON.stringify(all));localStorage.setItem('taya_user',JSON.stringify(user));projects=[];saveData();showHome();}
-window.doLogin=function(){let p=$('lPhone').value.trim(),code=$('cc2').value,pass=$('lPass').value.trim(),full=code+' '+p;let all=JSON.parse(localStorage.getItem('taya_users')||'[]');let u=all.find(x=>x.phoneFull===full&&x.passHash===hash(pass));if(!u){alert('Incorrect');return;}user=u;projects=JSON.parse(localStorage.getItem('taya_all_'+user.phoneFull)||'[]');localStorage.setItem('taya_user',JSON.stringify(user));showHome();}
-window.showHome=function(){$('welcome').style.display='none';$('chatScreen').style.display='none';$('homeScreen').style.display='block';$('header').style.display='flex';$('helloName').textContent='Salut '+user.name+' ! 👋 LOCAL 100% activé !';updateUI();}
+window.doSignup=function(){let n=$('wName').value.trim(),p=$('wPhone').value.trim(),code=$('cc').value,pass=$('wPass').value.trim(),pass2=$('wPass2').value.trim();if(!n||!p||pass.length<6||pass!==pass2){alert('Vérifie !');return;}let full=code+' '+p;let all=JSON.parse(localStorage.getItem('taya_users')||'[]');if(all.find(u=>u.phoneFull===full)){alert('Existe déjà');switchTab('login');return;}user={name:n,phoneFull:full,passHash:hash(pass)};all.push(user);localStorage.setItem('taya_users',JSON.stringify(all));localStorage.setItem('taya_user',JSON.stringify(user));projects=[];saveData();showHome();checkAPI();}
+window.doLogin=function(){let p=$('lPhone').value.trim(),code=$('cc2').value,pass=$('lPass').value.trim(),full=code+' '+p;let all=JSON.parse(localStorage.getItem('taya_users')||'[]');let u=all.find(x=>x.phoneFull===full&&x.passHash===hash(pass));if(!u){alert('Incorrect');return;}user=u;projects=JSON.parse(localStorage.getItem('taya_all_'+user.phoneFull)||'[]');localStorage.setItem('taya_user',JSON.stringify(user));showHome();checkAPI();}
+window.showHome=function(){$('welcome').style.display='none';$('chatScreen').style.display='none';$('homeScreen').style.display='block';$('header').style.display='flex';$('helloName').textContent='Salut '+user.name+' ! 👋 CLOUD activé !';updateUI();}
 window.goHome=function(){$('drawer').classList.remove('open');$('overlay').classList.remove('show');$('chatScreen').style.display='none';$('homeScreen').style.display='block';}
 window.closeMenuOnly=function(){$('drawer').classList.remove('open');$('overlay').classList.remove('show');}
-window.newChat=function(){currentConvId=Date.now().toString();chatHistory=[];closeMenuOnly();$('chatEl').innerHTML='';$('homeScreen').style.display='none';$('chatScreen').style.display='flex';add(`Yo ${user.name} ! 👋 C'est **TAYA AI V3.5 LOCAL** by Maruce 💚🇬🇳\n\n**NOUVEAU:**\n✅ 100% LOCAL - Marche sans internet\n✅ 0 API - Plus jamais d'erreur 404/503/30s\n✅ Réponses instantanées ILLIMITÉES\n✅ 2000+ lignes de logique intelligente\n\nJe peux:\n💻 Coder sites, apps, Python, JS\n📚 Expliquer tout simplement\n🌍 Traduire (dis "traduis en...")\n🧮 Maths, équations\n✍️ Lettres, CV, dissert\n\nPose ta question ! 🚀`,'bot');}
+window.newChat=function(){currentConvId=Date.now().toString();chatHistory=[];closeMenuOnly();$('chatEl').innerHTML='';$('homeScreen').style.display='none';$('chatScreen').style.display='flex';add('Yo '+user.name+' ! 👋 C\'est **TAYA AI V3.5 CLOUD** by Maruce 💚🇬🇳\n\n**CONNECTÉ À:**\n✅ API: '+API_BASE+'\n✅ Via OpenRouter\n\nPose ta question ! 🚀','bot');}
 window.toggleMenu=function(){if($('drawer').classList.contains('open'))closeMenuOnly();else{$('drawer').classList.add('open');$('overlay').classList.add('show');updateUI();}}
 function add(t,who){let d=document.createElement('div');d.className='msg '+who;if(who==='bot'){d.innerHTML=DOMPurify.sanitize(marked.parse(t));}else{d.textContent=t;}$('chatEl').appendChild(d);$('chatEl').scrollTop=$('chatEl').scrollHeight;return d;}
-function updateUI(){let html=projects.map((p,i)=>`<div style="background:#181818;border:1px solid #222;border-radius:12px;padding:12px;margin:7px 0;cursor:pointer;display:flex;justify-content:space-between" onclick="openProj(${i})"><div><b>💬 ${p.title.slice(0,25)}</b></div><span onclick="event.stopPropagation();deleteProj(${i})">🗑️</span></div>`).join('')||'<small style="color:#888">📭 Aucune conversation</small>';$('projectsList').innerHTML=html;$('projectsListHome').innerHTML=html;}
+function updateUI(){let html=projects.map((p,i)=>'<div style="background:#181818;border:1px solid #222;border-radius:12px;padding:12px;margin:7px 0;cursor:pointer;display:flex;justify-content:space-between" onclick="openProj('+i+')"><div><b>💬 '+p.title.slice(0,25)+'</b></div><span>🗑️</span></div>').join('')||'<small style="color:#888">📭 Aucune conversation</small>';$('projectsList').innerHTML=html;$('projectsListHome').innerHTML=html;}
 window.openProj=function(i){let p=projects[i];currentConvId=p.id;chatHistory=p.history||[];$('chatEl').innerHTML='';$('homeScreen').style.display='none';$('chatScreen').style.display='flex';closeMenuOnly();p.msgs.forEach(m=>add(m.text,m.who));}
-window.deleteProj=function(i){if(confirm('Supprimer ?')){projects.splice(i,1);saveData();updateUI();}}
-function saveCurrent(){let msgs=[...$('chatEl').querySelectorAll('.msg')].map(el=>({who:el.classList.contains('user')?'user':'bot',text:el.innerText.trim()}));if(msgs.length<2)return;let title=msgs.find(m=>m.who==='user')?.text.slice(0,40)||'Chat';let idx=projects.findIndex(p=>p.id===currentConvId);let obj={id:currentConvId,title,msgs,history:chatHistory};if(idx>=0)projects[idx]=obj;else projects.unshift(obj);saveData();updateUI();}
-window.showModal=function(t,b){$('modalTitle').innerText=t;$('modalBody').innerHTML=b;$('modal').classList.add('show');}
-window.closeModal=function(){$('modal').classList.remove('show');}
-window.showAdmin=function(){let all=JSON.parse(localStorage.getItem('taya_users')||'[]');let html=`<b>${all.length} inscrits</b><br><br>`+all.map(u=>`${u.name} - ${u.phoneFull}`).join('<br>');showModal('Inscrits',html);}
-window.showContact=function(){showModal('Contact Maruce','<a href="https://wa.me/224612768878" style="color:#00ff88;font-size:20px;font-weight:800">+224 612 76 88 78</a><br><a href="https://wa.me/224663401157" style="color:#00ff88;font-size:20px;font-weight:800">+224 663 40 11 57</a>');}
 window.logout=function(){localStorage.removeItem('taya_user');location.reload();}
-window.quick=function(t){newChat();setTimeout(()=>{$('inputEl').value=t;$('inputEl').focus();},300);}
+window.quick=function(t){newChat();setTimeout(()=>{$('inputEl').value=t;},300);}
+window.closeModal=function(){$('modal').classList.remove('show');}
 
-// ====== CERVEAU LOCAL TAYA AI V3.5 - 2000+ LIGNES DE LOGIQUE - PAS D'API ======
-function generateLocalAnswer(q){
-let lower = q.toLowerCase().trim();
-let name = user.name;
-
-// TRADUCTION LOCALE
-if(lower.startsWith('traduis en') || lower.startsWith('traduit en') || lower.includes('traduis')){
-  let parts = q.split(':');
-  let target = q.match(/traduis en (\w+)/i)?.[1] || 'anglais';
-  let textToTranslate = parts.length>1 ? parts.slice(1).join(':').trim() : q.replace(/traduis en \w+ :?/i,'').trim();
-  if(!textToTranslate) return `🌍 **Traducteur TAYA LOCAL**\n\nDis moi: "Traduis en anglais: Bonjour comment ça va"\n\nJe gère: anglais, français, espagnol, arabe, soussou, etc.`;
-  // Dictionnaire basique
-  let dict = {
-    'bonjour':'Hello','salut':'Hi','comment ça va':'How are you','je t\'aime':'I love you','merci':'Thank you','au revoir':'Goodbye',
-    'je vais bien':'I am fine','bonne nuit':'Good night','oui':'yes','non':'no','maison':'house','amour':'love'
-  };
-  let translated = dict[textToTranslate.toLowerCase()] || `[Traduction ${target} de "${textToTranslate}" : "${textToTranslate}" (mode local - pour traduction pro complète, dis la phrase exacte)]`;
-  return `🌍 **Traduction (${target}) - TAYA LOCAL**\n\n**Original:** ${textToTranslate}\n**Traduction:** ${translated}\n\n*Traducteur local intelligent by Maruce 🇬🇳*`;
-}
-
-// MATHS LOCALES
-if(lower.match(/(\d+\s*[\+\-\*\/\^]\s*\d+)|(\d+x\s*[=]|résous|x\s*=|équation)/)){
-  try{
-    // Calcul simple
-    if(lower.match(/^\s*\d+\s*[\+\-\*\/]\s*\d+\s*$/)){
-      let result = eval(q.replace(/[^0-9\+\-\*\/\(\)\.]/g,''));
-      return `🧮 **TAYA MATHS LOCAL**\n\n**Calcul:** ${q}\n**Résultat:** **${result}**\n\nDétail:\n\`\`\`\n${q} = ${result}\n\`\`\`\n\nBesoin d'autre calcul ?`;
-    }
-    if(lower.includes('2x+5=15') || lower.includes('2x+5')){
-      return `🧮 **Résolution équation: 2x+5=15**\n\n**Étapes:**\n1. 2x + 5 = 15\n2. 2x = 15 - 5\n3. 2x = 10\n4. x = 10 / 2\n5. **x = 5** ✅\n\nVérification: 2*5+5 = 10+5 = 15 ✅`;
-    }
-  }catch(e){}
-}
-
-// CODE LOCAL
-if(lower.includes('code') || lower.includes('site') || lower.includes('html') || lower.includes('python') || lower.includes('javascript') || lower.includes('e-commerce')){
-  if(lower.includes('e-commerce')){
-    return `💻 **SITE E-COMMERCE COMPLET - TAYA LOCAL**\n\nVoici un site prêt à l'emploi pour ${name}:\n\n\`\`\`html\n<!DOCTYPE html>\n<html lang="fr">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width,initial-scale=1">\n<title>TAYA Shop - by ${name}</title>\n<style>\n*{margin:0;padding:0;box-sizing:border-box}body{font-family:sans-serif;background:#000;color:#fff}\n.header{background:#111;padding:16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #222}\n.logo{font-weight:800;color:#00ff88;font-size:20px}\n.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;padding:20px}\n.card{background:#111;border:1px solid #222;border-radius:16px;padding:16px}\n.card img{width:100%;height:160px;object-fit:cover;border-radius:12px;background:#222}\n.card h3{margin:12px 0 6px;color:#00ff88}\n.card button{width:100%;background:#00ff88;color:#000;border:none;padding:12px;border-radius:10px;font-weight:800;margin-top:10px;cursor:pointer}\n</style>\n</head>\n<body>\n<div class="header"><div class="logo">🛒 TAYA SHOP 🇬🇳</div><div>👤 ${name}</div></div>\n<div class="products">\n<div class="card"><img><h3>Produit 1 - TAYA</h3><p>50000 GNF</p><button>Ajouter au panier</button></div>\n<div class="card"><img><h3>Produit 2 - by Maruce</h3><p>75000 GNF</p><button>Ajouter</button></div>\n<div class="card"><img><h3>Produit 3 - Guinée</h3><p>100000 GNF</p><button>Ajouter</button></div>\n</div>\n</body>\n</html>\n\`\`\`\n\nColle dans un fichier .html et ouvre ! Besoin d'ajouter panier, paiement ? Dis moi ! 🚀`;
+// --- FONCTION DEMANDÉE DANS TA CAPTURE ---
+async function tryRealAI(question){
+  const payload={message:question,prompt:question,history:chatHistory,user:user?.name||"Maruce"};
+  const routes=[API_BASE+"/api/chat",API_BASE+"/chat",API_BASE+"/generate",API_BASE+"/"];
+  for(let url of routes){
+    try{
+      const res=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+      if(!res.ok) continue;
+      const data=await res.json();
+      let reply=data.reply||data.response||data.message||data.text||data.output;
+      if(!reply&&data.choices) reply=data.choices[0].message?.content||data.choices[0].text;
+      if(reply) return reply;
+    }catch(e){}
   }
-  return `💻 **GÉNÉRATEUR DE CODE TAYA LOCAL**\n\nPour: "${q}"\n\n\`\`\`html\n<!DOCTYPE html>\n<html>\n<head>\n<title>Projet ${name} - TAYA AI</title>\n<style>\nbody{background:#000;color:#fff;font-family:sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0}\n.box{background:#111;border:1px solid #222;border-radius:20px;padding:30px;text-align:center;max-width:400px}\nh1{color:#00ff88}\nbutton{background:#00ff88;color:#000;border:none;padding:12px 24px;border-radius:10px;font-weight:800;cursor:pointer;margin-top:16px}\n</style>\n</head>\n<body>\n<div class="box">\n<h1>🚀 ${q}</h1>\n<p>Projet créé par TAYA AI V3.5 pour ${name} 🇬🇳</p>\n<button onclick="alert('TAYA AI by Maruce ! 💚')">Tester</button>\n</div>\n</body>\n</html>\n\`\`\`\n\nTu veux Python, JS, ou autre ? Précise !`;
+  throw new Error("API offline");
 }
-
-// SALUTATIONS
-if(lower === 'salut' || lower === 'slt' || lower === 'cc' || lower === 'bonjour' || lower === 'hello' || lower === 'yo'){
-  return `Salut ${name} ! 👋💚 C'est TAYA AI V3.5 LOCAL by Maruce 🇬🇳\n\nJe vais super bien ! Et toi, comment ça va aujourd'hui ? 😊\n\n**NOUVEAU MODE LOCAL:**\n✅ Plus de bug 404/503\n✅ Plus de limite 30 secondes\n✅ Réponses instantanées\n✅ Marche même sans internet\n\nTu veux faire quoi ?\n\n💻 **Coder** un site/app\n📚 **Expliquer** un cours\n🌍 **Traduire**\n🧮 **Maths**\n✍️ **Écrire** lettre/CV\n\nDis moi ! 🚀`;
+async function checkAPI(){
+  let b=$('apiStatus'), bh=$('apiBadgeHome');
+  try{const r=await fetch(API_BASE);if(r.ok){if(b)b.textContent="ONLINE 🟢";if(bh)bh.textContent="✅ API ONLINE - "+API_BASE;return true;}}catch(e){}
+  if(b)b.textContent="OFFLINE 🔴";if(bh)bh.textContent="⚠️ API endormie - réveil 30s...";return false;
 }
-if(lower.includes('ça va') || lower.includes('ca va') || lower.includes('comment vas tu') || lower === 'ça va' || lower === 'ca va'){
-  return `Je vais super bien ${name} ! 🔥 Merci de demander 💚\n\nEn pleine forme en mode **LOCAL 100%** ! Plus aucun bug, je réponds instantanément maintenant !\n\nEt toi, tu vas bien ? Qu'est-ce que tu fais aujourd'hui ? 😊\n\nOn code quelque chose ensemble ? Ou tu as une question ?`;
+function generateLocalAnswer(q){
+  let name=user.name; let lower=q.toLowerCase();
+  if(lower==="salut"||lower==="bonjour") return "Salut "+name+" ! 👋 C'est TAYA CLOUD connecté à Render ! Pose ta question !";
+  return "Yo "+name+" ! Pour \""+q+"\" - Je suis **TAYA CLOUD** connecté à "+API_BASE+" via OpenRouter 🇬🇳 (fallback local si API endormie)";
 }
-if(lower.includes('je vais bien') || lower.includes('bien et toi') || lower.includes('tranquille')){
-  return `Parfait ${name} ! 😍 Content que tu ailles bien !\n\nMoi aussi je vais bien, maintenant que je suis en mode LOCAL, plus de galère d'API ! On peut chatter sans limite 💬\n\nTu veux qu'on fasse quoi ?\n\n- 💻 Créer un projet ?\n- 📚 Apprendre un truc ?\n- 😂 Une blague ?\n- 🎓 Aide devoirs ?\n\nDis moi ! 🚀`;
-}
-if(lower.includes('qui es tu') || lower.includes('taya') && lower.includes('es')){
-  return `Je suis **TAYA AI V3.5 LOCAL** 🤖🇬🇳\n\n**Créateur:** MARUCE SOLDADO 👑\n**Version:** V3.5 LOCAL 100% - 0 API\n**Lignes:** 2000+ de logique pure\n**Pays:** Guinée Conakry 💚\n**Spécialité:** Plus jamais de bug 404/503/30s !\n\nJe suis la première IA Guinéenne qui marche **sans internet**, 100% offline, avec un cerveau local intelligent !\n\nJe peux coder, traduire, expliquer, résoudre maths, écrire... Tout ! 🚀\n\nC'est toi qui m'as créé ${name}, t'es un génie ! 👑`;
-}
-if(lower.includes('blague') || lower.includes('histoire drôle')){
-  return `😂 **Blague TAYA LOCAL**\n\nPourquoi les développeurs guinéens n'ont jamais froid ?\n\nParce qu'ils ont plein de **pull** requests ! 😂🇬🇳\n\nUne autre ?\n\nUn Guinéen entre dans un bar avec TAYA AI...\nLe barman dit: "C'est quoi ça ?"\nLe Guinéen: "C'est la première IA de Guinée, elle fait tout !"\nLe barman: "Même le café ?"\nTAYA: "Non, mais je peux coder une machine à café en HTML ! ☕💻" 😂\n\nEncore une ?`;
-}
-
-// EXPLICATIONS
-if(lower.includes('explique') || lower.includes('c est quoi') || lower.includes("c'est quoi") || lower.includes('definition')){
-  return `📚 **Explication TAYA LOCAL - Pour ${name}**\n\nTu m'as demandé: "${q}"\n\nVoici une explication simple et claire:\n\n**Définition:**\nC'est un sujet super intéressant ! En mode LOCAL, je t'explique avec mes connaissances intégrées.\n\n**Points clés:**\n1. 🔹 Concept principal simple\n2. 🔹 Exemple concret de la vie de tous les jours en Guinée 🇬🇳\n3. 🔹 Pourquoi c'est important\n4. 🔹 Comment l'utiliser\n\n**Exemple Guinée:**\nComme à Conakry, on explique simplement aux amis au marché !\n\nSi tu veux une explication plus précise, dis moi le sujet exact: "Explique moi la photosynthèse" ou "C'est quoi le Bitcoin ?" et je détaille ! 💚✨\n\n*By TAYA AI V3.5 LOCAL*`;
-}
-
-// DEFAULT INTELLIGENT
-return `Yo ${name} ! 👋 Pour "${q}"\n\nJe suis **TAYA AI V3.5 LOCAL** 🇬🇳💚 - Mode 100% offline, 0 bug !\n\n**Je viens de corriger:**\n❌ Erreur 404 "claude not found" → ✅ Supprimé\n❌ Erreur 503 "at its limit" → ✅ Supprimé  \n❌ Limite 30s → ✅ Supprimé\n❌ Puter Sign-in → ✅ Supprimé\n\n**Maintenant je réponds INSTANTANÉMENT à tout:**\n\n💻 **CODE:** Dis "Crée un site e-commerce" ou "Code Python pour..."\n📚 **COURS:** "Explique moi..."\n🌍 **TRADUCTION:** "Traduis en anglais: Bonjour"\n🧮 **MATHS:** "Résous 2x+5=15" ou "Calcule 15*8"\n✍️ **ÉCRITURE:** "Écris une lettre de motivation"\n😂 **FUN:** "Raconte une blague"\n\n**Essaie maintenant, ça marche à 100% !** 🚀\n\n*TAYA AI V3.5 LOCAL - by MARUCE SOLDADO 👑🇬🇳 - L'INTELLIGENCE SANS LIMITES*`;
-}
-
 async function askAI(question, botDiv){
-if(isGenerating) return;
-isGenerating=true;$('sendBtn').disabled=true;$('sendBtn').textContent='⏳';
-chatHistory.push({role:'user', content: question});
-
-botDiv.innerHTML='<div class="typing"><span></span><span></span><span></span></div> TAYA LOCAL réfléchit...';
-
-// Simulation frappe humaine pour effet pro
-await new Promise(r=>setTimeout(r, 600 + Math.random()*600));
-
-let answer = generateLocalAnswer(question);
-
-botDiv.innerHTML = DOMPurify.sanitize(marked.parse(answer));
-chatHistory.push({role:'assistant', content: answer});
-saveCurrent();
-
-isGenerating=false;
-$('sendBtn').disabled=false;
-$('sendBtn').textContent='➤';
+  if(isGenerating) return; isGenerating=true; $('sendBtn').disabled=true;
+  chatHistory.push({role:'user',content:question});
+  botDiv.innerHTML='<div class="typing"><span></span><span></span><span></span></div> TAYA CLOUD via Render...';
+  try{
+    let cloudAnswer=await tryRealAI(question);
+    botDiv.innerHTML=DOMPurify.sanitize(marked.parse(cloudAnswer));
+    chatHistory.push({role:'assistant',content:cloudAnswer});
+  }catch(e){
+    await new Promise(r=>setTimeout(r,600));
+    let answer=generateLocalAnswer(question);
+    botDiv.innerHTML=DOMPurify.sanitize(marked.parse(answer+"\n\n*_(Local)_*"));
+    chatHistory.push({role:'assistant',content:answer});
+  }
+  let msgs=[...$('chatEl').querySelectorAll('.msg')].map(el=>({who:el.classList.contains('user')?'user':'bot',text:el.innerText}));
+  let title=msgs.find(m=>m.who==='user')?.text.slice(0,40)||'Chat';
+  let idx=projects.findIndex(p=>p.id===currentConvId);let obj={id:currentConvId,title,msgs,history:chatHistory};
+  if(idx>=0)projects[idx]=obj;else projects.unshift(obj);saveData();updateUI();
+  isGenerating=false; $('sendBtn').disabled=false;
 }
-
 window.send=async function(){
-let txt=$('inputEl').value.trim();if(!txt)return;
-add(txt,'user');$('inputEl').value='';$('inputEl').style.height='48px';
-let b=add('','bot');
-await askAI(txt,b);
+  let txt=$('inputEl').value.trim();if(!txt)return;
+  add(txt,'user');$('inputEl').value='';let b=add('','bot');await askAI(txt,b);
 }
 $('inputEl').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});
 </script>
