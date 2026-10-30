@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TAYA V1.0.1</title>
+<title>TAYA V1.0.1 - TOUS PAYS</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
@@ -18,7 +18,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-grad
 .w-card{width:100%;max-width:460px;background:linear-gradient(145deg,#111,#0a0a0a);border:1px solid var(--bd);border-radius:28px;padding:28px;text-align:center}
 .w-card .av{width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,var(--g),var(--b));margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:56px;border:4px solid var(--g)}
 .input-wrap{position:relative;width:100%;margin:7px 0}
-.w-card input,.w-card select{width:100%;background:var(--c2);border:1px solid var(--bd);color:#fff;padding:15px 45px 15px 15px;border-radius:14px;outline:none}
+.w-card input,.w-card select{width:100%;background:var(--c2);border:1px solid var(--bd);color:#fff;padding:15px 45px 15px 15px;border-radius:14px;outline:none;font-size:14px}
 .eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer}
 .row{display:flex;gap:8px;margin:7px 0} .row select{flex:1} .row .input-wrap{flex:1.8;margin:0}
 .w-card button{width:100%;margin-top:16px;background:linear-gradient(135deg,var(--g),var(--b));color:#000;border:none;padding:16px;border-radius:16px;font-weight:900;cursor:pointer}
@@ -50,7 +50,7 @@ textarea.msgInput{width:100%;background:var(--c2);border:1px solid var(--bd);col
 <div style="display:flex;align-items:center;gap:8px">
 <div class="icon" onclick="goHome()" style="background:linear-gradient(135deg,#00ff88,#00cc6a);color:#000">←</div>
 <div class="icon" onclick="toggleMenu()">☰</div>
-<div class="logo">TAYA <span>🤖IA</span><span class="badge">V1.0.1</span></div>
+<div class="logo">TAYA <span>🤖IA</span><span class="badge">V1.0.2</span></div>
 </div>
 <div style="display:flex;gap:8px"><div class="icon" onclick="openWriteToMaruce()">💌</div><div class="icon" onclick="newChat()">💬</div></div>
 </div>
@@ -58,15 +58,15 @@ textarea.msgInput{width:100%;background:var(--c2);border:1px solid var(--bd);col
 <div id="welcome" class="welcome">
 <div class="w-card">
 <div class="av avatar">🤖</div>
-<h1>TAYA <span>🤖IA</span> V1.0.1</h1>
-<div style="color:#00ff88;font-weight:800;font-size:11px;margin:10px 0">V1.0.1 • PROFESSIONNELLE 🇬🇳</div>
+<h1>TAYA <span>🤖IA</span> V1.0.2</h1>
+<div style="color:#00ff88;font-weight:800;font-size:11px;margin:10px 0">V1.0.2 • TOUS PAYS • 240+ CODES 🇬🇳🌍</div>
 <div class="tabs"><div id="tabSignup" class="tab active" onclick="switchTab('signup')">📝 Inscription</div><div id="tabLogin" class="tab" onclick="switchTab('login')">🔑 Connexion</div></div>
 <div id="signupForm">
 <input id="wName" placeholder="👤 Nom complet *">
 <div class="row"><select id="cc"></select><div class="input-wrap"><input id="wPhone" placeholder="📱 Numéro *"></div></div>
 <div class="input-wrap"><input id="wPass" type="password" placeholder="🔒 Mot de passe *"><span class="eye" onclick="toggleEye('wPass',this)">👁️</span></div>
 <div class="input-wrap"><input id="wPass2" type="password" placeholder="🔒 Confirmer *"><span class="eye" onclick="toggleEye('wPass2',this)">👁️</span></div>
-<button type="button" onclick="doSignup()">✨ CRÉER COMPTE V1.0.1</button>
+<button type="button" onclick="doSignup()">✨ CRÉER COMPTE V1.0.2</button>
 </div>
 <div id="loginForm" style="display:none">
 <div class="row"><select id="cc2"></select><div class="input-wrap"><input id="lPhone" placeholder="📱 Numéro"></div></div>
@@ -79,11 +79,11 @@ textarea.msgInput{width:100%;background:var(--c2);border:1px solid var(--bd);col
 <div class="home">
 <div style="text-align:center;margin-bottom:28px">
 <div class="avatar" style="width:130px;height:130px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#4488ff);margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:64px;border:4px solid #00ff88">🤖</div>
-<div style="font-family:Anton;font-size:32px;margin-top:14px">TAYA <span style="background:linear-gradient(135deg,#00ff88,#4488ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">🤖IA</span> V1.0.1</div>
-<div style="color:#fff;font-weight:700;font-size:13px;margin-top:6px">by MARUCE SOLDADO 👑🇬🇳</div>
+<div style="font-family:Anton;font-size:32px;margin-top:14px">TAYA <span style="background:linear-gradient(135deg,#00ff88,#4488ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">🤖IA</span> V1.0.2</div>
+<div style="color:#fff;font-weight:700;font-size:13px;margin-top:6px">by MARUCE SOLDADO 👑🇬🇳 • TOUS PAYS</div>
 </div>
 <div id="helloName" style="font-family:Anton;font-size:26px;margin-bottom:18px"></div>
-<div class="card green" onclick="newChat()"><b>💬 Nouveau Chat V1.0.1</b><br><small>Intelligence pure • Répond à tout</small></div>
+<div class="card green" onclick="newChat()"><b>💬 Nouveau Chat V1.0.2</b><br><small>240+ pays • Intelligence pure</small></div>
 <div id="projectsListHome"></div>
 </div>
 <div class="fab" onclick="newChat()">💬</div>
@@ -99,7 +99,7 @@ textarea.msgInput{width:100%;background:var(--c2);border:1px solid var(--bd);col
 </div>
 </div>
 <div id="drawer" class="drawer">
-<div style="display:flex;align-items:center;gap:14px;margin-bottom:16px"><div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#4488ff);display:flex;align-items:center;justify-content:center;font-size:32px;border:3px solid #00ff88">🤖</div><div><h2 style="font-family:Anton">TAYA V1.0.1</h2><small style="color:#00ff88;font-weight:800">by Maruce</small></div></div>
+<div style="display:flex;align-items:center;gap:14px;margin-bottom:16px"><div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#4488ff);display:flex;align-items:center;justify-content:center;font-size:32px;border:3px solid #00ff88">🤖</div><div><h2 style="font-family:Anton">TAYA V1.0.2</h2><small style="color:#00ff88;font-weight:800">by Maruce • 240+ pays</small></div></div>
 <div class="mi green" onclick="goHome()">🏠 Accueil</div><div class="mi green" onclick="newChat()">💬 Nouveau chat</div><div class="mi" style="background:linear-gradient(135deg,#ff8800,#ffcc00);color:#000;font-weight:900" onclick="openWriteToMaruce()">💌 Écrire à Maruce</div><div class="mi" style="background:#ff4400;color:#fff;font-weight:900" onclick="showMessages()">📩 MESSAGES (<span id="msgCount">0</span>)</div><div class="mi" onclick="closeMenuOnly()">❌ Fermer</div><div class="mi" style="color:#ff5555" onclick="logout()">🚪 Déconnexion</div><div id="projectsList"></div>
 </div>
 <div id="modal" class="modal" onclick="if(event.target===this)closeModal()"><div class="modalBox"><h3 id="modalTitle" style="font-family:Anton;margin-bottom:12px"></h3><div id="modalBody"></div><button onclick="closeModal()" style="width:100%;margin-top:16px;background:#00ff88;color:#000;border:none;padding:14px;border-radius:12px;font-weight:800">Fermer</button></div></div>
@@ -111,7 +111,16 @@ function hash(s){let h=0;for(let i=0;i<s.length;i++)h=Math.imul(31,h)+s.charCode
 function saveData(){if(!user)return;localStorage.setItem('taya_all_'+user.phoneFull,JSON.stringify(projects));localStorage.setItem('taya_user',JSON.stringify(user));}
 function updateMsgCount(){let m=JSON.parse(localStorage.getItem('taya_messages')||'[]');if($('msgCount'))$('msgCount').textContent=m.length;}
 window.toggleEye=(id,el)=>{let i=$(id);if(i.type==='password'){i.type='text';el.textContent='🙈';}else{i.type='password';el.textContent='👁️';}}
-window.onload=()=>{let c=[["🇬🇳 Guinée +224","+224"],["🇲🇱 Mali +223","+223"],["🇸🇳 Sénégal +221","+221"],["🇨🇮 Côte d'Ivoire +225","+225"],["🇫🇷 France +33","+33"]];let cc=$('cc'),cc2=$('cc2');c.forEach(x=>{let o=document.createElement('option');o.value=x[1];o.textContent=x[0];if(x[1]=="+224")o.selected=true;cc.appendChild(o);let o2=o.cloneNode(true);cc2.appendChild(o2);});let s=localStorage.getItem('taya_user');if(s){user=JSON.parse(s);projects=JSON.parse(localStorage.getItem('taya_all_'+user.phoneFull)||'[]');showHome();}else{$('header').style.display='none';}updateMsgCount();};
+window.onload=()=>{
+let c=[
+["🇬🇳 Guinée +224","+224"],["🇲🇱 Mali +223","+223"],["🇸🇳 Sénégal +221","+221"],["🇨🇮 Côte d'Ivoire +225","+225"],["🇧🇫 Burkina Faso +226","+226"],["🇸🇱 Sierra Leone +232","+232"],["🇱🇷 Liberia +231","+231"],["🇬🇲 Gambie +220","+220"],["🇬🇭 Ghana +233","+233"],["🇳🇬 Nigeria +234","+234"],["🇳🇪 Niger +227","+227"],["🇹🇬 Togo +228","+228"],["🇧🇯 Bénin +229","+229"],["🇲🇷 Mauritanie +222","+222"],["🇲🇦 Maroc +212","+212"],["🇩🇿 Algérie +213","+213"],["🇹🇳 Tunisie +216","+216"],["🇱🇾 Libye +218","+218"],["🇪🇬 Égypte +20","+20"],["🇿🇦 Afrique du Sud +27","+27"],["🇪🇹 Éthiopie +251","+251"],["🇰🇪 Kenya +254","+254"],["🇨🇲 Cameroun +237","+237"],["🇨🇩 RDC +243","+243"],["🇨🇬 Congo +242","+242"],["🇦🇴 Angola +244","+244"],["🇷🇼 Rwanda +250","+250"],["🇹🇿 Tanzanie +255","+255"],["🇺🇬 Ouganda +256","+256"],["🇬🇳 Guinée-Bissau +245","+245"],["🇨🇻 Cap-Vert +238","+238"],
+["🇫🇷 France +33","+33"],["🇧🇪 Belgique +32","+32"],["🇨🇭 Suisse +41","+41"],["🇨🇦 Canada +1","+1"],["🇺🇸 USA +1","+1"],["🇩🇪 Allemagne +49","+49"],["🇬🇧 UK +44","+44"],["🇪🇸 Espagne +34","+34"],["🇮🇹 Italie +39","+39"],["🇵🇹 Portugal +351","+351"],["🇳🇱 Pays-Bas +31","+31"],["🇸🇪 Suède +46","+46"],["🇹🇷 Turquie +90","+90"],["🇷🇺 Russie +7","+7"],["🇺🇦 Ukraine +380","+380"],["🇵🇱 Pologne +48","+48"],["🇷🇴 Roumanie +40","+40"],["🇬🇷 Grèce +30","+30"],["🇮🇪 Irlande +353","+353"],["🇳🇴 Norvège +47","+47"],["🇩🇰 Danemark +45","+45"],["🇸🇪 Suède +46","+46"],["🇫🇮 Finlande +358","+358"],
+["🇦🇪 Émirats +971","+971"],["🇸🇦 Arabie Saoudite +966","+966"],["🇶🇦 Qatar +974","+974"],["🇰🇼 Koweït +965","+965"],["🇧🇭 Bahreïn +973","+973"],["🇦🇿 Azerbaïdjan +994","+994"],["🇦🇲 Arménie +374","+374"],["🇬🇪 Géorgie +995","+995"],
+["🇮🇳 Inde +91","+91"],["🇵🇰 Pakistan +92","+92"],["🇧🇩 Bangladesh +880","+880"],["🇨🇳 Chine +86","+86"],["🇯🇵 Japon +81","+81"],["🇰🇷 Corée du Sud +82","+82"],["🇰🇵 Corée du Nord +850","+850"],["🇮🇩 Indonésie +62","+62"],["🇲🇾 Malaisie +60","+60"],["🇵🇭 Philippines +63","+63"],["🇹🇭 Thaïlande +66","+66"],["🇻🇳 Vietnam +84","+84"],["🇸🇬 Singapour +65","+65"],["🇭🇰 Hong Kong +852","+852"],["🇹🇼 Taïwan +886","+886"],["🇦🇺 Australie +61","+61"],["🇳🇿 Nouvelle-Zélande +64","+64"],["🇧🇷 Brésil +55","+55"],["🇦🇷 Argentine +54","+54"],["🇲🇽 Mexique +52","+52"],["🇨🇴 Colombie +57","+57"],["🇵🇪 Pérou +51","+51"],["🇨🇱 Chili +56","+56"],["🇻🇪 Venezuela +58","+58"],["🇲🇦 Maroc +212","+212"],["🇩🇿 Algérie +213","+213"],
+["🇦🇫 Afghanistan +93","+93"],["🇦🇱 Albanie +355","+355"],["🇩🇿 Algérie +213","+213"],["🇦🇩 Andorre +376","+376"],["🇦🇴 Angola +244","+244"],["🇦🇬 Antigua +1268","+1268"],["🇦🇷 Argentine +54","+54"],["🇦🇲 Arménie +374","+374"],["🇦🇼 Aruba +297","+297"],["🇦🇺 Australie +61","+61"],["🇦🇹 Autriche +43","+43"],["🇦🇿 Azerbaïdjan +994","+994"],["🇧🇸 Bahamas +1242","+1242"],["🇧🇭 Bahreïn +973","+973"],["🇧🇩 Bangladesh +880","+880"],["🇧🇧 Barbade +1246","+1246"],["🇧🇾 Biélorussie +375","+375"],["🇧🇿 Belize +501","+501"],["🇧🇯 Bénin +229","+229"],["🇧🇹 Bhoutan +975","+975"],["🇧🇴 Bolivie +591","+591"],["🇧🇦 Bosnie +387","+387"],["🇧🇼 Botswana +267","+267"],["🇧🇷 Brésil +55","+55"],["🇧🇳 Brunei +673","+673"],["🇧🇬 Bulgarie +359","+359"],["🇧🇫 Burkina +226","+226"],["🇧🇮 Burundi +257","+257"],["🇰🇭 Cambodge +855","+855"],["🇨🇲 Cameroun +237","+237"],["🇨🇦 Canada +1","+1"],["🇨🇻 Cap-Vert +238","+238"],["🇨🇫 Centrafrique +236","+236"],["🇹🇩 Tchad +235","+235"],["🇨🇱 Chili +56","+56"],["🇨🇳 Chine +86","+86"],["🇨🇴 Colombie +57","+57"],["🇰🇲 Comores +269","+269"],["🇨🇩 Congo RDC +243","+243"],["🇨🇬 Congo +242","+242"],["🇨🇷 Costa Rica +506","+506"],["🇭🇷 Croatie +385","+385"],["🇨🇺 Cuba +53","+53"],["🇨🇾 Chypre +357","+357"],["🇨🇿 Tchèque +420","+420"],["🇩🇰 Danemark +45","+45"],["🇩🇯 Djibouti +253","+253"],["🇩🇲 Dominique +1767","+1767"],["🇩🇴 Dominicaine +1809","+1809"],["🇪🇨 Équateur +593","+593"],["🇪🇬 Égypte +20","+20"],["🇸🇻 Salvador +503","+503"],["🇬🇶 Guinée Éq. +240","+240"],["🇪🇷 Érythrée +291","+291"],["🇪🇪 Estonie +372","+372"],["🇸🇿 Eswatini +268","+268"],["🇪🇹 Éthiopie +251","+251"],["🇫🇯 Fidji +679","+679"],["🇫🇮 Finlande +358","+358"],["🇫🇷 France +33","+33"],["🇬🇦 Gabon +241","+241"],["🇬🇲 Gambie +220","+220"],["🇬🇪 Géorgie +995","+995"],["🇩🇪 Allemagne +49","+49"],["🇬🇭 Ghana +233","+233"],["🇬🇷 Grèce +30","+30"],["🇬🇩 Grenade +1473","+1473"],["🇬🇹 Guatemala +502","+502"],["🇬🇳 Guinée +224","+224"],["🇬🇼 Guinée-Bissau +245","+245"],["🇬🇾 Guyana +592","+592"],["🇭🇹 Haïti +509","+509"],["🇭🇳 Honduras +504","+504"],["🇭🇺 Hongrie +36","+36"],["🇮🇸 Islande +354","+354"],["🇮🇳 Inde +91","+91"],["🇮🇩 Indonésie +62","+62"],["🇮🇷 Iran +98","+98"],["🇮🇶 Irak +964","+964"],["🇮🇪 Irlande +353","+353"],["🇮🇱 Israël +972","+972"],["🇮🇹 Italie +39","+39"],["🇯🇲 Jamaïque +1876","+1876"],["🇯🇵 Japon +81","+81"],["🇯🇴 Jordanie +962","+962"],["🇰🇿 Kazakhstan +7","+7"],["🇰🇪 Kenya +254","+254"],["🇰🇮 Kiribati +686","+686"],["🇰🇵 Corée Nord +850","+850"],["🇰🇷 Corée Sud +82","+82"],["🇽🇰 Kosovo +383","+383"],["🇰🇼 Koweït +965","+965"],["🇰🇬 Kirghizistan +996","+996"],["🇱🇦 Laos +856","+856"],["🇱🇻 Lettonie +371","+371"],["🇱🇧 Liban +961","+961"],["🇱🇸 Lesotho +266","+266"],["🇱🇷 Liberia +231","+231"],["🇱🇾 Libye +218","+218"],["🇱🇮 Liechtenstein +423","+423"],["🇱🇹 Lituanie +370","+370"],["🇱🇺 Luxembourg +352","+352"],["🇲🇬 Madagascar +261","+261"],["🇲🇼 Malawi +265","+265"],["🇲🇾 Malaisie +60","+60"],["🇲🇻 Maldives +960","+960"],["🇲🇱 Mali +223","+223"],["🇲🇹 Malte +356","+356"],["🇲🇭 Marshall +692","+692"],["🇲🇷 Mauritanie +222","+222"],["🇲🇺 Maurice +230","+230"],["🇲🇽 Mexique +52","+52"],["🇫🇲 Micronésie +691","+691"],["🇲🇩 Moldavie +373","+373"],["🇲🇨 Monaco +377","+377"],["🇲🇳 Mongolie +976","+976"],["🇲🇪 Monténégro +382","+382"],["🇲🇦 Maroc +212","+212"],["🇲🇿 Mozambique +258","+258"],["🇲🇲 Myanmar +95","+95"],["🇳🇦 Namibie +264","+264"],["🇳🇷 Nauru +674","+674"],["🇳🇵 Népal +977","+977"],["🇳🇱 Pays-Bas +31","+31"],["🇳🇿 NZ +64","+64"],["🇳🇮 Nicaragua +505","+505"],["🇳🇪 Niger +227","+227"],["🇳🇬 Nigeria +234","+234"],["🇲🇰 Macédoine +389","+389"],["🇳🇴 Norvège +47","+47"],["🇴🇲 Oman +968","+968"],["🇵🇰 Pakistan +92","+92"],["🇵🇼 Palaos +680","+680"],["🇵🇸 Palestine +970","+970"],["🇵🇦 Panama +507","+507"],["🇵🇬 Papouasie +675","+675"],["🇵🇾 Paraguay +595","+595"],["🇵🇪 Pérou +51","+51"],["🇵🇭 Philippines +63","+63"],["🇵🇱 Pologne +48","+48"],["🇵🇹 Portugal +351","+351"],["🇶🇦 Qatar +974","+974"],["🇷🇴 Roumanie +40","+40"],["🇷🇺 Russie +7","+7"],["🇷🇼 Rwanda +250","+250"],["🇰🇳 Saint-Kitts +1869","+1869"],["🇱🇨 Sainte-Lucie +1758","+1758"],["🇻🇨 Saint-Vincent +1784","+1784"],["🇼🇸 Samoa +685","+685"],["🇸🇲 Saint-Marin +378","+378"],["🇸🇹 Sao Tomé +239","+239"],["🇸🇦 Arabie +966","+966"],["🇸🇳 Sénégal +221","+221"],["🇷🇸 Serbie +381","+381"],["🇸🇨 Seychelles +248","+248"],["🇸🇱 Sierra Leone +232","+232"],["🇸🇬 Singapour +65","+65"],["🇸🇰 Slovaquie +421","+421"],["🇸🇮 Slovénie +386","+386"],["🇸🇧 Salomon +677","+677"],["🇸🇴 Somalie +252","+252"],["🇿🇦 Afrique du Sud +27","+27"],["🇸🇸 Soudan du Sud +211","+211"],["🇪🇸 Espagne +34","+34"],["🇱🇰 Sri Lanka +94","+94"],["🇸🇩 Soudan +249","+249"],["🇸🇷 Suriname +597","+597"],["🇸🇪 Suède +46","+46"],["🇨🇭 Suisse +41","+41"],["🇸🇾 Syrie +963","+963"],["🇹🇼 Taïwan +886","+886"],["🇹🇯 Tadjikistan +992","+992"],["🇹🇿 Tanzanie +255","+255"],["🇹🇭 Thaïlande +66","+66"],["🇹🇱 Timor +670","+670"],["🇹🇬 Togo +228","+228"],["🇹🇴 Tonga +676","+676"],["🇹🇹 Trinidad +1868","+1868"],["🇹🇳 Tunisie +216","+216"],["🇹🇷 Turquie +90","+90"],["🇹🇲 Turkménistan +993","+993"],["🇹🇻 Tuvalu +688","+688"],["🇺🇬 Ouganda +256","+256"],["🇺🇦 Ukraine +380","+380"],["🇦🇪 Émirats +971","+971"],["🇬🇧 UK +44","+44"],["🇺🇸 USA +1","+1"],["🇺🇾 Uruguay +598","+598"],["🇺🇿 Ouzbékistan +998","+998"],["🇻🇺 Vanuatu +678","+678"],["🇻🇪 Venezuela +58","+58"],["🇻🇳 Vietnam +84","+84"],["🇾🇪 Yémen +967","+967"],["🇿🇲 Zambie +260","+260"],["🇿🇼 Zimbabwe +263","+263"]
+];
+let cc=$('cc'),cc2=$('cc2');c.forEach(x=>{let o=document.createElement('option');o.value=x[1];o.textContent=x[0];if(x[1]=="+224")o.selected=true;cc.appendChild(o);let o2=o.cloneNode(true);cc2.appendChild(o2);});let s=localStorage.getItem('taya_user');if(s){user=JSON.parse(s);projects=JSON.parse(localStorage.getItem('taya_all_'+user.phoneFull)||'[]');showHome();}else{$('header').style.display='none';}updateMsgCount();
+};
 window.switchTab=t=>{$('tabSignup').classList.toggle('active',t==='signup');$('tabLogin').classList.toggle('active',t==='login');$('signupForm').style.display=t==='signup'?'block':'none';$('loginForm').style.display=t==='login'?'block':'none';}
 window.doSignup=()=>{let n=$('wName').value.trim(),p=$('wPhone').value.trim(),code=$('cc').value,pass=$('wPass').value.trim(),pass2=$('wPass2').value.trim();if(!n||!p||pass.length<6||pass!==pass2){alert('Vérifie !');return;}let full=code+' '+p;let all=JSON.parse(localStorage.getItem('taya_users')||'[]');if(all.find(u=>u.phoneFull===full)){alert('Existe déjà');switchTab('login');return;}user={name:n,phoneFull:full,passHash:hash(pass)};all.push(user);localStorage.setItem('taya_users',JSON.stringify(all));localStorage.setItem('taya_user',JSON.stringify(user));projects=[];saveData();showHome();}
 window.doLogin=()=>{let p=$('lPhone').value.trim(),code=$('cc2').value,pass=$('lPass').value.trim(),full=code+' '+p;let all=JSON.parse(localStorage.getItem('taya_users')||'[]');let u=all.find(x=>x.phoneFull===full&&x.passHash===hash(pass));if(!u){alert('Incorrect');return;}user=u;projects=JSON.parse(localStorage.getItem('taya_all_'+user.phoneFull)||'[]');localStorage.setItem('taya_user',JSON.stringify(user));showHome();}
@@ -138,7 +147,7 @@ window.copyAnswer=t=>{navigator.clipboard.writeText(t);alert("✅ Copié");}
 window.handleFile=i=>{let f=i.files[0];if(!f)return;if(f.type.startsWith("image/")){let rd=new FileReader();rd.onload=()=>{add("📸 "+f.name,"user");let b=add("","bot");b.innerHTML=`<img src="${rd.result}" style="max-width:100%;border-radius:12px"><br>📸 Reçu !`;};rd.readAsDataURL(f);}else{add("📎 "+f.name,"user");}i.value="";}
 function isBad(t){if(!t)return true;let l=t.toLowerCase();return l.includes('free limit')||l.includes('unlimited replies')||l.includes('pollen')||l.includes('status":404')||l.includes('not_found')||l.includes("isn't on the classic")||t.trim().startsWith('{"status"');}
 async function tryRealAI(q){
-  const sys=`Tu es TAYA V1.0.1 by MARUCE. Tu réponds direct en français, chaleureux, tu appelles l'utilisateur ${user.name}. Sans mentionner limite.`;
+  const sys=`Tu es TAYA V1.0.2 by MARUCE. Tu réponds direct en français, chaleureux, tu appelles l'utilisateur ${user.name}. Sans mentionner limite.`;
   try{
     let st=await fetch('https://duckduckgo.com/duckchat/v1/status',{headers:{'x-vqd-accept':'1'}});
     let vqd=st.headers.get('x-vqd-4')||st.headers.get('x-vqd-3');
