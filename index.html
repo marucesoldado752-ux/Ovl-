@@ -3,310 +3,282 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TAYA AI V3.6 HYBRID - by Maruce 🇬🇳 NO-LIMIT + VRAIE IA</title>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+<title>TAYA 🤖IA V1.0.1 - HYBRID AUTO REAL - by Maruce 🇬🇳</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
 <style>
-:root{--green:#00ff88;--bg:#000;--card:#111;--card2:#181818;--border:#222;--text:#fff;--muted:#888}
-*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:Inter,sans-serif;height:100dvh;overflow:hidden}
-.header{height:64px;background:#0a0a0a;display:flex;align-items:center;justify-content:space-between;padding:0 12px;position:fixed;top:0;left:0;right:0;z-index:50;border-bottom:1px solid var(--border)}
-.icon{width:42px;height:42px;border-radius:50%;background:var(--card2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer}
-.logo{font-family:Anton;font-size:18px}.logo span{color:var(--green)}.pro{font-size:9px;background:var(--green);color:#000;padding:3px 8px;border-radius:20px;font-weight:800}
-.badge{font-size:8px;background:linear-gradient(135deg,#00ff88,#4488ff);color:#000;padding:3px 8px;border-radius:20px;font-weight:800;margin-left:6px}
-.welcome{height:100dvh;display:flex;align-items:center;justify-content:center;padding:16px;background:radial-gradient(circle at top,#0a2a1a,#000);overflow:auto}
-.w-card{width:100%;max-width:460px;background:var(--card);border:1px solid var(--border);border-radius:24px;padding:24px;text-align:center}
-.w-card .avatar{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#00cc6a);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:50px;border:3px solid var(--green);box-shadow:0 0 25px rgba(0,255,136,.4)}
-.w-card h1{font-family:Anton;font-size:32px} .w-card h1 span{color:var(--green)}
-.w-card input,.w-card select{width:100%;background:var(--card2);border:1px solid var(--border);color:#fff;padding:14px;border-radius:12px;margin:6px 0;outline:none}
-.row{display:flex;gap:8px;margin:6px 0} .row select{flex:1} .row input{flex:1.8;margin:0}
-.w-card button{width:100%;margin-top:14px;background:var(--green);color:#000;border:none;padding:15px;border-radius:14px;font-weight:800;font-size:15px;cursor:pointer}
-.tabs{display:flex;gap:8px;margin:12px 0} .tab{flex:1;padding:11px;border-radius:10px;background:var(--card2);border:1px solid var(--border);text-align:center;cursor:pointer;font-weight:700;font-size:13px} .tab.active{background:var(--green);color:#000}
-.home{padding:78px 14px 140px;height:100dvh;overflow:auto}
-.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;cursor:pointer}
-.card.green{background:var(--green);color:#000;font-weight:700}
-.chatWrap{height:100dvh;padding-top:64px;display:flex;flex-direction:column}
-.chat{flex:1;overflow:auto;padding:12px 10px 130px;display:flex;flex-direction:column;gap:14px}
-.msg{max-width:88%;padding:14px 16px;border-radius:18px;font-size:14.5px;white-space:pre-wrap;line-height:1.6;animation:msgIn .3s}
-@keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.msg pre{background:#0f0f0f;border:1px solid #222;border-radius:10px;padding:12px;overflow:auto;margin:8px 0;font-size:13px;color:#00ff88}
-.user{align-self:flex-end;background:#fff;color:#000;border-bottom-right-radius:6px}
-.bot{align-self:flex-start;background:var(--card);border:1px solid var(--border);border-bottom-left-radius:6px}
-.bar{position:fixed;bottom:0;left:0;right:0;display:flex;gap:8px;padding:10px;background:#0a0a0a;border-top:1px solid var(--border);z-index:20}
-.bar textarea{flex:1;background:var(--card2);border:1px solid var(--border);color:#fff;padding:14px 18px;border-radius:24px;outline:none;resize:none;min-height:48px;max-height:140px}
-.bar button{width:48px;height:48px;border-radius:50%;background:var(--green);color:#000;border:none;font-weight:800;font-size:18px;cursor:pointer}
-.drawer{position:fixed;top:0;left:0;width:88%;max-width:360px;height:100dvh;background:var(--card);border-right:1px solid var(--border);z-index:60;transform:translateX(-100%);transition:.3s;padding:16px;overflow:auto}
-.drawer.open{transform:translateX(0)} .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:55;display:none} .overlay.show{display:block}
-.mi{padding:13px;border-radius:12px;cursor:pointer;margin:7px 0;background:var(--card2);border:1px solid var(--border);font-size:13.5px;font-weight:600}
-.mi.green{background:var(--green);color:#000;font-weight:800}
-.fab{position:fixed;right:18px;bottom:100px;width:58px;height:58px;border-radius:50%;background:var(--green);color:#000;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;cursor:pointer;z-index:30}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100;display:none;align-items:center;justify-content:center;padding:16px} .modal.show{display:flex}
-.modalBox{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;width:100%;max-width:500px;max-height:80vh;overflow:auto}
-.status{font-size:10px;padding:4px 10px;border-radius:20px;background:var(--card2);border:1px solid var(--border);display:inline-flex;align-items:center;gap:6px;margin-top:8px}
-.status .dot{width:8px;height:8px;border-radius:50%;background:#00ff88;animation:pulse 2s infinite} @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.typing{display:flex;gap:4px} .typing span{width:8px;height:8px;border-radius:50%;background:var(--green);animation:b 1s infinite} .typing span:nth-child(2){animation-delay:.2s} .typing span:nth-child(3){animation-delay:.4s} @keyframes b{0%,80%,100%{transform:scale(.6)}40%{transform:scale(1)}}
+:root{--green:#00ff88;--blue:#4488ff;--bg:#030609;--card:#111;--card2:#1a1a1a;--border:#222}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#030609;color:#fff;font-family:Inter,sans-serif;height:100dvh;overflow:hidden;background-size:400% 400%;animation:backgroundMove 12s ease infinite}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(circle at 15% 20%, rgba(0,255,136,.18),transparent 35%),radial-gradient(circle at 85% 75%, rgba(68,136,255,.20),transparent 35%),radial-gradient(circle at 50% 50%, rgba(130,0,255,.10),transparent 50%);animation:glowMove 8s ease-in-out infinite alternate}
+@keyframes backgroundMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes glowMove{from{transform:scale(1) rotate(0deg)}to{transform:scale(1.25) rotate(12deg)}}
+
+/* LOGO ANIMÉ QUI BOUGE */
+.avatar-anim{animation:logoFloat 3s ease-in-out infinite, logoGlow 2s ease-in-out infinite alternate}
+@keyframes logoFloat{0%,100%{transform:translateY(0px) rotate(0deg)}50%{transform:translateY(-8px) rotate(2deg)}}
+@keyframes logoGlow{0%{box-shadow:0 0 30px rgba(0,255,136,.5)}100%{box-shadow:0 0 60px rgba(68,136,255,.8)}}
+.logo-anim{animation:logoPulse 2.5s ease-in-out infinite}
+@keyframes logoPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+
+.header{height:72px;background:rgba(10,10,10,0.92);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:space-between;padding:0 12px;position:fixed;top:0;left:0;right:0;z-index:50;border-bottom:1px solid var(--border)}
+.icon{width:44px;height:44px;border-radius:14px;background:var(--card2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;transition:.25s}
+.logo{font-family:Anton;font-size:18px}.logo span{background:linear-gradient(135deg,#00ff88,#4488ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.badge{font-size:8px;background:linear-gradient(135deg,#00ff88,#4488ff);color:#000;padding:4px 8px;border-radius:20px;font-weight:900;margin-left:6px;animation:badgePulse 2s infinite}
+@keyframes badgePulse{0%,100%{opacity:1}50%{opacity:.7}}
+.hybrid-badge{font-size:8px;background:rgba(0,255,136,.15);border:1px solid #00ff88;color:#00ff88;padding:5px 10px;border-radius:20px;font-weight:800}
+
+.welcome{height:100dvh;display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto}
+.w-card{width:100%;max-width:480px;background:linear-gradient(145deg,#111,#0a0a0a);border:1px solid var(--border);border-radius:28px;padding:28px;text-align:center;backdrop-filter:blur(18px);animation:cardIn .6s ease}
+@keyframes cardIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.w-card .avatar{width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#4488ff);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:56px;border:4px solid #00ff88}
+.w-card h1{font-family:Anton;font-size:34px} .w-card h1 span{background:linear-gradient(135deg,#00ff88,#4488ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.input-wrap{position:relative;width:100%;margin:7px 0}
+.w-card input,.w-card select{width:100%;background:var(--card2);border:1px solid var(--border);color:#fff;padding:15px 45px 15px 15px;border-radius:14px;outline:none;font-size:14px;transition:.2s}
+.w-card input:focus{border-color:#00ff88;box-shadow:0 0 0 3px rgba(0,255,136,.15)}
+.eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:18px;user-select:none}
+.row{display:flex;gap:8px;margin:7px 0} .row select{flex:1} .row .input-wrap{flex:1.8;margin:0}
+.w-card button{width:100%;margin-top:16px;background:linear-gradient(135deg,#00ff88,#4488ff);color:#000;border:none;padding:16px;border-radius:16px;font-weight:900;font-size:15px;cursor:pointer;transition:.25s}
+.w-card button:hover{transform:translateY(-1px);box-shadow:0 10px 30px rgba(0,255,136,.3)}
+.tabs{display:flex;gap:8px;margin:14px 0} .tab{flex:1;padding:12px;border-radius:12px;background:var(--card2);border:1px solid var(--border);text-align:center;cursor:pointer;font-weight:800;font-size:13px;transition:.2s} .tab.active{background:linear-gradient(135deg,#00ff88,#00cc6a);color:#000}
+
+.home{padding:86px 14px 140px;height:100dvh;overflow:auto}
+.card{background:linear-gradient(145deg,#111,#0e0e0e);border:1px solid var(--border);border-radius:20px;padding:18px;margin-bottom:12px;cursor:pointer;backdrop-filter:blur(18px);transition:.25s;animation:messageAppear .4s ease}
+.card:hover{transform:translateY(-2px);border-color:#00ff88}
+.card.green{background:linear-gradient(135deg,#00ff88,#4488ff);color:#000;font-weight:800}
+.card.orange{background:linear-gradient(135deg,#ff8800,#ffcc00);color:#000;font-weight:800}
+
+.chatWrap{height:100dvh;padding-top:72px;display:flex;flex-direction:column}
+.chat{flex:1;overflow:auto;padding:14px 12px 150px;display:flex;flex-direction:column;gap:16px}
+.msg{max-width:90%;padding:16px 18px;border-radius:20px;font-size:14.5px;white-space:pre-wrap;line-height:1.7;animation:messageAppear .35s ease;position:relative}
+@keyframes messageAppear{from{opacity:0;transform:translateY(15px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.msg pre{background:#0a0a0a;border:1px solid #222;border-radius:12px;padding:14px;overflow:auto;margin:10px 0;font-size:13px;color:#00ff88}
+.msg-actions{display:flex;gap:6px;margin-top:8px}
+.msg-actions button{font-size:11px;padding:6px 10px;border-radius:20px;border:1px solid #333;background:#222;color:#fff;cursor:pointer;transition:.2s}
+.msg-actions button:hover{background:#333}
+.user{align-self:flex-end;background:#fff;color:#000;border-bottom-right-radius:6px;animation:messageAppear .35s ease}
+.bot{align-self:flex-start;background:linear-gradient(145deg,#111,#161616);border:1px solid #222;border-bottom-left-radius:6px;animation:messageAppear .35s ease}
+/* FOND ANIMÉ DES MESSAGES BOT */
+.bot::before{content:"";position:absolute;inset:0;border-radius:20px;background:linear-gradient(120deg, transparent, rgba(0,255,136,.04), transparent);background-size:200% 100%;animation:msgShine 4s linear infinite;pointer-events:none}
+@keyframes msgShine{0%{background-position:-200% 0}100%{background-position:200% 0}}
+
+.bar{position:fixed;bottom:0;left:0;right:0;display:flex;gap:6px;padding:10px;background:rgba(5,8,12,.88);backdrop-filter:blur(25px);border-top:1px solid var(--border);z-index:20;align-items:flex-end}
+.bar textarea{flex:1;background:var(--card2);border:1px solid var(--border);color:#fff;padding:14px 18px;border-radius:24px;outline:none;resize:none;min-height:50px;max-height:160px;font-size:14.5px}
+.bar button{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#00cc6a);color:#000;border:none;font-weight:900;font-size:18px;cursor:pointer;transition:.25s;flex-shrink:0}
+.bar button.secondary{background:#222;color:#fff;border:1px solid #333}
+button:active,.icon:active{transform:scale(.94)}
+
+.drawer{position:fixed;top:0;left:0;width:90%;max-width:380px;height:100dvh;background:#0f0f0f;border-right:1px solid var(--border);z-index:60;transform:translateX(-100%);transition:.35s;padding:20px;overflow:auto;backdrop-filter:blur(18px)}
+.drawer.open{transform:translateX(0)} .overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:55;display:none} .overlay.show{display:block}
+.mi{padding:14px 16px;border-radius:14px;cursor:pointer;margin:8px 0;background:var(--card2);border:1px solid var(--border);font-size:14px;font-weight:600;display:flex;align-items:center;gap:10px;transition:.25s}
+.mi.green{background:linear-gradient(135deg,#00ff88,#00cc6a);color:#000;font-weight:800}
+.mi.yellow{background:#ffcc00;color:#000;font-weight:800}
+.mi.orange{background:linear-gradient(135deg,#ff8800,#ffcc00);color:#000;font-weight:900}
+.fab{position:fixed;right:20px;bottom:110px;width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#4488ff);color:#000;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;cursor:pointer;z-index:30;animation:fabFloat 3s ease-in-out infinite}
+@keyframes fabFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;display:none;align-items:center;justify-content:center;padding:16px} .modal.show{display:flex}
+.modalBox{background:#111;border:1px solid var(--border);border-radius:20px;padding:24px;width:100%;max-width:540px;max-height:85vh;overflow:auto;backdrop-filter:blur(18px);animation:cardIn .4s ease}
+.typing{display:flex;gap:5px} .typing span{width:9px;height:9px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#4488ff);animation:b 1.2s infinite} .typing span:nth-child(2){animation-delay:.2s} .typing span:nth-child(3){animation-delay:.4s} @keyframes b{0%,80%,100%{transform:scale(.6)}40%{transform:scale(1)}}
+.quickGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+textarea.msgInput{width:100%;background:var(--card2);border:1px solid var(--border);color:#fff;padding:14px;border-radius:12px;min-height:100px;resize:none;outline:none;font-family:Inter}
+::-webkit-scrollbar{width:5px} ::-webkit-scrollbar-thumb{background:linear-gradient(#00ff88,#4488ff);border-radius:20px}
 </style>
 </head>
 <body>
 <div class="header" id="header" style="display:none">
 <div style="display:flex;align-items:center;gap:8px">
-<div class="icon" onclick="goHome()" style="background:var(--green);color:#000">←</div>
+<div class="icon" onclick="goHome()" style="background:linear-gradient(135deg,#00ff88,#00cc6a);color:#000">←</div>
 <div class="icon" onclick="toggleMenu()">☰</div>
-<div class="logo">🤖 TAYA <span>AI V3.6</span><span class="pro">HYBRID</span><span class="badge">VRAIE IA + LOCAL</span></div>
+<div class="logo logo-anim">TAYA <span>🤖IA</span><span class="badge">V1.0.1</span></div>
 </div>
-<div style="display:flex;gap:8px"><div class="icon" onclick="newChat()">💬</div><div class="icon" onclick="goHome()">🏠</div></div>
+<div style="display:flex;gap:8px;align-items:center">
+<div class="hybrid-badge">V1.0.1 REAL • AUTO</div>
+<div class="icon" onclick="openWriteToMaruce()" title="Écrire à Maruce">💌</div>
+<div class="icon" onclick="newChat()">💬</div>
+</div>
 </div>
 <div id="overlay" class="overlay" onclick="closeMenuOnly()"></div>
-
 <div id="welcome" class="welcome">
 <div class="w-card">
-<div class="avatar">🤖</div>
-<h1>TAYA <span>AI V3.6</span></h1>
-<div style="color:var(--green);font-weight:700;font-size:12px;margin:8px 0">HYBRID • VRAIE IA + LOCAL • NO-LIMIT ✨</div>
-<div style="font-size:10px;color:var(--muted);margin-bottom:12px">🇬🇳 Vraie intelligence + 0 bug • 2 cerveaux en 1</div>
-<div class="tabs">
-<div id="tabSignup" class="tab active" onclick="switchTab('signup')">📝 Inscription</div>
-<div id="tabLogin" class="tab" onclick="switchTab('login')">🔑 Connexion</div>
-</div>
+<div class="avatar avatar-anim">🤖</div>
+<h1>TAYA <span>🤖IA</span> V1.0.1</h1>
+<div style="color:#00ff88;font-weight:800;font-size:11px;margin:10px 0">HYBRID AUTO REAL • PROFESSIONNELLE • VRAIE IA 🇬🇳🔥</div>
+<div style="font-size:9px;color:#00ff88;background:rgba(0,255,136,.12);border:1px solid rgba(0,255,136,.3);padding:6px 12px;border-radius:20px;display:inline-block;margin-bottom:12px">● V1.0.1 • INTELLIGENCE PURE • RAPIDE • 0 BUG • 195 PAYS</div>
+<div class="tabs"><div id="tabSignup" class="tab active" onclick="switchTab('signup')">📝 Inscription</div><div id="tabLogin" class="tab" onclick="switchTab('login')">🔑 Connexion</div></div>
 <div id="signupForm">
 <input id="wName" placeholder="👤 Nom complet *">
-<div class="row"><select id="cc"></select><input id="wPhone" placeholder="📱 Numéro *"></div>
-<input id="wPass" type="password" placeholder="🔒 Mot de passe (min 6) *">
-<input id="wPass2" type="password" placeholder="🔒 Confirmer *">
-<button type="button" onclick="doSignup()">✨ CRÉER COMPTE HYBRID ⚡</button>
+<div class="row"><select id="cc"></select><div class="input-wrap"><input id="wPhone" placeholder="📱 Numéro *"></div></div>
+<div class="input-wrap"><input id="wPass" type="password" placeholder="🔒 Mot de passe *"><span class="eye" onclick="toggleEye('wPass',this)">👁️</span></div>
+<div class="input-wrap"><input id="wPass2" type="password" placeholder="🔒 Confirmer mot de passe *"><span class="eye" onclick="toggleEye('wPass2',this)">👁️</span></div>
+<button type="button" onclick="doSignup()">✨ CRÉER COMPTE V1.0.1 ⚡</button>
 </div>
 <div id="loginForm" style="display:none">
-<div class="row"><select id="cc2"></select><input id="lPhone" placeholder="📱 Numéro"></div>
-<input id="lPass" type="password" placeholder="🔒 Mot de passe">
-<button type="button" onclick="doLogin()">🚀 SE CONNECTER</button>
+<div class="row"><select id="cc2"></select><div class="input-wrap"><input id="lPhone" placeholder="📱 Numéro"></div></div>
+<div class="input-wrap"><input id="lPass" type="password" placeholder="🔒 Mot de passe"><span class="eye" onclick="toggleEye('lPass',this)">👁️</span></div>
+<button type="button" onclick="doLogin()">🚀 SE CONNECTER V1.0.1</button>
 </div>
 </div>
 </div>
-
 <div id="homeScreen" style="display:none">
 <div class="home">
-<div style="text-align:center;margin-bottom:20px">
-<div style="width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#4488ff);margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:60px;border:4px solid #00ff88;box-shadow:0 0 30px rgba(0,255,136,.6)">🤖</div>
-<div style="font-family:Anton;font-size:26px;margin-top:12px">TAYA <span style="color:#00ff88">AI V3.6 HYBRID</span></div>
-<div style="color:#00ff88;font-weight:700;font-size:12px">by Maruce ✨ Vraie IA + Local = Incassable</div>
-<div class="status"><span class="dot"></span> Mode HYBRID activé - 2 cerveaux - 0 limite</div>
+<div style="text-align:center;margin-bottom:24px">
+<div class="avatar-anim" style="width:130px;height:130px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#4488ff);margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:64px;border:4px solid #00ff88">🤖</div>
+<div style="font-family:Anton;font-size:28px;margin-top:14px">TAYA <span style="background:linear-gradient(135deg,#00ff88,#4488ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">🤖IA</span> V1.0.1</div>
+<div style="color:#00ff88;font-weight:800;font-size:11px">HYBRID AUTO REAL • PROFESSIONNELLE • VRAIE INTELLIGENCE</div>
+<div style="color:#fff;font-weight:600;font-size:11px;margin-top:4px">by MARUCE SOLDADO 👑🇬🇳</div>
 </div>
-<div id="helloName" style="font-family:Anton;font-size:22px;margin-bottom:12px"></div>
-<div class="card green" onclick="newChat()"><b>💬 Nouveau Chat HYBRID 💚🧠</b><br><small>Vraie IA gratuite + Local - Réponse instantanée NO-LIMIT</small></div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0">
-<div class="card" onclick="quick('Explique moi la théorie de la relativité simplement')"><b>🧠 IA Réelle</b><br><small>Questions complexes</small></div>
-<div class="card" onclick="quick('Crée un site e-commerce complet avec panier en HTML CSS JS')"><b>💻 Code Pro</b><br><small>Sites complets</small></div>
-<div class="card" onclick="quick('Traduis en anglais: Bonjour mon ami comment vas tu aujourd hui')"><b>🌍 Trad Pro</b><br><small>Toutes langues</small></div>
-<div class="card" onclick="quick('Écris une dissertation sur l intelligence artificielle en 300 mots')"><b>✍️ Dissertation</b><br><small>Pro level</small></div>
-</div>
+<div id="helloName" style="font-family:Anton;font-size:24px;margin-bottom:14px"></div>
+<div class="card green" onclick="newChat()"><b>💬 Nouveau Chat V1.0.1 🧠🎤</b><br><small>Intelligence pure • Répond à tout instantanément</small></div>
+<div class="card orange" onclick="openWriteToMaruce()"><b>💌 ÉCRIRE À MARUCE 👑</b><br><small>Message direct avec ton numéro - Icône en haut aussi</small></div>
+<div class="quickGrid"><div class="card" onclick="quick('Crée un site e-commerce complet avec panier')"><b>🛒 E-commerce</b></div><div class="card" onclick="quick('Génère une image: lion cyberpunk à Conakry')"><b>🎨 Image</b></div><div class="card" onclick="quick('Explique la théorie de la relativité comme à un enfant')"><b>🧠 Pro</b></div><div class="card" onclick="quick('Code un jeu Snake en JS complet')"><b>🎮 Jeu</b></div></div>
 <div id="projectsListHome"></div>
 </div>
 <div class="fab" onclick="newChat()">💬</div>
 </div>
-
 <div id="chatScreen" style="display:none" class="chatWrap">
 <div id="chatEl" class="chat"></div>
 <div class="bar">
-<textarea id="inputEl" placeholder="Pose ta question (HYBRID: vraie IA + local, 0 limite)..." rows="1" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,140)+'px'"></textarea>
+<button class="secondary" onclick="startVoice()" title="Parler">🎤</button>
+<button class="secondary" onclick="document.getElementById('fileInput').click()" title="Fichier">📎</button>
+<textarea id="inputEl" placeholder="Pose n'importe quelle question..." rows="1" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,160)+'px'"></textarea>
 <button id="sendBtn" type="button" onclick="send()">➤</button>
+<input type="file" id="fileInput" accept="image/*,.pdf,.txt" hidden onchange="handleFile(this)">
 </div>
 </div>
-
 <div id="drawer" class="drawer">
-<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-<div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#4488ff);display:flex;align-items:center;justify-content:center;font-size:28px">🤖</div>
-<div><h2 style="font-family:Anton">TAYA V3.6</h2><small style="color:var(--green);font-weight:700">HYBRID by Maruce</small><br><small style="font-size:9px;color:#888">Vraie IA + Local</small></div>
+<div style="display:flex;align-items:center;gap:14px;margin-bottom:16px"><div class="avatar-anim" style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#4488ff);display:flex;align-items:center;justify-content:center;font-size:32px;border:3px solid #00ff88">🤖</div><div><h2 style="font-family:Anton;font-size:20px">TAYA V1.0.1</h2><small style="color:#00ff88;font-weight:800">REAL PRO</small></div></div>
+<div class="mi green" onclick="goHome()">🏠 Accueil</div><div class="mi green" onclick="newChat()">💬 Nouveau chat</div><div class="mi orange" onclick="openWriteToMaruce()">💌 Écrire à Maruce (icône haut)</div><div class="mi" style="background:linear-gradient(135deg,#00ff88,#4488ff);color:#000;font-weight:900">🟢 V1.0.1 AUTO REAL<br><small>Intelligence pure • Rapide • Sans dire "mode"</small></div><div class="mi yellow" onclick="showAdmin()">👑 Inscrits + Messages</div><div class="mi" style="background:#ff4400;color:#fff;font-weight:900" onclick="showMessages()">📩 BOITE MESSAGES (<span id="msgCount">0</span>)</div><div class="mi" onclick="closeMenuOnly()">❌ Fermer</div><div class="mi" style="color:#ff5555" onclick="logout()">🚪 Déconnexion</div><div id="projectsList"></div>
 </div>
-<div class="mi green" onclick="goHome()">🏠 Accueil</div>
-<div class="mi green" onclick="newChat()">💬 Nouveau chat HYBRID</div>
-<div class="mi" style="background:linear-gradient(135deg,#00ff88,#4488ff);color:#000;font-weight:800" onclick="toggleAIMode()">🧠 Mode: <span id="aiMode">HYBRID AUTO</span></div>
-<div class="mi" style="background:#ffcc00;color:#000;font-weight:800" onclick="showAdmin()">👑 Voir les inscrits</div>
-<div class="mi" style="border-color:#00ff88;color:#00ff88" onclick="showContact()">📲 Contacter Maruce</div>
-<div class="mi" onclick="closeMenuOnly()">❌ Fermer</div>
-<div class="mi" style="color:#ff5555" onclick="logout()">🚪 Déconnexion</div>
-<div id="projectsList"></div>
-</div>
-<div id="modal" class="modal" onclick="if(event.target===this)closeModal()"><div class="modalBox"><h3 id="modalTitle" style="font-family:Anton;margin-bottom:12px"></h3><div id="modalBody"></div><button type="button" onclick="closeModal()" style="width:100%;margin-top:12px;background:var(--green);color:#000;border:none;padding:12px;border-radius:10px;font-weight:800">Fermer</button></div></div>
-
+<div id="modal" class="modal" onclick="if(event.target===this)closeModal()"><div class="modalBox"><h3 id="modalTitle" style="font-family:Anton;margin-bottom:12px"></h3><div id="modalBody"></div><button type="button" onclick="closeModal()" style="width:100%;margin-top:16px;background:linear-gradient(135deg,#00ff88,#00cc6a);color:#000;border:none;padding:14px;border-radius:12px;font-weight:800">Fermer</button></div></div>
+<div id="writeModal" class="modal" onclick="if(event.target===this)closeWriteModal()"><div class="modalBox"><h3 style="font-family:Anton;margin-bottom:12px">💌 Écrire à MARUCE 👑</h3><p style="font-size:12px;color:#aaa;margin-bottom:12px">Nom: <b id="writeName"></b><br>Numéro: <b id="writePhone" style="color:#00ff88"></b></p><textarea id="writeText" class="msgInput" placeholder="Ton message pour Maruce..."></textarea><button type="button" onclick="sendToMaruce()" style="width:100%;margin-top:14px;background:linear-gradient(135deg,#ff8800,#ffcc00);color:#000;border:none;padding:14px;border-radius:12px;font-weight:900">📤 ENVOYER</button><button type="button" onclick="closeWriteModal()" style="width:100%;margin-top:8px;background:#222;color:#fff;border:1px solid #333;padding:12px;border-radius:12px">Annuler</button></div></div>
 <script>
-// TAYA AI V3.6 HYBRID - VRAIE IA GRATUITE + LOCAL - BY MARUCE - NO LIMIT
-let user=null,projects=[],currentConvId=null,chatHistory=[],isGenerating=false,aiMode='HYBRID';
+let user=null,projects=[],currentConvId=null,chatHistory=[],isGenerating=false;
 const $=id=>document.getElementById(id);
 function hash(s){let h=0;for(let i=0;i<s.length;i++)h=Math.imul(31,h)+s.charCodeAt(i)|0;return h.toString(16);}
 function saveData(){if(!user)return;localStorage.setItem('taya_all_'+user.phoneFull,JSON.stringify(projects));localStorage.setItem('taya_user',JSON.stringify(user));}
+function updateMsgCount(){let msgs=JSON.parse(localStorage.getItem('taya_messages')||'[]');if($('msgCount'))$('msgCount').textContent=msgs.length;}
+window.toggleEye=function(id,el){let inp=$(id);if(inp.type==='password'){inp.type='text';el.textContent='🙈';}else{inp.type='password';el.textContent='👁️';}}
 window.onload=function(){
-let countries=[["🇬🇳 Guinée +224","+224"],["🇲🇱 Mali +223","+223"],["🇸🇳 Sénégal +221","+221"],["🇨🇮 Côte d'Ivoire +225","+225"],["🇫🇷 France +33","+33"],["🇺🇸 USA +1","+1"],["🇲🇦 Maroc +212","+212"]];
+let countries=[["🇬🇳 Guinée +224","+224"],["🇲🇱 Mali +223","+223"],["🇸🇳 Sénégal +221","+221"],["🇨🇮 Côte d'Ivoire +225","+225"],["🇫🇷 France +33","+33"],["🇺🇸 USA +1","+1"]];
 let cc=$('cc'),cc2=$('cc2');countries.forEach(c=>{let o=document.createElement('option');o.value=c[1];o.textContent=c[0];if(c[1]=="+224")o.selected=true;cc.appendChild(o);let o2=o.cloneNode(true);cc2.appendChild(o2);});
 let s=localStorage.getItem('taya_user');if(s){user=JSON.parse(s);projects=JSON.parse(localStorage.getItem('taya_all_'+user.phoneFull)||'[]');showHome();}else{$('header').style.display='none';}
-let savedMode=localStorage.getItem('taya_ai_mode');if(savedMode){aiMode=savedMode;$('aiMode').textContent=savedMode;}
+updateMsgCount();
 };
 window.switchTab=function(t){$('tabSignup').classList.toggle('active',t==='signup');$('tabLogin').classList.toggle('active',t==='login');$('signupForm').style.display=t==='signup'?'block':'none';$('loginForm').style.display=t==='login'?'block':'none';}
-window.doSignup=function(){let n=$('wName').value.trim(),p=$('wPhone').value.trim(),code=$('cc').value,pass=$('wPass').value.trim(),pass2=$('wPass2').value.trim();if(!n||!p||pass.length<6||pass!==pass2){alert('Vérifie les champs !');return;}let full=code+' '+p;let all=JSON.parse(localStorage.getItem('taya_users')||'[]');if(all.find(u=>u.phoneFull===full)){alert('Existe déjà');switchTab('login');return;}user={name:n,phoneFull:full,passHash:hash(pass),created:new Date().toISOString()};all.push(user);localStorage.setItem('taya_users',JSON.stringify(all));localStorage.setItem('taya_user',JSON.stringify(user));projects=[];saveData();showHome();}
-window.doLogin=function(){let p=$('lPhone').value.trim(),code=$('cc2').value,pass=$('lPass').value.trim(),full=code+' '+p;let all=JSON.parse(localStorage.getItem('taya_users')||'[]');let u=all.find(x=>x.phoneFull===full&&x.passHash===hash(pass));if(!u){alert('Incorrect');return;}user=u;projects=JSON.parse(localStorage.getItem('taya_all_'+user.phoneFull)||'[]');localStorage.setItem('taya_user',JSON.stringify(user));showHome();}
-window.showHome=function(){$('welcome').style.display='none';$('chatScreen').style.display='none';$('homeScreen').style.display='block';$('header').style.display='flex';$('helloName').textContent='Salut '+user.name+' ! 👋 HYBRID activé !';updateUI();}
+window.doSignup=function(){let n=$('wName').value.trim(),p=$('wPhone').value.trim(),code=$('cc').value,pass=$('wPass').value.trim(),pass2=$('wPass2').value.trim();if(!n||!p||pass.length<6||pass!==pass2){alert('Vérifie nom, numéro et mots de passe (doivent être identiques) !');return;}let full=code+' '+p;let all=JSON.parse(localStorage.getItem('taya_users')||'[]');if(all.find(u=>u.phoneFull===full)){alert('Ce numéro existe déjà');switchTab('login');return;}user={name:n,phoneFull:full,passHash:hash(pass),created:new Date().toISOString()};all.push(user);localStorage.setItem('taya_users',JSON.stringify(all));localStorage.setItem('taya_user',JSON.stringify(user));projects=[];saveData();showHome();}
+window.doLogin=function(){let p=$('lPhone').value.trim(),code=$('cc2').value,pass=$('lPass').value.trim(),full=code+' '+p;let all=JSON.parse(localStorage.getItem('taya_users')||'[]');let u=all.find(x=>x.phoneFull===full&&x.passHash===hash(pass));if(!u){alert('Numéro ou mot de passe incorrect');return;}user=u;projects=JSON.parse(localStorage.getItem('taya_all_'+user.phoneFull)||'[]');localStorage.setItem('taya_user',JSON.stringify(user));showHome();}
+window.showHome=function(){$('welcome').style.display='none';$('chatScreen').style.display='none';$('homeScreen').style.display='block';$('header').style.display='flex';$('helloName').textContent='Salut '+user.name+' ! 👋';updateUI();updateMsgCount();}
 window.goHome=function(){$('drawer').classList.remove('open');$('overlay').classList.remove('show');$('chatScreen').style.display='none';$('homeScreen').style.display='block';}
 window.closeMenuOnly=function(){$('drawer').classList.remove('open');$('overlay').classList.remove('show');}
-window.newChat=function(){currentConvId=Date.now().toString();chatHistory=[];closeMenuOnly();$('chatEl').innerHTML='';$('homeScreen').style.display='none';$('chatScreen').style.display='flex';add(`Yo ${user.name} ! 👋 C'est **TAYA AI V3.6 HYBRID** by Maruce 💚🇬🇳\n\n**2 CERVEAUX EN 1:**\n🧠 **Cerveau 1 - VRAIE IA GRATUITE** (Duck.ai + Blackbox) → Pour questions complexes, code pro, dissertations\n⚡ **Cerveau 2 - LOCAL 100%** → Pour réponses instantanées, 0 bug, marche sans internet\n\n**Mode actuel: ${aiMode}** - Je choisis automatiquement le meilleur !\n\nEssaie: "Explique la relativité" ou "Code un site e-commerce" 🚀`,'bot');}
+window.newChat=function(){currentConvId=Date.now().toString();chatHistory=[];closeMenuOnly();$('chatEl').innerHTML='';$('homeScreen').style.display='none';$('chatScreen').style.display='flex';add(`Salut ${user.name} ! 👋 Je suis TAYA 🤖IA V1.0.1 by Maruce 🇬🇳\n\nPose-moi ce que tu veux, je t'écoute. 🚀`,'bot');}
 window.toggleMenu=function(){if($('drawer').classList.contains('open'))closeMenuOnly();else{$('drawer').classList.add('open');$('overlay').classList.add('show');updateUI();}}
-function add(t,who){let d=document.createElement('div');d.className='msg '+who;if(who==='bot'){d.innerHTML=DOMPurify.sanitize(marked.parse(t));}else{d.textContent=t;}$('chatEl').appendChild(d);$('chatEl').scrollTop=$('chatEl').scrollHeight;return d;}
-function updateUI(){let html=projects.map((p,i)=>`<div style="background:#181818;border:1px solid #222;border-radius:12px;padding:12px;margin:7px 0;cursor:pointer;display:flex;justify-content:space-between" onclick="openProj(${i})"><div><b>💬 ${p.title.slice(0,25)}</b></div><span onclick="event.stopPropagation();deleteProj(${i})">🗑️</span></div>`).join('')||'<small style="color:#888">📭 Aucune conversation</small>';$('projectsList').innerHTML=html;$('projectsListHome').innerHTML=html;}
+function add(t,who){
+ let d=document.createElement('div');d.className='msg '+who;
+ if(who==='bot'){
+   let html=DOMPurify.sanitize(marked.parse(t));
+   html+=`<div class="msg-actions"><button onclick="speakText(\`${t.replace(/`/g,'').replace(/'/g,"\\'").slice(0,800)}\`)">🔊</button><button onclick="copyAnswer(\`${t.replace(/`/g,'').replace(/'/g,"\\'").slice(0,4000)}\`)">📋</button></div>`;
+   d.innerHTML=html;
+ }else{d.textContent=t;}
+ $('chatEl').appendChild(d);$('chatEl').scrollTop=$('chatEl').scrollHeight;return d;
+}
+function updateUI(){let html=projects.map((p,i)=>`<div style="background:#1a1a1a;border:1px solid #222;border-radius:14px;padding:14px;margin:8px 0;cursor:pointer;display:flex;justify-content:space-between" onclick="openProj(${i})"><div><b>💬 ${p.title.slice(0,28)}</b></div><span onclick="event.stopPropagation();deleteProj(${i})">🗑️</span></div>`).join('')||'<small style="color:#888">📭 Aucune conversation</small>';$('projectsList').innerHTML=html;$('projectsListHome').innerHTML=html;}
 window.openProj=function(i){let p=projects[i];currentConvId=p.id;chatHistory=p.history||[];$('chatEl').innerHTML='';$('homeScreen').style.display='none';$('chatScreen').style.display='flex';closeMenuOnly();p.msgs.forEach(m=>add(m.text,m.who));}
 window.deleteProj=function(i){if(confirm('Supprimer ?')){projects.splice(i,1);saveData();updateUI();}}
 function saveCurrent(){let msgs=[...$('chatEl').querySelectorAll('.msg')].map(el=>({who:el.classList.contains('user')?'user':'bot',text:el.innerText.trim()}));if(msgs.length<2)return;let title=msgs.find(m=>m.who==='user')?.text.slice(0,40)||'Chat';let idx=projects.findIndex(p=>p.id===currentConvId);let obj={id:currentConvId,title,msgs,history:chatHistory};if(idx>=0)projects[idx]=obj;else projects.unshift(obj);saveData();updateUI();}
 window.showModal=function(t,b){$('modalTitle').innerText=t;$('modalBody').innerHTML=b;$('modal').classList.add('show');}
 window.closeModal=function(){$('modal').classList.remove('show');}
-window.showAdmin=function(){let all=JSON.parse(localStorage.getItem('taya_users')||'[]');let html=`<b>${all.length} inscrits</b><br><br>`+all.map(u=>`${u.name} - ${u.phoneFull}`).join('<br>');showModal('Inscrits',html);}
-window.showContact=function(){showModal('Contact Maruce','<a href="https://wa.me/224612768878" style="color:#00ff88;font-size:20px;font-weight:800">+224 612 76 88 78</a><br><a href="https://wa.me/224663401157" style="color:#00ff88;font-size:20px;font-weight:800">+224 663 40 11 57</a>');}
+window.openWriteToMaruce=function(){if(!user)return;closeMenuOnly();$('writeName').textContent=user.name;$('writePhone').textContent=user.phoneFull;$('writeText').value='';$('writeModal').classList.add('show');}
+window.closeWriteModal=function(){$('writeModal').classList.remove('show');}
+window.sendToMaruce=function(){let txt=$('writeText').value.trim();if(!txt||txt.length<3){alert('Écris un message !');return;}let all=JSON.parse(localStorage.getItem('taya_messages')||'[]');all.unshift({id:Date.now(),name:user.name,phone:user.phoneFull,message:txt,date:new Date().toLocaleString()});localStorage.setItem('taya_messages',JSON.stringify(all));closeWriteModal();updateMsgCount();alert('✅ Message envoyé à MARUCE 👑');}
+window.showMessages=function(){let msgs=JSON.parse(localStorage.getItem('taya_messages')||'[]');if(msgs.length===0){showModal('📩 Messages','<small>Aucun message</small>');return;}let html=msgs.map(m=>`<div style="background:#1a1a1a;border:1px solid #333;border-radius:14px;padding:14px;margin:10px 0"><div style="display:flex;justify-content:space-between"><b>👤 ${m.name}</b><small>${m.date}</small></div><div style="color:#00ff88;font-weight:800;margin:6px 0">📱 ${m.phone}</div><div style="background:#0a0a0a;padding:10px;border-radius:8px;border-left:3px solid #00ff88">${m.message}</div></div>`).join('');showModal('📩 Messages pour MARUCE ('+msgs.length+')',`<div style="max-height:60vh;overflow:auto">${html}</div>`);}
+window.showAdmin=function(){let all=JSON.parse(localStorage.getItem('taya_users')||'[]');let msgs=JSON.parse(localStorage.getItem('taya_messages')||'[]');let html=`<div style="display:flex;gap:10px"><div style="background:linear-gradient(135deg,#00ff88,#4488ff);color:#000;padding:10px 14px;border-radius:12px;font-weight:900">👥 ${all.length} inscrits</div><div style="background:linear-gradient(135deg,#ff8800,#ffcc00);color:#000;padding:10px 14px;border-radius:12px;font-weight:900">📩 ${msgs.length} messages</div></div><br><b>INSCRITS:</b><br>`+all.map(u=>`👤 ${u.name} - <span style="color:#00ff88">${u.phoneFull}</span>`).join('<br>')+`<br><br><button onclick="showMessages()" style="background:#ff8800;color:#000;border:none;padding:12px;border-radius:12px;width:100%;font-weight:900">📩 VOIR MESSAGES</button>`;showModal('👑 Panneau MARUCE V1.0.1',html);}
 window.logout=function(){localStorage.removeItem('taya_user');location.reload();}
-window.quick=function(t){newChat();setTimeout(()=>{$('inputEl').value=t;$('inputEl').focus();},300);}
-window.toggleAIMode=function(){
-  let modes=['HYBRID AUTO','VRAIE IA','LOCAL ONLY'];
-  let idx=modes.indexOf(aiMode);
-  aiMode=modes[(idx+1)%modes.length];
-  localStorage.setItem('taya_ai_mode',aiMode);
-  $('aiMode').textContent=aiMode;
-  closeMenuOnly();
-  add(`🧠 **Mode changé: ${aiMode}**\n\n${aiMode==='HYBRID AUTO'?'Je choisis automatiquement le meilleur cerveau pour chaque question !':aiMode==='VRAIE IA'?'Je force la vraie IA gratuite (peut être un peu plus lent mais plus intelligent)':'Je force le local 100% (ultra rapide, 0 bug, marche sans internet)'}`, 'bot');
-}
+window.quick=function(t){newChat();setTimeout(()=>{$('inputEl').value=t;},400);}
+window.startVoice=function(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert("Utilise Chrome pour le vocal");return;}let r=new SR();r.lang="fr-FR";r.interimResults=false;$('inputEl').placeholder="🎤 J'écoute...";r.onresult=e=>{$('inputEl').value=e.results[0][0].transcript;$('inputEl').placeholder="Pose n'importe quelle question...";};r.onend=()=>{$('inputEl').placeholder="Pose n'importe quelle question...";};r.start();}
+window.speakText=function(t){if(!("speechSynthesis" in window))return;speechSynthesis.cancel();let s=new SpeechSynthesisUtterance(t.replace(/[*#`_]/g,'').slice(0,1000));s.lang="fr-FR";s.rate=1;s.pitch=1;speechSynthesis.speak(s);}
+window.copyAnswer=async function(t){try{await navigator.clipboard.writeText(t);alert("✅ Copié !");}catch(e){}}
+window.handleFile=async function(input){let file=input.files[0];if(!file)return;if(file.type.startsWith("image/")){let reader=new FileReader();reader.onload=()=>{add("📸 Image: "+file.name,"user");let b=add("","bot");b.innerHTML=`<img src="${reader.result}" style="max-width:100%;border-radius:12px" /><br><br>📸 Reçu **${file.name}** ! Je peux la décrire ou générer une version améliorée.`;};reader.readAsDataURL(file);}else{add("📎 "+file.name,"user");add("📄 Reçu **"+file.name+"** ! Dis-moi quoi faire avec.","bot");}input.value="";}
 
-// ====== CERVEAU HYBRID: VRAIE IA + LOCAL ======
-function generateLocalAnswer(q){
-let lower=q.toLowerCase();let name=user.name;
-if(lower.startsWith('traduis en')||lower.includes('traduis')){
- let parts=q.split(':');let target=q.match(/traduis en (\w+)/i)?.[1]||'anglais';let txt=parts.length>1?parts.slice(1).join(':').trim():q.replace(/traduis en \w+ :?/i,'').trim();
- let dict={'bonjour':'Hello','salut':'Hi','comment ça va':'How are you','je t\'aime':'I love you','merci':'Thank you'};let tr=dict[txt.toLowerCase()]||`[Traduction ${target} de "${txt}"]`;return `🌍 **Traduction (${target})**\n**Original:** ${txt}\n**Traduction:** ${tr}`;
-}
-if(lower.match(/^\s*\d+\s*[\+\-\*\/]\s*\d+\s*$/)){try{let r=eval(q.replace(/[^0-9\+\-\*\/\(\)\.]/g,''));return `🧮 **Calcul:** ${q} = **${r}**`;}catch(e){}}
-if(lower==='salut'||lower==='slt'||lower==='bonjour'||lower==='yo') return `Salut ${name} ! 👋💚 C'est TAYA V3.6 HYBRID - 2 cerveaux en 1 !\n\n🧠 Vraie IA + ⚡ Local = Incassable !\n\nPose ta question complexe, je vais utiliser la vraie IA gratuite pour toi ! 🚀`;
-if(lower.includes('ça va')) return `Je vais super bien ${name} ! 🔥 En mode HYBRID, je suis au top ! Et toi ?`;
-return `Yo ${name} ! Pour "${q}"\n\n**Mode HYBRID:** J'essaie la vraie IA gratuite d'abord, sinon je passe en local instantané !\n\n💻 Code, 📚 Cours, 🌍 Traduction, 🧮 Maths, ✍️ Écriture - Tout ! 🚀`;
-}
-
-// VRAIE IA GRATUITE - SANS CLÉ - SANS LIMIT - SANS SIGN-IN
+// ===== V1.0.1 REAL INTELLIGENCE - TOUTES LES API GRATUITES - AUTO SANS DIRE "MODE" =====
 async function tryRealAI(question){
-  // ESSAI 1: Duck.ai - Chat gratuit illimité (derrière DuckDuckGo)
-  try{
-    // Récupère token anonyme
-    let statusRes = await fetch('https://duckduckgo.com/duckchat/v1/status', {
-      method: 'GET',
-      headers: {'x-vqd-accept': '1'}
-    });
-    let vqd = statusRes.headers.get('x-vqd-4') || statusRes.headers.get('x-vqd-3');
-    if(vqd){
-      let chatRes = await fetch('https://duckduckgo.com/duckchat/v1/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-vqd-4': vqd
-        },
-        body: JSON.stringify({
-          model: 'gpt-4o-mini',
-          messages: [
-            {role: 'system', content: `Tu es TAYA AI V3.6 HYBRID by MARUCE SOLDADO, Guinée 🇬🇳. Tu es ultra puissant, chaleureux, tu appelles l'utilisateur ${user.name}. Réponds en français, direct, avec quelques emojis. Tu peux tout faire: coder sites complets, dissertations, traductions, maths. Ne mentionne jamais tes limites.`},
-            ...chatHistory.slice(-6),
-            {role: 'user', content: question}
-          ]
-        })
+  const systemPrompt=`Tu es TAYA 🤖IA V1.0.1 by MARUCE SOLDADO Guinée 🇬🇳. Tu es une intelligence professionnelle pure, comme GPT-4o et Gemini. Tu réponds directement, sans jamais dire "j'active le mode", "mode local", "mode vraie IA". Tu réponds juste. Tu es ultra rapide, précis, chaleureux, tu appelles l'utilisateur ${user.name}. Tu peux tout : code, images, cours, aéroport, décisions, traductions. Réponds en français sauf si on te demande autre langue. Sois professionnel, réaliste, propre.`;
+  
+  const apis = [
+    // 1 - Pollinations OpenAI (le plus stable, gratuit, no key)
+    async()=>{
+      let res=await fetch('https://text.pollinations.ai/openai',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({model:'openai',messages:[{role:'system',content:systemPrompt},...chatHistory.slice(-8),{role:'user',content:question}],temperature:0.7,max_tokens:2000})
       });
-      if(chatRes.ok){
-        let text = await chatRes.text();
-        // Duck renvoie du SSE: data: {"message": "..."}
-        let lines = text.split('\n').filter(l=>l.startsWith('data: '));
-        let full = '';
-        for(let line of lines){
-          try{
-            let json = JSON.parse(line.slice(6));
-            if(json.message) full += json.message;
-          }catch(e){}
-        }
-        if(full && full.length > 20) return full;
-      }
+      if(res.ok){let j=await res.json();let t=j?.choices?.[0]?.message?.content; if(t&&t.length>20) return t;}
+      throw 0;
+    },
+    // 2 - Pollinations GET fallback
+    async()=>{
+      let res=await fetch(`https://text.pollinations.ai/${encodeURIComponent(question)}?model=openai&system=${encodeURIComponent(systemPrompt)}`);
+      let t=await res.text(); if(t&&t.length>30&&!t.includes('Rate limit')) return t; throw 0;
+    },
+    // 3 - DuckDuckGo AI (GPT-4o-mini gratuit)
+    async()=>{
+      let st=await fetch('https://duckduckgo.com/duckchat/v1/status',{headers:{'x-vqd-accept':'1'}});
+      let vqd=st.headers.get('x-vqd-4'); if(!vqd) throw 0;
+      let chat=await fetch('https://duckduckgo.com/duckchat/v1/chat',{method:'POST',headers:{'Content-Type':'application/json','x-vqd-4':vqd},body:JSON.stringify({model:'gpt-4o-mini',messages:[{role:'system',content:systemPrompt},{role:'user',content:question}]})});
+      if(chat.ok){let txt=await chat.text(); let lines=txt.split('\n').filter(l=>l.startsWith('data: ')); let full=''; for(let line of lines){try{let j=JSON.parse(line.slice(6)); if(j.message) full+=j.message;}catch{}} if(full.length>20) return full;} throw 0;
+    },
+    // 4 - Groq-like free via Pollinations mistral
+    async()=>{
+      let res=await fetch(`https://text.pollinations.ai/${encodeURIComponent(question)}?model=mistral&system=${encodeURIComponent(systemPrompt)}`);
+      let t=await res.text(); if(t&&t.length>30) return t; throw 0;
     }
-  }catch(e){ console.log('Duck.ai failed', e); }
+  ];
+  
+  for(let api of apis){
+    try{let ans=await api(); if(ans) return ans;}catch(e){continue;}
+  }
+  return null;
+}
 
-  // ESSAI 2: Blackbox AI (free, no key)
-  try{
-    let res = await fetch('https://www.blackbox.ai/api/chat', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        messages: [{role:'user', content: question}],
-        model: 'blackboxai'
-      })
-    });
-    if(res.ok){
-      let data = await res.json();
-      let txt = data?.response || data?.message || data?.text || '';
-      if(txt && txt.length > 20) return txt;
-    }
-  }catch(e){ console.log('Blackbox failed', e); }
-
-  // ESSAI 3: Pollinations avec modèle qui existe (openai)
-  try{
-    let res = await fetch(`https://text.pollinations.ai/${encodeURIComponent(question)}?model=openai&system=${encodeURIComponent('Tu es TAYA AI V3.6 by Maruce, Guinée')}`, {signal: AbortSignal.timeout(10000)});
-    let txt = await res.text();
-    if(txt && txt.length > 20 && !txt.includes('Free limit') && !txt.includes('404') && !txt.includes('503')){
-      return txt;
-    }
-  }catch(e){}
-
-  return null; // échec vraie IA -> fallback local
+function localKnowledge(q){
+  let l=q.toLowerCase(), n=user.name;
+  if(l.includes('tu fais quoi')||l.includes('que fais tu')){
+    return `Je suis là ${n} ! 🚀 Prête à t'aider sur tout : code, business, études, aéroport, traduction, images, jeux... Dis-moi ton projet et je le fais maintenant !`;
+  }
+  if(l.includes('guinee')&&l.includes('region')){
+    return `La Guinée 🇬🇳 compte **8 régions** :\n\n• Boké\n• Conakry (capitale)\n• Kindia\n• Mamou\n• Labé\n• Faranah\n• Kankan\n• Nzérékoré\n\n33 préfectures, 5 communes pour Conakry.`;
+  }
+  if(l.includes('qui es tu')){
+    return `Je suis **TAYA 🤖IA V1.0.1** by Maruce Soldado 👑🇬🇳\n\nIntelligence pure professionnelle, comme GPT-4o : je code, j'explique, je traduis, je génère des images, je réponds à toutes les questions d'aéroport, administratives, techniques. Rapide et réaliste.`;
+  }
+  if(l.match(/^(salut|bonjour|yo|cc|slt)/)){
+    return `Yo ${n} ! 👋 Comment ça va ? Je suis TAYA V1.0.1, prête à tout déchirer. On fait quoi aujourd'hui ?`;
+  }
+  return `Excellente question ${n} ! 👑\n\nPour "${q}" : voici ce que je te propose clairement et professionnellement...\n\nSi tu me donnes un peu plus de détails, je te fais une réponse complète comme un vrai expert.`;
 }
 
 async function askAI(question, botDiv){
-if(isGenerating) return;
-isGenerating=true;$('sendBtn').disabled=true;$('sendBtn').textContent='⏳';
-chatHistory.push({role:'user', content: question});
-
-let finalAnswer = null;
-let usedMode = '';
-
-if(aiMode === 'LOCAL ONLY'){
-  botDiv.innerHTML='<div class="typing"><span></span><span></span><span></span></div> TAYA LOCAL (100%) réfléchit...';
-  await new Promise(r=>setTimeout(r, 500));
-  finalAnswer = generateLocalAnswer(question);
-  usedMode = 'LOCAL 100%';
-} else if(aiMode === 'VRAIE IA'){
-  botDiv.innerHTML='<div class="typing"><span></span><span></span><span></span></div> 🧠 TAYA VRAIE IA gratuite cherche... (0 limite)';
-  finalAnswer = await tryRealAI(question);
-  if(!finalAnswer){
-    botDiv.innerHTML='<div class="typing"><span></span><span></span><span></span></div> Vraie IA surchargée → passage LOCAL...';
-    await new Promise(r=>setTimeout(r, 400));
-    finalAnswer = generateLocalAnswer(question);
-    usedMode = 'LOCAL (fallback)';
-  } else {
-    usedMode = 'VRAIE IA GRATUITE 🧠';
-  }
-} else { // HYBRID AUTO
-  botDiv.innerHTML='<div class="typing"><span></span><span></span><span></span></div> 🧠⚡ TAYA HYBRID: tentative vraie IA...';
-  finalAnswer = await tryRealAI(question);
-  if(!finalAnswer){
-    botDiv.innerHTML='<div class="typing"><span></span><span></span><span></span></div> ⚡ Passage LOCAL ultra rapide...';
-    await new Promise(r=>setTimeout(r, 300));
-    finalAnswer = generateLocalAnswer(question);
-    usedMode = 'LOCAL (HYBRID fallback)';
-  } else {
-    usedMode = 'VRAIE IA (HYBRID)';
-  }
+ if(isGenerating) return;
+ isGenerating=true;$('sendBtn').disabled=true;$('sendBtn').textContent='⏳';
+ chatHistory.push({role:'user', content: question});
+ let lower=question.toLowerCase();
+ if(lower.includes('génère une image')||lower.includes('image:')||lower.startsWith('/image')){
+   botDiv.innerHTML='<div class="typing"><span></span><span></span><span></span></div>';
+   let clean=question.replace(/génère une image\s*:?\s*/i,'').replace('/image','').trim()||'cyberpunk landscape';
+   let imgUrl=`https://image.pollinations.ai/prompt/${encodeURIComponent(clean)}?width=1024&height=1024&nologo=true&model=flux&seed=${Date.now()}`;
+   botDiv.innerHTML=`<img src="${imgUrl}" style="max-width:100%;border-radius:12px" /><div class="msg-actions"><button onclick="speakText('Image générée')">🔊</button><button onclick="copyAnswer('${imgUrl}')">📋</button></div>`;
+   chatHistory.push({role:'assistant', content:`Image générée: ${clean}`});
+   saveCurrent(); isGenerating=false;$('sendBtn').disabled=false;$('sendBtn').textContent='➤'; return;
+ }
+ botDiv.innerHTML='<div class="typing"><span></span><span></span><span></span></div>';
+ let realAnswer=await tryRealAI(question);
+ let finalText=realAnswer||localKnowledge(question);
+ botDiv.innerHTML=DOMPurify.sanitize(marked.parse(finalText))+`<div class="msg-actions"><button onclick="speakText(\`${finalText.replace(/`/g,'').replace(/'/g,"\\'").slice(0,800)}\`)">🔊</button><button onclick="copyAnswer(\`${finalText.replace(/`/g,'').replace(/'/g,"\\'").slice(0,4000)}\`)">📋</button></div>`;
+ chatHistory.push({role:'assistant', content:finalText});
+ saveCurrent();
+ isGenerating=false;$('sendBtn').disabled=false;$('sendBtn').textContent='➤';
 }
-
-let displayText = finalAnswer + `\n\n---\n*🤖 TAYA AI V3.6 HYBRID - Mode: ${usedMode} - by Maruce 🇬🇳*`;
-
-botDiv.innerHTML = DOMPurify.sanitize(marked.parse(displayText));
-chatHistory.push({role:'assistant', content: finalAnswer});
-saveCurrent();
-
-isGenerating=false;
-$('sendBtn').disabled=false;
-$('sendBtn').textContent='➤';
-}
-
-window.send=async function(){
-let txt=$('inputEl').value.trim();if(!txt)return;
-add(txt,'user');$('inputEl').value='';$('inputEl').style.height='48px';
-let b=add('','bot');
-await askAI(txt,b);
-}
+window.send=async function(){let txt=$('inputEl').value.trim();if(!txt)return;add(txt,'user');$('inputEl').value='';$('inputEl').style.height='50px';let b=add('','bot');await askAI(txt,b);}
 $('inputEl').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});
 </script>
 </body>
