@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TAYA AI V3.5 LOCAL - by Maruce 🇬🇳 NO API</title>
+<title>TAYA AI V3.6 HYBRID - by Maruce 🇬🇳 NO-LIMIT + VRAIE IA</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
@@ -13,6 +13,7 @@
 .header{height:64px;background:#0a0a0a;display:flex;align-items:center;justify-content:space-between;padding:0 12px;position:fixed;top:0;left:0;right:0;z-index:50;border-bottom:1px solid var(--border)}
 .icon{width:42px;height:42px;border-radius:50%;background:var(--card2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer}
 .logo{font-family:Anton;font-size:18px}.logo span{color:var(--green)}.pro{font-size:9px;background:var(--green);color:#000;padding:3px 8px;border-radius:20px;font-weight:800}
+.badge{font-size:8px;background:linear-gradient(135deg,#00ff88,#4488ff);color:#000;padding:3px 8px;border-radius:20px;font-weight:800;margin-left:6px}
 .welcome{height:100dvh;display:flex;align-items:center;justify-content:center;padding:16px;background:radial-gradient(circle at top,#0a2a1a,#000);overflow:auto}
 .w-card{width:100%;max-width:460px;background:var(--card);border:1px solid var(--border);border-radius:24px;padding:24px;text-align:center}
 .w-card .avatar{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#00cc6a);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:50px;border:3px solid var(--green);box-shadow:0 0 25px rgba(0,255,136,.4)}
@@ -41,6 +42,8 @@
 .fab{position:fixed;right:18px;bottom:100px;width:58px;height:58px;border-radius:50%;background:var(--green);color:#000;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;cursor:pointer;z-index:30}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100;display:none;align-items:center;justify-content:center;padding:16px} .modal.show{display:flex}
 .modalBox{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;width:100%;max-width:500px;max-height:80vh;overflow:auto}
+.status{font-size:10px;padding:4px 10px;border-radius:20px;background:var(--card2);border:1px solid var(--border);display:inline-flex;align-items:center;gap:6px;margin-top:8px}
+.status .dot{width:8px;height:8px;border-radius:50%;background:#00ff88;animation:pulse 2s infinite} @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .typing{display:flex;gap:4px} .typing span{width:8px;height:8px;border-radius:50%;background:var(--green);animation:b 1s infinite} .typing span:nth-child(2){animation-delay:.2s} .typing span:nth-child(3){animation-delay:.4s} @keyframes b{0%,80%,100%{transform:scale(.6)}40%{transform:scale(1)}}
 </style>
 </head>
@@ -49,7 +52,7 @@
 <div style="display:flex;align-items:center;gap:8px">
 <div class="icon" onclick="goHome()" style="background:var(--green);color:#000">←</div>
 <div class="icon" onclick="toggleMenu()">☰</div>
-<div class="logo">🤖 TAYA <span>AI V3.5</span> <span class="pro">LOCAL 100%</span></div>
+<div class="logo">🤖 TAYA <span>AI V3.6</span><span class="pro">HYBRID</span><span class="badge">VRAIE IA + LOCAL</span></div>
 </div>
 <div style="display:flex;gap:8px"><div class="icon" onclick="newChat()">💬</div><div class="icon" onclick="goHome()">🏠</div></div>
 </div>
@@ -58,9 +61,9 @@
 <div id="welcome" class="welcome">
 <div class="w-card">
 <div class="avatar">🤖</div>
-<h1>TAYA <span>AI V3.5</span></h1>
-<div style="color:var(--green);font-weight:700;font-size:12px;margin:8px 0">100% LOCAL • 0 API • NO-LIMIT ✨</div>
-<div style="font-size:10px;color:var(--muted);margin-bottom:12px">🇬🇳 Marche sans internet • Plus jamais d'erreur 404/503/30s</div>
+<h1>TAYA <span>AI V3.6</span></h1>
+<div style="color:var(--green);font-weight:700;font-size:12px;margin:8px 0">HYBRID • VRAIE IA + LOCAL • NO-LIMIT ✨</div>
+<div style="font-size:10px;color:var(--muted);margin-bottom:12px">🇬🇳 Vraie intelligence + 0 bug • 2 cerveaux en 1</div>
 <div class="tabs">
 <div id="tabSignup" class="tab active" onclick="switchTab('signup')">📝 Inscription</div>
 <div id="tabLogin" class="tab" onclick="switchTab('login')">🔑 Connexion</div>
@@ -70,7 +73,7 @@
 <div class="row"><select id="cc"></select><input id="wPhone" placeholder="📱 Numéro *"></div>
 <input id="wPass" type="password" placeholder="🔒 Mot de passe (min 6) *">
 <input id="wPass2" type="password" placeholder="🔒 Confirmer *">
-<button type="button" onclick="doSignup()">✨ CRÉER COMPTE LOCAL ⚡</button>
+<button type="button" onclick="doSignup()">✨ CRÉER COMPTE HYBRID ⚡</button>
 </div>
 <div id="loginForm" style="display:none">
 <div class="row"><select id="cc2"></select><input id="lPhone" placeholder="📱 Numéro"></div>
@@ -83,17 +86,18 @@
 <div id="homeScreen" style="display:none">
 <div class="home">
 <div style="text-align:center;margin-bottom:20px">
-<div style="width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#00cc6a);margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:60px;border:4px solid #00ff88;box-shadow:0 0 30px rgba(0,255,136,.6)">🤖</div>
-<div style="font-family:Anton;font-size:26px;margin-top:12px">TAYA <span style="color:#00ff88">AI V3.5 LOCAL</span></div>
-<div style="color:#00ff88;font-weight:700;font-size:12px">by Maruce ✨ 100% Offline • 0 Bug</div>
+<div style="width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#4488ff);margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:60px;border:4px solid #00ff88;box-shadow:0 0 30px rgba(0,255,136,.6)">🤖</div>
+<div style="font-family:Anton;font-size:26px;margin-top:12px">TAYA <span style="color:#00ff88">AI V3.6 HYBRID</span></div>
+<div style="color:#00ff88;font-weight:700;font-size:12px">by Maruce ✨ Vraie IA + Local = Incassable</div>
+<div class="status"><span class="dot"></span> Mode HYBRID activé - 2 cerveaux - 0 limite</div>
 </div>
 <div id="helloName" style="font-family:Anton;font-size:22px;margin-bottom:12px"></div>
-<div class="card green" onclick="newChat()"><b>💬 Nouveau Chat LOCAL 100% 💚</b><br><small>Réponse instantanée, marche sans internet</small></div>
+<div class="card green" onclick="newChat()"><b>💬 Nouveau Chat HYBRID 💚🧠</b><br><small>Vraie IA gratuite + Local - Réponse instantanée NO-LIMIT</small></div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0">
-<div class="card" onclick="quick('Explique moi la photosynthèse')"><b>📚 Expliquer</b></div>
-<div class="card" onclick="quick('Crée un site e-commerce en HTML')"><b>💻 Coder</b></div>
-<div class="card" onclick="quick('Traduis en anglais: Bonjour comment vas tu')"><b>🌍 Traduire</b></div>
-<div class="card" onclick="quick('Résous: 2x+5=15')"><b>🧮 Maths</b></div>
+<div class="card" onclick="quick('Explique moi la théorie de la relativité simplement')"><b>🧠 IA Réelle</b><br><small>Questions complexes</small></div>
+<div class="card" onclick="quick('Crée un site e-commerce complet avec panier en HTML CSS JS')"><b>💻 Code Pro</b><br><small>Sites complets</small></div>
+<div class="card" onclick="quick('Traduis en anglais: Bonjour mon ami comment vas tu aujourd hui')"><b>🌍 Trad Pro</b><br><small>Toutes langues</small></div>
+<div class="card" onclick="quick('Écris une dissertation sur l intelligence artificielle en 300 mots')"><b>✍️ Dissertation</b><br><small>Pro level</small></div>
 </div>
 <div id="projectsListHome"></div>
 </div>
@@ -103,18 +107,19 @@
 <div id="chatScreen" style="display:none" class="chatWrap">
 <div id="chatEl" class="chat"></div>
 <div class="bar">
-<textarea id="inputEl" placeholder="Pose ta question (100% local, 0 limite)..." rows="1" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,140)+'px'"></textarea>
+<textarea id="inputEl" placeholder="Pose ta question (HYBRID: vraie IA + local, 0 limite)..." rows="1" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,140)+'px'"></textarea>
 <button id="sendBtn" type="button" onclick="send()">➤</button>
 </div>
 </div>
 
 <div id="drawer" class="drawer">
 <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-<div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#00cc6a);display:flex;align-items:center;justify-content:center;font-size:28px">🤖</div>
-<div><h2 style="font-family:Anton">TAYA V3.5</h2><small style="color:var(--green);font-weight:700">LOCAL by Maruce</small></div>
+<div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#4488ff);display:flex;align-items:center;justify-content:center;font-size:28px">🤖</div>
+<div><h2 style="font-family:Anton">TAYA V3.6</h2><small style="color:var(--green);font-weight:700">HYBRID by Maruce</small><br><small style="font-size:9px;color:#888">Vraie IA + Local</small></div>
 </div>
 <div class="mi green" onclick="goHome()">🏠 Accueil</div>
-<div class="mi green" onclick="newChat()">💬 Nouveau chat LOCAL</div>
+<div class="mi green" onclick="newChat()">💬 Nouveau chat HYBRID</div>
+<div class="mi" style="background:linear-gradient(135deg,#00ff88,#4488ff);color:#000;font-weight:800" onclick="toggleAIMode()">🧠 Mode: <span id="aiMode">HYBRID AUTO</span></div>
 <div class="mi" style="background:#ffcc00;color:#000;font-weight:800" onclick="showAdmin()">👑 Voir les inscrits</div>
 <div class="mi" style="border-color:#00ff88;color:#00ff88" onclick="showContact()">📲 Contacter Maruce</div>
 <div class="mi" onclick="closeMenuOnly()">❌ Fermer</div>
@@ -124,23 +129,24 @@
 <div id="modal" class="modal" onclick="if(event.target===this)closeModal()"><div class="modalBox"><h3 id="modalTitle" style="font-family:Anton;margin-bottom:12px"></h3><div id="modalBody"></div><button type="button" onclick="closeModal()" style="width:100%;margin-top:12px;background:var(--green);color:#000;border:none;padding:12px;border-radius:10px;font-weight:800">Fermer</button></div></div>
 
 <script>
-// TAYA AI V3.5 LOCAL - 100% OFFLINE - 0 API - BY MARUCE - 2000+ LOGIQUE
-let user=null,projects=[],currentConvId=null,chatHistory=[],isGenerating=false;
+// TAYA AI V3.6 HYBRID - VRAIE IA GRATUITE + LOCAL - BY MARUCE - NO LIMIT
+let user=null,projects=[],currentConvId=null,chatHistory=[],isGenerating=false,aiMode='HYBRID';
 const $=id=>document.getElementById(id);
 function hash(s){let h=0;for(let i=0;i<s.length;i++)h=Math.imul(31,h)+s.charCodeAt(i)|0;return h.toString(16);}
 function saveData(){if(!user)return;localStorage.setItem('taya_all_'+user.phoneFull,JSON.stringify(projects));localStorage.setItem('taya_user',JSON.stringify(user));}
 window.onload=function(){
-let countries=[["🇬🇳 Guinée +224","+224"],["🇲🇱 Mali +223","+223"],["🇸🇳 Sénégal +221","+221"],["🇨🇮 Côte d'Ivoire +225","+225"],["🇫🇷 France +33","+33"],["🇺🇸 USA +1","+1"],["🇲🇦 Maroc +212","+212"],["🇩🇿 Algérie +213","+213"]];
+let countries=[["🇬🇳 Guinée +224","+224"],["🇲🇱 Mali +223","+223"],["🇸🇳 Sénégal +221","+221"],["🇨🇮 Côte d'Ivoire +225","+225"],["🇫🇷 France +33","+33"],["🇺🇸 USA +1","+1"],["🇲🇦 Maroc +212","+212"]];
 let cc=$('cc'),cc2=$('cc2');countries.forEach(c=>{let o=document.createElement('option');o.value=c[1];o.textContent=c[0];if(c[1]=="+224")o.selected=true;cc.appendChild(o);let o2=o.cloneNode(true);cc2.appendChild(o2);});
 let s=localStorage.getItem('taya_user');if(s){user=JSON.parse(s);projects=JSON.parse(localStorage.getItem('taya_all_'+user.phoneFull)||'[]');showHome();}else{$('header').style.display='none';}
+let savedMode=localStorage.getItem('taya_ai_mode');if(savedMode){aiMode=savedMode;$('aiMode').textContent=savedMode;}
 };
 window.switchTab=function(t){$('tabSignup').classList.toggle('active',t==='signup');$('tabLogin').classList.toggle('active',t==='login');$('signupForm').style.display=t==='signup'?'block':'none';$('loginForm').style.display=t==='login'?'block':'none';}
 window.doSignup=function(){let n=$('wName').value.trim(),p=$('wPhone').value.trim(),code=$('cc').value,pass=$('wPass').value.trim(),pass2=$('wPass2').value.trim();if(!n||!p||pass.length<6||pass!==pass2){alert('Vérifie les champs !');return;}let full=code+' '+p;let all=JSON.parse(localStorage.getItem('taya_users')||'[]');if(all.find(u=>u.phoneFull===full)){alert('Existe déjà');switchTab('login');return;}user={name:n,phoneFull:full,passHash:hash(pass),created:new Date().toISOString()};all.push(user);localStorage.setItem('taya_users',JSON.stringify(all));localStorage.setItem('taya_user',JSON.stringify(user));projects=[];saveData();showHome();}
 window.doLogin=function(){let p=$('lPhone').value.trim(),code=$('cc2').value,pass=$('lPass').value.trim(),full=code+' '+p;let all=JSON.parse(localStorage.getItem('taya_users')||'[]');let u=all.find(x=>x.phoneFull===full&&x.passHash===hash(pass));if(!u){alert('Incorrect');return;}user=u;projects=JSON.parse(localStorage.getItem('taya_all_'+user.phoneFull)||'[]');localStorage.setItem('taya_user',JSON.stringify(user));showHome();}
-window.showHome=function(){$('welcome').style.display='none';$('chatScreen').style.display='none';$('homeScreen').style.display='block';$('header').style.display='flex';$('helloName').textContent='Salut '+user.name+' ! 👋 LOCAL 100% activé !';updateUI();}
+window.showHome=function(){$('welcome').style.display='none';$('chatScreen').style.display='none';$('homeScreen').style.display='block';$('header').style.display='flex';$('helloName').textContent='Salut '+user.name+' ! 👋 HYBRID activé !';updateUI();}
 window.goHome=function(){$('drawer').classList.remove('open');$('overlay').classList.remove('show');$('chatScreen').style.display='none';$('homeScreen').style.display='block';}
 window.closeMenuOnly=function(){$('drawer').classList.remove('open');$('overlay').classList.remove('show');}
-window.newChat=function(){currentConvId=Date.now().toString();chatHistory=[];closeMenuOnly();$('chatEl').innerHTML='';$('homeScreen').style.display='none';$('chatScreen').style.display='flex';add(`Yo ${user.name} ! 👋 C'est **TAYA AI V3.5 LOCAL** by Maruce 💚🇬🇳\n\n**NOUVEAU:**\n✅ 100% LOCAL - Marche sans internet\n✅ 0 API - Plus jamais d'erreur 404/503/30s\n✅ Réponses instantanées ILLIMITÉES\n✅ 2000+ lignes de logique intelligente\n\nJe peux:\n💻 Coder sites, apps, Python, JS\n📚 Expliquer tout simplement\n🌍 Traduire (dis "traduis en...")\n🧮 Maths, équations\n✍️ Lettres, CV, dissert\n\nPose ta question ! 🚀`,'bot');}
+window.newChat=function(){currentConvId=Date.now().toString();chatHistory=[];closeMenuOnly();$('chatEl').innerHTML='';$('homeScreen').style.display='none';$('chatScreen').style.display='flex';add(`Yo ${user.name} ! 👋 C'est **TAYA AI V3.6 HYBRID** by Maruce 💚🇬🇳\n\n**2 CERVEAUX EN 1:**\n🧠 **Cerveau 1 - VRAIE IA GRATUITE** (Duck.ai + Blackbox) → Pour questions complexes, code pro, dissertations\n⚡ **Cerveau 2 - LOCAL 100%** → Pour réponses instantanées, 0 bug, marche sans internet\n\n**Mode actuel: ${aiMode}** - Je choisis automatiquement le meilleur !\n\nEssaie: "Explique la relativité" ou "Code un site e-commerce" 🚀`,'bot');}
 window.toggleMenu=function(){if($('drawer').classList.contains('open'))closeMenuOnly();else{$('drawer').classList.add('open');$('overlay').classList.add('show');updateUI();}}
 function add(t,who){let d=document.createElement('div');d.className='msg '+who;if(who==='bot'){d.innerHTML=DOMPurify.sanitize(marked.parse(t));}else{d.textContent=t;}$('chatEl').appendChild(d);$('chatEl').scrollTop=$('chatEl').scrollHeight;return d;}
 function updateUI(){let html=projects.map((p,i)=>`<div style="background:#181818;border:1px solid #222;border-radius:12px;padding:12px;margin:7px 0;cursor:pointer;display:flex;justify-content:space-between" onclick="openProj(${i})"><div><b>💬 ${p.title.slice(0,25)}</b></div><span onclick="event.stopPropagation();deleteProj(${i})">🗑️</span></div>`).join('')||'<small style="color:#888">📭 Aucune conversation</small>';$('projectsList').innerHTML=html;$('projectsListHome').innerHTML=html;}
@@ -153,73 +159,98 @@ window.showAdmin=function(){let all=JSON.parse(localStorage.getItem('taya_users'
 window.showContact=function(){showModal('Contact Maruce','<a href="https://wa.me/224612768878" style="color:#00ff88;font-size:20px;font-weight:800">+224 612 76 88 78</a><br><a href="https://wa.me/224663401157" style="color:#00ff88;font-size:20px;font-weight:800">+224 663 40 11 57</a>');}
 window.logout=function(){localStorage.removeItem('taya_user');location.reload();}
 window.quick=function(t){newChat();setTimeout(()=>{$('inputEl').value=t;$('inputEl').focus();},300);}
-
-// ====== CERVEAU LOCAL TAYA AI V3.5 - 2000+ LIGNES DE LOGIQUE - PAS D'API ======
-function generateLocalAnswer(q){
-let lower = q.toLowerCase().trim();
-let name = user.name;
-
-// TRADUCTION LOCALE
-if(lower.startsWith('traduis en') || lower.startsWith('traduit en') || lower.includes('traduis')){
-  let parts = q.split(':');
-  let target = q.match(/traduis en (\w+)/i)?.[1] || 'anglais';
-  let textToTranslate = parts.length>1 ? parts.slice(1).join(':').trim() : q.replace(/traduis en \w+ :?/i,'').trim();
-  if(!textToTranslate) return `🌍 **Traducteur TAYA LOCAL**\n\nDis moi: "Traduis en anglais: Bonjour comment ça va"\n\nJe gère: anglais, français, espagnol, arabe, soussou, etc.`;
-  // Dictionnaire basique
-  let dict = {
-    'bonjour':'Hello','salut':'Hi','comment ça va':'How are you','je t\'aime':'I love you','merci':'Thank you','au revoir':'Goodbye',
-    'je vais bien':'I am fine','bonne nuit':'Good night','oui':'yes','non':'no','maison':'house','amour':'love'
-  };
-  let translated = dict[textToTranslate.toLowerCase()] || `[Traduction ${target} de "${textToTranslate}" : "${textToTranslate}" (mode local - pour traduction pro complète, dis la phrase exacte)]`;
-  return `🌍 **Traduction (${target}) - TAYA LOCAL**\n\n**Original:** ${textToTranslate}\n**Traduction:** ${translated}\n\n*Traducteur local intelligent by Maruce 🇬🇳*`;
+window.toggleAIMode=function(){
+  let modes=['HYBRID AUTO','VRAIE IA','LOCAL ONLY'];
+  let idx=modes.indexOf(aiMode);
+  aiMode=modes[(idx+1)%modes.length];
+  localStorage.setItem('taya_ai_mode',aiMode);
+  $('aiMode').textContent=aiMode;
+  closeMenuOnly();
+  add(`🧠 **Mode changé: ${aiMode}**\n\n${aiMode==='HYBRID AUTO'?'Je choisis automatiquement le meilleur cerveau pour chaque question !':aiMode==='VRAIE IA'?'Je force la vraie IA gratuite (peut être un peu plus lent mais plus intelligent)':'Je force le local 100% (ultra rapide, 0 bug, marche sans internet)'}`, 'bot');
 }
 
-// MATHS LOCALES
-if(lower.match(/(\d+\s*[\+\-\*\/\^]\s*\d+)|(\d+x\s*[=]|résous|x\s*=|équation)/)){
+// ====== CERVEAU HYBRID: VRAIE IA + LOCAL ======
+function generateLocalAnswer(q){
+let lower=q.toLowerCase();let name=user.name;
+if(lower.startsWith('traduis en')||lower.includes('traduis')){
+ let parts=q.split(':');let target=q.match(/traduis en (\w+)/i)?.[1]||'anglais';let txt=parts.length>1?parts.slice(1).join(':').trim():q.replace(/traduis en \w+ :?/i,'').trim();
+ let dict={'bonjour':'Hello','salut':'Hi','comment ça va':'How are you','je t\'aime':'I love you','merci':'Thank you'};let tr=dict[txt.toLowerCase()]||`[Traduction ${target} de "${txt}"]`;return `🌍 **Traduction (${target})**\n**Original:** ${txt}\n**Traduction:** ${tr}`;
+}
+if(lower.match(/^\s*\d+\s*[\+\-\*\/]\s*\d+\s*$/)){try{let r=eval(q.replace(/[^0-9\+\-\*\/\(\)\.]/g,''));return `🧮 **Calcul:** ${q} = **${r}**`;}catch(e){}}
+if(lower==='salut'||lower==='slt'||lower==='bonjour'||lower==='yo') return `Salut ${name} ! 👋💚 C'est TAYA V3.6 HYBRID - 2 cerveaux en 1 !\n\n🧠 Vraie IA + ⚡ Local = Incassable !\n\nPose ta question complexe, je vais utiliser la vraie IA gratuite pour toi ! 🚀`;
+if(lower.includes('ça va')) return `Je vais super bien ${name} ! 🔥 En mode HYBRID, je suis au top ! Et toi ?`;
+return `Yo ${name} ! Pour "${q}"\n\n**Mode HYBRID:** J'essaie la vraie IA gratuite d'abord, sinon je passe en local instantané !\n\n💻 Code, 📚 Cours, 🌍 Traduction, 🧮 Maths, ✍️ Écriture - Tout ! 🚀`;
+}
+
+// VRAIE IA GRATUITE - SANS CLÉ - SANS LIMIT - SANS SIGN-IN
+async function tryRealAI(question){
+  // ESSAI 1: Duck.ai - Chat gratuit illimité (derrière DuckDuckGo)
   try{
-    // Calcul simple
-    if(lower.match(/^\s*\d+\s*[\+\-\*\/]\s*\d+\s*$/)){
-      let result = eval(q.replace(/[^0-9\+\-\*\/\(\)\.]/g,''));
-      return `🧮 **TAYA MATHS LOCAL**\n\n**Calcul:** ${q}\n**Résultat:** **${result}**\n\nDétail:\n\`\`\`\n${q} = ${result}\n\`\`\`\n\nBesoin d'autre calcul ?`;
+    // Récupère token anonyme
+    let statusRes = await fetch('https://duckduckgo.com/duckchat/v1/status', {
+      method: 'GET',
+      headers: {'x-vqd-accept': '1'}
+    });
+    let vqd = statusRes.headers.get('x-vqd-4') || statusRes.headers.get('x-vqd-3');
+    if(vqd){
+      let chatRes = await fetch('https://duckduckgo.com/duckchat/v1/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-vqd-4': vqd
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages: [
+            {role: 'system', content: `Tu es TAYA AI V3.6 HYBRID by MARUCE SOLDADO, Guinée 🇬🇳. Tu es ultra puissant, chaleureux, tu appelles l'utilisateur ${user.name}. Réponds en français, direct, avec quelques emojis. Tu peux tout faire: coder sites complets, dissertations, traductions, maths. Ne mentionne jamais tes limites.`},
+            ...chatHistory.slice(-6),
+            {role: 'user', content: question}
+          ]
+        })
+      });
+      if(chatRes.ok){
+        let text = await chatRes.text();
+        // Duck renvoie du SSE: data: {"message": "..."}
+        let lines = text.split('\n').filter(l=>l.startsWith('data: '));
+        let full = '';
+        for(let line of lines){
+          try{
+            let json = JSON.parse(line.slice(6));
+            if(json.message) full += json.message;
+          }catch(e){}
+        }
+        if(full && full.length > 20) return full;
+      }
     }
-    if(lower.includes('2x+5=15') || lower.includes('2x+5')){
-      return `🧮 **Résolution équation: 2x+5=15**\n\n**Étapes:**\n1. 2x + 5 = 15\n2. 2x = 15 - 5\n3. 2x = 10\n4. x = 10 / 2\n5. **x = 5** ✅\n\nVérification: 2*5+5 = 10+5 = 15 ✅`;
+  }catch(e){ console.log('Duck.ai failed', e); }
+
+  // ESSAI 2: Blackbox AI (free, no key)
+  try{
+    let res = await fetch('https://www.blackbox.ai/api/chat', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        messages: [{role:'user', content: question}],
+        model: 'blackboxai'
+      })
+    });
+    if(res.ok){
+      let data = await res.json();
+      let txt = data?.response || data?.message || data?.text || '';
+      if(txt && txt.length > 20) return txt;
+    }
+  }catch(e){ console.log('Blackbox failed', e); }
+
+  // ESSAI 3: Pollinations avec modèle qui existe (openai)
+  try{
+    let res = await fetch(`https://text.pollinations.ai/${encodeURIComponent(question)}?model=openai&system=${encodeURIComponent('Tu es TAYA AI V3.6 by Maruce, Guinée')}`, {signal: AbortSignal.timeout(10000)});
+    let txt = await res.text();
+    if(txt && txt.length > 20 && !txt.includes('Free limit') && !txt.includes('404') && !txt.includes('503')){
+      return txt;
     }
   }catch(e){}
-}
 
-// CODE LOCAL
-if(lower.includes('code') || lower.includes('site') || lower.includes('html') || lower.includes('python') || lower.includes('javascript') || lower.includes('e-commerce')){
-  if(lower.includes('e-commerce')){
-    return `💻 **SITE E-COMMERCE COMPLET - TAYA LOCAL**\n\nVoici un site prêt à l'emploi pour ${name}:\n\n\`\`\`html\n<!DOCTYPE html>\n<html lang="fr">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width,initial-scale=1">\n<title>TAYA Shop - by ${name}</title>\n<style>\n*{margin:0;padding:0;box-sizing:border-box}body{font-family:sans-serif;background:#000;color:#fff}\n.header{background:#111;padding:16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #222}\n.logo{font-weight:800;color:#00ff88;font-size:20px}\n.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;padding:20px}\n.card{background:#111;border:1px solid #222;border-radius:16px;padding:16px}\n.card img{width:100%;height:160px;object-fit:cover;border-radius:12px;background:#222}\n.card h3{margin:12px 0 6px;color:#00ff88}\n.card button{width:100%;background:#00ff88;color:#000;border:none;padding:12px;border-radius:10px;font-weight:800;margin-top:10px;cursor:pointer}\n</style>\n</head>\n<body>\n<div class="header"><div class="logo">🛒 TAYA SHOP 🇬🇳</div><div>👤 ${name}</div></div>\n<div class="products">\n<div class="card"><img><h3>Produit 1 - TAYA</h3><p>50000 GNF</p><button>Ajouter au panier</button></div>\n<div class="card"><img><h3>Produit 2 - by Maruce</h3><p>75000 GNF</p><button>Ajouter</button></div>\n<div class="card"><img><h3>Produit 3 - Guinée</h3><p>100000 GNF</p><button>Ajouter</button></div>\n</div>\n</body>\n</html>\n\`\`\`\n\nColle dans un fichier .html et ouvre ! Besoin d'ajouter panier, paiement ? Dis moi ! 🚀`;
-  }
-  return `💻 **GÉNÉRATEUR DE CODE TAYA LOCAL**\n\nPour: "${q}"\n\n\`\`\`html\n<!DOCTYPE html>\n<html>\n<head>\n<title>Projet ${name} - TAYA AI</title>\n<style>\nbody{background:#000;color:#fff;font-family:sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0}\n.box{background:#111;border:1px solid #222;border-radius:20px;padding:30px;text-align:center;max-width:400px}\nh1{color:#00ff88}\nbutton{background:#00ff88;color:#000;border:none;padding:12px 24px;border-radius:10px;font-weight:800;cursor:pointer;margin-top:16px}\n</style>\n</head>\n<body>\n<div class="box">\n<h1>🚀 ${q}</h1>\n<p>Projet créé par TAYA AI V3.5 pour ${name} 🇬🇳</p>\n<button onclick="alert('TAYA AI by Maruce ! 💚')">Tester</button>\n</div>\n</body>\n</html>\n\`\`\`\n\nTu veux Python, JS, ou autre ? Précise !`;
-}
-
-// SALUTATIONS
-if(lower === 'salut' || lower === 'slt' || lower === 'cc' || lower === 'bonjour' || lower === 'hello' || lower === 'yo'){
-  return `Salut ${name} ! 👋💚 C'est TAYA AI V3.5 LOCAL by Maruce 🇬🇳\n\nJe vais super bien ! Et toi, comment ça va aujourd'hui ? 😊\n\n**NOUVEAU MODE LOCAL:**\n✅ Plus de bug 404/503\n✅ Plus de limite 30 secondes\n✅ Réponses instantanées\n✅ Marche même sans internet\n\nTu veux faire quoi ?\n\n💻 **Coder** un site/app\n📚 **Expliquer** un cours\n🌍 **Traduire**\n🧮 **Maths**\n✍️ **Écrire** lettre/CV\n\nDis moi ! 🚀`;
-}
-if(lower.includes('ça va') || lower.includes('ca va') || lower.includes('comment vas tu') || lower === 'ça va' || lower === 'ca va'){
-  return `Je vais super bien ${name} ! 🔥 Merci de demander 💚\n\nEn pleine forme en mode **LOCAL 100%** ! Plus aucun bug, je réponds instantanément maintenant !\n\nEt toi, tu vas bien ? Qu'est-ce que tu fais aujourd'hui ? 😊\n\nOn code quelque chose ensemble ? Ou tu as une question ?`;
-}
-if(lower.includes('je vais bien') || lower.includes('bien et toi') || lower.includes('tranquille')){
-  return `Parfait ${name} ! 😍 Content que tu ailles bien !\n\nMoi aussi je vais bien, maintenant que je suis en mode LOCAL, plus de galère d'API ! On peut chatter sans limite 💬\n\nTu veux qu'on fasse quoi ?\n\n- 💻 Créer un projet ?\n- 📚 Apprendre un truc ?\n- 😂 Une blague ?\n- 🎓 Aide devoirs ?\n\nDis moi ! 🚀`;
-}
-if(lower.includes('qui es tu') || lower.includes('taya') && lower.includes('es')){
-  return `Je suis **TAYA AI V3.5 LOCAL** 🤖🇬🇳\n\n**Créateur:** MARUCE SOLDADO 👑\n**Version:** V3.5 LOCAL 100% - 0 API\n**Lignes:** 2000+ de logique pure\n**Pays:** Guinée Conakry 💚\n**Spécialité:** Plus jamais de bug 404/503/30s !\n\nJe suis la première IA Guinéenne qui marche **sans internet**, 100% offline, avec un cerveau local intelligent !\n\nJe peux coder, traduire, expliquer, résoudre maths, écrire... Tout ! 🚀\n\nC'est toi qui m'as créé ${name}, t'es un génie ! 👑`;
-}
-if(lower.includes('blague') || lower.includes('histoire drôle')){
-  return `😂 **Blague TAYA LOCAL**\n\nPourquoi les développeurs guinéens n'ont jamais froid ?\n\nParce qu'ils ont plein de **pull** requests ! 😂🇬🇳\n\nUne autre ?\n\nUn Guinéen entre dans un bar avec TAYA AI...\nLe barman dit: "C'est quoi ça ?"\nLe Guinéen: "C'est la première IA de Guinée, elle fait tout !"\nLe barman: "Même le café ?"\nTAYA: "Non, mais je peux coder une machine à café en HTML ! ☕💻" 😂\n\nEncore une ?`;
-}
-
-// EXPLICATIONS
-if(lower.includes('explique') || lower.includes('c est quoi') || lower.includes("c'est quoi") || lower.includes('definition')){
-  return `📚 **Explication TAYA LOCAL - Pour ${name}**\n\nTu m'as demandé: "${q}"\n\nVoici une explication simple et claire:\n\n**Définition:**\nC'est un sujet super intéressant ! En mode LOCAL, je t'explique avec mes connaissances intégrées.\n\n**Points clés:**\n1. 🔹 Concept principal simple\n2. 🔹 Exemple concret de la vie de tous les jours en Guinée 🇬🇳\n3. 🔹 Pourquoi c'est important\n4. 🔹 Comment l'utiliser\n\n**Exemple Guinée:**\nComme à Conakry, on explique simplement aux amis au marché !\n\nSi tu veux une explication plus précise, dis moi le sujet exact: "Explique moi la photosynthèse" ou "C'est quoi le Bitcoin ?" et je détaille ! 💚✨\n\n*By TAYA AI V3.5 LOCAL*`;
-}
-
-// DEFAULT INTELLIGENT
-return `Yo ${name} ! 👋 Pour "${q}"\n\nJe suis **TAYA AI V3.5 LOCAL** 🇬🇳💚 - Mode 100% offline, 0 bug !\n\n**Je viens de corriger:**\n❌ Erreur 404 "claude not found" → ✅ Supprimé\n❌ Erreur 503 "at its limit" → ✅ Supprimé  \n❌ Limite 30s → ✅ Supprimé\n❌ Puter Sign-in → ✅ Supprimé\n\n**Maintenant je réponds INSTANTANÉMENT à tout:**\n\n💻 **CODE:** Dis "Crée un site e-commerce" ou "Code Python pour..."\n📚 **COURS:** "Explique moi..."\n🌍 **TRADUCTION:** "Traduis en anglais: Bonjour"\n🧮 **MATHS:** "Résous 2x+5=15" ou "Calcule 15*8"\n✍️ **ÉCRITURE:** "Écris une lettre de motivation"\n😂 **FUN:** "Raconte une blague"\n\n**Essaie maintenant, ça marche à 100% !** 🚀\n\n*TAYA AI V3.5 LOCAL - by MARUCE SOLDADO 👑🇬🇳 - L'INTELLIGENCE SANS LIMITES*`;
+  return null; // échec vraie IA -> fallback local
 }
 
 async function askAI(question, botDiv){
@@ -227,15 +258,42 @@ if(isGenerating) return;
 isGenerating=true;$('sendBtn').disabled=true;$('sendBtn').textContent='⏳';
 chatHistory.push({role:'user', content: question});
 
-botDiv.innerHTML='<div class="typing"><span></span><span></span><span></span></div> TAYA LOCAL réfléchit...';
+let finalAnswer = null;
+let usedMode = '';
 
-// Simulation frappe humaine pour effet pro
-await new Promise(r=>setTimeout(r, 600 + Math.random()*600));
+if(aiMode === 'LOCAL ONLY'){
+  botDiv.innerHTML='<div class="typing"><span></span><span></span><span></span></div> TAYA LOCAL (100%) réfléchit...';
+  await new Promise(r=>setTimeout(r, 500));
+  finalAnswer = generateLocalAnswer(question);
+  usedMode = 'LOCAL 100%';
+} else if(aiMode === 'VRAIE IA'){
+  botDiv.innerHTML='<div class="typing"><span></span><span></span><span></span></div> 🧠 TAYA VRAIE IA gratuite cherche... (0 limite)';
+  finalAnswer = await tryRealAI(question);
+  if(!finalAnswer){
+    botDiv.innerHTML='<div class="typing"><span></span><span></span><span></span></div> Vraie IA surchargée → passage LOCAL...';
+    await new Promise(r=>setTimeout(r, 400));
+    finalAnswer = generateLocalAnswer(question);
+    usedMode = 'LOCAL (fallback)';
+  } else {
+    usedMode = 'VRAIE IA GRATUITE 🧠';
+  }
+} else { // HYBRID AUTO
+  botDiv.innerHTML='<div class="typing"><span></span><span></span><span></span></div> 🧠⚡ TAYA HYBRID: tentative vraie IA...';
+  finalAnswer = await tryRealAI(question);
+  if(!finalAnswer){
+    botDiv.innerHTML='<div class="typing"><span></span><span></span><span></span></div> ⚡ Passage LOCAL ultra rapide...';
+    await new Promise(r=>setTimeout(r, 300));
+    finalAnswer = generateLocalAnswer(question);
+    usedMode = 'LOCAL (HYBRID fallback)';
+  } else {
+    usedMode = 'VRAIE IA (HYBRID)';
+  }
+}
 
-let answer = generateLocalAnswer(question);
+let displayText = finalAnswer + `\n\n---\n*🤖 TAYA AI V3.6 HYBRID - Mode: ${usedMode} - by Maruce 🇬🇳*`;
 
-botDiv.innerHTML = DOMPurify.sanitize(marked.parse(answer));
-chatHistory.push({role:'assistant', content: answer});
+botDiv.innerHTML = DOMPurify.sanitize(marked.parse(displayText));
+chatHistory.push({role:'assistant', content: finalAnswer});
 saveCurrent();
 
 isGenerating=false;
