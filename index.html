@@ -4,10 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050505">
-<title>TAYA IA V9 — by Maruce</title>
+<title>TAYA IA V11 — by Maruce</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
-
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -38,9 +37,9 @@ position:fixed;
 inset:-50%;
 z-index:-2;
 background:
-radial-gradient(circle at 20% 30%,rgba(0,255,136,.17),transparent 30%),
-radial-gradient(circle at 80% 70%,rgba(0,120,255,.15),transparent 30%),
-radial-gradient(circle at 50% 50%,rgba(0,255,136,.08),transparent 40%);
+radial-gradient(circle at 20% 30%,rgba(0,255,136,.2),transparent 30%),
+radial-gradient(circle at 80% 70%,rgba(0,120,255,.18),transparent 30%),
+radial-gradient(circle at 50% 50%,rgba(0,255,136,.1),transparent 40%);
 animation:bgmove 12s ease-in-out infinite alternate;
 pointer-events:none;
 }
@@ -50,25 +49,31 @@ content:"";
 position:fixed;
 inset:0;
 z-index:-1;
-background:linear-gradient(120deg,transparent,rgba(0,255,136,.025),transparent);
+background:linear-gradient(120deg,transparent,rgba(0,255,136,.04),transparent);
 background-size:200% 200%;
 animation:lightmove 8s linear infinite;
 pointer-events:none;
 }
 
 @keyframes bgmove{
-from{transform:translate(-3%,-3%) rotate(0deg)}
+from{transform:translate(-3%,-3%) rotate(0)}
 to{transform:translate(3%,3%) rotate(8deg)}
 }
-
 @keyframes lightmove{
-0%{background-position:0% 50%}
+0%{background-position:0 50%}
 100%{background-position:200% 50%}
+}
+@keyframes appear{
+from{opacity:0;transform:translateY(8px)}
+to{opacity:1;transform:translateY(0)}
+}
+@keyframes pulse{
+0%,100%{box-shadow:0 0 5px #00ff8855}
+50%{box-shadow:0 0 22px #00ff88aa}
 }
 
 button,input,textarea,select{font-family:inherit}
-
-button{touch-action:manipulation}
+button{touch-action:manipulation;cursor:pointer}
 
 .header{
 height:64px;
@@ -77,7 +82,7 @@ backdrop-filter:blur(18px);
 display:flex;
 align-items:center;
 justify-content:space-between;
-padding:0 12px;
+padding:0 10px;
 position:fixed;
 top:0;left:0;right:0;
 z-index:50;
@@ -85,7 +90,7 @@ border-bottom:1px solid var(--border);
 }
 
 .icon{
-width:42px;height:42px;
+width:39px;height:39px;
 border-radius:50%;
 background:var(--card2);
 border:1px solid var(--border);
@@ -93,16 +98,16 @@ display:flex;
 align-items:center;
 justify-content:center;
 cursor:pointer;
+flex-shrink:0;
 }
 
-.logo{font-family:Anton;font-size:18px}
+.logo{font-family:Anton;font-size:17px}
 .logo span{color:var(--green)}
-
 .pro{
 font-size:9px;
 background:var(--green);
 color:#000;
-padding:3px 8px;
+padding:3px 7px;
 border-radius:20px;
 font-weight:800;
 }
@@ -119,25 +124,25 @@ overflow:auto;
 .w-card{
 width:100%;
 max-width:460px;
-background:rgba(17,17,17,.95);
+background:rgba(17,17,17,.96);
 border:1px solid var(--border);
 border-radius:24px;
 padding:24px;
 text-align:center;
-box-shadow:0 0 45px rgba(0,255,136,.08);
+box-shadow:0 0 45px #00ff8815;
 }
 
 .avatar{
-width:100px;height:100px;
+width:95px;height:95px;
 border-radius:50%;
 background:linear-gradient(135deg,#00ff88,#00cc6a);
 margin:0 auto 12px;
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:50px;
+font-size:48px;
 border:3px solid var(--green);
-box-shadow:0 0 30px rgba(0,255,136,.2);
+animation:pulse 3s infinite;
 }
 
 .w-card h1{font-family:Anton;font-size:32px}
@@ -158,31 +163,25 @@ outline:none;
 .row select{flex:1;min-width:0}
 .row input{flex:1.8;min-width:0}
 
-.w-card button{
+.w-card button,.primary{
 width:100%;
 margin-top:14px;
 background:var(--green);
 color:#000;
 border:0;
-padding:15px;
+padding:14px;
 border-radius:14px;
 font-weight:800;
-cursor:pointer;
 }
 
 .tabs{display:flex;gap:8px;margin:12px 0}
-
 .tab{
-flex:1;
-padding:11px;
+flex:1;padding:11px;
 border-radius:10px;
 background:var(--card2);
 border:1px solid var(--border);
-cursor:pointer;
-font-weight:700;
-font-size:13px;
+cursor:pointer;font-weight:700;font-size:13px;
 }
-
 .tab.active{background:var(--green);color:#000}
 
 .home{
@@ -195,41 +194,24 @@ overflow:auto;
 background:var(--card);
 border:1px solid var(--border);
 border-radius:16px;
-padding:16px;
+padding:15px;
 margin-bottom:12px;
 cursor:pointer;
 transition:.2s;
 }
-
 .card:active{transform:scale(.98)}
-
-.card.green{
-background:var(--green);
-color:#000;
-font-weight:700;
-}
+.card.green{background:var(--green);color:#000;font-weight:700}
 
 .statusBox{
-display:flex;
-justify-content:center;
-flex-wrap:wrap;
-gap:8px;
-margin-top:10px;
+display:flex;justify-content:center;
+flex-wrap:wrap;gap:8px;margin-top:10px;
 }
-
 .statusTag{
-background:#181818;
-border:1px solid #333;
-padding:7px 11px;
-border-radius:20px;
-font-size:10px;
-color:#aaa;
+background:#181818;border:1px solid #333;
+padding:7px 11px;border-radius:20px;
+font-size:10px;color:#aaa;
 }
-
-.statusTag.online{
-color:var(--green);
-border-color:var(--green);
-}
+.statusTag.online{color:var(--green);border-color:var(--green)}
 
 .chatWrap{
 height:100dvh;
@@ -239,83 +221,55 @@ flex-direction:column;
 }
 
 .chat{
-flex:1;
-overflow:auto;
+flex:1;overflow:auto;
 padding:12px 10px 150px;
-display:flex;
-flex-direction:column;
-gap:14px;
-scroll-behavior:smooth;
+display:flex;flex-direction:column;
+gap:14px;scroll-behavior:smooth;
 }
 
 .msg{
-max-width:90%;
+max-width:94%;
 padding:14px 16px;
 border-radius:18px;
 font-size:14.5px;
 white-space:pre-wrap;
-line-height:1.6;
+line-height:1.65;
 overflow-wrap:anywhere;
 animation:appear .2s ease;
 }
 
-@keyframes appear{
-from{opacity:0;transform:translateY(8px)}
-to{opacity:1;transform:translateY(0)}
-}
-
 .msg p{margin-bottom:8px}
-
 .msg pre{
-background:#050505;
-padding:12px;
-border-radius:10px;
-overflow-x:auto;
-margin:8px 0;
+background:#050505;padding:12px;
+border-radius:10px;overflow-x:auto;margin:8px 0;
 }
-
 .msg code{color:var(--green)}
 .msg a{color:var(--green)}
 .msg img{max-width:100%;border-radius:12px}
 
 .user{
-align-self:flex-end;
-background:#fff;
-color:#000;
+align-self:flex-end;background:#fff;color:#000;
 border-bottom-right-radius:6px;
 }
-
 .bot{
-align-self:flex-start;
-background:var(--card);
+align-self:flex-start;background:var(--card);
 border:1px solid var(--border);
 border-bottom-left-radius:6px;
 }
 
 .msgActions{
-display:flex;
-justify-content:flex-end;
-gap:7px;
-margin-top:10px;
-flex-wrap:wrap;
+display:flex;justify-content:flex-end;
+gap:7px;margin-top:10px;flex-wrap:wrap;
 }
-
 .copyBtn{
-background:#252525;
-border:1px solid #444;
-color:#fff;
-padding:7px 11px;
-border-radius:9px;
-font-size:11px;
-cursor:pointer;
+background:#252525;border:1px solid #444;
+color:#fff;padding:7px 11px;
+border-radius:9px;font-size:11px;
 }
 
 .bar{
-position:fixed;
-bottom:0;left:0;right:0;
-display:flex;
-gap:8px;
-padding:10px;
+position:fixed;bottom:0;left:0;right:0;
+display:flex;gap:7px;padding:10px;
 padding-bottom:max(10px,env(safe-area-inset-bottom));
 background:rgba(10,10,10,.96);
 backdrop-filter:blur(15px);
@@ -324,219 +278,143 @@ z-index:20;
 }
 
 .bar textarea{
-flex:1;
-min-width:0;
+flex:1;min-width:0;
 background:var(--card2);
 border:1px solid var(--border);
-color:#fff;
-padding:14px;
-border-radius:24px;
-outline:none;
-resize:none;
-min-height:48px;
-max-height:130px;
+color:#fff;padding:14px;
+border-radius:24px;outline:none;
+resize:none;min-height:48px;max-height:130px;
 }
 
 .bar button{
-width:48px;height:48px;
-flex-shrink:0;
-border-radius:50%;
-background:var(--green);
-color:#000;
-border:0;
-font-weight:800;
-font-size:18px;
-cursor:pointer;
+width:45px;height:48px;flex-shrink:0;
+border-radius:50%;background:var(--green);
+color:#000;border:0;font-weight:800;font-size:18px;
 }
 
-.bar button:disabled{opacity:.5}
-
-.attachBtn,.voiceBtn{
-width:48px;height:48px;
-flex-shrink:0;
-border-radius:50%;
+.attachBtn,.voiceBtn,.stopBtn{
 background:#181818!important;
 color:var(--green)!important;
 border:1px solid #292929!important;
-font-size:20px;
-cursor:pointer;
+font-size:19px!important;
 }
 
-.voiceBtn.active{
-background:#ff3333!important;
-color:#fff!important;
-animation:voicePulse 1s infinite;
-}
-
-@keyframes voicePulse{
-0%{box-shadow:0 0 0 0 rgba(255,50,50,.6)}
-70%{box-shadow:0 0 0 12px rgba(255,50,50,0)}
-100%{box-shadow:0 0 0 0 rgba(255,50,50,0)}
-}
-
-.voiceInfo{
-position:fixed;
-bottom:76px;
-left:50%;
-transform:translateX(-50%);
-background:#181818;
-border:1px solid var(--green);
-color:var(--green);
-padding:9px 15px;
-border-radius:20px;
-font-size:11px;
-z-index:25;
-display:none;
-white-space:nowrap;
-}
+.stopBtn{display:none;color:#ff5555!important}
+.voiceBtn.active{background:#ff3333!important;color:white!important}
 
 .attachments{
-position:fixed;
-bottom:70px;
-left:0;right:0;
-z-index:19;
-background:#0a0a0a;
-padding:8px 12px;
-display:none;
-gap:8px;
-overflow-x:auto;
+position:fixed;bottom:70px;left:0;right:0;
+z-index:19;background:#0a0a0a;
+padding:8px 12px;display:none;
+gap:8px;overflow-x:auto;
 }
 
 .attachmentItem{
-background:#181818;
-border:1px solid #333;
-padding:8px;
-border-radius:12px;
-font-size:11px;
-display:flex;
-align-items:center;
-gap:8px;
-white-space:nowrap;
+background:#181818;border:1px solid #333;
+padding:8px;border-radius:12px;
+font-size:11px;display:flex;
+align-items:center;gap:8px;white-space:nowrap;
 }
-
 .attachmentItem button{
-background:none;
-border:0;
-color:#ff5555;
-font-size:18px;
+background:none;border:0;color:#ff5555;font-size:18px;
 }
-
 .attachmentThumb{
 width:30px;height:30px;
-object-fit:cover;
-border-radius:6px;
+object-fit:cover;border-radius:6px;
 }
 
 .drawer{
-position:fixed;
-top:0;left:0;
-width:88%;max-width:360px;
-height:100dvh;
-background:var(--card);
-border-right:1px solid var(--border);
-z-index:60;
-transform:translateX(-100%);
-transition:.3s;
-padding:16px;
-overflow:auto;
+position:fixed;top:0;left:0;
+width:88%;max-width:360px;height:100dvh;
+background:var(--card);border-right:1px solid var(--border);
+z-index:60;transform:translateX(-100%);
+transition:.3s;padding:16px;overflow:auto;
 }
-
 .drawer.open{transform:translateX(0)}
 
 .overlay{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.6);
-z-index:55;
-display:none;
+position:fixed;inset:0;
+background:#0009;z-index:55;display:none;
 }
-
 .overlay.show{display:block}
 
 .mi{
-padding:13px;
-border-radius:12px;
-cursor:pointer;
-margin:7px 0;
+padding:13px;border-radius:12px;
+cursor:pointer;margin:7px 0;
 background:var(--card2);
 border:1px solid var(--border);
 }
-
 .mi.green{background:var(--green);color:#000;font-weight:800}
 
-.fab{
-position:fixed;
-right:18px;bottom:25px;
-width:58px;height:58px;
-border-radius:50%;
-background:var(--green);
-color:#000;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:24px;
-font-weight:800;
-cursor:pointer;
-z-index:30;
-box-shadow:0 0 25px rgba(0,255,136,.25);
-}
-
 .projectItem{
-display:flex;
-align-items:center;
-gap:8px;
-background:#181818;
-border:1px solid #292929;
-border-radius:12px;
-padding:12px;
-margin:7px 0;
+display:flex;align-items:center;gap:8px;
+background:#181818;border:1px solid #292929;
+border-radius:12px;padding:12px;margin:7px 0;
 }
-
 .projectTitle{
-flex:1;
-overflow:hidden;
-text-overflow:ellipsis;
-white-space:nowrap;
-cursor:pointer;
+flex:1;overflow:hidden;
+text-overflow:ellipsis;white-space:nowrap;cursor:pointer;
 }
-
 .deleteBtn{
-background:#351414;
-color:#ff7777;
-border:0;
-border-radius:8px;
-padding:8px;
-cursor:pointer;
+background:#351414;color:#ff7777;
+border:0;border-radius:8px;padding:8px;
 }
 
 .typing{display:flex;gap:4px}
-
 .typing span{
-width:8px;height:8px;
-border-radius:50%;
-background:var(--green);
-animation:b 1s infinite;
+width:8px;height:8px;border-radius:50%;
+background:var(--green);animation:typing 1s infinite;
 }
-
-@keyframes b{
+@keyframes typing{
 0%,80%,100%{transform:scale(.6)}
 40%{transform:scale(1)}
 }
 
 .memoryInfo{
-background:#101d16;
-border:1px solid #174b32;
-color:#00ff88;
-border-radius:12px;
-padding:12px;
-font-size:12px;
-line-height:1.5;
-margin:12px 0;
+background:#101d16;border:1px solid #174b32;
+color:var(--green);border-radius:12px;
+padding:12px;font-size:12px;
+line-height:1.5;margin:12px 0;
+}
+
+.modal{
+position:fixed;inset:0;background:#000c;
+z-index:100;display:none;
+align-items:center;justify-content:center;padding:15px;
+}
+.modal.show{display:flex}
+.modalBox{
+width:100%;max-width:500px;
+max-height:85dvh;overflow:auto;
+background:#111;border:1px solid #333;
+border-radius:18px;padding:18px;
+}
+.modalBox textarea,.searchInput{
+width:100%;background:#080808;color:white;
+border:1px solid #333;border-radius:12px;
+padding:12px;margin:12px 0;outline:none;
+}
+.modalBox textarea{min-height:220px;resize:vertical}
+.modalButtons{display:flex;gap:8px;flex-wrap:wrap}
+.modalButtons button{
+flex:1;min-width:100px;padding:12px;
+border:0;border-radius:10px;font-weight:700;
+}
+.saveBtn{background:var(--green);color:#000}
+.cancelBtn{background:#333;color:#fff}
+.dangerBtn{background:#551717;color:#ff7777}
+
+.fab{
+position:fixed;right:18px;bottom:25px;
+width:58px;height:58px;border-radius:50%;
+background:var(--green);color:#000;
+display:flex;align-items:center;justify-content:center;
+font-size:24px;font-weight:800;z-index:30;
 }
 
 @media(max-width:480px){
-.msg{max-width:94%;font-size:14px}
-.logo{font-size:16px}
+.msg{font-size:14px}
+.logo{font-size:15px}
 }
 </style>
 </head>
@@ -544,39 +422,27 @@ margin:12px 0;
 <body>
 
 <div class="header" id="header" style="display:none">
-
-<div style="display:flex;align-items:center;gap:8px">
-<div class="icon" onclick="goHome()" style="background:var(--green);color:#000">←</div>
+<div style="display:flex;align-items:center;gap:7px">
+<div class="icon" onclick="goHome()">←</div>
 <div class="icon" onclick="toggleMenu()">☰</div>
 <div class="logo">🤖 TAYA <span>IA</span> <span class="pro" id="apiStatus">CLOUD</span></div>
 </div>
-
-<div style="display:flex;gap:8px">
-<div class="icon" onclick="toggleAutoVoice()" title="Lecture automatique">🔊</div>
-<div class="icon" onclick="stopSpeaking()" title="Arrêter la voix">🔇</div>
+<div style="display:flex;gap:6px">
+<div class="icon" onclick="toggleAutoVoice()">🔊</div>
+<div class="icon" onclick="stopSpeaking()">🔇</div>
 <div class="icon" onclick="newChat()">💬</div>
 <div class="icon" onclick="goHome()">🏠</div>
 </div>
-
 </div>
 
 <div id="overlay" class="overlay" onclick="closeMenuOnly()"></div>
 
-<!-- CONNEXION -->
-
 <div id="welcome" class="welcome">
 <div class="w-card">
-
 <div class="avatar">🤖</div>
 <h1>TAYA <span>IA</span></h1>
-
-<div style="color:var(--green);font-weight:700;font-size:12px;margin:8px 0">
-INTELLIGENCE ARTIFICIELLE • V9
-</div>
-
-<div style="font-size:10px;color:#888;margin-bottom:12px">
-Assistant intelligent créé par Maruce 🇬🇳
-</div>
+<div style="color:var(--green);font-weight:700;font-size:12px;margin:8px 0">INTELLIGENCE ARTIFICIELLE • V11</div>
+<div style="font-size:10px;color:#888;margin-bottom:12px">Assistant intelligent créé par Maruce 🇬🇳</div>
 
 <div class="tabs">
 <div id="tabSignup" class="tab active" onclick="switchTab('signup')">📝 Inscription</div>
@@ -584,9 +450,7 @@ Assistant intelligent créé par Maruce 🇬🇳
 </div>
 
 <div id="signupForm">
-
 <input id="wName" placeholder="👤 Nom complet">
-
 <div class="row">
 <select id="cc">
 <option value="+224">🇬🇳 Guinée (+224)</option>
@@ -600,15 +464,12 @@ Assistant intelligent créé par Maruce 🇬🇳
 </select>
 <input id="wPhone" type="tel" placeholder="📱 Numéro">
 </div>
-
 <input id="wPass" type="password" placeholder="🔒 Mot de passe">
 <input id="wPass2" type="password" placeholder="🔒 Confirmer le mot de passe">
-
 <button onclick="doSignup()">✨ CRÉER MON COMPTE</button>
 </div>
 
 <div id="loginForm" style="display:none">
-
 <div class="row">
 <select id="cc2">
 <option value="+224">🇬🇳 Guinée (+224)</option>
@@ -622,33 +483,22 @@ Assistant intelligent créé par Maruce 🇬🇳
 </select>
 <input id="lPhone" type="tel" placeholder="📱 Numéro">
 </div>
-
 <input id="lPass" type="password" placeholder="🔒 Mot de passe">
 <button onclick="doLogin()">🚀 SE CONNECTER</button>
 </div>
-
-<div style="font-size:10px;color:#777;margin-top:15px">
-TAYA IA V9 • by Maruce 🇬🇳
-</div>
-
+<div style="font-size:10px;color:#777;margin-top:15px">TAYA IA V11 • by Maruce 🇬🇳</div>
 </div>
 </div>
-
-<!-- ACCUEIL -->
 
 <div id="homeScreen" style="display:none">
 <div class="home">
-
 <div style="text-align:center;margin-bottom:20px">
-<div style="width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#00cc6a);margin:auto;display:flex;align-items:center;justify-content:center;font-size:60px;border:4px solid #00ff88;box-shadow:0 0 35px #00ff8833">🤖</div>
-
-<div style="font-family:Anton;font-size:26px;margin-top:12px">TAYA <span style="color:#00ff88">IA</span></div>
-
-<div style="color:#00ff88;font-weight:700;font-size:12px">by Maruce ✨ Guinée 🇬🇳</div>
-
+<div class="avatar" style="width:115px;height:115px;font-size:58px">🤖</div>
+<div style="font-family:Anton;font-size:27px;margin-top:12px">TAYA <span style="color:var(--green)">IA</span></div>
+<div style="color:var(--green);font-weight:700;font-size:12px">by Maruce ✨ Guinée 🇬🇳</div>
 <div class="statusBox">
 <span class="statusTag" id="apiBadgeHome">Vérification API...</span>
-<span class="statusTag" id="memoryBadge">🧠 Mémoire en attente</span>
+<span class="statusTag" id="memoryBadge">🧠 Mémoire...</span>
 </div>
 </div>
 
@@ -656,68 +506,59 @@ TAYA IA V9 • by Maruce 🇬🇳
 
 <div class="memoryInfo">
 🧠 <b>Mémoire intelligente</b><br>
-TAYA peut utiliser les informations importantes de tes échanges précédents grâce à son système de mémoire connecté à Supabase
+TAYA peut conserver des informations importantes pour personnaliser les prochaines conversations.
 </div>
 
 <div class="card green" onclick="newChat()">
-<b>💬 Nouveau Chat TAYA IA</b><br>
-<small>Pose tes questions à ton assistant intelligent</small>
+💬 Nouveau Chat TAYA IA<br>
+<small>Pose toutes tes questions à ton assistant</small>
 </div>
+
+<div class="card" onclick="openMemory()">🧠 Gérer ma mémoire intelligente</div>
 
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0">
 <div class="card" onclick="quick('Explique-moi la photosynthèse')">📚 Expliquer</div>
-<div class="card" onclick="quick('Crée un site e-commerce complet en HTML CSS et JavaScript')">💻 Coder</div>
+<div class="card" onclick="quick('Crée un site web complet en HTML CSS et JavaScript')">💻 Coder</div>
 <div class="card" onclick="quick('Traduis en anglais : Bonjour')">🌍 Traduire</div>
 <div class="card" onclick="quick('Résous cette équation : 2x+5=15')">🧮 Maths</div>
 <div class="card" onclick="quick('Comment analyser une photo ?')">📸 Images</div>
-<div class="card" onclick="quick('Explique comment fonctionne un document PDF')">📄 Documents</div>
+<div class="card" onclick="quick('Explique comment fonctionne un PDF')">📄 Documents</div>
 <div class="card" onclick="quick('Fais une recherche sur les dernières actualités')">🌐 Recherche Web</div>
 <div class="card" onclick="quick('Écris-moi un texte professionnel')">✍️ Rédaction</div>
 </div>
 
 <h3 style="margin:15px 0">📚 Mes conversations</h3>
+<input class="searchInput" id="historySearch" placeholder="🔎 Rechercher une conversation..." oninput="updateUI()">
 <div id="projectsListHome"></div>
-
 </div>
 <div class="fab" onclick="newChat()">💬</div>
 </div>
 
-<!-- CHAT -->
-
 <div id="chatScreen" style="display:none" class="chatWrap">
-
 <div id="chatEl" class="chat"></div>
 
-<input type="file" id="fileInput"
-accept="image/*,.pdf,application/pdf"
-multiple hidden onchange="handleFiles(this.files)">
-
+<input type="file" id="fileInput" accept="image/*,.pdf,application/pdf" multiple hidden onchange="handleFiles(this.files)">
 <div id="attachments" class="attachments"></div>
-<div id="voiceInfo" class="voiceInfo">🎤 TAYA t'écoute...</div>
 
 <div class="bar">
 <button class="attachBtn" onclick="$('fileInput').click()">📎</button>
-<button id="voiceBtn" class="voiceBtn" onclick="toggleVoice()" title="Parler à TAYA">🎤</button>
+<button id="voiceBtn" class="voiceBtn" onclick="toggleVoice()">🎤</button>
 <textarea id="inputEl" placeholder="Pose ta question à TAYA IA..." rows="1"></textarea>
 <button id="sendBtn" onclick="send()">➤</button>
+<button id="stopBtn" class="stopBtn" onclick="stopGeneration()">■</button>
 </div>
-
 </div>
-
-<!-- MENU -->
 
 <div id="drawer" class="drawer">
-
 <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-<div style="width:52px;height:52px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:28px">🤖</div>
-<div>
-<h2 style="font-family:Anton">TAYA IA V9</h2>
-<small style="color:var(--green)">by Maruce 🇬🇳</small>
-</div>
+<div class="avatar" style="width:50px;height:50px;font-size:25px;margin:0">🤖</div>
+<div><h2 style="font-family:Anton">TAYA IA V11</h2><small style="color:var(--green)">by Maruce 🇬🇳</small></div>
 </div>
 
 <div class="mi green" onclick="goHome()">🏠 Accueil</div>
 <div class="mi green" onclick="newChat()">💬 Nouveau chat</div>
+<div class="mi" onclick="openMemory()">🧠 Ma mémoire</div>
+<div class="mi" onclick="exportAll()">📥 Exporter mes conversations</div>
 <div class="mi" onclick="toggleAutoVoice()">🔊 Activer / désactiver la voix</div>
 <div class="mi" onclick="stopSpeaking()">🔇 Arrêter la voix</div>
 <div class="mi" onclick="checkAPI()">🌐 Vérifier le serveur</div>
@@ -725,8 +566,22 @@ multiple hidden onchange="handleFiles(this.files)">
 <div class="mi" style="color:#ff5555" onclick="logout()">🚪 Déconnexion</div>
 
 <h3 style="margin:18px 0 10px">Mes discussions</h3>
+<input class="searchInput" id="historySearchDrawer" placeholder="🔎 Rechercher..." oninput="syncSearch(this.value)">
 <div id="projectsList"></div>
+</div>
 
+<div id="memoryModal" class="modal">
+<div class="modalBox">
+<h2 style="font-family:Anton;color:var(--green)">🧠 MA MÉMOIRE TAYA</h2>
+<p style="font-size:12px;color:#aaa;margin-top:8px">Consulte et modifie les informations mémorisées par TAYA.</p>
+<textarea id="memoryText" placeholder="Chargement de la mémoire..."></textarea>
+<div class="modalButtons">
+<button class="saveBtn" onclick="saveMemory()">💾 Enregistrer</button>
+<button class="cancelBtn" onclick="closeMemory()">Fermer</button>
+<button class="dangerBtn" onclick="deleteMemory()">🗑️ Supprimer</button>
+</div>
+<div id="memoryMessage" style="font-size:12px;color:var(--green);margin-top:12px"></div>
+</div>
 </div>
 
 <script>
@@ -736,28 +591,21 @@ let user=null;
 let projects=[];
 let currentConvId=null;
 let chatHistory=[];
-let isGenerating=false;
 let selectedFiles=[];
-
+let isGenerating=false;
+let activeController=null;
 let recognition=null;
 let isListening=false;
 let speechEnabled=true;
-let voiceSupported=false;
 let finalTranscript='';
 let voiceHasFinalResult=false;
-
-// PDF
 
 if(window.pdfjsLib){
 pdfjsLib.GlobalWorkerOptions.workerSrc=
 "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 }
 
-// OUTILS
-
-function $(id){
-return document.getElementById(id);
-}
+function $(id){return document.getElementById(id)}
 
 function hash(s){
 let h=0;
@@ -769,22 +617,13 @@ return h.toString(16);
 
 function escapeHTML(s){
 return String(s).replace(/[&<>"']/g,c=>({
-'&':'&amp;',
-'<':'&lt;',
-'>':'&gt;',
-'"':'&quot;',
-"'":'&#39;'
+'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
 }[c]));
 }
 
 function saveData(){
 if(!user)return;
-
-localStorage.setItem(
-'taya_all_'+user.phoneFull,
-JSON.stringify(projects)
-);
-
+localStorage.setItem('taya_all_'+user.phoneFull,JSON.stringify(projects));
 localStorage.setItem('taya_user',JSON.stringify(user));
 }
 
@@ -796,9 +635,7 @@ who:el.classList.contains('user')?'user':'bot',
 text:el.innerText.trim()
 }));
 
-let title=msgs.find(m=>m.who==='user')?.text.slice(0,40)||'Nouvelle conversation';
-
-let idx=projects.findIndex(p=>p.id===currentConvId);
+let title=msgs.find(m=>m.who==='user')?.text.slice(0,45)||'Nouvelle conversation';
 
 let obj={
 id:currentConvId,
@@ -807,6 +644,7 @@ msgs,
 history:chatHistory
 };
 
+let idx=projects.findIndex(p=>p.id===currentConvId);
 if(idx>=0)projects[idx]=obj;
 else projects.unshift(obj);
 
@@ -814,58 +652,38 @@ saveData();
 updateUI();
 }
 
-// CHARGEMENT
-
 window.onload=function(){
-
 let s=localStorage.getItem('taya_user');
-
 if(s){
 try{
 user=JSON.parse(s);
-
-projects=JSON.parse(
-localStorage.getItem('taya_all_'+user.phoneFull)||'[]'
-);
-
+projects=JSON.parse(localStorage.getItem('taya_all_'+user.phoneFull)||'[]');
 showHome();
 checkAPI();
-
-}catch(e){
-localStorage.removeItem('taya_user');
+}catch(e){localStorage.removeItem('taya_user')}
 }
-}
-
 initVoice();
 };
 
-// INSCRIPTION
-
 window.switchTab=function(t){
-
 $('tabSignup').classList.toggle('active',t==='signup');
 $('tabLogin').classList.toggle('active',t==='login');
-
 $('signupForm').style.display=t==='signup'?'block':'none';
 $('loginForm').style.display=t==='login'?'block':'none';
-
 };
 
 window.doSignup=function(){
-
 let n=$('wName').value.trim();
 let p=$('wPhone').value.trim();
 let code=$('cc').value;
 let pass=$('wPass').value;
-let pass2=$('wPass2').value;
 
-if(!n||!p||pass.length<6||pass!==pass2){
+if(!n||!p||pass.length<6||pass!==$('wPass2').value){
 alert('Vérifie les informations et utilise un mot de passe de 6 caractères minimum');
 return;
 }
 
 let full=code+' '+p;
-
 let all=JSON.parse(localStorage.getItem('taya_users')||'[]');
 
 if(all.find(u=>u.phoneFull===full)){
@@ -874,1105 +692,713 @@ switchTab('login');
 return;
 }
 
-user={
-name:n,
-phoneFull:full,
-passHash:hash(pass)
-};
-
+user={name:n,phoneFull:full,passHash:hash(pass)};
 all.push(user);
-
 localStorage.setItem('taya_users',JSON.stringify(all));
 localStorage.setItem('taya_user',JSON.stringify(user));
-
 projects=[];
-
 saveData();
 showHome();
 checkAPI();
-
 };
 
 window.doLogin=function(){
-
 let full=$('cc2').value+' '+$('lPhone').value.trim();
 let pass=$('lPass').value;
-
 let all=JSON.parse(localStorage.getItem('taya_users')||'[]');
 
-let u=all.find(x=>
-x.phoneFull===full&&x.passHash===hash(pass)
-);
-
-if(!u){
-alert('Numéro ou mot de passe incorrect');
-return;
-}
+let u=all.find(x=>x.phoneFull===full&&x.passHash===hash(pass));
+if(!u){alert('Numéro ou mot de passe incorrect');return}
 
 user=u;
-
-projects=JSON.parse(
-localStorage.getItem('taya_all_'+user.phoneFull)||'[]'
-);
-
+projects=JSON.parse(localStorage.getItem('taya_all_'+user.phoneFull)||'[]');
 localStorage.setItem('taya_user',JSON.stringify(user));
-
 showHome();
 checkAPI();
-
 };
 
-// ACCUEIL
-
 window.showHome=function(){
-
 $('welcome').style.display='none';
 $('chatScreen').style.display='none';
 $('homeScreen').style.display='block';
 $('header').style.display='flex';
-
 $('helloName').textContent='Salut '+user.name+' ! 👋';
-
 updateUI();
-
 };
 
 window.goHome=function(){
-
 closeMenuOnly();
-
 $('chatScreen').style.display='none';
 $('homeScreen').style.display='block';
-
 };
 
-// MENU
-
 window.closeMenuOnly=function(){
-
 $('drawer').classList.remove('open');
 $('overlay').classList.remove('show');
-
 };
 
 window.toggleMenu=function(){
-
 $('drawer').classList.toggle('open');
 $('overlay').classList.toggle('show');
-
 updateUI();
-
 };
 
-// NOUVEAU CHAT
-
 window.newChat=function(){
-
 if(!user)return;
-
 stopSpeaking();
+stopGeneration();
 
 currentConvId=Date.now().toString();
-
 chatHistory=[];
 selectedFiles=[];
-
 renderAttachments();
 
 closeMenuOnly();
-
 $('chatEl').innerHTML='';
-
 $('homeScreen').style.display='none';
 $('chatScreen').style.display='flex';
 
 add(
-"Bonjour "+user.name+" ! 👋\n\nJe suis **TAYA IA V9**, ton assistant intelligent créé par Maruce 🇬🇳\n\nJe peux t'aider à répondre aux questions, coder, traduire, expliquer, rédiger et analyser tes documents.\n\n📸 Tu peux envoyer des images\n📄 Tu peux envoyer des PDF\n🌐 Je peux effectuer des recherches Web\n🧠 Je dispose d'une mémoire intelligente\n🎤 Tu peux me parler directement",
+"Bonjour "+user.name+" ! 👋\n\nJe suis **TAYA IA V11**, ton assistant intelligent créé par Maruce 🇬🇳\n\nJe peux répondre à tes questions, coder, traduire, rédiger et analyser tes documents.\n\n📸 Images • 📄 PDF • 🌐 Recherche Web • 🧠 Mémoire • 🎤 Voix",
 'bot'
 );
-
 };
 
-// AFFICHAGE
-
 function add(t,who){
-
 let d=document.createElement('div');
 d.className='msg '+who;
 
 if(who==='bot'){
-
-d.innerHTML=DOMPurify.sanitize(
-marked.parse(t||'')
-);
-
+d.innerHTML=DOMPurify.sanitize(marked.parse(t||''));
 }else{
-
 d.textContent=t;
-
 }
 
 $('chatEl').appendChild(d);
 
 if(who==='bot'&&t){
-
 let actions=document.createElement('div');
 actions.className='msgActions';
 
-let btn=document.createElement('button');
-btn.className='copyBtn';
-btn.textContent='📋 Copier';
-
-btn.onclick=async()=>{
-
+let copy=document.createElement('button');
+copy.className='copyBtn';
+copy.textContent='📋 Copier';
+copy.onclick=async()=>{
 try{
-
 await navigator.clipboard.writeText(t);
-
-btn.textContent='✅ Copié';
-
-setTimeout(()=>{
-btn.textContent='📋 Copier';
-},1500);
-
-}catch(e){
-
-alert('Impossible de copier cette réponse');
-
-}
-
+copy.textContent='✅ Copié';
+setTimeout(()=>copy.textContent='📋 Copier',1500);
+}catch(e){alert('Impossible de copier')}
 };
 
-let speakBtn=document.createElement('button');
-speakBtn.className='copyBtn';
-speakBtn.textContent='🔊 Écouter';
+let speak=document.createElement('button');
+speak.className='copyBtn';
+speak.textContent='🔊 Écouter';
+speak.onclick=()=>speakTAYA(t);
 
-speakBtn.onclick=()=>speakTAYA(t);
-
-actions.appendChild(btn);
-actions.appendChild(speakBtn);
-
+actions.append(copy,speak);
 d.appendChild(actions);
-
 }
 
 $('chatEl').scrollTop=$('chatEl').scrollHeight;
-
 return d;
-
 }
 
-// HISTORIQUE
-
 function updateUI(){
+let term=($('historySearch')?.value||$('historySearchDrawer')?.value||'').toLowerCase();
 
-let html=projects.map((p,i)=>`
+let filtered=projects.map((p,i)=>({p,i})).filter(x=>
+(x.p.title||'').toLowerCase().includes(term)
+);
 
+let html=filtered.map(({p,i})=>`
 <div class="projectItem">
-
-<div class="projectTitle" onclick="openProj(${i})">
-💬 ${escapeHTML(p.title)}
+<div class="projectTitle" onclick="openProj(${i})">💬 ${escapeHTML(p.title)}</div>
+<button class="deleteBtn" onclick="deleteProject(${i})">🗑️</button>
 </div>
-
-<button class="deleteBtn" onclick="deleteProject(${i})">
-🗑️
-</button>
-
-</div>
-
-`).join('')||'<small style="color:#888">📭 Aucune conversation</small>';
+`).join('')||'<small style="color:#888">📭 Aucune conversation trouvée</small>';
 
 $('projectsList').innerHTML=html;
 $('projectsListHome').innerHTML=html;
-
 }
 
+window.syncSearch=function(value){
+$('historySearch').value=value;
+$('historySearchDrawer').value=value;
+updateUI();
+};
+
 window.openProj=function(i){
-
 let p=projects[i];
-
 if(!p)return;
 
 stopSpeaking();
-
 currentConvId=p.id;
 chatHistory=p.history||[];
-
 $('chatEl').innerHTML='';
-
 $('homeScreen').style.display='none';
 $('chatScreen').style.display='flex';
-
 selectedFiles=[];
 renderAttachments();
-
 closeMenuOnly();
 
 p.msgs.forEach(m=>add(m.text,m.who));
-
 };
 
 window.deleteProject=function(i){
-
 if(!confirm('Supprimer cette conversation ?'))return;
-
 let deleted=projects[i];
-
 projects.splice(i,1);
 
 if(currentConvId===deleted.id){
-
 currentConvId=null;
 chatHistory=[];
-
 $('chatEl').innerHTML='';
 $('chatScreen').style.display='none';
 $('homeScreen').style.display='block';
-
 }
 
 saveData();
 updateUI();
-
 };
 
 window.logout=function(){
-
 if(!confirm('Veux-tu vraiment te déconnecter ?'))return;
-
 stopSpeaking();
-
+stopGeneration();
 localStorage.removeItem('taya_user');
-
 location.reload();
-
 };
 
 window.quick=function(t){
-
 newChat();
-
 setTimeout(()=>{
-
 $('inputEl').value=t;
 send();
-
 },300);
-
 };
 
-// CONNEXION API
-
 async function checkAPI(){
-
 try{
-
 const r=await fetch(API_BASE+'/health');
-
 if(!r.ok)throw new Error();
-
 const data=await r.json();
 
 $('apiStatus').textContent='ONLINE 🟢';
 $('apiBadgeHome').textContent='🟢 Serveur connecté';
 
-if(data.intelligentMemory){
-
-$('memoryBadge').textContent='🧠 Mémoire active';
-$('memoryBadge').classList.add('online');
-
-}else{
-
-$('memoryBadge').textContent='🧠 Mémoire non confirmée';
-$('memoryBadge').classList.remove('online');
-
-}
+$('memoryBadge').textContent=data.intelligentMemory?'🧠 Mémoire active':'🧠 Mémoire non confirmée';
+$('memoryBadge').classList.toggle('online',!!data.intelligentMemory);
 
 return true;
-
 }catch(e){
-
 $('apiStatus').textContent='OFFLINE 🔴';
 $('apiBadgeHome').textContent='🔴 Serveur indisponible';
-
 return false;
-
+}
 }
 
+// MÉMOIRE
+
+window.openMemory=async function(){
+closeMenuOnly();
+$('memoryModal').classList.add('show');
+$('memoryText').value='Chargement...';
+$('memoryMessage').textContent='';
+
+try{
+const r=await fetch(API_BASE+'/api/memory?userId='+encodeURIComponent(user.phoneFull));
+const data=await r.json();
+if(!r.ok)throw new Error(data.error||'Impossible de charger la mémoire');
+
+$('memoryText').value=data.memory||'';
+$('memoryMessage').textContent='Mémoire chargée';
+}catch(e){
+$('memoryText').value='';
+$('memoryMessage').textContent='Erreur : '+e.message;
+}
+};
+
+window.closeMemory=function(){
+$('memoryModal').classList.remove('show');
+};
+
+window.saveMemory=async function(){
+try{
+const r=await fetch(API_BASE+'/api/memory',{
+method:'PUT',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+userId:user.phoneFull,
+memory:$('memoryText').value
+})
+});
+
+const data=await r.json();
+if(!r.ok)throw new Error(data.error||'Enregistrement impossible');
+
+$('memoryMessage').textContent='✅ Mémoire enregistrée';
+}catch(e){
+$('memoryMessage').textContent='❌ '+e.message;
+}
+};
+
+window.deleteMemory=async function(){
+if(!confirm('Supprimer définitivement ta mémoire TAYA ?'))return;
+
+try{
+const r=await fetch(API_BASE+'/api/memory',{
+method:'DELETE',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({userId:user.phoneFull})
+});
+
+const data=await r.json();
+if(!r.ok)throw new Error(data.error||'Suppression impossible');
+
+$('memoryText').value='';
+$('memoryMessage').textContent='✅ Mémoire supprimée';
+}catch(e){
+$('memoryMessage').textContent='❌ '+e.message;
+}
+};
+
+// EXPORTATION
+
+window.exportAll=function(){
+if(!projects.length){
+alert('Aucune conversation à exporter');
+return;
+}
+
+let content=projects.map(p=>
+'================================\n'+
+(p.title||'Conversation')+'\n'+
+'================================\n\n'+
+(p.msgs||[]).map(m=>
+(m.who==='user'?'VOUS':'TAYA IA')+' :\n'+m.text
+).join('\n\n')
+).join('\n\n');
+
+downloadText(content,'TAYA-IA-conversations.txt');
+closeMenuOnly();
+};
+
+function downloadText(content,filename){
+const blob=new Blob([content],{type:'text/plain;charset=utf-8'});
+const url=URL.createObjectURL(blob);
+const a=document.createElement('a');
+a.href=url;
+a.download=filename;
+a.click();
+setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+// EXPORTER LA CONVERSATION ACTUELLE
+
+function exportCurrent(){
+if(!chatHistory.length){alert('Aucune conversation à exporter');return}
+let text=chatHistory.map(m=>
+(m.role==='user'?'VOUS':'TAYA IA')+' :\n'+m.content
+).join('\n\n');
+downloadText(text,'TAYA-IA-conversation.txt');
 }
 
 // FICHIERS
 
 window.handleFiles=function(files){
-
 for(const file of files){
-
 let isImage=file.type.startsWith('image/');
+let isPDF=file.type==='application/pdf'||file.name.toLowerCase().endsWith('.pdf');
 
-let isPDF=
-file.type==='application/pdf'||
-file.name.toLowerCase().endsWith('.pdf');
-
-if(!isImage&&!isPDF){
-
-alert('Format non accepté : '+file.name);
-continue;
-
-}
-
-if(file.size>5*1024*1024){
-
-alert('Fichier trop volumineux : '+file.name+'. Maximum 5 Mo.');
-continue;
-
-}
-
-if(selectedFiles.length>=3){
-
-alert('Maximum 3 fichiers par message.');
-break;
-
-}
-
+if(!isImage&&!isPDF){alert('Format non accepté : '+file.name);continue}
+if(file.size>5*1024*1024){alert('Maximum 5 Mo : '+file.name);continue}
+if(selectedFiles.length>=3){alert('Maximum 3 fichiers');break}
 selectedFiles.push(file);
-
 }
-
 $('fileInput').value='';
-
 renderAttachments();
-
 };
 
 function renderAttachments(){
-
 const box=$('attachments');
-
 box.innerHTML='';
 
 if(!selectedFiles.length){
-
 box.style.display='none';
 return;
-
 }
 
 box.style.display='flex';
 
 selectedFiles.forEach((file,index)=>{
-
 let item=document.createElement('div');
 item.className='attachmentItem';
 
 if(file.type.startsWith('image/')){
-
 let img=document.createElement('img');
-
 img.className='attachmentThumb';
 img.src=URL.createObjectURL(file);
-
 item.appendChild(img);
-
 }else{
-
 let icon=document.createElement('span');
 icon.textContent='📄';
-
 item.appendChild(icon);
-
 }
 
 let name=document.createElement('span');
 name.textContent=file.name.slice(0,22);
-
 item.appendChild(name);
 
 let remove=document.createElement('button');
-
 remove.textContent='×';
 remove.onclick=()=>removeAttachment(index);
-
 item.appendChild(remove);
 
 box.appendChild(item);
-
 });
-
 }
 
 window.removeAttachment=function(index){
-
 selectedFiles.splice(index,1);
 renderAttachments();
-
 };
 
-// COMPRESSION IMAGE
-
 function compressImage(file){
-
 return new Promise((resolve,reject)=>{
-
 const reader=new FileReader();
 
 reader.onload=()=>{
-
 const image=new Image();
 
 image.onload=()=>{
-
 const max=1400;
-
-let width=image.width;
-let height=image.height;
+let width=image.width,height=image.height;
 
 if(width>max||height>max){
-
 let ratio=Math.min(max/width,max/height);
-
 width=Math.round(width*ratio);
 height=Math.round(height*ratio);
-
 }
 
 const canvas=document.createElement('canvas');
-
 canvas.width=width;
 canvas.height=height;
 
 const ctx=canvas.getContext('2d');
-
-ctx.fillStyle='#ffffff';
+ctx.fillStyle='#fff';
 ctx.fillRect(0,0,width,height);
-
 ctx.drawImage(image,0,0,width,height);
 
 try{
-
-resolve(canvas.toDataURL('image/jpeg',0.75));
-
-}catch(e){
-
-reject(new Error('Impossible de compresser cette image.'));
-
-}
-
+resolve(canvas.toDataURL('image/jpeg',.75));
+}catch(e){reject(new Error('Compression impossible'))}
 };
 
-image.onerror=()=>reject(new Error('Impossible de lire cette image.'));
-
+image.onerror=()=>reject(new Error('Image illisible'));
 image.src=reader.result;
-
 };
 
-reader.onerror=()=>reject(new Error('Erreur de lecture de l’image.'));
-
+reader.onerror=()=>reject(new Error('Erreur de lecture'));
 reader.readAsDataURL(file);
-
 });
-
 }
-
-// LECTURE PDF
 
 async function readPDF(file){
-
-if(!window.pdfjsLib){
-
-throw new Error('Le lecteur PDF est indisponible.');
-
-}
+if(!window.pdfjsLib)throw new Error('Lecteur PDF indisponible');
 
 const buffer=await file.arrayBuffer();
-
-const pdf=await pdfjsLib.getDocument({
-data:new Uint8Array(buffer)
-}).promise;
+const pdf=await pdfjsLib.getDocument({data:new Uint8Array(buffer)}).promise;
 
 let text='';
-
 const maxPages=Math.min(pdf.numPages,20);
 
 for(let i=1;i<=maxPages;i++){
-
 const page=await pdf.getPage(i);
-
 const content=await page.getTextContent();
-
-const pageText=content.items
-.map(item=>item.str)
-.join(' ');
-
-text+='\n\n--- PAGE '+i+' ---\n'+pageText;
+text+='\n\n--- PAGE '+i+' ---\n'+content.items.map(x=>x.str).join(' ');
 
 if(text.length>=25000){
-
 text=text.slice(0,25000);
 break;
-
+}
 }
 
-}
-
-if(!text.trim()){
-
-return '[Aucun texte extractible. Ce document est peut-être un PDF scanné. La reconnaissance OCR n’est pas activée.]';
-
-}
-
-if(pdf.numPages>20){
-
-text+='\n\n[Lecture limitée aux 20 premières pages.]';
-
-}
-
+if(!text.trim())return '[Aucun texte extractible. Ce PDF est peut-être scanné.]';
 return text;
-
 }
-
-// PRÉPARATION MULTIMODALE
 
 async function prepareUserContent(question,files){
-
-let text=question||
-'Analyse les fichiers joints et explique leur contenu.';
-
+let text=question||'Analyse les fichiers joints.';
 let parts=[];
 
 for(const file of files){
-
 if(file.type.startsWith('image/')){
-
-const imageData=await compressImage(file);
-
-parts.push({
-
-type:'image_url',
-
-image_url:{url:imageData}
-
-});
-
-}else if(
-
-file.type==='application/pdf'||
-file.name.toLowerCase().endsWith('.pdf')
-
-){
-
-const pdfText=await readPDF(file);
-
+let imageData=await compressImage(file);
+parts.push({type:'image_url',image_url:{url:imageData}});
+}else{
+let pdfText=await readPDF(file);
 text+='\n\nDOCUMENT PDF : '+file.name+'\n'+pdfText;
-
+}
 }
 
-}
-
-parts.unshift({
-
-type:'text',
-text:text
-
-});
-
+parts.unshift({type:'text',text});
 return parts;
-
 }
 
-// ENVOI MESSAGE
+// ENVOI
 
 window.send=async function(){
-
 if(isGenerating)return;
 
 const input=$('inputEl');
-
 const question=input.value.trim();
-
 const files=[...selectedFiles];
 
 if(!question&&!files.length)return;
 
 if(!currentConvId){
-
 currentConvId=Date.now().toString();
 chatHistory=[];
-
 }
 
 input.value='';
 input.style.height='48px';
-
 selectedFiles=[];
 renderAttachments();
 
 let displayText=question;
-
 if(files.length){
-
-displayText+=(displayText?'\n\n':'')+
-'📎 '+files.map(f=>f.name).join(', ');
-
+displayText+=(displayText?'\n\n':'')+'📎 '+files.map(f=>f.name).join(', ');
 }
 
 add(displayText,'user');
-
 const botDiv=add('','bot');
 
 await askAI(question,files,botDiv,displayText);
-
 };
 
-// COMMUNICATION IA
-
 async function askAI(question,files,botDiv,displayText){
-
 if(isGenerating)return;
 
 isGenerating=true;
-
 $('sendBtn').disabled=true;
-$('sendBtn').textContent='⏳';
+$('stopBtn').style.display='block';
+
+activeController=new AbortController();
 
 try{
-
 botDiv.textContent='📂 Préparation des fichiers...';
 
 const content=await prepareUserContent(question,files);
 
+if(activeController.signal.aborted)return;
+
 const apiMessages=[
-
 ...chatHistory.slice(-28),
-
-{
-role:'user',
-content:content
-}
-
+{role:'user',content}
 ];
 
-botDiv.innerHTML=
-'<div class="typing"><span></span><span></span><span></span></div> TAYA IA réfléchit...';
+botDiv.innerHTML='<div class="typing"><span></span><span></span><span></span></div> TAYA IA réfléchit...';
 
-const controller=new AbortController();
-
-const timeout=setTimeout(
-()=>controller.abort(),
-120000
-);
+let timeout=setTimeout(()=>activeController?.abort(),120000);
 
 let response;
 
 try{
-
 response=await fetch(API_BASE+'/api/chat',{
-
 method:'POST',
-
-headers:{
-'Content-Type':'application/json'
-},
-
+headers:{'Content-Type':'application/json'},
 body:JSON.stringify({
-
 messages:apiMessages,
-
 userId:user.phoneFull
-
 }),
-
-signal:controller.signal
-
+signal:activeController.signal
 });
-
 }finally{
-
 clearTimeout(timeout);
-
 }
 
-let data;
+let data=await response.json();
 
-try{
-
-data=await response.json();
-
-}catch(e){
-
-throw new Error('Réponse invalide du serveur.');
-
-}
-
-if(!response.ok){
-
-throw new Error(data.error||'Erreur du serveur IA.');
-
-}
-
-if(!data.reply){
-
-throw new Error('Aucune réponse reçue.');
-
-}
+if(!response.ok)throw new Error(data.error||'Erreur du serveur IA');
+if(!data.reply)throw new Error('Aucune réponse reçue');
 
 const answer=data.reply;
 
-botDiv.innerHTML=DOMPurify.sanitize(
-marked.parse(answer)
-);
-
-// MÉMOIRE
+botDiv.innerHTML=DOMPurify.sanitize(marked.parse(answer));
 
 if(data.memoryEnabled){
-
 $('memoryBadge').textContent='🧠 Mémoire active';
 $('memoryBadge').classList.add('online');
-
 }
-
-// VOIX
 
 speakTAYA(answer);
 
-// HISTORIQUE
-
-let userHistoryText=displayText||question||'Fichiers joints';
-
-chatHistory.push({
-
-role:'user',
-content:userHistoryText
-
-});
-
-chatHistory.push({
-
-role:'assistant',
-content:answer
-
-});
+chatHistory.push({role:'user',content:displayText||question||'Fichiers joints'});
+chatHistory.push({role:'assistant',content:answer});
 
 saveCurrent();
 
-// ACTUALISER
-
-$('chatEl').scrollTop=$('chatEl').scrollHeight;
-
 }catch(error){
-
-console.error('TAYA IA V9:',error);
-
 if(error.name==='AbortError'){
-
-botDiv.textContent=
-'⏳ Le serveur met trop de temps à répondre. Réessaie dans quelques instants.';
-
+botDiv.textContent='⏹️ Génération arrêtée ou délai dépassé.';
 }else{
-
+console.error(error);
 botDiv.textContent='⚠️ '+error.message;
-
 }
-
 }finally{
-
 isGenerating=false;
-
+activeController=null;
 $('sendBtn').disabled=false;
-$('sendBtn').textContent='➤';
-
+$('stopBtn').style.display='none';
 $('chatEl').scrollTop=$('chatEl').scrollHeight;
-
+}
 }
 
+// ARRÊTER UNE GÉNÉRATION
+
+window.stopGeneration=function(){
+if(activeController){
+activeController.abort();
 }
+};
 
-// ===================================
-// TAYA IA V9 — INTELLIGENCE VOCALE
-// ===================================
+// VOIX
 
-const SpeechRecognition=
-window.SpeechRecognition||
-window.webkitSpeechRecognition;
+const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
 
 function initVoice(){
-
-if(!SpeechRecognition){
-
-voiceSupported=false;
-
-$('voiceBtn').title=
-'Dictée vocale non disponible sur ce navigateur';
-
-return;
-
-}
-
-voiceSupported=true;
+if(!SpeechRecognition)return;
 
 recognition=new SpeechRecognition();
-
 recognition.lang='fr-FR';
 recognition.continuous=false;
 recognition.interimResults=true;
 recognition.maxAlternatives=1;
 
 recognition.onstart=function(){
-
 isListening=true;
-
 finalTranscript='';
 voiceHasFinalResult=false;
-
 $('voiceBtn').classList.add('active');
 $('voiceBtn').textContent='🔴';
-
-$('voiceInfo').style.display='block';
-$('voiceInfo').textContent='🎤 TAYA t’écoute...';
-
-$('inputEl').placeholder='Parle maintenant...';
-
 };
 
 recognition.onresult=function(event){
-
 let transcript='';
-
 for(let i=0;i<event.results.length;i++){
-
 transcript+=event.results[i][0].transcript;
-
 if(event.results[i].isFinal){
-
 finalTranscript=transcript;
 voiceHasFinalResult=true;
-
 }
-
 }
-
 $('inputEl').value=transcript;
-
 };
 
 recognition.onerror=function(event){
-
-console.error('Erreur reconnaissance vocale:',event.error);
-
-voiceHasFinalResult=false;
-
+console.error('Erreur vocale',event.error);
 if(event.error==='not-allowed'){
-
-alert('Autorise le microphone dans les réglages de ton navigateur.');
-
-}else if(event.error==='no-speech'){
-
-$('voiceInfo').textContent='Aucune voix détectée';
-
-}else if(event.error==='network'){
-
-$('voiceInfo').textContent='Problème de connexion vocale';
-
+alert('Autorise le microphone dans les réglages du navigateur');
 }
-
 };
 
 recognition.onend=function(){
-
 isListening=false;
-
 $('voiceBtn').classList.remove('active');
 $('voiceBtn').textContent='🎤';
-
-$('voiceInfo').style.display='none';
-
-$('inputEl').placeholder='Pose ta question à TAYA IA...';
 
 let text=finalTranscript.trim();
 
 if(voiceHasFinalResult&&text&&!isGenerating){
-
 $('inputEl').value=text;
 send();
-
 }
 
 finalTranscript='';
 voiceHasFinalResult=false;
-
 };
-
 }
 
-// MICROPHONE
-
 window.toggleVoice=function(){
-
 if(!recognition){
-
-alert("La reconnaissance vocale n'est pas disponible sur ce navigateur. Essaie un navigateur compatible ou utilise la dictée du clavier de ton iPhone.");
-
+alert('La reconnaissance vocale n’est pas disponible sur ce navigateur. Utilise la dictée du clavier de ton iPhone.');
 return;
-
 }
 
 if(isListening){
-
 recognition.stop();
 return;
-
 }
 
 if(isGenerating){
-
-alert("Attends que TAYA termine sa réponse.");
+alert('Attends que TAYA termine sa réponse');
 return;
-
 }
 
 stopSpeaking();
-
-finalTranscript='';
-voiceHasFinalResult=false;
-
 $('inputEl').value='';
 
-try{
-
-recognition.start();
-
-}catch(error){
-
-console.error(error);
-
-alert("Impossible de démarrer le microphone. Réessaie.");
-
-}
-
+try{recognition.start()}
+catch(e){alert('Impossible de démarrer le microphone')}
 };
 
-// FAIRE PARLER TAYA
-
 window.speakTAYA=function(text){
-
 if(!speechEnabled||!window.speechSynthesis)return;
 
 window.speechSynthesis.cancel();
 
 let clean=String(text)
-
 .replace(/```[\s\S]*?```/g,'Bloc de code')
-
 .replace(/https?:\/\/\S+/g,'')
-
 .replace(/\[([^\]]+)\]\([^)]+\)/g,'$1')
-
 .replace(/[#*_>`~]/g,'')
-
-.replace(/\n{3,}/g,'\n\n')
-
 .trim();
 
 if(!clean)return;
 
 let utterance=new SpeechSynthesisUtterance(clean);
-
 utterance.lang='fr-FR';
 utterance.rate=1;
 utterance.pitch=1;
-utterance.volume=1;
 
 let voices=window.speechSynthesis.getVoices();
+let frenchVoice=voices.find(v=>v.lang.toLowerCase().startsWith('fr'));
 
-let frenchVoice=voices.find(v=>
-v.lang.toLowerCase().startsWith('fr')
-);
-
-if(frenchVoice){
-
-utterance.voice=frenchVoice;
-
-}
-
-utterance.onerror=function(event){
-
-console.error('Erreur lecture vocale:',event.error);
-
-};
-
+if(frenchVoice)utterance.voice=frenchVoice;
 window.speechSynthesis.speak(utterance);
-
 };
-
-// ARRÊTER VOIX
 
 window.stopSpeaking=function(){
-
-if(window.speechSynthesis){
-
-window.speechSynthesis.cancel();
-
-}
-
+if(window.speechSynthesis)window.speechSynthesis.cancel();
 };
 
-// ACTIVER VOIX
-
 window.toggleAutoVoice=function(){
-
 speechEnabled=!speechEnabled;
-
-if(!speechEnabled){
-
-stopSpeaking();
-
-alert('Lecture automatique désactivée');
-
-}else{
-
-alert('Lecture automatique activée');
-
-}
-
+if(!speechEnabled)stopSpeaking();
+alert(speechEnabled?'Lecture automatique activée':'Lecture automatique désactivée');
 };
 
 // CLAVIER
 
 $('inputEl').addEventListener('keydown',function(e){
-
 if(e.key==='Enter'&&!e.shiftKey){
-
 e.preventDefault();
 send();
-
 }
-
 });
 
 $('inputEl').addEventListener('input',function(){
-
 this.style.height='48px';
-
-this.style.height=
-Math.min(this.scrollHeight,130)+'px';
-
+this.style.height=Math.min(this.scrollHeight,130)+'px';
 });
 
-// ARRÊTER LA VOIX EN QUITTANT
-
-document.addEventListener('visibilitychange',function(){
-
-if(document.hidden){
-
-stopSpeaking();
-
-}
-
+document.addEventListener('visibilitychange',()=>{
+if(document.hidden)stopSpeaking();
 });
-
-// CONTRÔLE CONNEXION
 
 window.addEventListener('online',checkAPI);
-
 </script>
 
 </body>
