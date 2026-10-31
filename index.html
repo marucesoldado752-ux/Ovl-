@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050505">
-<title>TAYA IA V7 — by Maruce</title>
+<title>TAYA IA V8 — by Maruce</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
 
@@ -78,6 +78,7 @@ cursor:pointer;
 
 .logo{font-family:Anton;font-size:18px}
 .logo span{color:var(--green)}
+
 .pro{
 font-size:9px;
 background:var(--green);
@@ -150,6 +151,7 @@ cursor:pointer;
 }
 
 .tabs{display:flex;gap:8px;margin:12px 0}
+
 .tab{
 flex:1;
 padding:11px;
@@ -160,6 +162,7 @@ cursor:pointer;
 font-weight:700;
 font-size:13px;
 }
+
 .tab.active{background:var(--green);color:#000}
 
 .home{
@@ -210,6 +213,7 @@ overflow-wrap:anywhere;
 }
 
 .msg p{margin-bottom:8px}
+
 .msg pre{
 background:#050505;
 padding:12px;
@@ -217,6 +221,7 @@ border-radius:10px;
 overflow-x:auto;
 margin:8px 0;
 }
+
 .msg code{color:var(--green)}
 .msg a{color:var(--green)}
 .msg img{max-width:100%;border-radius:12px}
@@ -238,6 +243,7 @@ border-bottom-left-radius:6px;
 .msgActions{
 display:flex;
 justify-content:flex-end;
+gap:7px;
 margin-top:10px;
 }
 
@@ -291,15 +297,43 @@ cursor:pointer;
 
 .bar button:disabled{opacity:.5}
 
-.attachBtn{
+.attachBtn,.voiceBtn{
 width:48px;height:48px;
 flex-shrink:0;
 border-radius:50%;
-background:#181818;
-color:var(--green);
-border:1px solid #292929;
-font-size:21px;
+background:#181818!important;
+color:var(--green)!important;
+border:1px solid #292929!important;
+font-size:20px;
 cursor:pointer;
+}
+
+.voiceBtn.active{
+background:#ff3333!important;
+color:#fff!important;
+animation:voicePulse 1s infinite;
+}
+
+@keyframes voicePulse{
+0%{box-shadow:0 0 0 0 rgba(255,50,50,.6)}
+70%{box-shadow:0 0 0 12px rgba(255,50,50,0)}
+100%{box-shadow:0 0 0 0 rgba(255,50,50,0)}
+}
+
+.voiceInfo{
+position:fixed;
+bottom:76px;
+left:50%;
+transform:translateX(-50%);
+background:#181818;
+border:1px solid var(--green);
+color:var(--green);
+padding:9px 15px;
+border-radius:20px;
+font-size:11px;
+z-index:25;
+display:none;
+white-space:nowrap;
 }
 
 .attachments{
@@ -362,6 +396,7 @@ background:rgba(0,0,0,.6);
 z-index:55;
 display:none;
 }
+
 .overlay.show{display:block}
 
 .mi{
@@ -420,12 +455,14 @@ cursor:pointer;
 }
 
 .typing{display:flex;gap:4px}
+
 .typing span{
 width:8px;height:8px;
 border-radius:50%;
 background:var(--green);
 animation:b 1s infinite;
 }
+
 @keyframes b{
 0%,80%,100%{transform:scale(.6)}
 40%{transform:scale(1)}
@@ -449,6 +486,7 @@ animation:b 1s infinite;
 </div>
 
 <div style="display:flex;gap:8px">
+<div class="icon" onclick="stopSpeaking()" title="Arrêter la voix">🔇</div>
 <div class="icon" onclick="newChat()">💬</div>
 <div class="icon" onclick="goHome()">🏠</div>
 </div>
@@ -521,7 +559,7 @@ Assistant intelligent créé par Maruce 🇬🇳
 </div>
 
 <div style="font-size:10px;color:#777;margin-top:15px">
-TAYA IA V7 • by Maruce 🇬🇳
+TAYA IA V8 • by Maruce 🇬🇳
 </div>
 
 </div>
@@ -569,9 +607,11 @@ accept="image/*,.pdf,application/pdf"
 multiple hidden onchange="handleFiles(this.files)">
 
 <div id="attachments" class="attachments"></div>
+<div id="voiceInfo" class="voiceInfo">🎤 TAYA t'écoute...</div>
 
 <div class="bar">
 <button class="attachBtn" onclick="$('fileInput').click()">📎</button>
+<button id="voiceBtn" class="voiceBtn" onclick="toggleVoice()" title="Parler à TAYA">🎤</button>
 <textarea id="inputEl" placeholder="Pose ta question à TAYA IA..." rows="1"></textarea>
 <button id="sendBtn" onclick="send()">➤</button>
 </div>
@@ -587,6 +627,7 @@ multiple hidden onchange="handleFiles(this.files)">
 
 <div class="mi green" onclick="goHome()">🏠 Accueil</div>
 <div class="mi green" onclick="newChat()">💬 Nouveau chat</div>
+<div class="mi" onclick="stopSpeaking()">🔇 Arrêter la voix</div>
 <div class="mi" onclick="closeMenuOnly()">❌ Fermer</div>
 <div class="mi" style="color:#ff5555" onclick="logout()">🚪 Déconnexion</div>
 
@@ -604,12 +645,14 @@ let chatHistory=[];
 let isGenerating=false;
 let selectedFiles=[];
 
-const $=id=>document.getElementById(id);
+// CONFIGURATION PDF
 
 if(window.pdfjsLib){
 pdfjsLib.GlobalWorkerOptions.workerSrc=
 "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 }
+
+// OUTILS
 
 function hash(s){
 let h=0;
@@ -654,8 +697,11 @@ saveData();
 updateUI();
 }
 
+// CHARGEMENT
+
 window.onload=function(){
 let s=localStorage.getItem('taya_user');
+
 if(s){
 try{
 user=JSON.parse(s);
@@ -666,7 +712,11 @@ checkAPI();
 localStorage.removeItem('taya_user');
 }
 }
+
+initVoice();
 };
+
+// INSCRIPTION ET CONNEXION
 
 window.switchTab=function(t){
 $('tabSignup').classList.toggle('active',t==='signup');
@@ -742,13 +792,25 @@ $('chatScreen').style.display='none';
 $('homeScreen').style.display='block';
 };
 
+// MENU
+
 window.closeMenuOnly=function(){
 $('drawer').classList.remove('open');
 $('overlay').classList.remove('show');
 };
 
+window.toggleMenu=function(){
+$('drawer').classList.toggle('open');
+$('overlay').classList.toggle('show');
+updateUI();
+};
+
+// NOUVELLE CONVERSATION
+
 window.newChat=function(){
 if(!user)return;
+
+stopSpeaking();
 
 currentConvId=Date.now().toString();
 chatHistory=[];
@@ -761,16 +823,12 @@ $('homeScreen').style.display='none';
 $('chatScreen').style.display='flex';
 
 add(
-"Bonjour "+user.name+" ! 👋\n\nJe suis **TAYA IA**, ton assistant intelligent créé par Maruce 🇬🇳\n\nPose-moi tes questions, demande-moi de coder, traduire, expliquer ou rédiger quelque chose.\n\n📸 Tu peux envoyer des images et des PDF.",
+"Bonjour "+user.name+" ! 👋\n\nJe suis **TAYA IA**, ton assistant intelligent créé par Maruce 🇬🇳\n\nPose-moi tes questions, demande-moi de coder, traduire, expliquer ou rédiger quelque chose.\n\n📸 Tu peux envoyer des images et des PDF.\n\n🎤 Tu peux aussi me parler directement avec le microphone.",
 'bot'
 );
 };
 
-window.toggleMenu=function(){
-$('drawer').classList.toggle('open');
-$('overlay').classList.toggle('show');
-updateUI();
-};
+// AFFICHAGE DES MESSAGES
 
 function add(t,who){
 let d=document.createElement('div');
@@ -802,13 +860,21 @@ alert('Impossible de copier cette réponse');
 }
 };
 
+let speakBtn=document.createElement('button');
+speakBtn.className='copyBtn';
+speakBtn.textContent='🔊 Écouter';
+speakBtn.onclick=()=>speakTAYA(t);
+
 actions.appendChild(btn);
+actions.appendChild(speakBtn);
 d.appendChild(actions);
 }
 
 $('chatEl').scrollTop=$('chatEl').scrollHeight;
 return d;
 }
+
+// HISTORIQUE
 
 function updateUI(){
 let html=projects.map((p,i)=>`
@@ -825,6 +891,8 @@ $('projectsListHome').innerHTML=html;
 window.openProj=function(i){
 let p=projects[i];
 if(!p)return;
+
+stopSpeaking();
 
 currentConvId=p.id;
 chatHistory=p.history||[];
@@ -859,6 +927,7 @@ updateUI();
 
 window.logout=function(){
 if(!confirm('Veux-tu vraiment te déconnecter ?'))return;
+stopSpeaking();
 localStorage.removeItem('taya_user');
 location.reload();
 };
@@ -870,6 +939,8 @@ $('inputEl').value=t;
 send();
 },300);
 };
+
+// CONNEXION API
 
 async function checkAPI(){
 try{
@@ -1083,7 +1154,7 @@ text:text
 return parts;
 }
 
-// ENVOI
+// ENVOI MESSAGE
 
 window.send=async function(){
 if(isGenerating)return;
@@ -1118,6 +1189,8 @@ const botDiv=add('','bot');
 
 await askAI(question,files,botDiv,displayText);
 };
+
+// COMMUNICATION AVEC L'IA
 
 async function askAI(question,files,botDiv,displayText){
 if(isGenerating)return;
@@ -1181,6 +1254,36 @@ const answer=data.reply;
 
 botDiv.innerHTML=DOMPurify.sanitize(marked.parse(answer));
 
+// TAYA LIT AUTOMATIQUEMENT SA RÉPONSE
+speakTAYA(answer);
+
+// AJOUTER LES BOUTONS D'ACTION
+let actions=document.createElement('div');
+actions.className='msgActions';
+
+let copyBtn=document.createElement('button');
+copyBtn.className='copyBtn';
+copyBtn.textContent='📋 Copier';
+
+copyBtn.onclick=async()=>{
+try{
+await navigator.clipboard.writeText(answer);
+copyBtn.textContent='✅ Copié';
+setTimeout(()=>copyBtn.textContent='📋 Copier',1500);
+}catch(e){
+alert('Impossible de copier cette réponse');
+}
+};
+
+let listenBtn=document.createElement('button');
+listenBtn.className='copyBtn';
+listenBtn.textContent='🔊 Écouter';
+listenBtn.onclick=()=>speakTAYA(answer);
+
+actions.appendChild(copyBtn);
+actions.appendChild(listenBtn);
+botDiv.appendChild(actions);
+
 let userHistoryText=displayText||question||'Fichiers joints';
 
 chatHistory.push({
@@ -1197,7 +1300,7 @@ saveCurrent();
 
 }catch(error){
 
-console.error('TAYA IA V7:',error);
+console.error('TAYA IA V8:',error);
 
 if(error.name==='AbortError'){
 botDiv.textContent='⏳ Le serveur met trop de temps à répondre. Réessaie dans quelques instants.';
@@ -1215,6 +1318,203 @@ $('chatEl').scrollTop=$('chatEl').scrollHeight;
 }
 }
 
+// =====================================
+// TAYA IA V8 — INTELLIGENCE VOCALE
+// =====================================
+
+let recognition=null;
+let isListening=false;
+let speechEnabled=true;
+let voiceSupported=false;
+let finalTranscript='';
+
+const SpeechRecognition=
+window.SpeechRecognition||
+window.webkitSpeechRecognition;
+
+function initVoice(){
+
+if(!SpeechRecognition){
+voiceSupported=false;
+$('voiceBtn').title='Dictée vocale non disponible sur ce navigateur';
+return;
+}
+
+voiceSupported=true;
+
+recognition=new SpeechRecognition();
+
+recognition.lang='fr-FR';
+recognition.continuous=false;
+recognition.interimResults=true;
+recognition.maxAlternatives=1;
+
+recognition.onstart=function(){
+
+isListening=true;
+finalTranscript='';
+
+$('voiceBtn').classList.add('active');
+$('voiceBtn').textContent='🔴';
+$('voiceInfo').style.display='block';
+$('voiceInfo').textContent='🎤 TAYA t’écoute...';
+
+$('inputEl').placeholder='Parle maintenant...';
+
+};
+
+recognition.onresult=function(event){
+
+let transcript='';
+
+for(let i=0;i<event.results.length;i++){
+transcript+=event.results[i][0].transcript;
+
+if(event.results[i].isFinal){
+finalTranscript=transcript;
+}
+}
+
+$('inputEl').value=transcript;
+
+};
+
+recognition.onerror=function(event){
+
+console.error('Erreur reconnaissance vocale:',event.error);
+
+if(event.error==='not-allowed'){
+alert('Autorise le microphone dans les réglages de ton navigateur.');
+}else if(event.error==='no-speech'){
+$('voiceInfo').textContent='Aucune voix détectée';
+}else if(event.error==='network'){
+$('voiceInfo').textContent='Problème de connexion vocale';
+}
+
+};
+
+recognition.onend=function(){
+
+isListening=false;
+
+$('voiceBtn').classList.remove('active');
+$('voiceBtn').textContent='🎤';
+$('voiceInfo').style.display='none';
+
+$('inputEl').placeholder='Pose ta question à TAYA IA...';
+
+let text=finalTranscript.trim()||$('inputEl').value.trim();
+
+if(text&&!isGenerating){
+$('inputEl').value=text;
+send();
+}
+
+};
+
+}
+
+// ACTIVER OU ARRÊTER LE MICROPHONE
+
+window.toggleVoice=function(){
+
+if(!recognition){
+alert("La reconnaissance vocale n'est pas disponible sur ce navigateur. Essaie un navigateur compatible ou utilise la dictée du clavier de ton iPhone.");
+return;
+}
+
+if(isListening){
+recognition.stop();
+return;
+}
+
+if(isGenerating){
+alert("Attends que TAYA termine sa réponse.");
+return;
+}
+
+stopSpeaking();
+
+finalTranscript='';
+$('inputEl').value='';
+
+try{
+recognition.start();
+}catch(error){
+console.error(error);
+alert("Impossible de démarrer le microphone. Réessaie.");
+}
+
+};
+
+// FAIRE PARLER TAYA
+
+window.speakTAYA=function(text){
+
+if(!speechEnabled||!window.speechSynthesis)return;
+
+window.speechSynthesis.cancel();
+
+let clean=String(text)
+.replace(/```[\s\S]*?```/g,'Bloc de code')
+.replace(/https?:\/\/\S+/g,'')
+.replace(/\[([^\]]+)\]\([^)]+\)/g,'$1')
+.replace(/[#*_>`~]/g,'')
+.replace(/\n{3,}/g,'\n\n')
+.trim();
+
+if(!clean)return;
+
+let utterance=new SpeechSynthesisUtterance(clean);
+
+utterance.lang='fr-FR';
+utterance.rate=1;
+utterance.pitch=1;
+utterance.volume=1;
+
+let voices=window.speechSynthesis.getVoices();
+
+let frenchVoice=voices.find(v=>
+v.lang.toLowerCase().startsWith('fr')
+);
+
+if(frenchVoice){
+utterance.voice=frenchVoice;
+}
+
+utterance.onerror=function(event){
+console.error('Erreur lecture vocale:',event.error);
+};
+
+window.speechSynthesis.speak(utterance);
+
+};
+
+// ARRÊTER LA LECTURE
+
+window.stopSpeaking=function(){
+
+if(window.speechSynthesis){
+window.speechSynthesis.cancel();
+}
+
+};
+
+// ACTIVER OU DÉSACTIVER LA LECTURE AUTOMATIQUE
+
+window.toggleAutoVoice=function(){
+
+speechEnabled=!speechEnabled;
+
+if(!speechEnabled){
+stopSpeaking();
+alert('Lecture automatique désactivée');
+}else{
+alert('Lecture automatique activée');
+}
+
+};
+
 // CLAVIER
 
 $('inputEl').addEventListener('keydown',function(e){
@@ -1227,6 +1527,14 @@ send();
 $('inputEl').addEventListener('input',function(){
 this.style.height='48px';
 this.style.height=Math.min(this.scrollHeight,130)+'px';
+});
+
+// ARRÊTER LA VOIX SI ON QUITTE LA PAGE
+
+document.addEventListener('visibilitychange',function(){
+if(document.hidden){
+stopSpeaking();
+}
 });
 
 </script>
