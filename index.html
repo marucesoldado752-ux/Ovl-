@@ -201,58 +201,94 @@ button,select,textarea,input{font-family:inherit}
 
 <script>
 const API_BASE="https://taya-ai-api.onrender.com";
-let user=null,projects=[],currentConvId=null,chatHistory=[],isGenerating=false;
+
+let user=null;
+let projects=[];
+let currentConvId=null;
+let chatHistory=[];
+let isGenerating=false;
+
 const $=id=>document.getElementById(id);
 
 function hash(s){
 let h=0;
-for(let i=0;i<s.length;i++)h=Math.imul(31,h)+s.charCodeAt(i)|0;
+for(let i=0;i<s.length;i++){
+h=Math.imul(31,h)+s.charCodeAt(i)|0;
+}
 return h.toString(16);
 }
 
 function saveData(){
 if(!user)return;
-localStorage.setItem('taya_all_'+user.phoneFull,JSON.stringify(projects));
+
+localStorage.setItem(
+'taya_all_'+user.phoneFull,
+JSON.stringify(projects)
+);
+
 localStorage.setItem('taya_user',JSON.stringify(user));
 }
 
 function saveCurrent(){
 if(!user||!currentConvId||chatHistory.length===0)return;
+
 let msgs=[...$('chatEl').querySelectorAll('.msg')].map(el=>({
 who:el.classList.contains('user')?'user':'bot',
 text:el.innerText.trim()
 }));
+
 let title=msgs.find(m=>m.who==='user')?.text.slice(0,40)||'Nouvelle conversation';
+
 let idx=projects.findIndex(p=>p.id===currentConvId);
-let obj={id:currentConvId,title,msgs,history:chatHistory};
+
+let obj={
+id:currentConvId,
+title,
+msgs,
+history:chatHistory
+};
+
 if(idx>=0)projects[idx]=obj;
 else projects.unshift(obj);
+
 saveData();
 updateUI();
 }
 
 window.onload=function(){
+
 let s=localStorage.getItem('taya_user');
+
 if(s){
 try{
 user=JSON.parse(s);
-projects=JSON.parse(localStorage.getItem('taya_all_'+user.phoneFull)||'[]');
+
+projects=JSON.parse(
+localStorage.getItem('taya_all_'+user.phoneFull)||'[]'
+);
+
 showHome();
 checkAPI();
+
 }catch(e){
 localStorage.removeItem('taya_user');
 }
 }
+
 };
 
 window.switchTab=function(t){
+
 $('tabSignup').classList.toggle('active',t==='signup');
 $('tabLogin').classList.toggle('active',t==='login');
+
 $('signupForm').style.display=t==='signup'?'block':'none';
 $('loginForm').style.display=t==='login'?'block':'none';
+
 };
 
 window.doSignup=function(){
+
 let n=$('wName').value.trim();
 let p=$('wPhone').value.trim();
 let code=$('cc').value;
@@ -265,7 +301,10 @@ return;
 }
 
 let full=code+' '+p;
-let all=JSON.parse(localStorage.getItem('taya_users')||'[]');
+
+let all=JSON.parse(
+localStorage.getItem('taya_users')||'[]'
+);
 
 if(all.find(u=>u.phoneFull===full)){
 alert('Ce numéro possède déjà un compte sur cet appareil');
@@ -273,23 +312,40 @@ switchTab('login');
 return;
 }
 
-user={name:n,phoneFull:full,passHash:hash(pass)};
+user={
+name:n,
+phoneFull:full,
+passHash:hash(pass)
+};
+
 all.push(user);
+
 localStorage.setItem('taya_users',JSON.stringify(all));
 localStorage.setItem('taya_user',JSON.stringify(user));
+
 projects=[];
+
 saveData();
 showHome();
 checkAPI();
+
 };
 
 window.doLogin=function(){
+
 let p=$('lPhone').value.trim();
 let code=$('cc2').value;
 let pass=$('lPass').value;
+
 let full=code+' '+p;
-let all=JSON.parse(localStorage.getItem('taya_users')||'[]');
-let u=all.find(x=>x.phoneFull===full&&x.passHash===hash(pass));
+
+let all=JSON.parse(
+localStorage.getItem('taya_users')||'[]'
+);
+
+let u=all.find(
+x=>x.phoneFull===full&&x.passHash===hash(pass)
+);
 
 if(!u){
 alert('Numéro ou mot de passe incorrect');
@@ -297,207 +353,382 @@ return;
 }
 
 user=u;
-projects=JSON.parse(localStorage.getItem('taya_all_'+user.phoneFull)||'[]');
+
+projects=JSON.parse(
+localStorage.getItem('taya_all_'+user.phoneFull)||'[]'
+);
+
 localStorage.setItem('taya_user',JSON.stringify(user));
+
 showHome();
 checkAPI();
+
 };
 
 window.showHome=function(){
+
 $('welcome').style.display='none';
 $('chatScreen').style.display='none';
 $('homeScreen').style.display='block';
 $('header').style.display='flex';
+
 $('helloName').textContent='Salut '+user.name+' ! 👋';
+
 updateUI();
+
 };
 
 window.goHome=function(){
+
 $('drawer').classList.remove('open');
 $('overlay').classList.remove('show');
+
 $('chatScreen').style.display='none';
 $('homeScreen').style.display='block';
+
 };
 
 window.closeMenuOnly=function(){
+
 $('drawer').classList.remove('open');
 $('overlay').classList.remove('show');
+
 };
 
 window.newChat=function(){
+
 if(!user)return;
+
 currentConvId=Date.now().toString();
 chatHistory=[];
+
 closeMenuOnly();
+
 $('chatEl').innerHTML='';
+
 $('homeScreen').style.display='none';
 $('chatScreen').style.display='flex';
-add("Bonjour "+user.name+" ! 👋\n\nJe suis **TAYA IA**, ton assistant intelligent créé par Maruce 🇬🇳\n\nPose-moi tes questions, demande-moi de coder, traduire, expliquer ou rédiger quelque chose. 🚀",'bot');
+
+add(
+"Bonjour "+user.name+" ! 👋\n\nJe suis **TAYA IA**, ton assistant intelligent créé par Maruce 🇬🇳\n\nPose-moi tes questions, demande-moi de coder, traduire, expliquer ou rédiger quelque chose. 🚀",
+'bot'
+);
+
 };
 
 window.toggleMenu=function(){
-if($('drawer').classList.contains('open'))closeMenuOnly();
-else{
+
+if($('drawer').classList.contains('open')){
+closeMenuOnly();
+}else{
+
 $('drawer').classList.add('open');
 $('overlay').classList.add('show');
+
 updateUI();
+
 }
+
 };
 
 function add(t,who){
+
 let d=document.createElement('div');
+
 d.className='msg '+who;
-if(who==='bot')d.innerHTML=DOMPurify.sanitize(marked.parse(t));
-else d.textContent=t;
+
+if(who==='bot'){
+d.innerHTML=DOMPurify.sanitize(marked.parse(t));
+}else{
+d.textContent=t;
+}
+
 $('chatEl').appendChild(d);
+
 $('chatEl').scrollTop=$('chatEl').scrollHeight;
+
 return d;
+
 }
 
 function updateUI(){
+
 let html=projects.map((p,i)=>`
+
 <div class="projectItem">
-<div class="projectTitle" onclick="openProj(${i})">💬 ${escapeHTML(p.title)}</div>
-<button class="deleteBtn" onclick="deleteProject(${i})">🗑️</button>
+
+<div class="projectTitle" onclick="openProj(${i})">
+💬 ${escapeHTML(p.title)}
 </div>
+
+<button class="deleteBtn" onclick="deleteProject(${i})">
+🗑️
+</button>
+
+</div>
+
 `).join('')||'<small style="color:#888">📭 Aucune conversation</small>';
+
 $('projectsList').innerHTML=html;
 $('projectsListHome').innerHTML=html;
+
 }
 
 function escapeHTML(value){
+
 return String(value).replace(/[&<>"']/g,function(c){
-return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+
+return {
+'&':'&amp;',
+'<':'&lt;',
+'>':'&gt;',
+'"':'&quot;',
+"'":'&#39;'
+}[c];
+
 });
+
 }
 
 window.openProj=function(i){
+
 let p=projects[i];
+
 if(!p)return;
+
 currentConvId=p.id;
 chatHistory=p.history||[];
+
 $('chatEl').innerHTML='';
+
 $('homeScreen').style.display='none';
 $('chatScreen').style.display='flex';
+
 closeMenuOnly();
+
 p.msgs.forEach(m=>add(m.text,m.who));
+
 };
 
 window.deleteProject=function(i){
+
 if(!confirm('Supprimer cette conversation ?'))return;
+
 let deleted=projects[i];
+
 projects.splice(i,1);
+
 if(currentConvId===deleted.id){
+
 currentConvId=null;
 chatHistory=[];
+
 $('chatEl').innerHTML='';
+
 $('chatScreen').style.display='none';
 $('homeScreen').style.display='block';
+
 }
+
 saveData();
 updateUI();
+
 };
 
 window.logout=function(){
+
 if(!confirm('Veux-tu vraiment te déconnecter ?'))return;
+
 localStorage.removeItem('taya_user');
+
 location.reload();
+
 };
 
 window.quick=function(t){
+
 newChat();
+
 setTimeout(()=>{
+
 $('inputEl').value=t;
 send();
+
 },300);
+
 };
 
 window.closeModal=function(){
+
 $('modal').classList.remove('show');
+
 };
 
 async function checkAPI(){
-let b=$('apiStatus'),bh=$('apiBadgeHome');
+
+let b=$('apiStatus');
+let bh=$('apiBadgeHome');
+
 try{
+
 const r=await fetch(API_BASE);
+
 if(!r.ok)throw new Error('API indisponible');
+
 if(b)b.textContent='ONLINE 🟢';
 if(bh)bh.textContent='✅ TAYA IA est connecté';
+
 return true;
+
 }catch(e){
+
 if(b)b.textContent='OFFLINE 🔴';
 if(bh)bh.textContent='⚠️ Serveur en réveil ou indisponible';
+
 return false;
+
 }
+
 }
 
 window.send=function(){
+
 if(isGenerating)return;
+
 let input=$('inputEl');
 let question=input.value.trim();
+
 if(!question)return;
+
 if(!currentConvId){
+
 currentConvId=Date.now().toString();
 chatHistory=[];
+
 }
+
 input.value='';
 input.style.height='48px';
+
 add(question,'user');
+
 let botDiv=add('','bot');
+
 askAI(question,botDiv);
+
 };
 
 async function askAI(question,botDiv){
+
 if(isGenerating)return;
+
 isGenerating=true;
+
 $('sendBtn').disabled=true;
 $('sendBtn').textContent='⏳';
 
-chatHistory.push({role:'user',content:question});
+chatHistory.push({
+role:'user',
+content:question
+});
+
 botDiv.innerHTML='<div class="typing"><span></span><span></span><span></span></div> TAYA IA réfléchit...';
 
 try{
+
 const response=await fetch(API_BASE+'/api/chat',{
+
 method:'POST',
-headers:{'Content-Type':'application/json'},
-body:JSON.stringify({messages:chatHistory.slice(-30)})
+
+headers:{
+'Content-Type':'application/json'
+},
+
+/* CONNEXION À LA MÉMOIRE SUPABASE */
+
+body:JSON.stringify({
+
+messages:chatHistory.slice(-30),
+
+userId:user.phoneFull
+
+})
+
 });
 
 let data;
-try{data=await response.json();}
-catch(e){throw new Error('Réponse invalide du serveur');}
 
-if(!response.ok)throw new Error(data.error||'Erreur du serveur IA');
-if(!data.reply)throw new Error('Aucune réponse reçue');
+try{
+data=await response.json();
+}catch(e){
+throw new Error('Réponse invalide du serveur');
+}
+
+if(!response.ok){
+throw new Error(data.error||'Erreur du serveur IA');
+}
+
+if(!data.reply){
+throw new Error('Aucune réponse reçue');
+}
 
 const answer=data.reply;
-botDiv.innerHTML=DOMPurify.sanitize(marked.parse(answer));
-chatHistory.push({role:'assistant',content:answer});
+
+botDiv.innerHTML=DOMPurify.sanitize(
+marked.parse(answer)
+);
+
+chatHistory.push({
+role:'assistant',
+content:answer
+});
+
 saveCurrent();
 
 }catch(error){
+
 console.error('TAYA IA ERROR:',error);
-botDiv.textContent='⚠️ TAYA IA ne peut pas répondre pour le moment. Vérifie ta connexion et réessaie. Détail : '+error.message;
+
+botDiv.textContent=
+'⚠️ TAYA IA ne peut pas répondre pour le moment. Vérifie ta connexion et réessaie. Détail : '+error.message;
+
 chatHistory.pop();
+
 $('chatEl').scrollTop=$('chatEl').scrollHeight;
+
 }finally{
+
 isGenerating=false;
+
 $('sendBtn').disabled=false;
 $('sendBtn').textContent='➤';
+
 }
+
 }
 
 $('inputEl').addEventListener('keydown',function(e){
+
 if(e.key==='Enter'&&!e.shiftKey){
+
 e.preventDefault();
 send();
+
 }
+
 });
 
 $('inputEl').addEventListener('input',function(){
+
 this.style.height='48px';
-this.style.height=Math.min(this.scrollHeight,130)+'px';
+
+this.style.height=Math.min(
+this.scrollHeight,
+130
+)+'px';
+
 });
+
 </script>
 </body>
 </html>
