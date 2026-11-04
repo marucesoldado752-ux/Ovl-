@@ -1,5 +1,5 @@
 async function askAI(question, botDiv) {
-  if (isGenerating) return;
+  if (isGenerating || !question.trim()) return;
 
   isGenerating = true;
   $('sendBtn').disabled = true;
@@ -12,6 +12,7 @@ async function askAI(question, botDiv) {
   const low = question.toLowerCase();
 
   try {
+    // GÉNÉRATION D'IMAGE
     if (
       low.includes('génère une image') ||
       low.includes('image:')
@@ -21,27 +22,33 @@ async function askAI(question, botDiv) {
 
       const clean = question
         .replace(/génère une image\s*:?\s*/i, '')
+        .replace(/^image:\s*/i, '')
         .trim() || 'cyberpunk';
 
       const url =
         `https://image.pollinations.ai/prompt/${encodeURIComponent(clean)}?width=1024&height=1024&nologo=true&model=flux`;
 
       botDiv.innerHTML =
-        `<img src="${url}" style="max-width:100%;border-radius:12px">`;
+        `<img src="${url}" alt="Image générée" style="max-width:100%;border-radius:12px">`;
 
       chatHistory.push({
         role: 'assistant',
-        content: `Image: ${clean}`
+        content: `Image générée : ${clean}`
       });
 
       saveCurrent();
       return;
     }
 
+    // CONNEXION À L'INTELLIGENCE ARTIFICIELLE
     botDiv.innerHTML =
       '<div class="typing"><span></span><span></span><span></span></div>';
 
     const answer = await tryRealAI(question);
+
+    if (!answer || typeof answer !== 'string') {
+      throw new Error("Réponse IA invalide");
+    }
 
     botDiv.innerHTML = DOMPurify.sanitize(
       marked.parse(answer)
@@ -58,7 +65,7 @@ async function askAI(question, botDiv) {
     console.error("TAYA IA ERROR:", error);
 
     const message =
-      "Je rencontre un problème de connexion avec mon intelligence artificielle. Réessaie dans quelques instants.";
+      "Impossible de contacter mon intelligence artificielle. Vérifie ta connexion et réessaie.";
 
     botDiv.textContent = message;
 
@@ -66,6 +73,8 @@ async function askAI(question, botDiv) {
       role: 'assistant',
       content: message
     });
+
+    saveCurrent();
 
   } finally {
     isGenerating = false;
