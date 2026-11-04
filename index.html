@@ -1,74 +1,1513 @@
-async function askAI(question, botDiv) {
-  if (isGenerating) return;
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050807">
+<title>TAYA IA V13 — MARUCE SOLDADO 🇬🇳</title>
 
-  isGenerating = true;
-  $('sendBtn').disabled = true;
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Anton&display=swap" rel="stylesheet">
 
-  chatHistory.push({
-    role: 'user',
-    content: question
-  });
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
-  const low = question.toLowerCase();
-
-  try {
-    if (
-      low.includes('génère une image') ||
-      low.includes('image:')
-    ) {
-      botDiv.innerHTML =
-        '<div class="typing"><span></span><span></span><span></span></div>';
-
-      const clean = question
-        .replace(/génère une image\s*:?\s*/i, '')
-        .trim() || 'cyberpunk';
-
-      const url =
-        `https://image.pollinations.ai/prompt/${encodeURIComponent(clean)}?width=1024&height=1024&nologo=true&model=flux`;
-
-      botDiv.innerHTML =
-        `<img src="${url}" style="max-width:100%;border-radius:12px">`;
-
-      chatHistory.push({
-        role: 'assistant',
-        content: `Image: ${clean}`
-      });
-
-      saveCurrent();
-      return;
-    }
-
-    botDiv.innerHTML =
-      '<div class="typing"><span></span><span></span><span></span></div>';
-
-    const answer = await tryRealAI(question);
-
-    botDiv.innerHTML = DOMPurify.sanitize(
-      marked.parse(answer)
-    );
-
-    chatHistory.push({
-      role: 'assistant',
-      content: answer
-    });
-
-    saveCurrent();
-
-  } catch (error) {
-    console.error("TAYA IA ERROR:", error);
-
-    const message =
-      "Je rencontre un problème de connexion avec mon intelligence artificielle. Réessaie dans quelques instants.";
-
-    botDiv.textContent = message;
-
-    chatHistory.push({
-      role: 'assistant',
-      content: message
-    });
-
-  } finally {
-    isGenerating = false;
-    $('sendBtn').disabled = false;
-  }
+<style>
+:root{
+--bg:#050807;
+--panel:#0b1210;
+--panel2:#111c16;
+--green:#00ff88;
+--blue:#4488ff;
+--text:#f4fff9;
+--muted:#899b90;
+--border:rgba(255,255,255,.09);
 }
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+font-family:Inter,sans-serif;
+background:var(--bg);
+color:var(--text);
+min-height:100vh;
+overflow-x:hidden;
+}
+
+body:before{
+content:"";
+position:fixed;
+inset:-50%;
+z-index:-1;
+background:
+radial-gradient(circle at 20% 20%,rgba(0,255,136,.13),transparent 35%),
+radial-gradient(circle at 80% 75%,rgba(68,136,255,.14),transparent 35%);
+animation:backgroundMove 14s infinite alternate;
+}
+
+@keyframes backgroundMove{
+from{transform:translate(-3%,-2%) rotate(0deg)}
+to{transform:translate(3%,2%) rotate(8deg)}
+}
+
+button,input,textarea{font-family:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+
+/* AUTHENTIFICATION */
+
+.auth{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:20px;
+}
+
+.auth-card{
+width:100%;
+max-width:430px;
+padding:28px 22px;
+border:1px solid var(--border);
+border-radius:24px;
+background:rgba(10,18,14,.96);
+box-shadow:0 20px 80px #0009;
+}
+
+.logo{
+font-family:Anton,sans-serif;
+font-size:42px;
+text-align:center;
+letter-spacing:2px;
+background:linear-gradient(90deg,var(--green),var(--blue));
+color:transparent;
+background-clip:text;
+-webkit-background-clip:text;
+}
+
+.logo-sub{
+text-align:center;
+color:var(--muted);
+font-size:12px;
+margin:8px 0 25px;
+}
+
+.tabs{
+display:flex;
+background:#07100b;
+padding:5px;
+border-radius:12px;
+margin-bottom:22px;
+}
+
+.tabs button{
+flex:1;
+padding:12px;
+border:0;
+background:transparent;
+color:var(--muted);
+border-radius:9px;
+font-weight:700;
+}
+
+.tabs button.active{
+background:linear-gradient(90deg,var(--green),var(--blue));
+color:#00130b;
+}
+
+.field{margin-bottom:15px}
+
+.field label{
+display:block;
+font-size:12px;
+color:#b4c7bc;
+margin-bottom:7px;
+}
+
+.field input{
+width:100%;
+padding:14px;
+border-radius:11px;
+border:1px solid var(--border);
+background:#080e0b;
+color:white;
+outline:none;
+}
+
+.field input:focus{border-color:var(--green)}
+
+.phone-row{
+display:flex;
+gap:8px;
+}
+
+.phone-row input{flex:1;min-width:0}
+
+.phone-row select{
+width:105px;
+background:#080e0b;
+color:white;
+border:1px solid var(--border);
+border-radius:11px;
+padding:10px 5px;
+}
+
+.primary{
+width:100%;
+padding:15px;
+border:0;
+border-radius:12px;
+background:linear-gradient(100deg,var(--green),var(--blue));
+color:#00150c;
+font-weight:800;
+font-size:14px;
+margin-top:8px;
+}
+
+.primary:disabled{opacity:.5}
+
+.auth-message{
+min-height:20px;
+font-size:12px;
+color:#ff7777;
+margin-top:12px;
+text-align:center;
+}
+
+/* APPLICATION */
+
+#main{display:none;min-height:100vh}
+
+.topbar{
+height:65px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 16px;
+border-bottom:1px solid var(--border);
+background:rgba(5,8,7,.92);
+position:sticky;
+top:0;
+z-index:20;
+backdrop-filter:blur(15px);
+}
+
+.brand{
+font-family:Anton,sans-serif;
+font-size:25px;
+background:linear-gradient(90deg,var(--green),var(--blue));
+color:transparent;
+background-clip:text;
+}
+
+.top-actions{display:flex;gap:8px}
+
+.icon-btn{
+border:1px solid var(--border);
+background:var(--panel);
+color:white;
+width:39px;
+height:39px;
+border-radius:11px;
+font-size:18px;
+}
+
+.layout{
+display:flex;
+min-height:calc(100vh - 65px);
+}
+
+.sidebar{
+width:255px;
+flex-shrink:0;
+border-right:1px solid var(--border);
+padding:17px;
+background:rgba(7,13,10,.88);
+}
+
+.side-button{
+width:100%;
+text-align:left;
+border:1px solid var(--border);
+background:var(--panel);
+color:white;
+padding:13px;
+border-radius:11px;
+margin-bottom:9px;
+font-size:13px;
+}
+
+.side-button:hover{border-color:var(--green)}
+
+.side-title{
+color:var(--muted);
+font-size:10px;
+font-weight:800;
+margin:22px 0 12px;
+letter-spacing:1.5px;
+}
+
+.history-item{
+padding:11px;
+border-radius:9px;
+font-size:12px;
+color:#b8c8bf;
+cursor:pointer;
+overflow:hidden;
+white-space:nowrap;
+text-overflow:ellipsis;
+margin-bottom:5px;
+}
+
+.history-item:hover{background:var(--panel2)}
+
+.history-item.active{
+background:#10271c;
+color:var(--green);
+}
+
+.user-box{
+border-top:1px solid var(--border);
+padding-top:15px;
+margin-top:20px;
+font-size:12px;
+color:var(--muted);
+}
+
+.workspace{
+flex:1;
+min-width:0;
+display:flex;
+flex-direction:column;
+height:calc(100vh - 65px);
+}
+
+.welcome{
+margin:auto;
+text-align:center;
+padding:30px 18px;
+max-width:650px;
+}
+
+.avatar{
+width:85px;
+height:85px;
+margin:0 auto 20px;
+border-radius:27px;
+display:grid;
+place-items:center;
+font-size:43px;
+background:linear-gradient(140deg,#063d27,#142b60);
+box-shadow:0 0 35px #00ff8840;
+animation:float 3s infinite ease-in-out;
+}
+
+@keyframes float{
+50%{transform:translateY(-9px)}
+}
+
+.welcome h1{font-size:30px;margin-bottom:10px}
+.welcome h1 span{color:var(--green)}
+
+.welcome p{
+color:var(--muted);
+font-size:13px;
+line-height:1.8;
+}
+
+.features{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:10px;
+margin-top:28px;
+}
+
+.feature{
+background:var(--panel);
+border:1px solid var(--border);
+padding:15px;
+border-radius:13px;
+font-size:12px;
+text-align:left;
+}
+
+.feature b{
+display:block;
+margin-bottom:5px;
+color:var(--green);
+}
+
+.messages{
+flex:1;
+overflow-y:auto;
+padding:22px max(16px,calc((100% - 850px)/2));
+}
+
+.message{
+display:flex;
+gap:11px;
+margin-bottom:24px;
+align-items:flex-start;
+}
+
+.message.user{flex-direction:row-reverse}
+
+.message-avatar{
+width:32px;
+height:32px;
+min-width:32px;
+border-radius:11px;
+display:grid;
+place-items:center;
+background:var(--panel2);
+font-size:15px;
+}
+
+.message-content{
+max-width:85%;
+min-width:0;
+padding:13px 15px;
+border-radius:14px;
+background:var(--panel);
+border:1px solid var(--border);
+font-size:14px;
+line-height:1.7;
+overflow-wrap:anywhere;
+}
+
+.message.user .message-content{
+background:#10271c;
+border-color:#00ff8830;
+}
+
+.message-content p{margin-bottom:9px}
+.message-content p:last-child{margin-bottom:0}
+
+.message-content pre{
+background:#030705;
+padding:13px;
+border-radius:9px;
+overflow-x:auto;
+margin:10px 0;
+}
+
+.message-content code{
+font-family:monospace;
+font-size:12px;
+}
+
+.message-content img{
+max-width:100%;
+border-radius:10px;
+}
+
+.typing{
+display:flex;
+gap:5px;
+padding:8px;
+}
+
+.typing span{
+width:7px;
+height:7px;
+border-radius:50%;
+background:var(--green);
+animation:typing .8s infinite alternate;
+}
+
+.typing span:nth-child(2){animation-delay:.2s}
+.typing span:nth-child(3){animation-delay:.4s}
+
+@keyframes typing{
+to{opacity:.2;transform:translateY(-5px)}
+}
+
+/* ZONE DE SAISIE */
+
+.composer-area{
+padding:12px 16px 18px;
+background:linear-gradient(transparent,#050807 25%);
+}
+
+.composer{
+max-width:850px;
+margin:auto;
+border:1px solid var(--border);
+background:#0c1510;
+border-radius:17px;
+padding:10px;
+box-shadow:0 8px 30px #0005;
+}
+
+.composer textarea{
+width:100%;
+min-height:45px;
+max-height:150px;
+resize:none;
+border:0;
+outline:0;
+background:transparent;
+color:white;
+font-size:14px;
+padding:9px;
+}
+
+.composer-actions{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.tools{display:flex;gap:7px}
+
+.tool-btn{
+background:transparent;
+color:#b4c7bc;
+border:0;
+padding:9px;
+font-size:19px;
+border-radius:9px;
+}
+
+.tool-btn:hover{background:var(--panel2)}
+
+.send-btn{
+width:40px;
+height:40px;
+border:0;
+border-radius:12px;
+background:linear-gradient(120deg,var(--green),var(--blue));
+font-size:18px;
+font-weight:bold;
+color:#00150c;
+}
+
+.send-btn:disabled{opacity:.4}
+
+.disclaimer{
+text-align:center;
+color:#64746b;
+font-size:10px;
+margin-top:9px;
+}
+
+/* ADMIN */
+
+.admin-panel{
+padding:20px;
+max-width:850px;
+margin:auto;
+width:100%;
+}
+
+.admin-panel h2{margin-bottom:15px}
+
+.admin-user{
+padding:14px;
+border:1px solid var(--border);
+background:var(--panel);
+border-radius:12px;
+margin-bottom:9px;
+font-size:13px;
+}
+
+.admin-user small{color:var(--muted)}
+
+/* MOBILE */
+
+@media(max-width:760px){
+.sidebar{
+position:fixed;
+left:-270px;
+top:65px;
+bottom:0;
+z-index:30;
+transition:.25s;
+box-shadow:15px 0 40px #0008;
+}
+
+.sidebar.open{left:0}
+
+.workspace{height:calc(100vh - 65px)}
+
+.welcome h1{font-size:25px}
+
+.messages{padding:18px 12px}
+
+.message-content{max-width:88%}
+
+.features{gap:7px}
+
+.feature{padding:11px;font-size:11px}
+}
+
+@media(min-width:761px){
+#menuBtn{display:none}
+}
+</style>
+</head>
+
+<body>
+
+<div id="app">
+
+<!-- AUTHENTIFICATION -->
+
+<section id="auth" class="auth">
+<div class="auth-card">
+
+<div class="logo">TAYA IA</div>
+<div class="logo-sub">V13.0 • BY MARUCE SOLDADO 🇬🇳</div>
+
+<div class="tabs">
+<button id="loginTab" class="active" onclick="showAuth('login')">Connexion</button>
+<button id="registerTab" onclick="showAuth('register')">Inscription</button>
+</div>
+
+<form id="authForm">
+
+<div id="nameField" class="field hidden">
+<label>Nom complet</label>
+<input id="fullName" type="text" autocomplete="name" placeholder="Ton nom complet">
+</div>
+
+<div class="field">
+<label>Numéro de téléphone</label>
+<div class="phone-row">
+<select id="countryCode">
+<option value="+224">🇬🇳 +224</option>
+<option value="+223">🇲🇱 +223</option>
+<option value="+221">🇸🇳 +221</option>
+<option value="+225">🇨🇮 +225</option>
+<option value="+33">🇫🇷 +33</option>
+<option value="+1">🇺🇸 +1</option>
+<option value="+44">🇬🇧 +44</option>
+<option value="+212">🇲🇦 +212</option>
+<option value="+237">🇨🇲 +237</option>
+<option value="+234">🇳🇬 +234</option>
+<option value="+229">🇧🇯 +229</option>
+<option value="+228">🇹🇬 +228</option>
+<option value="+226">🇧🇫 +226</option>
+<option value="+227">🇳🇪 +227</option>
+<option value="+242">🇨🇬 +242</option>
+<option value="+243">🇨🇩 +243</option>
+<option value="+241">🇬🇦 +241</option>
+<option value="+240">🇬🇶 +240</option>
+<option value="+32">🇧🇪 +32</option>
+<option value="+41">🇨🇭 +41</option>
+<option value="+49">🇩🇪 +49</option>
+<option value="+34">🇪🇸 +34</option>
+<option value="+39">🇮🇹 +39</option>
+<option value="+351">🇵🇹 +351</option>
+<option value="+91">🇮🇳 +91</option>
+<option value="+86">🇨🇳 +86</option>
+</select>
+<input id="phone" type="tel" autocomplete="tel" placeholder="Numéro de téléphone" required>
+</div>
+</div>
+
+<div class="field">
+<label>Mot de passe</label>
+<input id="password" type="password" autocomplete="current-password" placeholder="Minimum 8 caractères" required>
+</div>
+
+<button class="primary" id="authSubmit" type="submit">SE CONNECTER ⚡</button>
+
+</form>
+
+<div id="authMessage" class="auth-message"></div>
+
+</div>
+</section>
+
+<!-- APPLICATION -->
+
+<section id="main">
+
+<header class="topbar">
+<div style="display:flex;align-items:center;gap:12px">
+<button id="menuBtn" class="icon-btn" onclick="toggleSidebar()">☰</button>
+<div class="brand">TAYA 🤖IA</div>
+</div>
+
+<div class="top-actions">
+<button class="icon-btn" title="Nouvelle discussion" onclick="newChat()">＋</button>
+<button class="icon-btn" title="Accueil" onclick="showHome()">⌂</button>
+</div>
+</header>
+
+<div class="layout">
+
+<aside id="sidebar" class="sidebar">
+
+<button class="side-button" onclick="showHome()">🏠 Accueil</button>
+<button class="side-button" onclick="newChat()">✚ Nouvelle discussion</button>
+<button class="side-button" onclick="showContact()">✉️ Écrire à Maruce</button>
+
+<button id="adminButton" class="side-button hidden" onclick="loadAdmin()">👑 Administration</button>
+
+<div class="side-title">HISTORIQUE</div>
+<div id="history"></div>
+
+<div class="user-box">
+<div id="userName">Utilisateur</div>
+<div id="userPhone"></div>
+<br>
+<button class="side-button" onclick="logout()">🚪 Déconnexion</button>
+</div>
+
+</aside>
+
+<main class="workspace">
+
+<div id="welcome" class="welcome">
+
+<div class="avatar">🤖</div>
+
+<h1>Bienvenue sur <span>TAYA IA</span></h1>
+
+<p>
+Ton assistant intelligent<br>
+Rapide • Créatif • Polyvalent<br>
+Développé par MARUCE SOLDADO 👑🇬🇳
+</p>
+
+<div class="features">
+<div class="feature"><b>🧠 Intelligence</b>Questions et explications</div>
+<div class="feature"><b>💻 Programmation</b>Code et développement</div>
+<div class="feature"><b>✍️ Rédaction</b>Textes et traductions</div>
+<div class="feature"><b>🌍 Multilingue</b>Plusieurs langues</div>
+</div>
+
+</div>
+
+<div id="messages" class="messages hidden"></div>
+
+<div id="adminPanel" class="admin-panel hidden"></div>
+
+<div id="composerArea" class="composer-area">
+
+<div class="composer">
+
+<textarea id="question" rows="1" placeholder="Pose n'importe quelle question à TAYA..."></textarea>
+
+<div class="composer-actions">
+
+<div class="tools">
+<button class="tool-btn" title="Ajouter un fichier" onclick="$('fileInput').click()">📎</button>
+<button class="tool-btn" title="Reconnaissance vocale" onclick="startVoice()">🎤</button>
+<button class="tool-btn" title="Lire la dernière réponse" onclick="readLastAnswer()">🔊</button>
+</div>
+
+<button id="sendBtn" class="send-btn" onclick="sendMessage()">➤</button>
+
+</div>
+
+</div>
+
+<input id="fileInput" type="file" accept=".txt,.pdf,.md,.csv,image/*" hidden onchange="handleFile(this)">
+
+<div class="disclaimer">TAYA IA peut parfois se tromper. Vérifie les informations importantes.</div>
+
+</div>
+
+</main>
+</div>
+</section>
+
+</div>
+
+<script>
+/* CONFIGURATION */
+
+const API_URL = "https://taya-ai-api.onrender.com";
+
+const $ = id => document.getElementById(id);
+
+let authMode = "login";
+let token = localStorage.getItem("taya_v13_token") || "";
+let currentUser = JSON.parse(localStorage.getItem("taya_v13_user") || "null");
+
+let chatHistory = [];
+let projects = JSON.parse(localStorage.getItem("taya_v13_projects") || "[]");
+let currentProjectId = null;
+let isGenerating = false;
+let lastAnswer = "";
+
+if(window.pdfjsLib){
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+}
+
+/* AUTHENTIFICATION */
+
+function showAuth(mode){
+authMode = mode;
+
+$("loginTab").classList.toggle("active",mode==="login");
+$("registerTab").classList.toggle("active",mode==="register");
+
+$("nameField").classList.toggle("hidden",mode!=="register");
+
+$("authSubmit").textContent =
+mode==="register" ? "CRÉER MON COMPTE ⚡" : "SE CONNECTER ⚡";
+
+$("password").autocomplete =
+mode==="register" ? "new-password" : "current-password";
+
+$("authMessage").textContent = "";
+}
+
+function getFullPhone(){
+let code = $("countryCode").value;
+let number = $("phone").value.replace(/\D/g,"");
+
+return code + number;
+}
+
+$("authForm").addEventListener("submit",async function(e){
+e.preventDefault();
+
+const button = $("authSubmit");
+button.disabled = true;
+button.textContent = "PATIENTE...";
+
+$("authMessage").textContent = "";
+
+try{
+
+const fullName = $("fullName").value.trim();
+const phone = getFullPhone();
+const password = $("password").value;
+
+if(authMode==="register" && !fullName){
+throw new Error("Entre ton nom complet.");
+}
+
+if(!phone || !password){
+throw new Error("Remplis tous les champs.");
+}
+
+if(authMode==="register" && password.length<8){
+throw new Error("Le mot de passe doit contenir au moins 8 caractères.");
+}
+
+const endpoint = authMode==="register"
+? "/api/auth/register"
+: "/api/auth/login";
+
+const response = await fetch(API_URL+endpoint,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+fullName,
+phone,
+password
+})
+});
+
+const data = await response.json();
+
+if(!response.ok || !data.success){
+throw new Error(data.error || "Erreur d'authentification.");
+}
+
+token = data.token;
+currentUser = data.user;
+
+localStorage.setItem("taya_v13_token",token);
+localStorage.setItem("taya_v13_user",JSON.stringify(currentUser));
+
+openApplication();
+
+}catch(error){
+$("authMessage").textContent = error.message;
+}finally{
+button.disabled = false;
+button.textContent =
+authMode==="register" ? "CRÉER MON COMPTE ⚡" : "SE CONNECTER ⚡";
+}
+});
+
+/* APPLICATION */
+
+function openApplication(){
+
+if(!token || !currentUser)return;
+
+$("auth").style.display="none";
+$("main").style.display="block";
+
+$("userName").textContent=currentUser.fullName || "Utilisateur";
+$("userPhone").textContent=currentUser.phone || "";
+
+$("adminButton").classList.toggle(
+"hidden",
+currentUser.role!=="admin"
+);
+
+showHome();
+renderHistory();
+}
+
+async function verifySession(){
+
+if(!token || !currentUser){
+$("auth").style.display="flex";
+$("main").style.display="none";
+return;
+}
+
+try{
+
+const response=await fetch(API_URL+"/api/auth/me",{
+headers:{Authorization:"Bearer "+token}
+});
+
+const data=await response.json();
+
+if(!response.ok || !data.success){
+throw new Error("Session invalide");
+}
+
+currentUser=data.user;
+localStorage.setItem("taya_v13_user",JSON.stringify(currentUser));
+
+openApplication();
+
+}catch(error){
+
+localStorage.removeItem("taya_v13_token");
+localStorage.removeItem("taya_v13_user");
+
+token="";
+currentUser=null;
+
+$("auth").style.display="flex";
+$("main").style.display="none";
+}
+}
+
+function logout(){
+
+if(!confirm("Veux-tu vraiment te déconnecter ?"))return;
+
+localStorage.removeItem("taya_v13_token");
+localStorage.removeItem("taya_v13_user");
+
+token="";
+currentUser=null;
+chatHistory=[];
+currentProjectId=null;
+
+$("main").style.display="none";
+$("auth").style.display="flex";
+
+showAuth("login");
+}
+
+function toggleSidebar(){
+$("sidebar").classList.toggle("open");
+}
+
+function closeSidebar(){
+$("sidebar").classList.remove("open");
+}
+
+function showHome(){
+
+closeSidebar();
+
+$("welcome").classList.remove("hidden");
+$("messages").classList.add("hidden");
+$("adminPanel").classList.add("hidden");
+$("composerArea").classList.remove("hidden");
+
+chatHistory=[];
+currentProjectId=null;
+
+}
+
+function newChat(){
+
+chatHistory=[];
+currentProjectId=Date.now().toString();
+
+$("welcome").classList.remove("hidden");
+$("messages").classList.add("hidden");
+$("adminPanel").classList.add("hidden");
+$("composerArea").classList.remove("hidden");
+
+$("question").value="";
+
+closeSidebar();
+}
+
+/* HISTORIQUE LOCAL */
+
+function saveProjects(){
+
+localStorage.setItem(
+"taya_v13_projects",
+JSON.stringify(projects)
+);
+
+}
+
+function saveCurrent(){
+
+if(!chatHistory.length)return;
+
+if(!currentProjectId){
+currentProjectId=Date.now().toString();
+}
+
+let project=projects.find(p=>p.id===currentProjectId);
+
+if(!project){
+
+project={
+id:currentProjectId,
+title:chatHistory.find(m=>m.role==="user")?.content?.slice(0,45) || "Nouvelle discussion",
+messages:[]
+};
+
+projects.unshift(project);
+
+}
+
+project.messages=chatHistory.slice();
+
+saveProjects();
+renderHistory();
+
+}
+
+function renderHistory(){
+
+$("history").innerHTML="";
+
+projects.forEach(project=>{
+
+const item=document.createElement("div");
+
+item.className="history-item";
+item.textContent="💬 "+project.title;
+
+item.onclick=()=>loadProject(project.id);
+
+$("history").appendChild(item);
+
+});
+
+}
+
+function loadProject(id){
+
+const project=projects.find(p=>p.id===id);
+
+if(!project)return;
+
+currentProjectId=id;
+chatHistory=project.messages.slice();
+
+$("welcome").classList.add("hidden");
+$("messages").classList.remove("hidden");
+$("adminPanel").classList.add("hidden");
+$("composerArea").classList.remove("hidden");
+
+renderMessages();
+closeSidebar();
+
+}
+
+/* AFFICHAGE DES MESSAGES */
+
+function addMessage(role,content){
+
+const messages=$("messages");
+
+const row=document.createElement("div");
+row.className="message "+(role==="user"?"user":"assistant");
+
+const avatar=document.createElement("div");
+avatar.className="message-avatar";
+avatar.textContent=role==="user"?"👤":"🤖";
+
+const box=document.createElement("div");
+box.className="message-content";
+
+if(role==="user"){
+box.textContent=content;
+}else{
+box.innerHTML=DOMPurify.sanitize(marked.parse(content));
+}
+
+row.appendChild(avatar);
+row.appendChild(box);
+
+messages.appendChild(row);
+
+messages.scrollTop=messages.scrollHeight;
+
+return box;
+
+}
+
+function renderMessages(){
+
+$("messages").innerHTML="";
+
+chatHistory.forEach(message=>{
+addMessage(message.role,message.content);
+});
+
+}
+
+/* CONNEXION AU BACKEND IA */
+
+async function tryRealAI(){
+
+const messages=chatHistory
+.filter(m=>["user","assistant"].includes(m.role))
+.slice(-20)
+.map(m=>({
+role:m.role,
+content:m.content
+}));
+
+const response=await fetch(API_URL+"/api/chat",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({messages}),
+signal:AbortSignal.timeout(65000)
+});
+
+const data=await response.json();
+
+if(!response.ok || !data.success){
+throw new Error(data.error || "Erreur du serveur IA");
+}
+
+const answer=data.reply || data.answer;
+
+if(!answer || typeof answer!=="string"){
+throw new Error("Réponse IA invalide");
+}
+
+return answer;
+
+}
+
+/* GENERATION D'IMAGES */
+
+async function generateImage(prompt,box){
+
+box.textContent="🎨 Préparation de ton image...";
+
+const url=
+"https://image.pollinations.ai/prompt/"+
+encodeURIComponent(prompt)+
+"?width=1024&height=1024&nologo=true&model=flux";
+
+const img=document.createElement("img");
+
+img.alt="Image générée par TAYA";
+img.src=url;
+img.style.maxWidth="100%";
+img.style.borderRadius="12px";
+
+img.onload=()=>{
+box.innerHTML="";
+box.appendChild(img);
+};
+
+img.onerror=()=>{
+box.textContent="Impossible de générer l'image. Réessaie.";
+};
+
+}
+
+/* FONCTION PRINCIPALE */
+
+async function askAI(question,botDiv){
+
+if(isGenerating || !question.trim())return;
+
+isGenerating=true;
+$("sendBtn").disabled=true;
+
+chatHistory.push({
+role:"user",
+content:question
+});
+
+try{
+
+const low=question.toLowerCase();
+
+if(
+low.includes("génère une image") ||
+low.startsWith("image:")
+){
+
+const prompt=question
+.replace(/génère une image\s*:?\s*/i,"")
+.replace(/^image:\s*/i,"")
+.trim() || "cyberpunk";
+
+await generateImage(prompt,botDiv);
+
+chatHistory.push({
+role:"assistant",
+content:"Image générée : "+prompt
+});
+
+saveCurrent();
+return;
+
+}
+
+botDiv.innerHTML=
+'<div class="typing"><span></span><span></span><span></span></div>';
+
+const answer=await tryRealAI();
+
+botDiv.innerHTML=DOMPurify.sanitize(marked.parse(answer));
+
+chatHistory.push({
+role:"assistant",
+content:answer
+});
+
+lastAnswer=answer;
+
+saveCurrent();
+
+}catch(error){
+
+console.error("TAYA IA ERROR:",error);
+
+const message=
+"Je rencontre un problème de connexion avec mon intelligence artificielle. Réessaie dans quelques instants.";
+
+botDiv.textContent=message;
+
+chatHistory.push({
+role:"assistant",
+content:message
+});
+
+saveCurrent();
+
+}finally{
+
+isGenerating=false;
+$("sendBtn").disabled=false;
+
+}
+}
+
+/* ENVOI */
+
+async function sendMessage(){
+
+if(isGenerating)return;
+
+const input=$("question");
+const question=input.value.trim();
+
+if(!question)return;
+
+input.value="";
+input.style.height="45px";
+
+$("welcome").classList.add("hidden");
+$("messages").classList.remove("hidden");
+$("adminPanel").classList.add("hidden");
+$("composerArea").classList.remove("hidden");
+
+addMessage("user",question);
+
+const botDiv=addMessage("assistant","");
+
+await askAI(question,botDiv);
+
+}
+
+$("question").addEventListener("keydown",function(e){
+
+if(e.key==="Enter" && !e.shiftKey){
+e.preventDefault();
+sendMessage();
+}
+
+});
+
+$("question").addEventListener("input",function(){
+
+this.style.height="45px";
+this.style.height=Math.min(this.scrollHeight,150)+"px";
+
+});
+
+/* LECTURE DES FICHIERS */
+
+async function handleFile(input){
+
+const file=input.files[0];
+
+if(!file)return;
+
+try{
+
+let content="";
+
+if(file.type==="text/plain" ||
+file.name.endsWith(".md") ||
+file.name.endsWith(".csv")){
+
+content=await file.text();
+
+}else if(file.type==="application/pdf" ||
+file.name.endsWith(".pdf")){
+
+content=await readPDF(file);
+
+}else if(file.type.startsWith("image/")){
+
+alert("L'aperçu des images est disponible, mais la lecture intelligente des images nécessite un modèle multimodal côté serveur.");
+
+input.value="";
+return;
+
+}else{
+
+throw new Error("Format de fichier non pris en charge.");
+
+}
+
+if(!content.trim()){
+throw new Error("Le fichier ne contient pas de texte lisible.");
+}
+
+const question=
+"Analyse ce document et aide-moi à le comprendre :\n\n"+
+content.slice(0,18000);
+
+$("question").value=question;
+
+}catch(error){
+
+alert(error.message);
+
+}finally{
+
+input.value="";
+
+}
+
+}
+
+async function readPDF(file){
+
+const buffer=await file.arrayBuffer();
+
+const pdf=await pdfjsLib.getDocument({
+data:buffer
+}).promise;
+
+let text="";
+
+const maxPages=Math.min(pdf.numPages,20);
+
+for(let i=1;i<=maxPages;i++){
+
+const page=await pdf.getPage(i);
+const data=await page.getTextContent();
+
+text+=data.items.map(item=>item.str).join(" ")+"\n";
+
+}
+
+return text;
+
+}
+
+/* RECONNAISSANCE VOCALE */
+
+function startVoice(){
+
+const SpeechRecognition=
+window.SpeechRecognition ||
+window.webkitSpeechRecognition;
+
+if(!SpeechRecognition){
+
+alert("La reconnaissance vocale n'est pas disponible dans ce navigateur.");
+return;
+
+}
+
+const recognition=new SpeechRecognition();
+
+recognition.lang="fr-FR";
+recognition.interimResults=false;
+recognition.maxAlternatives=1;
+
+recognition.onresult=function(event){
+
+const transcript=event.results[0][0].transcript;
+
+$("question").value=
+$("question").value+
+($("question").value?" ":"")+
+transcript;
+
+$("question").focus();
+
+};
+
+recognition.onerror=function(){
+alert("La reconnaissance vocale a rencontré un problème.");
+};
+
+recognition.start();
+
+}
+
+function readLastAnswer(){
+
+if(!lastAnswer){
+alert("Aucune réponse à lire.");
+return;
+}
+
+if(!("speechSynthesis" in window)){
+alert("La lecture vocale n'est pas disponible.");
+return;
+}
+
+speechSynthesis.cancel();
+
+const speech=new SpeechSynthesisUtterance(lastAnswer);
+speech.lang="fr-FR";
+speech.rate=1;
+
+speechSynthesis.speak(speech);
+
+}
+
+/* ADMINISTRATION */
+
+async function loadAdmin(){
+
+closeSidebar();
+
+if(currentUser?.role!=="admin"){
+alert("Accès administrateur refusé.");
+return;
+}
+
+$("welcome").classList.add("hidden");
+$("messages").classList.add("hidden");
+$("adminPanel").classList.remove("hidden");
+$("composerArea").classList.add("hidden");
+
+const panel=$("adminPanel");
+
+panel.textContent="Chargement des utilisateurs...";
+
+try{
+
+const response=await fetch(API_URL+"/api/admin/users",{
+headers:{
+Authorization:"Bearer "+token
+}
+});
+
+const data=await response.json();
+
+if(!response.ok || !data.success){
+throw new Error(data.error || "Erreur administration");
+}
+
+panel.innerHTML="";
+
+const title=document.createElement("h2");
+title.textContent="👑 Administration TAYA";
+panel.appendChild(title);
+
+const count=document.createElement("p");
+count.textContent=data.users.length+" utilisateurs inscrits";
+count.style.color="var(--green)";
+count.style.marginBottom="18px";
+panel.appendChild(count);
+
+data.users.forEach(user=>{
+
+const card=document.createElement("div");
+card.className="admin-user";
+
+const name=document.createElement("strong");
+name.textContent=user.full_name;
+
+const details=document.createElement("div");
+details.textContent=user.phone;
+
+const date=document.createElement("small");
+date.textContent=user.created_at
+?new Date(user.created_at).toLocaleString("fr-FR")
+:"";
+
+card.appendChild(name);
+card.appendChild(details);
+card.appendChild(date);
+
+panel.appendChild(card);
+
+});
+
+}catch(error){
+
+panel.textContent="Erreur : "+error.message;
+
+}
+
+}
+
+/* CONTACT */
+
+function showContact(){
+
+closeSidebar();
+
+const phone="224663401157";
+
+const message=encodeURIComponent(
+"Bonjour Maruce, je souhaite contacter l'équipe TAYA IA."
+);
+
+window.open(
+"https://wa.me/"+phone+"?text="+message,
+"_blank"
+);
+
+}
+
+/* DEMARRAGE */
+
+if(currentUser && token){
+verifySession();
+}else{
+$("auth").style.display="flex";
+$("main").style.display="none";
+showAuth("login");
+}
+
+</script>
+
+</body>
+</html>
