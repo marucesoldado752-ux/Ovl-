@@ -1,945 +1,226 @@
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#050907">
-<title>TAYA IA V13 - MARUCE SOLDADO 🇬🇳</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TAYA V1.0.3 - TOUS PAYS</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{
- --bg:#050907;
- --panel:#0d1511;
- --panel2:#111d16;
- --green:#00ff88;
- --green2:#00c96b;
- --text:#f3fff7;
- --muted:#8a9b90;
- --border:rgba(0,255,136,.15);
- --danger:#ff5151;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{
- background:var(--bg);
- color:var(--text);
- font-family:Inter,Arial,sans-serif;
- min-height:100vh;
- overflow-x:hidden;
-}
-button,input,textarea{font:inherit}
-button{cursor:pointer}
-.bg{
- position:fixed;inset:0;z-index:-2;overflow:hidden;
- background:radial-gradient(circle at 20% 20%,#09251a 0,transparent 40%),
- radial-gradient(circle at 80% 80%,#071e16 0,transparent 40%),#050907;
-}
-.orb{
- position:absolute;width:280px;height:280px;border-radius:50%;
- background:#00ff8830;filter:blur(90px);
- animation:float 12s ease-in-out infinite alternate;
-}
-.orb:nth-child(1){top:5%;left:-100px}
-.orb:nth-child(2){bottom:0;right:-100px;animation-delay:3s}
-.orb:nth-child(3){top:45%;left:45%;animation-delay:6s}
-@keyframes float{
- from{transform:translate(0,0) scale(.8)}
- to{transform:translate(90px,-60px) scale(1.3)}
-}
-.hidden{display:none!important}
-button:disabled{opacity:.5;cursor:not-allowed}
-#app{min-height:100vh}
-header{
- height:66px;display:flex;align-items:center;justify-content:space-between;
- padding:0 16px;border-bottom:1px solid var(--border);
- background:#050907d9;backdrop-filter:blur(18px);
- position:sticky;top:0;z-index:20;
-}
-.brand{display:flex;align-items:center;gap:10px;font-weight:800}
-.logo{
- width:39px;height:39px;border-radius:13px;
- background:linear-gradient(135deg,var(--green),#087b48);
- display:grid;place-items:center;color:#001b0e;font-size:21px;
- box-shadow:0 0 22px #00ff8840;
-}
-.brand small{display:block;color:var(--green);font-size:10px;letter-spacing:2px}
-.header-actions{display:flex;gap:8px}
-.icon-btn{
- width:40px;height:40px;border:1px solid var(--border);
- border-radius:12px;background:var(--panel);color:var(--text);
- font-size:18px;
-}
-.icon-btn:hover{border-color:var(--green);color:var(--green)}
-main{max-width:900px;margin:auto;padding:24px 15px 110px}
-.card{
- background:linear-gradient(145deg,#101a14,#09110c);
- border:1px solid var(--border);border-radius:20px;padding:22px;
- box-shadow:0 15px 50px #0005;
-}
-.auth-wrap{max-width:440px;margin:7vh auto}
-.auth-logo{text-align:center;margin-bottom:25px}
-.auth-logo .logo{margin:auto;width:65px;height:65px;font-size:30px}
-h1{font-size:28px;letter-spacing:-1px}
-h2{font-size:20px;margin-bottom:12px}
-.subtitle{color:var(--muted);font-size:13px;line-height:1.6;margin-top:8px}
-.tabs{display:flex;gap:8px;margin:22px 0}
-.tab{
- flex:1;padding:12px;border-radius:11px;border:1px solid var(--border);
- background:transparent;color:var(--muted);font-weight:700;
-}
-.tab.active{background:#00ff8817;color:var(--green);border-color:var(--green)}
-.field{margin:13px 0}
-.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:7px}
-.field input,.field textarea{
- width:100%;padding:14px;border-radius:12px;
- border:1px solid var(--border);background:#050b07;color:white;outline:none;
-}
-.field input:focus,.field textarea:focus{border-color:var(--green)}
-.primary{
- width:100%;padding:15px;border:0;border-radius:12px;
- background:linear-gradient(100deg,#00ff88,#00b968);
- color:#00190c;font-weight:800;margin-top:12px;
-}
-.secondary{
- padding:11px 15px;border:1px solid var(--border);
- border-radius:11px;background:var(--panel);color:var(--text);
-}
-.danger{color:#ff7373;border-color:#ff515155}
-.error{color:#ff7777;font-size:13px;margin-top:12px}
-.success{color:var(--green);font-size:13px;margin-top:12px}
-.center{text-align:center}
-.home{text-align:center;padding:45px 15px 30px}
-.big-logo{
- width:90px;height:90px;margin:0 auto 20px;border-radius:28px;
- display:grid;place-items:center;font-size:42px;
- background:linear-gradient(135deg,#00ff88,#087b48);
- color:#00200f;box-shadow:0 0 45px #00ff8840;
- animation:logoFloat 3s ease-in-out infinite;
-}
-@keyframes logoFloat{50%{transform:translateY(-9px)}}
-.home h1{font-size:36px}
-.green{color:var(--green)}
-.home-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:25px}
-.feature{
- background:var(--panel);border:1px solid var(--border);
- border-radius:16px;padding:17px;text-align:left;
-}
-.feature b{display:block;margin-bottom:6px}
-.feature span{font-size:12px;color:var(--muted)}
-.chat-layout{display:flex;flex-direction:column;min-height:calc(100vh - 190px)}
-.chat-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
-.messages{flex:1;display:flex;flex-direction:column;gap:16px;padding-bottom:20px}
-.message{max-width:90%;padding:14px 16px;border-radius:17px;line-height:1.65;font-size:14px;overflow-wrap:anywhere}
-.message.user{align-self:flex-end;background:#063c26;border:1px solid #00ff8840}
-.message.ai{align-self:flex-start;background:#111b15;border:1px solid var(--border)}
-.message .who{font-size:10px;color:var(--green);font-weight:800;margin-bottom:7px}
-.message p{margin:6px 0}
-.message pre{white-space:pre-wrap;overflow:auto;background:#030805;padding:12px;border-radius:9px}
-.message code{color:#8dffbd}
-.message img{max-width:100%;border-radius:10px;margin-top:8px}
-.composer{
- position:sticky;bottom:0;background:#050907ed;
- border:1px solid var(--border);border-radius:18px;padding:10px;
- backdrop-filter:blur(15px);
-}
-.composer textarea{
- width:100%;min-height:48px;max-height:130px;resize:vertical;
- border:0;outline:0;background:transparent;color:white;padding:10px;
-}
-.composer-actions{display:flex;align-items:center;justify-content:space-between}
-.composer-left,.composer-right{display:flex;gap:7px}
-.send{
- background:var(--green);color:#001b0d;border:0;
- width:43px;height:43px;border-radius:13px;font-size:20px;font-weight:900;
-}
-.small-btn{
- background:var(--panel2);border:1px solid var(--border);
- color:var(--text);width:40px;height:40px;border-radius:12px;
-}
-#fileInput{display:none}
-.section{margin:20px 0}
-.list-item{
- padding:13px;border-bottom:1px solid var(--border);
- display:flex;justify-content:space-between;gap:10px;align-items:center;
-}
-.muted{color:var(--muted);font-size:12px}
-.drawer{
- position:fixed;inset:0;z-index:40;background:#0009;
-}
-.drawer-content{
- width:min(320px,85%);height:100%;background:#09120c;
- border-right:1px solid var(--border);padding:22px;
-}
-.drawer button{width:100%;text-align:left;margin:6px 0}
-.modal{
- position:fixed;inset:0;z-index:50;background:#000b;
- display:grid;place-items:center;padding:15px;
-}
-.modal-card{
- width:min(500px,100%);max-height:85vh;overflow:auto;
- background:#0c160f;border:1px solid var(--border);
- border-radius:20px;padding:22px;
-}
-.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.stat{background:#07100a;border:1px solid var(--border);padding:13px;border-radius:12px;text-align:center}
-.stat strong{display:block;color:var(--green);font-size:22px}
-.stat span{font-size:10px;color:var(--muted)}
-footer{text-align:center;color:#64766a;font-size:11px;padding:25px}
-@media(max-width:550px){
- main{padding:16px 12px 100px}
- .home h1{font-size:30px}
- .home-grid{grid-template-columns:1fr 1fr}
- .message{max-width:96%}
- .card{padding:18px}
-}
-</style>
-</head>
-
-<body>
-<div class="bg"><div class="orb"></div><div class="orb"></div><div class="orb"></div></div>
-<div id="app">
-
-<header>
- <div class="brand">
-  <button class="icon-btn" id="menuBtn">☰</button>
-  <div class="logo">T</div>
-  <div>TAYA IA <small>VERSION 13.0</small></div>
- </div>
- <div class="header-actions">
-  <button class="icon-btn" id="profileBtn" title="Profil">👤</button>
-  <button class="icon-btn" id="newChatBtn" title="Nouveau chat">＋</button>
- </div>
-</header>
-
-<main>
- <!-- AUTHENTIFICATION -->
- <section id="authScreen" class="auth-wrap">
-  <div class="card">
-   <div class="auth-logo">
-    <div class="logo">T</div>
-    <h1 style="margin-top:15px">TAYA <span class="green">IA</span></h1>
-    <p class="subtitle">L'intelligence artificielle de MARUCE SOLDADO 🇬🇳</p>
-   </div>
-
-   <div class="tabs">
-    <button class="tab active" id="registerTab">Inscription</button>
-    <button class="tab" id="loginTab">Connexion</button>
-   </div>
-
-   <div id="registerForm">
-    <div class="field">
-     <label>Nom complet</label>
-     <input id="regName" placeholder="Ton nom complet" autocomplete="name">
-    </div>
-    <div class="field">
-     <label>Numéro de téléphone</label>
-     <input id="regPhone" placeholder="+224..." type="tel" autocomplete="tel">
-    </div>
-    <div class="field">
-     <label>Mot de passe</label>
-     <input id="regPassword" type="password" placeholder="8 caractères minimum" autocomplete="new-password">
-    </div>
-    <div class="field">
-     <label>Confirmer le mot de passe</label>
-     <input id="regConfirm" type="password" placeholder="Confirme ton mot de passe" autocomplete="new-password">
-    </div>
-    <button class="primary" id="registerBtn">CRÉER MON COMPTE ⚡</button>
-   </div>
-
-   <div id="loginForm" class="hidden">
-    <div class="field">
-     <label>Numéro de téléphone</label>
-     <input id="loginPhone" type="tel" placeholder="+224..." autocomplete="tel">
-    </div>
-    <div class="field">
-     <label>Mot de passe</label>
-     <input id="loginPassword" type="password" placeholder="Ton mot de passe" autocomplete="current-password">
-    </div>
-    <button class="primary" id="loginBtn">SE CONNECTER</button>
-   </div>
-
-   <div id="authMessage"></div>
-   <p class="muted center" style="margin-top:20px">Tes informations servent à sécuriser ton compte.</p>
-  </div>
-
-  <div class="card section">
-   <h2>Activation administrateur</h2>
-   <p class="subtitle">Uniquement pour les anciens comptes administrateurs autorisés.</p>
-   <button class="secondary" style="width:100%;margin-top:12px" id="activationBtn">Activer un ancien compte admin</button>
-  </div>
- </section>
-
- <!-- ACCUEIL -->
- <section id="homeScreen" class="hidden">
-  <div class="home">
-   <div class="big-logo">T</div>
-   <h1>Bonjour <span class="green" id="homeName">!</span></h1>
-   <p class="subtitle">Bienvenue sur TAYA IA V13</p>
-   <p class="subtitle">by MARUCE SOLDADO 👑🇬🇳</p>
-   <button class="primary" style="max-width:330px" id="startChatBtn">＋ NOUVEAU CHAT</button>
-  </div>
-
-  <div class="home-grid">
-   <div class="feature"><b>🧠 Intelligence</b><span>Pose tes questions et obtiens des réponses.</span></div>
-   <div class="feature"><b>🌍 Multilingue</b><span>Traduction et rédaction.</span></div>
-   <div class="feature"><b>📷 Images et PDF</b><span>Envoie des fichiers à analyser.</span></div>
-   <div class="feature"><b>🎤 Voix</b><span>Dicte et écoute les réponses.</span></div>
-   <div class="feature"><b>💾 Mémoire</b><span>Enregistre tes informations utiles.</span></div>
-   <div class="feature"><b>💬 Assistance</b><span>Contacte directement Maruce.</span></div>
-  </div>
- </section>
-
- <!-- CHAT -->
- <section id="chatScreen" class="hidden">
-  <div class="chat-layout">
-   <div class="chat-top">
-    <div><b>Conversation</b><div class="muted">TAYA IA V13</div></div>
-    <button class="secondary" id="clearChatBtn">Effacer</button>
-   </div>
-   <div class="messages" id="messages"></div>
-   <div class="composer">
-    <textarea id="prompt" placeholder="Pose n'importe quelle question..." rows="1"></textarea>
-    <div class="composer-actions">
-     <div class="composer-left">
-      <button class="small-btn" id="attachBtn" title="Joindre un fichier">📎</button>
-      <button class="small-btn" id="voiceBtn" title="Dicter">🎤</button>
-      <button class="small-btn" id="speakBtn" title="Lire la dernière réponse">🔊</button>
-     </div>
-     <div class="composer-right">
-      <button class="send" id="sendBtn">➤</button>
-     </div>
-    </div>
-    <input id="fileInput" type="file" accept="image/*,.pdf,.txt">
-    <div class="muted" id="fileStatus"></div>
-   </div>
-  </div>
- </section>
-
- <!-- HISTORIQUE -->
- <section id="historyScreen" class="hidden">
-  <div class="card">
-   <h2>Historique des discussions</h2>
-   <div id="historyList"></div>
-  </div>
- </section>
-</main>
-
-<footer>TAYA IA V13 • Créé par MARUCE SOLDADO 🇬🇳</footer>
+:root{--g:#00ff88;--b:#4488ff;--bg:#030609;--c:#111;--c2:#1a1a1a;--bd:#222}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#030609;color:#fff;font-family:Inter,sans-serif;height:100dvh;overflow:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(circle at 20% 20%,rgba(0,255,136,.15),transparent 40%),radial-gradient(circle at 80% 80%,rgba(68,136,255,.18),transparent 40%)}
+.avatar{animation:f 3s ease-in-out infinite} @keyframes f{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.header{height:72px;background:rgba(10,10,10,.92);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:space-between;padding:0 12px;position:fixed;top:0;left:0;right:0;z-index:50;border-bottom:1px solid var(--bd)}
+.icon{width:44px;height:44px;border-radius:14px;background:var(--c2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.logo{font-family:Anton;font-size:18px}.logo span{background:linear-gradient(135deg,var(--g),var(--b));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.badge{font-size:8px;background:linear-gradient(135deg,var(--g),var(--b));color:#000;padding:4px 8px;border-radius:20px;font-weight:900;margin-left:6px}
+.welcome{height:100dvh;display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto}
+.w-card{width:100%;max-width:460px;background:linear-gradient(145deg,#111,#0a0a0a);border:1px solid var(--bd);border-radius:28px;padding:28px;text-align:center}
+.w-card .av{width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,var(--g),var(--b));margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:56px;border:4px solid var(--g)}
+.input-wrap{position:relative;width:100%;margin:7px 0}
+.w-card input,.w-card select{width:100%;background:var(--c2);border:1px solid var(--bd);color:#fff;padding:15px 45px 15px 15px;border-radius:14px;outline:none;font-size:14px}
+.eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer}
+.row{display:flex;gap:8px;margin:7px 0} .row select{flex:1} .row .input-wrap{flex:1.8;margin:0}
+.w-card button{width:100%;margin-top:16px;background:linear-gradient(135deg,var(--g),var(--b));color:#000;border:none;padding:16px;border-radius:16px;font-weight:900;cursor:pointer}
+.tabs{display:flex;gap:8px;margin:14px 0} .tab{flex:1;padding:12px;border-radius:12px;background:var(--c2);border:1px solid var(--bd);text-align:center;cursor:pointer;font-weight:800} .tab.active{background:var(--g);color:#000}
+.home{padding:86px 14px 140px;height:100dvh;overflow:auto}
+.card{background:#111;border:1px solid var(--bd);border-radius:20px;padding:18px;margin-bottom:12px;cursor:pointer}
+.card.green{background:linear-gradient(135deg,var(--g),var(--b));color:#000;font-weight:800}
+.chatWrap{height:100dvh;padding-top:72px;display:flex;flex-direction:column}
+.chat{flex:1;overflow:auto;padding:14px 12px 150px;display:flex;flex-direction:column;gap:16px}
+.msg{max-width:90%;padding:16px 18px;border-radius:20px;font-size:14.5px;white-space:pre-wrap;line-height:1.7}
+.msg pre{background:#0a0a0a;border:1px solid #222;border-radius:12px;padding:14px;overflow:auto;margin:10px 0;color:#00ff88}
+.user{align-self:flex-end;background:#fff;color:#000;border-bottom-right-radius:6px}
+.bot{align-self:flex-start;background:#111;border:1px solid #222;border-bottom-left-radius:6px}
+.bar{position:fixed;bottom:0;left:0;right:0;display:flex;gap:6px;padding:10px;background:rgba(5,8,12,.88);backdrop-filter:blur(25px);border-top:1px solid var(--bd);z-index:20;align-items:flex-end}
+.bar textarea{flex:1;background:var(--c2);border:1px solid var(--bd);color:#fff;padding:14px 18px;border-radius:24px;outline:none;resize:none;min-height:50px;max-height:160px}
+.bar button{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--g),#00cc6a);color:#000;border:none;font-weight:900;font-size:18px;cursor:pointer;flex-shrink:0}
+.bar button.secondary{background:#222;color:#fff;border:1px solid #333}
+.drawer{position:fixed;top:0;left:0;width:90%;max-width:380px;height:100dvh;background:#0f0f0f;border-right:1px solid var(--bd);z-index:60;transform:translateX(-100%);transition:.35s;padding:20px;overflow:auto}
+.drawer.open{transform:translateX(0)} .overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:55;display:none} .overlay.show{display:block}
+.mi{padding:14px 16px;border-radius:14px;cursor:pointer;margin:8px 0;background:var(--c2);border:1px solid var(--bd);font-weight:600}
+.mi.green{background:linear-gradient(135deg,var(--g),#00cc6a);color:#000;font-weight:800}
+.fab{position:fixed;right:20px;bottom:110px;width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,var(--g),var(--b));color:#000;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:900;cursor:pointer;z-index:30}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;display:none;align-items:center;justify-content:center;padding:16px} .modal.show{display:flex}
+.modalBox{background:#111;border:1px solid var(--bd);border-radius:20px;padding:24px;width:100%;max-width:540px;max-height:85vh;overflow:auto}
+.typing{display:flex;gap:5px} .typing span{width:9px;height:9px;border-radius:50%;background:var(--g);animation:b 1.2s infinite} @keyframes b{0%,80%,100%{transform:scale(.6)}40%{transform:scale(1)}}
+textarea.msgInput{width:100%;background:var(--c2);border:1px solid var(--bd);color:#fff;padding:14px;border-radius:12px;min-height:100px;resize:none;outline:none}
+</style></head><body>
+<div class="header" id="header" style="display:none">
+<div style="display:flex;align-items:center;gap:8px">
+<div class="icon" onclick="goHome()" style="background:linear-gradient(135deg,#00ff88,#00cc6a);color:#000">←</div>
+<div class="icon" onclick="toggleMenu()">☰</div>
+<div class="logo">TAYA <span>🤖IA</span><span class="badge">V1.0.3</span></div>
 </div>
-
-<!-- MENU -->
-<div id="drawer" class="drawer hidden">
- <div class="drawer-content">
-  <div class="modal-head"><h2>Menu TAYA</h2><button class="icon-btn" id="closeDrawer">✕</button></div>
-  <button class="secondary" id="navHome">🏠 Accueil</button>
-  <button class="secondary" id="navNew">＋ Nouveau chat</button>
-  <button class="secondary" id="navHistory">🕘 Historique</button>
-  <button class="secondary" id="navMemory">🧠 Ma mémoire</button>
-  <button class="secondary" id="navContact">✉️ Écrire à Maruce</button>
-  <button class="secondary" id="navAdmin">👑 Administration</button>
-  <button class="secondary danger" id="logoutBtn">Déconnexion</button>
-  <p class="muted" style="margin-top:25px">TAYA IA V13 — MARUCE SOLDADO</p>
- </div>
+<div style="display:flex;gap:8px"><div class="icon" onclick="openWriteToMaruce()">💌</div><div class="icon" onclick="newChat()">💬</div></div>
 </div>
-
-<!-- MODAL -->
-<div id="modal" class="modal hidden">
- <div class="modal-card">
-  <div class="modal-head">
-   <h2 id="modalTitle">TAYA IA</h2>
-   <button class="icon-btn" id="closeModal">✕</button>
-  </div>
-  <div id="modalContent"></div>
- </div>
+<div id="overlay" class="overlay" onclick="closeMenuOnly()"></div>
+<div id="welcome" class="welcome">
+<div class="w-card">
+<div class="av avatar">🤖</div>
+<h1>TAYA <span>🤖IA</span> V1.0.3</h1>
+<div style="color:#00ff88;font-weight:800;font-size:11px;margin:10px 0">V1.0.3 • TOUS PAYS • 240+ CODES 🇬🇳🌍 • SUPABASE ✅</div>
+<div class="tabs"><div id="tabSignup" class="tab active" onclick="switchTab('signup')">📝 Inscription</div><div id="tabLogin" class="tab" onclick="switchTab('login')">🔑 Connexion</div></div>
+<div id="signupForm">
+<input id="wName" placeholder="👤 Nom complet *">
+<div class="row"><select id="cc"></select><div class="input-wrap"><input id="wPhone" placeholder="📱 Numéro *"></div></div>
+<div class="input-wrap"><input id="wPass" type="password" placeholder="🔒 Mot de passe *"><span class="eye" onclick="toggleEye('wPass',this)">👁️</span></div>
+<div class="input-wrap"><input id="wPass2" type="password" placeholder="🔒 Confirmer *"><span class="eye" onclick="toggleEye('wPass2',this)">👁️</span></div>
+<button type="button" onclick="doSignup()">✨ CRÉER COMPTE V1.0.3</button>
 </div>
-
+<div id="loginForm" style="display:none">
+<div class="row"><select id="cc2"></select><div class="input-wrap"><input id="lPhone" placeholder="📱 Numéro"></div></div>
+<div class="input-wrap"><input id="lPass" type="password" placeholder="🔒 Mot de passe"><span class="eye" onclick="toggleEye('lPass',this)">👁️</span></div>
+<button type="button" onclick="doLogin()">🚀 SE CONNECTER</button>
+</div>
+</div>
+</div>
+<div id="homeScreen" style="display:none">
+<div class="home">
+<div style="text-align:center;margin-bottom:28px">
+<div class="avatar" style="width:130px;height:130px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#4488ff);margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:64px;border:4px solid #00ff88">🤖</div>
+<div style="font-family:Anton;font-size:32px;margin-top:14px">TAYA <span style="background:linear-gradient(135deg,#00ff88,#4488ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">🤖IA</span> V1.0.3</div>
+<div style="color:#fff;font-weight:700;font-size:13px;margin-top:6px">by MARUCE SOLDADO 👑🇬🇳 • TOUS PAYS</div>
+</div>
+<div id="helloName" style="font-family:Anton;font-size:26px;margin-bottom:18px"></div>
+<div class="card green" onclick="newChat()"><b>💬 Nouveau Chat V1.0.3</b><br><small>240+ pays • Intelligence pure</small></div>
+<div id="projectsListHome"></div>
+</div>
+<div class="fab" onclick="newChat()">💬</div>
+</div>
+<div id="chatScreen" style="display:none" class="chatWrap">
+<div id="chatEl" class="chat"></div>
+<div class="bar">
+<button class="secondary" onclick="startVoice()">🎤</button>
+<button class="secondary" onclick="document.getElementById('fileInput').click()">📎</button>
+<textarea id="inputEl" placeholder="Pose n'importe quelle question..." rows="1"></textarea>
+<button id="sendBtn" onclick="send()">➤</button>
+<input type="file" id="fileInput" hidden onchange="handleFile(this)">
+</div>
+</div>
+<div id="drawer" class="drawer">
+<div style="display:flex;align-items:center;gap:14px;margin-bottom:16px"><div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#00ff88,#4488ff);display:flex;align-items:center;justify-content:center;font-size:32px;border:3px solid #00ff88">🤖</div><div><h2 style="font-family:Anton">TAYA V1.0.3</h2><small style="color:#00ff88;font-weight:800">by Maruce • 240+ pays</small></div></div>
+<div class="mi green" onclick="goHome()">🏠 Accueil</div><div class="mi green" onclick="newChat()">💬 Nouveau chat</div><div class="mi" style="background:linear-gradient(135deg,#ff8800,#ffcc00);color:#000;font-weight:900" onclick="openWriteToMaruce()">💌 Écrire à Maruce</div><div class="mi" style="background:#ff4400;color:#fff;font-weight:900" onclick="showMessages()">📩 MESSAGES (<span id="msgCount">0</span>)</div><div class="mi" onclick="closeMenuOnly()">❌ Fermer</div><div class="mi" style="color:#ff5555" onclick="logout()">🚪 Déconnexion</div><div id="projectsList"></div>
+</div>
+<div id="modal" class="modal" onclick="if(event.target===this)closeModal()"><div class="modalBox"><h3 id="modalTitle" style="font-family:Anton;margin-bottom:12px"></h3><div id="modalBody"></div><button onclick="closeModal()" style="width:100%;margin-top:16px;background:#00ff88;color:#000;border:none;padding:14px;border-radius:12px;font-weight:800">Fermer</button></div></div>
+<div id="writeModal" class="modal" onclick="if(event.target===this)closeWriteModal()"><div class="modalBox"><h3 style="font-family:Anton">💌 Écrire à MARUCE</h3><p style="font-size:12px;color:#aaa;margin:12px 0">Nom: <b id="writeName"></b><br>Numéro: <b id="writePhone" style="color:#00ff88"></b></p><textarea id="writeText" class="msgInput" placeholder="Ton message..."></textarea><button onclick="sendToMaruce()" style="width:100%;margin-top:14px;background:linear-gradient(135deg,#ff8800,#ffcc00);color:#000;border:none;padding:14px;border-radius:12px;font-weight:900">📤 ENVOYER</button><button onclick="closeWriteModal()" style="width:100%;margin-top:8px;background:#222;color:#fff;border:1px solid #333;padding:12px;border-radius:12px">Annuler</button></div></div>
 <script>
-const API = "https://taya-ai-api.onrender.com";
+// ===== SUPABASE - CONFIG CORRIGÉE MARUCE =====
+const SUPABASE_URL = "https://bvsjsihauwkcckwiizke.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2c2pzaWhhdXdrY2Nrd2lpemtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0MDQyMzcsImV4cCI6MjEwODk4MDIzN30.yNDrlwF7CkoClHULoA_o12QMoJViT5k5qsNbtmgmgUw";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+console.log("Supabase connecté:", SUPABASE_URL);
 
-const $ = id => document.getElementById(id);
-
-let token = localStorage.getItem("taya_v12_session") || "";
-let currentUser = JSON.parse(localStorage.getItem("taya_v12_user") || "null");
-let history = JSON.parse(localStorage.getItem("taya_v12_history") || "[]");
-let messages = [];
-let lastAnswer = "";
-let selectedFile = null;
-let memory = "";
-
-function saveSession(data){
- token = data.token;
- currentUser = data.user;
- localStorage.setItem("taya_v12_session",token);
- localStorage.setItem("taya_v12_user",JSON.stringify(currentUser));
-}
-
-function normalizeUser(user){
- return {
-  ...user,
-  fullName:user.fullName || user.full_name || "",
-  full_name:user.full_name || user.fullName || ""
- };
-}
-
-async function api(path,options={}){
- const headers = {...(options.headers || {})};
- if(token) headers.Authorization = "Bearer " + token;
- if(options.body && !(options.body instanceof FormData)){
-  headers["Content-Type"]="application/json";
- }
- const response = await fetch(API+path,{...options,headers});
- let data={};
- try{data=await response.json()}catch(e){}
- if(!response.ok) throw new Error(data.error || "Une erreur est survenue");
- return data;
-}
-
-function showMessage(text,type="error"){
- $("authMessage").className=type;
- $("authMessage").textContent=text;
-}
-
-function showScreen(name){
- ["authScreen","homeScreen","chatScreen","historyScreen"].forEach(id=>{
-  $(id).classList.add("hidden");
- });
- $(name+"Screen").classList.remove("hidden");
-}
-
-function setAuthTab(tab){
- const register=tab==="register";
- $("registerForm").classList.toggle("hidden",!register);
- $("loginForm").classList.toggle("hidden",register);
- $("registerTab").classList.toggle("active",register);
- $("loginTab").classList.toggle("active",!register);
- showMessage("");
-}
-
-$("registerTab").onclick=()=>setAuthTab("register");
-$("loginTab").onclick=()=>setAuthTab("login");
-
-$("registerBtn").onclick=async()=>{
- const fullName=$("regName").value.trim();
- const phone=$("regPhone").value.trim();
- const password=$("regPassword").value;
- const confirm=$("regConfirm").value;
-
- if(!fullName || !phone || !password || !confirm)
-  return showMessage("Remplis tous les champs.");
- if(password.length<8)
-  return showMessage("Le mot de passe doit contenir au moins 8 caractères.");
- if(password!==confirm)
-  return showMessage("Les mots de passe ne correspondent pas.");
-
- $("registerBtn").disabled=true;
- showMessage("Création du compte...","success");
-
- try{
-  const data=await api("/api/register",{
-   method:"POST",
-   body:JSON.stringify({fullName,phone,password})
-  });
-  saveSession(data);
-  enterApp();
- }catch(e){showMessage(e.message)}
- finally{$("registerBtn").disabled=false}
+let user=null,projects=[],currentConvId=null,chatHistory=[],isGenerating=false;
+const $=id=>document.getElementById(id);
+function hash(s){let h=0;for(let i=0;i<s.length;i++)h=Math.imul(31,h)+s.charCodeAt(i)|0;return h.toString(16);}
+function saveData(){if(!user)return;localStorage.setItem('taya_all_'+user.phoneFull,JSON.stringify(projects));localStorage.setItem('taya_user',JSON.stringify(user));}
+function updateMsgCount(){let m=JSON.parse(localStorage.getItem('taya_messages')||'[]');if($('msgCount'))$('msgCount').textContent=m.length;}
+window.toggleEye=(id,el)=>{let i=$(id);if(i.type==='password'){i.type='text';el.textContent='🙈';}else{i.type='password';el.textContent='👁️';}}
+window.onload=()=>{
+let c=[
+["🇬🇳 Guinée +224","+224"],["🇲🇱 Mali +223","+223"],["🇸🇳 Sénégal +221","+221"],["🇨🇮 Côte d'Ivoire +225","+225"],["🇧🇫 Burkina Faso +226","+226"],["🇸🇱 Sierra Leone +232","+232"],["🇱🇷 Liberia +231","+231"],["🇬🇲 Gambie +220","+220"],["🇬🇭 Ghana +233","+233"],["🇳🇬 Nigeria +234","+234"],["🇳🇪 Niger +227","+227"],["🇹🇬 Togo +228","+228"],["🇧🇯 Bénin +229","+229"],["🇲🇷 Mauritanie +222","+222"],["🇲🇦 Maroc +212","+212"],["🇩🇿 Algérie +213","+213"],["🇹🇳 Tunisie +216","+216"],["🇱🇾 Libye +218","+218"],["🇪🇬 Égypte +20","+20"],["🇿🇦 Afrique du Sud +27","+27"],["🇪🇹 Éthiopie +251","+251"],["🇰🇪 Kenya +254","+254"],["🇨🇲 Cameroun +237","+237"],["🇨🇩 RDC +243","+243"],["🇨🇬 Congo +242","+242"],["🇦🇴 Angola +244","+244"],["🇷🇼 Rwanda +250","+250"],["🇹🇿 Tanzanie +255","+255"],["🇺🇬 Ouganda +256","+256"],["🇬🇳 Guinée-Bissau +245","+245"],["🇨🇻 Cap-Vert +238","+238"],
+["🇫🇷 France +33","+33"],["🇧🇪 Belgique +32","+32"],["🇨🇭 Suisse +41","+41"],["🇨🇦 Canada +1","+1"],["🇺🇸 USA +1","+1"],["🇩🇪 Allemagne +49","+49"],["🇬🇧 UK +44","+44"],["🇪🇸 Espagne +34","+34"],["🇮🇹 Italie +39","+39"],["🇵🇹 Portugal +351","+351"],["🇳🇱 Pays-Bas +31","+31"],["🇸🇪 Suède +46","+46"],["🇹🇷 Turquie +90","+90"],["🇷🇺 Russie +7","+7"],["🇺🇦 Ukraine +380","+380"],["🇵🇱 Pologne +48","+48"],["🇷🇴 Roumanie +40","+40"],["🇬🇷 Grèce +30","+30"],["🇮🇪 Irlande +353","+353"],["🇳🇴 Norvège +47","+47"],["🇩🇰 Danemark +45","+45"],["🇫🇮 Finlande +358","+358"],
+["🇦🇪 Émirats +971","+971"],["🇸🇦 Arabie Saoudite +966","+966"],["🇶🇦 Qatar +974","+974"],["🇰🇼 Koweït +965","+965"],["🇧🇭 Bahreïn +973","+973"],["🇦🇿 Azerbaïdjan +994","+994"],["🇦🇲 Arménie +374","+374"],["🇬🇪 Géorgie +995","+995"],
+["🇮🇳 Inde +91","+91"],["🇵🇰 Pakistan +92","+92"],["🇧🇩 Bangladesh +880","+880"],["🇨🇳 Chine +86","+86"],["🇯🇵 Japon +81","+81"],["🇰🇷 Corée du Sud +82","+82"],["🇰🇵 Corée du Nord +850","+850"],["🇮🇩 Indonésie +62","+62"],["🇲🇾 Malaisie +60","+60"],["🇵🇭 Philippines +63","+63"],["🇹🇭 Thaïlande +66","+66"],["🇻🇳 Vietnam +84","+84"],["🇸🇬 Singapour +65","+65"],["🇭🇰 Hong Kong +852","+852"],["🇹🇼 Taïwan +886","+886"],["🇦🇺 Australie +61","+61"],["🇳🇿 Nouvelle-Zélande +64","+64"],["🇧🇷 Brésil +55","+55"],["🇦🇷 Argentine +54","+54"],["🇲🇽 Mexique +52","+52"],["🇨🇴 Colombie +57","+57"],["🇵🇪 Pérou +51","+51"],["🇨🇱 Chili +56","+56"],["🇻🇪 Venezuela +58","+58"],
+["🇦🇫 Afghanistan +93","+93"],["🇦🇱 Albanie +355","+355"],["🇦🇩 Andorre +376","+376"],["🇦🇬 Antigua +1268","+1268"],["🇦🇼 Aruba +297","+297"],["🇦🇹 Autriche +43","+43"],["🇧🇸 Bahamas +1242","+1242"],["🇧🇧 Barbade +1246","+1246"],["🇧🇾 Biélorussie +375","+375"],["🇧🇿 Belize +501","+501"],["🇧🇹 Bhoutan +975","+975"],["🇧🇴 Bolivie +591","+591"],["🇧🇦 Bosnie +387","+387"],["🇧🇼 Botswana +267","+267"],["🇧🇳 Brunei +673","+673"],["🇧🇬 Bulgarie +359","+359"],["🇧🇮 Burundi +257","+257"],["🇰🇭 Cambodge +855","+855"],["🇨🇫 Centrafrique +236","+236"],["🇹🇩 Tchad +235","+235"],["🇨🇴 Colombie +57","+57"],["🇰🇲 Comores +269","+269"],["🇨🇷 Costa Rica +506","+506"],["🇭🇷 Croatie +385","+385"],["🇨🇺 Cuba +53","+53"],["🇨🇾 Chypre +357","+357"],["🇨🇿 Tchèque +420","+420"],["🇩🇯 Djibouti +253","+253"],["🇩🇲 Dominique +1767","+1767"],["🇩🇴 Dominicaine +1809","+1809"],["🇪🇨 Équateur +593","+593"],["🇸🇻 Salvador +503","+503"],["🇬🇶 Guinée Éq. +240","+240"],["🇪🇷 Érythrée +291","+291"],["🇪🇪 Estonie +372","+372"],["🇸🇿 Eswatini +268","+268"],["🇫🇯 Fidji +679","+679"],["🇬🇦 Gabon +241","+241"],["🇬🇾 Guyana +592","+592"],["🇭🇹 Haïti +509","+509"],["🇭🇳 Honduras +504","+504"],["🇭🇺 Hongrie +36","+36"],["🇮🇸 Islande +354","+354"],["🇮🇷 Iran +98","+98"],["🇮🇶 Irak +964","+964"],["🇮🇱 Israël +972","+972"],["🇯🇲 Jamaïque +1876","+1876"],["🇯🇴 Jordanie +962","+962"],["🇰🇿 Kazakhstan +7","+7"],["🇰🇮 Kiribati +686","+686"],["🇽🇰 Kosovo +383","+383"],["🇰🇬 Kirghizistan +996","+996"],["🇱🇦 Laos +856","+856"],["🇱🇻 Lettonie +371","+371"],["🇱🇧 Liban +961","+961"],["🇱🇸 Lesotho +266","+266"],["🇱🇮 Liechtenstein +423","+423"],["🇱🇹 Lituanie +370","+370"],["🇱🇺 Luxembourg +352","+352"],["🇲🇬 Madagascar +261","+261"],["🇲🇼 Malawi +265","+265"],["🇲🇻 Maldives +960","+960"],["🇲🇹 Malte +356","+356"],["🇲🇭 Marshall +692","+692"],["🇲🇺 Maurice +230","+230"],["🇫🇲 Micronésie +691","+691"],["🇲🇩 Moldavie +373","+373"],["🇲🇨 Monaco +377","+377"],["🇲🇳 Mongolie +976","+976"],["🇲🇪 Monténégro +382","+382"],["🇲🇿 Mozambique +258","+258"],["🇲🇲 Myanmar +95","+95"],["🇳🇦 Namibie +264","+264"],["🇳🇷 Nauru +674","+674"],["🇳🇵 Népal +977","+977"],["🇳🇮 Nicaragua +505","+505"],["🇲🇰 Macédoine +389","+389"],["🇴🇲 Oman +968","+968"],["🇵🇼 Palaos +680","+680"],["🇵🇸 Palestine +970","+970"],["🇵🇦 Panama +507","+507"],["🇵🇬 Papouasie +675","+675"],["🇵🇾 Paraguay +595","+595"],["🇵🇱 Pologne +48","+48"],["🇷🇼 Rwanda +250","+250"],["🇰🇳 Saint-Kitts +1869","+1869"],["🇱🇨 Sainte-Lucie +1758","+1758"],["🇻🇨 Saint-Vincent +1784","+1784"],["🇼🇸 Samoa +685","+685"],["🇸🇲 Saint-Marin +378","+378"],["🇸🇹 Sao Tomé +239","+239"],["🇸🇳 Sénégal +221","+221"],["🇷🇸 Serbie +381","+381"],["🇸🇨 Seychelles +248","+248"],["🇸🇰 Slovaquie +421","+421"],["🇸🇮 Slovénie +386","+386"],["🇸🇧 Salomon +677","+677"],["🇸🇴 Somalie +252","+252"],["🇸🇸 Soudan du Sud +211","+211"],["🇱🇰 Sri Lanka +94","+94"],["🇸🇩 Soudan +249","+249"],["🇸🇷 Suriname +597","+597"],["🇸🇾 Syrie +963","+963"],["🇹🇼 Taïwan +886","+886"],["🇹🇯 Tadjikistan +992","+992"],["🇹🇱 Timor +670","+670"],["🇹🇴 Tonga +676","+676"],["🇹🇹 Trinidad +1868","+1868"],["🇹🇲 Turkménistan +993","+993"],["🇹🇻 Tuvalu +688","+688"],["🇺🇬 Ouganda +256","+256"],["🇺🇾 Uruguay +598","+598"],["🇺🇿 Ouzbékistan +998","+998"],["🇻🇺 Vanuatu +678","+678"],["🇾🇪 Yémen +967","+967"],["🇿🇲 Zambie +260","+260"],["🇿🇼 Zimbabwe +263","+263"]
+];
+let cc=$('cc'),cc2=$('cc2');c.forEach(x=>{let o=document.createElement('option');o.value=x[1];o.textContent=x[0];if(x[1]=="+224")o.selected=true;cc.appendChild(o);let o2=o.cloneNode(true);cc2.appendChild(o2);});let s=localStorage.getItem('taya_user');if(s){user=JSON.parse(s);projects=JSON.parse(localStorage.getItem('taya_all_'+user.phoneFull)||'[]');showHome();}else{$('header').style.display='none';}updateMsgCount();
 };
-
-$("loginBtn").onclick=async()=>{
- const phone=$("loginPhone").value.trim();
- const password=$("loginPassword").value;
- if(!phone || !password)return showMessage("Remplis les deux champs.");
-
- $("loginBtn").disabled=true;
- showMessage("Connexion...","success");
-
- try{
-  const data=await api("/api/login",{
-   method:"POST",
-   body:JSON.stringify({phone,password})
-  });
-  saveSession(data);
-  enterApp();
- }catch(e){showMessage(e.message)}
- finally{$("loginBtn").disabled=false}
-};
-
-$("activationBtn").onclick=()=>{
- openModal("Activation administrateur",`
-  <p class="subtitle">Cette fonction est réservée aux deux numéros administrateurs déjà enregistrés dans Supabase.</p>
-  <div class="field"><label>Clé administrateur</label><input id="adminKeyInput" type="password"></div>
-  <div class="field"><label>Nom complet</label><input id="adminNameInput"></div>
-  <div class="field"><label>Numéro autorisé</label><input id="adminPhoneInput" placeholder="+224..."></div>
-  <div class="field"><label>Nouveau mot de passe</label><input id="adminPasswordInput" type="password"></div>
-  <button class="primary" id="activateAdminBtn">ACTIVER MON COMPTE</button>
-  <div id="activationMessage"></div>
- `);
- $("activateAdminBtn").onclick=async()=>{
-  const adminKey=$("adminKeyInput").value;
-  const fullName=$("adminNameInput").value.trim();
-  const phone=$("adminPhoneInput").value.trim();
-  const password=$("adminPasswordInput").value;
-  const box=$("activationMessage");
-
-  if(!adminKey||!fullName||!phone||password.length<8){
-   box.className="error";
-   box.textContent="Vérifie les champs et utilise au moins 8 caractères.";
-   return;
-  }
-
+window.switchTab=t=>{$('tabSignup').classList.toggle('active',t==='signup');$('tabLogin').classList.toggle('active',t==='login');$('signupForm').style.display=t==='signup'?'block':'none';$('loginForm').style.display=t==='login'?'block':'none';}
+window.doSignup=async()=>{
+  let n=$('wName').value.trim(),p=$('wPhone').value.trim(),code=$('cc').value,pass=$('wPass').value.trim(),pass2=$('wPass2').value.trim();
+  if(!n||!p||pass.length<6||pass!==pass2){alert('Vérifie !');return;}
+  let full=code+' '+p;
+  // 1. Sauvegarde locale comme avant
+  let all=JSON.parse(localStorage.getItem('taya_users')||'[]');
+  if(all.find(u=>u.phoneFull===full)){alert('Existe déjà');switchTab('login');return;}
+  user={name:n,phoneFull:full,passHash:hash(pass)};
+  all.push(user);localStorage.setItem('taya_users',JSON.stringify(all));localStorage.setItem('taya_user',JSON.stringify(user));projects=[];saveData();
+  // 2. Sauvegarde aussi dans Supabase
   try{
-   const data=await api("/api/admin/activate",{
-    method:"POST",
-    body:JSON.stringify({adminKey,fullName,phone,password})
-   });
-   saveSession(data);
-   closeModal();
-   enterApp();
-  }catch(e){
-   box.className="error";
-   box.textContent=e.message;
-  }
- };
-};
-
-function enterApp(){
- currentUser=normalizeUser(currentUser);
- $("homeName").textContent=currentUser.fullName || "!";
- showScreen("home");
+    let email = full.replace(/[^0-9]/g,'') + "@taya.app";
+    await supabaseClient.auth.signUp({email:email, password:pass, options:{data:{name:n, phone:full}}});
+    await supabaseClient.from('profiles').insert([{phone:full, name:n}]).catch(()=>{});
+  }catch(e){ console.log("Supabase signup:", e); }
+  showHome();
 }
-
-async function checkSession(){
- if(!token){showScreen("auth");return}
- try{
-  const data=await api("/api/profile");
-  currentUser=normalizeUser(data.user);
-  localStorage.setItem("taya_v12_user",JSON.stringify(currentUser));
-  enterApp();
- }catch(e){
-  logout(false);
- }
-}
-
-function logout(confirm=true){
- if(confirm && !window.confirm("Veux-tu vraiment te déconnecter ?"))return;
- token="";
- currentUser=null;
- localStorage.removeItem("taya_v12_session");
- localStorage.removeItem("taya_v12_user");
- messages=[];
- showScreen("auth");
- setAuthTab("login");
- closeDrawer();
-}
-
-function newChat(){
- messages=[];
- selectedFile=null;
- $("fileStatus").textContent="";
- $("messages").innerHTML="";
- showScreen("chat");
- addWelcome();
-}
-
-function addWelcome(){
- if(messages.length)return;
- addBubble("assistant","Bonjour ! Je suis TAYA IA. Comment puis-je t'aider ?");
-}
-
-function addBubble(role,content,extra={}){
- const box=document.createElement("div");
- box.className="message "+(role==="user"?"user":"ai");
- const who=document.createElement("div");
- who.className="who";
- who.textContent=role==="user"?"TOI":"TAYA IA";
- box.appendChild(who);
-
- const body=document.createElement("div");
- if(typeof content==="string"){
-  const html=window.marked
-   ? DOMPurify.sanitize(marked.parse(content))
-   : escapeHTML(content).replace(/\n/g,"<br>");
-  body.innerHTML=html;
- }else{
-  body.textContent="[Contenu]";
- }
- box.appendChild(body);
-
- if(extra.image){
-  const img=document.createElement("img");
-  img.src=extra.image;
-  box.appendChild(img);
- }
- $("messages").appendChild(box);
- $("messages").scrollTop=$("messages").scrollHeight;
- return box;
-}
-
-function escapeHTML(str){
- return String(str).replace(/[&<>"']/g,c=>({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- }[c]));
-}
-
-async function sendMessage(){
- const prompt=$("prompt").value.trim();
- if(!prompt && !selectedFile)return;
- if(!token)return logout(false);
-
- let content=prompt || "Analyse ce fichier et explique-moi son contenu.";
- let userContent=content;
- let displayExtra={};
-
- if(selectedFile){
-  if(selectedFile.type.startsWith("image/")){
-   const dataURL=await readAsDataURL(selectedFile);
-   userContent=[
-    {type:"text",text:content},
-    {type:"image_url",image_url:{url:dataURL}}
-   ];
-   displayExtra.image=dataURL;
-  }else if(selectedFile.type==="application/pdf"){
-   try{
-    const pdfText=await extractPDF(selectedFile);
-    content += "\n\nContenu du PDF :\n"+pdfText;
-    userContent=content;
-   }catch(e){
-    addBubble("assistant","Impossible de lire ce PDF : "+e.message);
-    return;
-   }
-  }else{
-   content += "\n\n"+await selectedFile.text();
-   userContent=content;
-  }
- }
-
- $("prompt").value="";
- const fileName=selectedFile?.name;
- selectedFile=null;
- $("fileInput").value="";
- $("fileStatus").textContent="";
-
- messages.push({role:"user",content:userContent});
- addBubble("user",prompt || "Fichier : "+fileName,displayExtra);
-
- const loading=addBubble("assistant","TAYA IA réfléchit...");
-
- $("sendBtn").disabled=true;
-
- try{
-  const data=await api("/api/chat",{
-   method:"POST",
-   body:JSON.stringify({messages})
-  });
-
-  loading.remove();
-  lastAnswer=data.answer;
-  messages.push({role:"assistant",content:data.answer});
-  addBubble("assistant",data.answer);
-  saveHistory();
- }catch(e){
-  loading.remove();
-  addBubble("assistant","Erreur : "+e.message);
- }finally{
-  $("sendBtn").disabled=false;
- }
-}
-
-function readAsDataURL(file){
- return new Promise((resolve,reject)=>{
-  const reader=new FileReader();
-  reader.onload=()=>resolve(reader.result);
-  reader.onerror=reject;
-  reader.readAsDataURL(file);
- });
-}
-
-async function extractPDF(file){
- const buffer=await file.arrayBuffer();
- const pdf=await pdfjsLib.getDocument({data:buffer}).promise;
- let text="";
- for(let i=1;i<=pdf.numPages;i++){
-  const page=await pdf.getPage(i);
-  const data=await page.getTextContent();
-  text+=data.items.map(x=>x.str).join(" ")+"\n";
-  if(text.length>30000)break;
- }
- return text.slice(0,30000);
-}
-
-$("sendBtn").onclick=sendMessage;
-$("prompt").addEventListener("keydown",e=>{
- if(e.key==="Enter"&&!e.shiftKey){
-  e.preventDefault();
-  sendMessage();
- }
-});
-
-$("attachBtn").onclick=()=>$("fileInput").click();
-$("fileInput").onchange=e=>{
- selectedFile=e.target.files[0]||null;
- $("fileStatus").textContent=selectedFile
-  ?"Fichier sélectionné : "+selectedFile.name:"";
-};
-
-$("startChatBtn").onclick=newChat;
-$("newChatBtn").onclick=()=>{
- if(!currentUser)return;
- newChat();
-};
-$("clearChatBtn").onclick=()=>{
- if(!confirm("Effacer cette conversation ?"))return;
- messages=[];
- $("messages").innerHTML="";
- addWelcome();
-};
-
-function saveHistory(){
- if(!messages.length)return;
- const item={
-  id:Date.now(),
-  title:typeof messages.find(m=>m.role==="user")?.content==="string"
-   ?messages.find(m=>m.role==="user").content.slice(0,55)
-   :"Nouvelle conversation",
-  messages
- };
- history.unshift(item);
- history=history.slice(0,50);
- localStorage.setItem("taya_v12_history",JSON.stringify(history));
-}
-
-function showHistory(){
- showScreen("history");
- const list=$("historyList");
- list.innerHTML="";
- if(!history.length){
-  list.innerHTML='<p class="muted">Aucune discussion enregistrée.</p>';
-  return;
- }
- history.forEach(item=>{
-  const row=document.createElement("div");
-  row.className="list-item";
-  const title=document.createElement("span");
-  title.textContent=item.title;
-  const button=document.createElement("button");
-  button.className="secondary";
-  button.textContent="Ouvrir";
-  button.onclick=()=>{
-   messages=item.messages||[];
-   $("messages").innerHTML="";
-   messages.forEach(m=>addBubble(m.role,m.content));
-   showScreen("chat");
-  };
-  row.append(title,button);
-  list.appendChild(row);
- });
-}
-
-function closeDrawer(){$("drawer").classList.add("hidden")}
-$("menuBtn").onclick=()=>$("drawer").classList.remove("hidden");
-$("closeDrawer").onclick=closeDrawer;
-$("navHome").onclick=()=>{showScreen("home");closeDrawer()};
-$("navNew").onclick=()=>{newChat();closeDrawer()};
-$("navHistory").onclick=()=>{showHistory();closeDrawer()};
-$("logoutBtn").onclick=()=>logout();
-$("newChatBtn").title="Nouveau chat";
-
-function openModal(title,html){
- $("modalTitle").textContent=title;
- $("modalContent").innerHTML=html;
- $("modal").classList.remove("hidden");
-}
-function closeModal(){$("modal").classList.add("hidden")}
-$("closeModal").onclick=closeModal;
-$("modal").onclick=e=>{
- if(e.target===$("modal"))closeModal();
-};
-
-$("profileBtn").onclick=()=>{
- if(!currentUser)return;
- openModal("Mon profil",`
-  <div class="card">
-   <p><b>Nom :</b> ${escapeHTML(currentUser.fullName)}</p>
-   <p style="margin-top:10px"><b>Téléphone :</b> ${escapeHTML(currentUser.phone)}</p>
-   <p style="margin-top:10px"><b>Statut :</b> ${currentUser.isAdmin?"Administrateur":"Utilisateur"}</p>
-  </div>
-  <div class="field"><label>Nouveau nom</label><input id="newProfileName"></div>
-  <div class="field"><label>Confirmer le nouveau nom</label><input id="confirmProfileName"></div>
-  <button class="primary" id="changeNameBtn">MODIFIER MON NOM</button>
-  <button class="secondary danger" style="width:100%;margin-top:12px" id="profileLogout">Déconnexion</button>
-  <div id="profileMessage"></div>
- `);
-
- $("changeNameBtn").onclick=async()=>{
-  const newName=$("newProfileName").value.trim();
-  const confirmName=$("confirmProfileName").value.trim();
+window.doLogin=async()=>{
+  let p=$('lPhone').value.trim(),code=$('cc2').value,pass=$('lPass').value.trim(),full=code+' '+p;
+  let all=JSON.parse(localStorage.getItem('taya_users')||'[]');
+  let u=all.find(x=>x.phoneFull===full&&x.passHash===hash(pass));
+  if(!u){alert('Incorrect');return;}
+  user=u;projects=JSON.parse(localStorage.getItem('taya_all_'+user.phoneFull)||'[]');localStorage.setItem('taya_user',JSON.stringify(user));
   try{
-   const data=await api("/api/profile/name",{
-    method:"PUT",
-    body:JSON.stringify({
-     currentName:currentUser.fullName,
-     newName,
-     confirmName
-    })
-   });
-   currentUser=normalizeUser(data.user);
-   localStorage.setItem("taya_v12_user",JSON.stringify(currentUser));
-   $("homeName").textContent=currentUser.fullName;
-   $("profileMessage").className="success";
-   $("profileMessage").textContent="Nom modifié.";
-  }catch(e){
-   $("profileMessage").className="error";
-   $("profileMessage").textContent=e.message;
-  }
- };
- $("profileLogout").onclick=()=>{closeModal();logout()};
-};
-
-$("navMemory").onclick=async()=>{
- closeDrawer();
- try{
-  const data=await api("/api/memory");
-  memory=data.memory||"";
-  openModal("Ma mémoire",`
-   <p class="subtitle">Informations que TAYA IA peut utiliser pour personnaliser ses réponses.</p>
-   <div class="field"><textarea id="memoryInput" rows="8" placeholder="Écris les informations à mémoriser...">${escapeHTML(memory)}</textarea></div>
-   <button class="primary" id="saveMemoryBtn">ENREGISTRER</button>
-   <button class="secondary danger" id="deleteMemoryBtn" style="width:100%;margin-top:10px">SUPPRIMER LA MÉMOIRE</button>
-   <div id="memoryMessage"></div>
-  `);
-
-  $("saveMemoryBtn").onclick=async()=>{
-   try{
-    await api("/api/memory",{
-     method:"PUT",
-     body:JSON.stringify({memory:$("memoryInput").value})
-    });
-    $("memoryMessage").className="success";
-    $("memoryMessage").textContent="Mémoire enregistrée.";
-   }catch(e){
-    $("memoryMessage").className="error";
-    $("memoryMessage").textContent=e.message;
-   }
-  };
-
-  $("deleteMemoryBtn").onclick=async()=>{
-   if(!confirm("Supprimer toute ta mémoire ?"))return;
-   try{
-    await api("/api/memory",{method:"DELETE"});
-    $("memoryInput").value="";
-    $("memoryMessage").className="success";
-    $("memoryMessage").textContent="Mémoire supprimée.";
-   }catch(e){
-    $("memoryMessage").className="error";
-    $("memoryMessage").textContent=e.message;
-   }
-  };
- }catch(e){openModal("Erreur",escapeHTML(e.message))}
-};
-
-$("navContact").onclick=()=>{
- closeDrawer();
- openModal("Écrire à Maruce",`
-  <p class="subtitle">Envoie directement ton message à Maruce.</p>
-  <div class="field"><textarea id="contactMessage" rows="6" placeholder="Écris ton message..."></textarea></div>
-  <button class="primary" id="sendContactBtn">ENVOYER LE MESSAGE</button>
-  <div id="contactResult"></div>
- `);
- $("sendContactBtn").onclick=async()=>{
-  const message=$("contactMessage").value.trim();
-  if(!message)return;
+    let email = full.replace(/[^0-9]/g,'') + "@taya.app";
+    await supabaseClient.auth.signInWithPassword({email:email, password:pass});
+  }catch(e){ console.log("Supabase login:", e); }
+  showHome();
+}
+window.showHome=()=>{$('welcome').style.display='none';$('chatScreen').style.display='none';$('homeScreen').style.display='block';$('header').style.display='flex';$('helloName').textContent='Salut '+user.name+' ! 👋';updateUI();updateMsgCount();}
+window.goHome=()=>{$('drawer').classList.remove('open');$('overlay').classList.remove('show');$('chatScreen').style.display='none';$('homeScreen').style.display='block';}
+window.closeMenuOnly=()=>{$('drawer').classList.remove('open');$('overlay').classList.remove('show');}
+window.newChat=()=>{currentConvId=Date.now().toString();chatHistory=[];closeMenuOnly();$('chatEl').innerHTML='';$('homeScreen').style.display='none';$('chatScreen').style.display='flex';add(`Bonjour ${user.name} ! Comment puis-je t'aider aujourd'hui ?`,'bot');}
+window.toggleMenu=()=>{if($('drawer').classList.contains('open'))closeMenuOnly();else{$('drawer').classList.add('open');$('overlay').classList.add('show');updateUI();}}
+function add(t,who){let d=document.createElement('div');d.className='msg '+who;if(who==='bot'){d.innerHTML=DOMPurify.sanitize(marked.parse(t))+`<div style="display:flex;gap:6px;margin-top:8px"><button onclick="speakText(\`${t.replace(/`/g,'').slice(0,600)}\`)" style="font-size:11px;padding:6px 10px;border-radius:20px;border:1px solid #333;background:#222;color:#fff">🔊</button><button onclick="copyAnswer(\`${t.replace(/`/g,'').slice(0,2000)}\`)" style="font-size:11px;padding:6px 10px;border-radius:20px;border:1px solid #333;background:#222;color:#fff">📋</button></div>`;}else{d.textContent=t;}$('chatEl').appendChild(d);$('chatEl').scrollTop=$('chatEl').scrollHeight;return d;}
+function updateUI(){let h=projects.map((p,i)=>`<div style="background:#1a1a1a;border:1px solid #222;border-radius:14px;padding:14px;margin:8px 0;display:flex;justify-content:space-between" onclick="openProj(${i})"><b>💬 ${p.title.slice(0,28)}</b><span onclick="event.stopPropagation();deleteProj(${i})">🗑️</span></div>`).join('')||'<small style="color:#888">📭 Aucune conversation</small>';$('projectsList').innerHTML=h;$('projectsListHome').innerHTML=h;}
+window.openProj=i=>{let p=projects[i];currentConvId=p.id;chatHistory=p.history||[];$('chatEl').innerHTML='';$('homeScreen').style.display='none';$('chatScreen').style.display='flex';closeMenuOnly();p.msgs.forEach(m=>add(m.text,m.who));}
+window.deleteProj=i=>{if(confirm('Supprimer ?')){projects.splice(i,1);saveData();updateUI();}}
+function saveCurrent(){let msgs=[...$('chatEl').querySelectorAll('.msg')].map(el=>({who:el.classList.contains('user')?'user':'bot',text:el.innerText.trim()}));if(msgs.length<2)return;let title=msgs.find(m=>m.who==='user')?.text.slice(0,40)||'Chat';let idx=projects.findIndex(p=>p.id===currentConvId);let obj={id:currentConvId,title,msgs,history:chatHistory};if(idx>=0)projects[idx]=obj;else projects.unshift(obj);saveData();updateUI();}
+window.showModal=(t,b)=>{$('modalTitle').innerText=t;$('modalBody').innerHTML=b;$('modal').classList.add('show');}
+window.closeModal=()=>$('modal').classList.remove('show');
+window.openWriteToMaruce=()=>{if(!user)return;closeMenuOnly();$('writeName').textContent=user.name;$('writePhone').textContent=user.phoneFull;$('writeText').value='';$('writeModal').classList.add('show');}
+window.closeWriteModal=()=>$('writeModal').classList.remove('show');
+window.sendToMaruce=async()=>{
+  let txt=$('writeText').value.trim();if(txt.length<3){alert('Écris !');return;}
+  let all=JSON.parse(localStorage.getItem('taya_messages')||'[]');
+  all.unshift({id:Date.now(),name:user.name,phone:user.phoneFull,message:txt,date:new Date().toLocaleString()});localStorage.setItem('taya_messages',JSON.stringify(all));
+  try{ await supabaseClient.from('messages').insert([{name:user.name, phone:user.phoneFull, message:txt}]).catch(()=>{}); }catch(e){}
+  closeWriteModal();updateMsgCount();alert('✅ Envoyé à MARUCE');
+}
+window.showMessages=()=>{let m=JSON.parse(localStorage.getItem('taya_messages')||'[]');if(!m.length){showModal('📩 Messages','<small>Aucun</small>');return;}let h=m.map(x=>`<div style="background:#1a1a1a;border:1px solid #333;border-radius:14px;padding:14px;margin:10px 0"><b>👤 ${x.name}</b> <small>${x.date}</small><div style="color:#00ff88">${x.phone}</div><div style="background:#0a0a0a;padding:10px;border-radius:8px;border-left:3px solid #00ff88">${x.message}</div></div>`).join('');showModal('📩 Messages ('+m.length+')',`<div style="max-height:60vh;overflow:auto">${h}</div>`);}
+window.logout=async()=>{try{await supabaseClient.auth.signOut();}catch(e){} localStorage.removeItem('taya_user');location.reload();}
+window.startVoice=()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert("Chrome requis");return;}let r=new SR();r.lang="fr-FR";$('inputEl').placeholder="🎤 J'écoute...";r.onresult=e=>{$('inputEl').value=e.results[0][0].transcript;};r.onend=()=>{$('inputEl').placeholder="Pose n'importe quelle question...";};r.start();}
+window.speakText=t=>{speechSynthesis.cancel();let s=new SpeechSynthesisUtterance(t.replace(/[*#`_]/g,'').slice(0,1000));s.lang="fr-FR";speechSynthesis.speak(s);}
+window.copyAnswer=t=>{navigator.clipboard.writeText(t);alert("✅ Copié");}
+window.handleFile=i=>{let f=i.files[0];if(!f)return;if(f.type.startsWith("image/")){let rd=new FileReader();rd.onload=()=>{add("📸 "+f.name,"user");let b=add("","bot");b.innerHTML=`<img src="${rd.result}" style="max-width:100%;border-radius:12px"><br>📸 Reçu !`;};rd.readAsDataURL(f);}else{add("📎 "+f.name,"user");}i.value="";}
+function isBad(t){if(!t)return true;let l=t.toLowerCase();return l.includes('free limit')||l.includes('unlimited replies')||l.includes('pollen')||l.includes('status":404')||l.includes('not_found')||l.includes("isn't on the classic")||t.trim().startsWith('{"status"');}
+async function tryRealAI(q){
+  const sys=`Tu es TAYA V1.0.3 by MARUCE. Tu réponds direct en français, chaleureux, tu appelles l'utilisateur ${user.name}. Sans mentionner limite.`;
   try{
-   await api("/api/contact",{
-    method:"POST",
-    body:JSON.stringify({message})
-   });
-   $("contactResult").className="success";
-   $("contactResult").textContent="Message envoyé à Maruce.";
-   $("contactMessage").value="";
-  }catch(e){
-   $("contactResult").className="error";
-   $("contactResult").textContent=e.message;
-  }
- };
-};
-
-$("navAdmin").onclick=async()=>{
- closeDrawer();
- try{
-  const data=await api("/api/admin/dashboard");
-  openModal("Administration TAYA IA",`
-   <div class="stat-grid">
-    <div class="stat"><strong>${data.totalUsers}</strong><span>Inscrits</span></div>
-    <div class="stat"><strong>${data.totalMessages}</strong><span>Messages</span></div>
-    <div class="stat"><strong>${data.totalContacts}</strong><span>Contacts</span></div>
-   </div>
-   <div class="section"><h2>Utilisateurs</h2><div id="adminUsers"></div></div>
-   <div class="section"><h2>Messages à Maruce</h2><div id="adminContacts"></div></div>
-   <div class="section"><h2>Conversations IA</h2><div id="adminMessages"></div></div>
-  `);
-
-  const renderRows=(id,items,fields)=>{
-   const root=$(id);
-   if(!items?.length){
-    root.textContent="Aucun élément.";
-    return;
-   }
-   items.forEach(item=>{
-    const row=document.createElement("div");
-    row.className="list-item";
-    const text=document.createElement("span");
-    text.textContent=fields.map(f=>item[f]||"").join(" — ");
-    row.appendChild(text);
-    root.appendChild(row);
-   });
-  };
-
-  renderRows("adminUsers",data.users,["full_name","phone"]);
-  renderRows("adminContacts",data.contacts,["message"]);
-  renderRows("adminMessages",data.messages,["role","message"]);
- }catch(e){
-  openModal("Administration",`
-   <p class="error">${escapeHTML(e.message)}</p>
-   <p class="subtitle">Connecte-toi avec un compte administrateur autorisé.</p>
-  `);
+    let st=await fetch('https://duckduckgo.com/duckchat/v1/status',{headers:{'x-vqd-accept':'1'}});
+    let vqd=st.headers.get('x-vqd-4')||st.headers.get('x-vqd-3');
+    if(vqd){
+      let ch=await fetch('https://duckduckgo.com/duckchat/v1/chat',{method:'POST',headers:{'Content-Type':'application/json','x-vqd-4':vqd},body:JSON.stringify({model:'gpt-4o-mini',messages:[{role:'system',content:sys},...chatHistory.slice(-6),{role:'user',content:q}]})});
+      if(ch.ok){let txt=await ch.text();let lines=txt.split('\n').filter(l=>l.startsWith('data: '));let full='';for(let l of lines){try{let j=JSON.parse(l.slice(6));if(j.message)full+=j.message;}catch{}}if(full&&!isBad(full)&&full.length>20)return full;}
+    }
+  }catch(e){}
+  try{
+    let r=await fetch('https://text.pollinations.ai/openai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'openai',messages:[{role:'system',content:sys},{role:'user',content:q}]})});
+    if(r.ok){let j=await r.json();let t=j?.choices?.[0]?.message?.content;if(t&&!isBad(t)&&t.length>20)return t;}
+  }catch(e){}
+  return null;
+}
+function localKB(q){let l=q.toLowerCase(),n=user.name;if(l.includes('ça va')||l.includes('ca va'))return `Ça va super bien ${n} ! 😎💚 Et toi ?`;if(l.includes('tu fais quoi'))return `Je suis là ${n} ! 🚀 Prête à tout : code, business, études... Dis-moi ton projet !`;return `Salut ${n} ! Je t'écoute pour "${q}" 👑 Dis-moi plus et je te réponds pro !`;}
+async function askAI(question, botDiv){
+ if(isGenerating)return;isGenerating=true;$('sendBtn').disabled=true;
+ chatHistory.push({role:'user',content:question});
+ let low=question.toLowerCase();
+ if(low.includes('génère une image')||low.includes('image:')){
+   botDiv.innerHTML='<div class="typing"><span></span><span></span><span></span></div>';
+   let clean=question.replace(/génère une image\s*:?\s*/i,'').trim()||'cyberpunk';
+   let url=`https://image.pollinations.ai/prompt/${encodeURIComponent(clean)}?width=1024&height=1024&nologo=true&model=flux&seed=${Date.now()}`;
+   botDiv.innerHTML=`<img src="${url}" style="max-width:100%;border-radius:12px">`;
+   chatHistory.push({role:'assistant',content:`Image: ${clean}`});saveCurrent();isGenerating=false;$('sendBtn').disabled=false;return;
  }
-};
-
-$("voiceBtn").onclick=()=>{
- const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!SpeechRecognition){
-  alert("La dictée vocale n'est pas disponible sur ce navigateur.");
-  return;
- }
- const recognition=new SpeechRecognition();
- recognition.lang="fr-FR";
- recognition.interimResults=false;
- recognition.onresult=e=>{
-  $("prompt").value+=( $("prompt").value?" ":"")+e.results[0][0].transcript;
- };
- recognition.onerror=()=>alert("Impossible de reconnaître la voix.");
- recognition.start();
-};
-
-$("speakBtn").onclick=()=>{
- if(!lastAnswer)return;
- if(!("speechSynthesis" in window)){
-  alert("Lecture vocale non disponible.");
-  return;
- }
- speechSynthesis.cancel();
- const utterance=new SpeechSynthesisUtterance(lastAnswer);
- utterance.lang="fr-FR";
- speechSynthesis.speak(utterance);
-};
-
-checkSession();
-</script>
-</body>
-</html>
+ botDiv.innerHTML='<div class="typing"><span></span><span></span><span></span></div>';
+ let real=await tryRealAI(question);
+ let finalText=real||localKB(question);
+ if(isBad(finalText))finalText=localKB(question);
+ botDiv.innerHTML=DOMPurify.sanitize(marked.parse(finalText));
+ chatHistory.push({role:'assistant',content:finalText});saveCurrent();isGenerating=false;$('sendBtn').disabled=false;
+}
+window.send=async()=>{let t=$('inputEl').value.trim();if(!t)return;add(t,'user');$('inputEl').value='';let b=add('','bot');await askAI(t,b);}
+$('inputEl').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});
+</script></body></html>
