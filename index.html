@@ -1,4 +1,7 @@
-isGenerating = true;
+async function askAI(question, botDiv) {
+  if (isGenerating) return;
+
+  isGenerating = true;
   $('sendBtn').disabled = true;
 
   chatHistory.push({
