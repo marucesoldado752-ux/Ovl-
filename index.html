@@ -2,1576 +2,409 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#050807">
-<title>TAYA IA V18.0.0 - by Maruce 🇬🇳</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet">
-
+<title>TAYA IA V16 PROPRE | MARUCE SOLDADO 🇬🇳</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Anton&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
-:root {
-  --green:#00ff88;
-  --blue:#4488ff;
-  --bg:#050807;
-  --panel:#101613;
-  --text:#f3fff8;
-  --muted:#84958b;
-  --border:rgba(255,255,255,.09);
-}
-
-* {
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-body {
-  background:var(--bg);
-  color:var(--text);
-  font-family:Inter,Arial,sans-serif;
-  min-height:100vh;
-  overflow:hidden;
-}
-
-body::before {
-  content:"";
-  position:fixed;
-  inset:-50%;
-  z-index:-1;
-  background:
-    radial-gradient(circle at 20% 30%,rgba(0,255,136,.15),transparent 35%),
-    radial-gradient(circle at 80% 70%,rgba(68,136,255,.16),transparent 35%);
-  animation:backgroundMove 12s ease-in-out infinite alternate;
-}
-
-@keyframes backgroundMove {
-  from {transform:translate(-3%,-2%) rotate(0deg)}
-  to {transform:translate(3%,2%) rotate(8deg)}
-}
-
-button,input,textarea {
-  font:inherit;
-}
-
-button {
-  cursor:pointer;
-  border:0;
-}
-
-.hidden {
-  display:none!important;
-}
-
-#app {
-  height:100dvh;
-  display:flex;
-  flex-direction:column;
-  max-width:1100px;
-  margin:auto;
-  position:relative;
-}
-
-header {
-  min-height:65px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:10px 15px;
-  border-bottom:1px solid var(--border);
-  background:rgba(5,8,7,.88);
-  backdrop-filter:blur(15px);
-  z-index:5;
-}
-
-.brand {
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.logo {
-  width:40px;
-  height:40px;
-  border-radius:14px;
-  display:grid;
-  place-items:center;
-  font-size:20px;
-  background:linear-gradient(135deg,var(--green),var(--blue));
-  color:#00180c;
-  box-shadow:0 0 22px rgba(0,255,136,.25);
-  animation:float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  50% {transform:translateY(-4px)}
-}
-
-.brand-name {
-  font-family:Orbitron,sans-serif;
-  font-size:17px;
-  font-weight:800;
-}
-
-.version {
-  color:var(--green);
-  font-size:10px;
-  margin-left:5px;
-}
-
-.header-actions {
-  display:flex;
-  gap:8px;
-}
-
-.icon-btn {
-  width:39px;
-  height:39px;
-  border-radius:12px;
-  background:#17201a;
-  color:white;
-  font-size:18px;
-}
-
-main {
-  flex:1;
-  overflow-y:auto;
-  padding:18px;
-  padding-bottom:25px;
-}
-
-.screen {
-  max-width:760px;
-  margin:0 auto;
-}
-
-.card {
-  background:rgba(16,22,19,.94);
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:20px;
-  margin-bottom:15px;
-  box-shadow:0 12px 40px rgba(0,0,0,.18);
-}
-
-.hero {
-  text-align:center;
-  padding:35px 15px 25px;
-}
-
-.hero-logo {
-  width:90px;
-  height:90px;
-  margin:0 auto 18px;
-  display:grid;
-  place-items:center;
-  border-radius:30px;
-  font-size:42px;
-  background:linear-gradient(135deg,var(--green),var(--blue));
-  color:#00180c;
-  box-shadow:0 0 45px rgba(0,255,136,.2);
-  animation:float 3s infinite;
-}
-
-.hero h1 {
-  font-family:Orbitron,sans-serif;
-  font-size:27px;
-  margin-bottom:10px;
-}
-
-.gradient {
-  background:linear-gradient(90deg,var(--green),var(--blue));
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-}
-
-.hero p {
-  color:var(--muted);
-  line-height:1.7;
-  font-size:13px;
-}
-
-.creator {
-  margin-top:13px;
-  font-size:12px;
-  color:var(--green);
-  font-weight:700;
-}
-
-.field {
-  margin-bottom:13px;
-}
-
-.field label {
-  display:block;
-  font-size:12px;
-  color:#a9b9ae;
-  margin-bottom:7px;
-}
-
-.field input,.field textarea {
-  width:100%;
-  padding:14px;
-  border-radius:12px;
-  border:1px solid var(--border);
-  background:#080e0a;
-  color:white;
-  outline:none;
-}
-
-.field input:focus,.field textarea:focus {
-  border-color:var(--green);
-}
-
-.primary {
-  width:100%;
-  padding:15px;
-  border-radius:13px;
-  background:linear-gradient(100deg,var(--green),#69b8ff);
-  color:#00180c;
-  font-weight:800;
-  margin-top:7px;
-}
-
-.primary:disabled {
-  opacity:.5;
-  cursor:not-allowed;
-}
-
-.secondary {
-  width:100%;
-  padding:13px;
-  border-radius:12px;
-  background:#1a251e;
-  color:var(--green);
-  font-weight:700;
-  margin-top:10px;
-}
-
-.notice {
-  padding:13px;
-  border-radius:12px;
-  background:rgba(0,255,136,.08);
-  border:1px solid rgba(0,255,136,.2);
-  color:#b8ffda;
-  font-size:12px;
-  line-height:1.6;
-  margin:12px 0;
-  overflow-wrap:anywhere;
-}
-
-.error {
-  color:#ff8e8e;
-  background:rgba(255,50,50,.08);
-  border-color:rgba(255,50,50,.2);
-}
-
-.home-title {
-  font-size:21px;
-  margin-bottom:10px;
-}
-
-.home-sub {
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.6;
-}
-
-.feature-grid {
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-  margin-top:18px;
-}
-
-.feature {
-  background:#121b15;
-  border:1px solid var(--border);
-  border-radius:15px;
-  padding:15px;
-  text-align:left;
-  color:white;
-}
-
-.feature span {
-  display:block;
-  font-size:23px;
-  margin-bottom:9px;
-}
-
-.feature strong {
-  font-size:12px;
-}
-
-.feature small {
-  display:block;
-  color:var(--muted);
-  font-size:10px;
-  margin-top:5px;
-}
-
-#chatScreen {
-  height:100%;
-  display:flex;
-  flex-direction:column;
-}
-
-.chat-heading {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:12px;
-}
-
-.chat-heading h2 {
-  font-size:17px;
-}
-
-#messages {
-  flex:1;
-  overflow-y:auto;
-  padding:5px 2px 15px;
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-  min-height:150px;
-}
-
-.message {
-  max-width:90%;
-  padding:13px 15px;
-  border-radius:17px;
-  font-size:13px;
-  line-height:1.7;
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
-}
-
-.message.user {
-  align-self:flex-end;
-  background:linear-gradient(120deg,#087b4b,#145e9e);
-  border-bottom-right-radius:5px;
-}
-
-.message.assistant {
-  align-self:flex-start;
-  background:#151e18;
-  border:1px solid var(--border);
-  border-bottom-left-radius:5px;
-}
-
-.message .who {
-  font-size:10px;
-  color:var(--green);
-  font-weight:800;
-  margin-bottom:6px;
-}
-
-.typing {
-  color:var(--green);
-  font-size:12px;
-  padding:10px;
-}
-
-.composer {
-  border:1px solid var(--border);
-  background:#111a14;
-  padding:9px;
-  border-radius:18px;
-  display:flex;
-  align-items:flex-end;
-  gap:7px;
-  margin-top:5px;
-}
-
-.composer textarea {
-  flex:1;
-  min-width:0;
-  max-height:120px;
-  resize:none;
-  border:0;
-  outline:0;
-  background:transparent;
-  color:white;
-  padding:9px 4px;
-  font-size:13px;
-}
-
-.composer button {
-  width:39px;
-  height:39px;
-  border-radius:12px;
-  background:#223027;
-  color:white;
-  font-size:17px;
-  flex-shrink:0;
-}
-
-.composer button.send {
-  background:linear-gradient(135deg,var(--green),var(--blue));
-  color:#00180c;
-  font-weight:900;
-}
-
-.composer button.recording {
-  background:#a92727;
-}
-
-.chat-note {
-  text-align:center;
-  color:#718078;
-  font-size:10px;
-  margin-top:8px;
-}
-
-.panel-title {
-  font-size:18px;
-  margin-bottom:15px;
-}
-
-.item {
-  background:#111a14;
-  border:1px solid var(--border);
-  padding:13px;
-  border-radius:12px;
-  margin-bottom:9px;
-  font-size:12px;
-  overflow-wrap:anywhere;
-}
-
-.item small {
-  color:var(--muted);
-  display:block;
-  margin-top:5px;
-}
-
-.menu {
-  position:fixed;
-  inset:0;
-  z-index:20;
-  background:rgba(0,0,0,.65);
-}
-
-.drawer {
-  width:min(300px,85vw);
-  height:100%;
-  padding:20px;
-  background:#0c130e;
-  border-right:1px solid var(--border);
-  overflow-y:auto;
-}
-
-.drawer h2 {
-  font-family:Orbitron,sans-serif;
-  font-size:17px;
-  margin:15px 0 25px;
-}
-
-.drawer button {
-  width:100%;
-  padding:14px;
-  margin-bottom:8px;
-  border-radius:12px;
-  background:#152019;
-  color:white;
-  text-align:left;
-}
-
-.drawer button:hover {
-  color:var(--green);
-}
-
-#toast {
-  position:fixed;
-  z-index:50;
-  bottom:25px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#17231b;
-  border:1px solid var(--green);
-  color:white;
-  border-radius:12px;
-  padding:12px 18px;
-  font-size:12px;
-  max-width:90%;
-  text-align:center;
-}
-
-footer {
-  text-align:center;
-  padding:10px;
-  color:#718078;
-  font-size:10px;
-}
-
-@media(max-width:500px) {
-  main {padding:12px}
-  .card {padding:16px}
-  .hero h1 {font-size:23px}
-  .message {max-width:95%}
-}
+:root{--bg:#050807;--panel:#0b1210;--panel2:#111c16;--green:#00ff88;--blue:#4488ff;--text:#f4fff9;--muted:#899b90;--border:rgba(255,255,255,.09)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+button,input,textarea,select{font-family:inherit}button{cursor:pointer}.hidden{display:none!important}
+#main{display:none;min-height:100vh}
+.topbar{height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-bottom:1px solid var(--border);background:#050807;position:sticky;top:0;z-index:20}
+.brand{font-family:Anton,sans-serif;font-size:24px;background:linear-gradient(90deg,var(--green),var(--blue));color:transparent;background-clip:text}
+.icon-btn{border:1px solid var(--border);background:var(--panel);color:white;min-width:39px;height:39px;border-radius:11px;font-size:17px;position:relative;padding:0 7px}
+.badge{position:absolute;top:-6px;right:-6px;background:#ff3344;color:white;font-size:10px;min-width:19px;height:19px;border-radius:10px;display:grid;place-items:center;padding:0 4px;font-weight:800}
+.layout{display:flex;min-height:calc(100vh - 60px)}.sidebar{width:255px;flex-shrink:0;border-right:1px solid var(--border);padding:15px;background:#07100b}
+.side-button{width:100%;text-align:left;border:1px solid var(--border);background:var(--panel);color:white;padding:13px;border-radius:11px;margin-bottom:9px;font-size:13px}
+.side-title{color:var(--muted);font-size:10px;font-weight:800;margin:20px 0 10px}
+.history-item{padding:11px;border-radius:9px;font-size:12px;color:#b8c8bf;cursor:pointer;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;margin-bottom:5px}
+.user-box{border-top:1px solid var(--border);padding-top:12px;margin-top:15px;font-size:12px;color:var(--muted)}
+.workspace{flex:1;min-width:0;display:flex;flex-direction:column;height:calc(100vh - 60px)}
+.welcome{margin:auto;text-align:center;padding:25px 16px;max-width:650px}.avatar{width:80px;height:80px;margin:0 auto 15px;border-radius:25px;display:grid;place-items:center;font-size:40px;background:linear-gradient(140deg,#063d27,#142b60)}
+.welcome h1{font-size:28px;margin-bottom:8px}.welcome h1 span{color:var(--green)}.welcome p{color:var(--muted);font-size:13px;line-height:1.7}
+.messages{flex:1;overflow-y:auto;padding:18px max(14px,calc((100% - 850px)/2))}.message{display:flex;gap:10px;margin-bottom:20px}.message.user{flex-direction:row-reverse}.message-avatar{width:32px;height:32px;min-width:32px;border-radius:11px;display:grid;place-items:center;background:var(--panel2)}.message-content{max-width:85%;padding:12px 14px;border-radius:14px;background:var(--panel);border:1px solid var(--border);font-size:14px;line-height:1.6;overflow-wrap:anywhere}.message.user .message-content{background:#10271c}
+.message-content pre{background:#030705;padding:12px;border-radius:9px;overflow-x:auto}.typing{display:flex;gap:5px;padding:6px}.typing span{width:7px;height:7px;border-radius:50%;background:var(--green);animation:t .8s infinite alternate}@keyframes t{to{opacity:.2;transform:translateY(-4px)}}
+.composer-area{padding:12px 14px 16px}.composer{max-width:850px;margin:auto;border:1px solid var(--border);background:#0c1510;border-radius:16px;padding:10px;display:flex;gap:8px;align-items:flex-end}.composer textarea{flex:1;min-height:45px;max-height:150px;resize:none;border:0;outline:0;background:transparent;color:white;font-size:14px;padding:10px}.send-btn{width:44px;height:44px;border:0;border-radius:12px;background:linear-gradient(120deg,var(--green),var(--blue));font-size:18px;flex-shrink:0}
+.disclaimer{text-align:center;color:#64746b;font-size:10px;margin-top:8px}
+.page{padding:16px;max-width:850px;margin:auto;width:100%;flex:1;overflow-y:auto}
+.top-back{display:flex;align-items:center;gap:10px;margin-bottom:16px}.top-back h2{font-size:18px}
+.back-btn{width:40px;height:40px;border-radius:11px;border:1px solid var(--border);background:var(--panel);color:white;font-size:18px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:15px;margin-bottom:10px;font-size:13px}.card small{color:var(--muted)}
+.big-num{font-size:28px;font-weight:800;color:var(--green)}.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.input{width:100%;padding:14px;border-radius:11px;border:1px solid var(--border);background:#080e0b;color:white;outline:none;margin-bottom:12px}
+.primary{width:100%;padding:15px;border:0;border-radius:12px;background:linear-gradient(100deg,var(--green),var(--blue));color:#00150c;font-weight:800;font-size:14px}
+.green-btn{display:block;text-align:center;text-decoration:none;padding:14px;border-radius:12px;background:#25D366;color:#00150c;font-weight:800;margin-bottom:10px}
+.blue-btn{display:block;text-align:center;text-decoration:none;padding:14px;border-radius:12px;background:#4488ff;color:white;font-weight:800;margin-bottom:10px}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:100;display:flex;align-items:center;justify-content:center;padding:18px}
+.auth-card{width:100%;max-width:420px;padding:26px 20px;border:1px solid var(--border);border-radius:22px;background:#0a120e}
+.logo{font-family:Anton,sans-serif;font-size:40px;text-align:center;background:linear-gradient(90deg,var(--green),var(--blue));color:transparent;background-clip:text}
+.logo-sub{text-align:center;color:var(--muted);font-size:12px;margin:8px 0 20px}
+.field{margin-bottom:13px}.field label{display:block;font-size:12px;color:#b4c7bc;margin-bottom:6px}
+@media(max-width:760px){.sidebar{position:fixed;left:-270px;top:60px;bottom:0;z-index:30;transition:.25s}.sidebar.open{left:0}.workspace{height:calc(100vh - 60px)}}
+@media(min-width:761px){#menuBtn{display:none}}
 </style>
 </head>
-
 <body>
 
-<div id="app">
-
-<header>
-  <div class="brand">
-    <button class="icon-btn" onclick="openMenu()">☰</button>
-    <div class="logo">🤖</div>
-    <div>
-      <div class="brand-name">TAYA IA <span class="version">V18</span></div>
-      <div style="font-size:9px;color:#829187">Intelligence artificielle 🇬🇳</div>
-    </div>
-  </div>
-
-  <div class="header-actions">
-    <button class="icon-btn" onclick="showHome()" title="Accueil">⌂</button>
-    <button class="icon-btn" onclick="newChat()" title="Nouveau chat">＋</button>
-  </div>
-</header>
-
-<main>
-
-<!-- CONNEXION -->
-
-<section id="authScreen" class="screen">
-
-  <div class="hero">
-    <div class="hero-logo">🤖</div>
-    <h1 class="gradient">TAYA IA</h1>
-    <p>Ton assistant intelligent<br>Rapide • Simple • Disponible</p>
-    <div class="creator">BY MARUCE SOLDADO 👑 🇬🇳</div>
-  </div>
-
-  <div class="card">
-
-    <div id="authMessage"></div>
-
-    <div class="field">
-      <label>Ton nom complet</label>
-      <input
-        id="accessName"
-        placeholder="Entre ton nom complet"
-        autocomplete="name"
-        maxlength="80"
-      >
-    </div>
-
-    <div class="field">
-      <label>Ton numéro de téléphone</label>
-      <input
-        id="accessPhone"
-        type="tel"
-        placeholder="+224XXXXXXXXX"
-        autocomplete="tel"
-      >
-    </div>
-
-    <button
-      id="accessButton"
-      class="primary"
-      onclick="directAccess()"
-    >
-      SE CONNECTER ⚡
-    </button>
-
-    <p class="home-sub" style="margin-top:14px;text-align:center">
-      Simple • Rapide • Sans mot de passe 🇬🇳
-    </p>
-
-  </div>
-</section>
-
-<!-- ACCUEIL -->
-
-<section id="homeScreen" class="screen hidden">
-
-  <div class="card hero">
-    <div class="hero-logo">🤖</div>
-    <h1>Bienvenue sur <span class="gradient">TAYA IA</span></h1>
-    <p id="welcomeName">Ton assistant intelligent t'attend</p>
-    <div class="creator">BY MARUCE SOLDADO 👑 🇬🇳</div>
-
-    <button
-      class="primary"
-      style="margin-top:22px"
-      onclick="showChat()"
-    >
-      COMMENCER UNE DISCUSSION ⚡
-    </button>
-  </div>
-
-  <div class="card">
-    <h2 class="home-title">Que veux-tu faire ?</h2>
-    <p class="home-sub">Pose tes questions et travaille avec ton assistant.</p>
-
-    <div class="feature-grid">
-
-      <button class="feature" onclick="showChat()">
-        <span>💬</span>
-        <strong>Discuter avec TAYA</strong>
-        <small>Pose tes questions</small>
-      </button>
-
-      <button class="feature" onclick="showHistory()">
-        <span>📚</span>
-        <strong>Historique</strong>
-        <small>Retrouve tes messages</small>
-      </button>
-
-      <button class="feature" onclick="showMemory()">
-        <span>🧠</span>
-        <strong>Ma mémoire</strong>
-        <small>Informations personnelles</small>
-      </button>
-
-      <button class="feature" onclick="showContact()">
-        <span>✉️</span>
-        <strong>Contacter Maruce</strong>
-        <small>Envoyer un message</small>
-      </button>
-
-    </div>
-  </div>
-
-  <div id="adminShortcut" class="card hidden">
-    <h2 class="home-title">Administration 👑</h2>
-    <button class="secondary" onclick="showAdmin()">
-      Ouvrir le panneau administrateur
-    </button>
-  </div>
-
-</section>
-
-<!-- CHAT -->
-
-<section id="chatScreen" class="screen hidden">
-
-  <div class="chat-heading">
-    <h2>🤖 TAYA IA</h2>
-    <button
-      class="secondary"
-      style="width:auto;margin:0;padding:9px 13px"
-      onclick="newChat()"
-    >
-      ＋ Nouveau
-    </button>
-  </div>
-
-  <div id="messages">
-    <div class="message assistant">
-      <div class="who">TAYA IA</div>
-      Bonjour ! Je suis TAYA IA. Comment puis-je t'aider ?
-    </div>
-  </div>
-
-  <div id="typing" class="typing hidden">
-    TAYA réfléchit...
-  </div>
-
-  <div class="composer">
-    <button id="micButton" onclick="toggleVoice()" title="Microphone">🎤</button>
-
-    <textarea
-      id="chatInput"
-      rows="1"
-      placeholder="Pose ta question à TAYA..."
-    ></textarea>
-
-    <button class="send" onclick="sendMessage()">➤</button>
-  </div>
-
-  <div class="chat-note">
-    Vérifie les informations importantes. TAYA peut parfois se tromper.
-  </div>
-
-</section>
-
-<!-- HISTORIQUE -->
-
-<section id="historyScreen" class="screen hidden">
-  <div class="card">
-    <h2 class="panel-title">📚 Historique</h2>
-    <div id="historyList">Chargement...</div>
-    <button class="secondary" onclick="showHome()">Retour à l'accueil</button>
-  </div>
-</section>
-
-<!-- MÉMOIRE -->
-
-<section id="memoryScreen" class="screen hidden">
-  <div class="card">
-    <h2 class="panel-title">🧠 Ma mémoire personnelle</h2>
-
-    <p class="home-sub">
-      Ajoute des informations que TAYA pourra utiliser comme contexte dans tes prochaines discussions.
-    </p>
-
-    <div class="field" style="margin-top:17px">
-      <label>Informations à mémoriser</label>
-      <textarea
-        id="memoryInput"
-        rows="8"
-        placeholder="Mes préférences, mes projets, mes objectifs..."
-      ></textarea>
-    </div>
-
-    <button class="primary" onclick="saveMemory()">
-      ENREGISTRER LA MÉMOIRE
-    </button>
-
-    <button class="secondary" onclick="showHome()">Retour</button>
-  </div>
-</section>
-
-<!-- CONTACT -->
-
-<section id="contactScreen" class="screen hidden">
-  <div class="card">
-    <h2 class="panel-title">✉️ Écrire à Maruce</h2>
-
-    <p class="home-sub">
-      Envoie directement ton message au créateur de TAYA IA.
-    </p>
-
-    <div class="field" style="margin-top:18px">
-      <label>Ton message</label>
-      <textarea
-        id="contactMessage"
-        rows="6"
-        placeholder="Écris ton message ici..."
-      ></textarea>
-    </div>
-
-    <button class="primary" onclick="sendContact()">
-      ENVOYER LE MESSAGE
-    </button>
-
-    <button class="secondary" onclick="showHome()">Retour</button>
-  </div>
-</section>
-
-<!-- ADMINISTRATION -->
-
-<section id="adminScreen" class="screen hidden">
-  <div class="card">
-    <h2 class="panel-title">👑 Administration TAYA IA</h2>
-
-    <button class="secondary" onclick="loadAdminUsers()">
-      👥 Voir les inscrits
-    </button>
-
-    <button class="secondary" onclick="loadAdminMessages()">
-      ✉️ Messages reçus
-    </button>
-
-    <div id="adminResults" style="margin-top:18px"></div>
-
-    <button class="secondary" onclick="showHome()">Retour</button>
-  </div>
-</section>
-
-</main>
-
-<footer>TAYA IA V18.0.0 • BY MARUCE SOLDADO 🇬🇳</footer>
-
-</div>
-
-<!-- MENU -->
-
-<div id="menu" class="menu hidden" onclick="closeMenu(event)">
-  <div class="drawer" onclick="event.stopPropagation()">
-
-    <button onclick="hideMenu()">✕ Fermer</button>
-
-    <h2 class="gradient">TAYA IA V18</h2>
-
-    <button onclick="showHome();hideMenu()">⌂ Accueil</button>
-
-    <button onclick="newChat();hideMenu()">＋ Nouveau chat</button>
-
-    <button onclick="showHistory();hideMenu()">📚 Historique</button>
-
-    <button onclick="showMemory();hideMenu()">🧠 Ma mémoire</button>
-
-    <button onclick="showContact();hideMenu()">✉️ Contacter Maruce</button>
-
-    <button
-      id="adminMenu"
-      class="hidden"
-      onclick="showAdmin();hideMenu()"
-    >
-      👑 Administration
-    </button>
-
-    <button onclick="logout()">↪ Déconnexion</button>
-
+<div id="registerOverlay" class="overlay">
+  <div class="auth-card">
+    <div class="logo">TAYA IA</div>
+    <div class="logo-sub">V16 • BY MARUCE SOLDADO 🇬🇳</div>
+    <p style="text-align:center;font-size:13px;color:var(--muted);margin-bottom:18px">Entre ton nom et ton numéro pour commencer</p>
+    <div class="field"><label>Ton nom complet</label><input id="regName" class="input" placeholder="Ex: Mamadou Diallo"></div>
+    <div class="field"><label>Ton numéro</label>
+    <div style="display:flex;gap:8px">
+    <select id="regCountryCode" class="input" style="width:135px;flex-shrink:0;padding:14px 6px">
+    <option value="+224">🇬🇳 +224 Guinée</option>
+    <option value="+223">🇲🇱 +223 Mali</option>
+    <option value="+221">🇸🇳 +221 Sénégal</option>
+    <option value="+225">🇨🇮 +225 Côte d'Ivoire</option>
+    <option value="+226">🇧🇫 +226 Burkina</option>
+    <option value="+227">🇳🇪 +227 Niger</option>
+    <option value="+228">🇹🇬 +228 Togo</option>
+    <option value="+229">🇧🇯 +229 Bénin</option>
+    <option value="+230">🇲🇺 +230 Maurice</option>
+    <option value="+231">🇱🇷 +231 Liberia</option>
+    <option value="+232">🇸🇱 +232 Sierra Leone</option>
+    <option value="+233">🇬🇭 +233 Ghana</option>
+    <option value="+234">🇳🇬 +234 Nigeria</option>
+    <option value="+235">🇹🇩 +235 Tchad</option>
+    <option value="+236">🇨🇫 +236 Centrafrique</option>
+    <option value="+237">🇨🇲 +237 Cameroun</option>
+    <option value="+238">🇨🇻 +238 Cap-Vert</option>
+    <option value="+239">🇸🇹 +239 Sao Tomé</option>
+    <option value="+240">🇬🇶 +240 Guinée Équat.</option>
+    <option value="+241">🇬🇦 +241 Gabon</option>
+    <option value="+242">🇨🇬 +242 Congo</option>
+    <option value="+243">🇨🇩 +243 Congo RDC</option>
+    <option value="+244">🇦🇴 +244 Angola</option>
+    <option value="+245">🇬🇼 +245 Guinée-Bissau</option>
+    <option value="+248">🇸🇨 +248 Seychelles</option>
+    <option value="+249">🇸🇩 +249 Soudan</option>
+    <option value="+250">🇷🇼 +250 Rwanda</option>
+    <option value="+251">🇪🇹 +251 Éthiopie</option>
+    <option value="+252">🇸🇴 +252 Somalie</option>
+    <option value="+253">🇩🇯 +253 Djibouti</option>
+    <option value="+254">🇰🇪 +254 Kenya</option>
+    <option value="+255">🇹🇿 +255 Tanzanie</option>
+    <option value="+256">🇺🇬 +256 Ouganda</option>
+    <option value="+257">🇧🇮 +257 Burundi</option>
+    <option value="+258">🇲🇿 +258 Mozambique</option>
+    <option value="+260">🇿🇲 +260 Zambie</option>
+    <option value="+261">🇲🇬 +261 Madagascar</option>
+    <option value="+262">🇷🇪 +262 Réunion</option>
+    <option value="+263">🇿🇼 +263 Zimbabwe</option>
+    <option value="+264">🇳🇦 +264 Namibie</option>
+    <option value="+265">🇲🇼 +265 Malawi</option>
+    <option value="+266">🇱🇸 +266 Lesotho</option>
+    <option value="+267">🇧🇼 +267 Botswana</option>
+    <option value="+268">🇸🇿 +268 Eswatini</option>
+    <option value="+269">🇰🇲 +269 Comores</option>
+    <option value="+27">🇿🇦 +27 Afrique du Sud</option>
+    <option value="+212">🇲🇦 +212 Maroc</option>
+    <option value="+213">🇩🇿 +213 Algérie</option>
+    <option value="+216">🇹🇳 +216 Tunisie</option>
+    <option value="+218">🇱🇾 +218 Libye</option>
+    <option value="+220">🇬🇲 +220 Gambie</option>
+    <option value="+222">🇲🇷 +222 Mauritanie</option>
+    <option value="+33">🇫🇷 +33 France</option>
+    <option value="+32">🇧🇪 +32 Belgique</option>
+    <option value="+34">🇪🇸 +34 Espagne</option>
+    <option value="+39">🇮🇹 +39 Italie</option>
+    <option value="+41">🇨🇭 +41 Suisse</option>
+    <option value="+44">🇬🇧 +44 Angleterre</option>
+    <option value="+49">🇩🇪 +49 Allemagne</option>
+    <option value="+31">🇳🇱 +31 Pays-Bas</option>
+    <option value="+351">🇵🇹 +351 Portugal</option>
+    <option value="+352">🇱🇺 +352 Luxembourg</option>
+    <option value="+353">🇮🇪 +353 Irlande</option>
+    <option value="+1">🇺🇸 +1 USA / Canada</option>
+    <option value="+52">🇲🇽 +52 Mexique</option>
+    <option value="+55">🇧🇷 +55 Brésil</option>
+    <option value="+54">🇦🇷 +54 Argentine</option>
+    <option value="+57">🇨🇴 +57 Colombie</option>
+    <option value="+56">🇨🇱 +56 Chili</option>
+    <option value="+58">🇻🇪 +58 Venezuela</option>
+    <option value="+51">🇵🇪 +51 Pérou</option>
+    <option value="+502">🇬🇹 +502 Guatemala</option>
+    <option value="+503">🇸🇻 +503 Salvador</option>
+    <option value="+504">🇭🇳 +504 Honduras</option>
+    <option value="+505">🇳🇮 +505 Nicaragua</option>
+    <option value="+506">🇨🇷 +506 Costa Rica</option>
+    <option value="+507">🇵🇦 +507 Panama</option>
+    <option value="+509">🇭🇹 +509 Haïti</option>
+    <option value="+7">🇷🇺 +7 Russie</option>
+    <option value="+90">🇹🇷 +90 Turquie</option>
+    <option value="+91">🇮🇳 +91 Inde</option>
+    <option value="+92">🇵🇰 +92 Pakistan</option>
+    <option value="+93">🇦🇫 +93 Afghanistan</option>
+    <option value="+94">🇱🇰 +94 Sri Lanka</option>
+    <option value="+20">🇪🇬 +20 Égypte</option>
+    <option value="+86">🇨🇳 +86 Chine</option>
+    <option value="+81">🇯🇵 +81 Japon</option>
+    <option value="+82">🇰🇷 +82 Corée du Sud</option>
+    <option value="+84">🇻🇳 +84 Vietnam</option>
+    <option value="+66">🇹🇭 +66 Thaïlande</option>
+    <option value="+65">🇸🇬 +65 Singapour</option>
+    <option value="+60">🇲🇾 +60 Malaisie</option>
+    <option value="+62">🇮🇩 +62 Indonésie</option>
+    <option value="+63">🇵🇭 +63 Philippines</option>
+    <option value="+61">🇦🇺 +61 Australie</option>
+    <option value="+64">🇳🇿 +64 Nlle-Zélande</option>
+    <option value="+971">🇦🇪 +971 Émirats</option>
+    <option value="+966">🇸🇦 +966 Arabie Saoudite</option>
+    <option value="+965">🇰🇼 +965 Koweït</option>
+    <option value="+974">🇶🇦 +974 Qatar</option>
+    <option value="+973">🇧🇭 +973 Bahreïn</option>
+    <option value="+968">🇴🇲 +968 Oman</option>
+    <option value="+962">🇯🇴 +962 Jordanie</option>
+    <option value="+961">🇱🇧 +961 Liban</option>
+    <option value="+963">🇸🇾 +963 Syrie</option>
+    <option value="+964">🇮🇶 +964 Irak</option>
+    <option value="+98">🇮🇷 +98 Iran</option>
+    <option value="+972">🇮🇱 +972 Israël</option>
+    <option value="+380">🇺🇦 +380 Ukraine</option>
+    <option value="+48">🇵🇱 +48 Pologne</option>
+    <option value="+40">🇷🇴 +40 Roumanie</option>
+    <option value="+36">🇭🇺 +36 Hongrie</option>
+    <option value="+420">🇨🇿 +420 Tchéquie</option>
+    <option value="+421">🇸🇰 +421 Slovaquie</option>
+    <option value="+46">🇸🇪 +46 Suède</option>
+    <option value="+47">🇳🇴 +47 Norvège</option>
+    <option value="+45">🇩🇰 +45 Danemark</option>
+    <option value="+358">🇫🇮 +358 Finlande</option>
+    <option value="+30">🇬🇷 +30 Grèce</option>
+    <option value="+43">🇦🇹 +43 Autriche</option>
+    <option value="+386">🇸🇮 +386 Slovénie</option>
+    <option value="+385">🇭🇷 +385 Croatie</option>
+    <option value="+387">🇧🇦 +387 Bosnie</option>
+    <option value="+381">🇷🇸 +381 Serbie</option>
+    <option value="+355">🇦🇱 +355 Albanie</option>
+    <option value="+359">🇧🇬 +359 Bulgarie</option>
+    </select>
+    <input id="regPhone" class="input" type="tel" placeholder="622 00 00 00" style="flex:1;min-width:0">
+    </div></div>
+    <button class="primary" onclick="doRegister()">SE CONNECTER ⚡</button>
+    <p style="text-align:center;font-size:11px;color:#64746b;margin-top:12px">1 numéro = 1 seul compte. Si tu es déjà inscrit, tu seras reconnecté.</p>
   </div>
 </div>
 
-<div id="toast" class="hidden"></div>
+<div id="adminLoginOverlay" class="overlay hidden">
+  <div class="auth-card">
+    <div style="text-align:center;font-size:40px">👑</div>
+    <div class="logo-sub" style="font-size:14px;color:white;font-weight:800">ZONE ADMIN - MARUCE SEUL</div>
+    <p style="text-align:center;font-size:12px;color:var(--muted);margin-bottom:18px">Seul Maruce peut entrer ici</p>
+    <div class="field"><label>Mot de passe Admin</label><input id="adminPassInput" class="input" type="password" placeholder="••••••" inputmode="numeric"></div>
+    <button class="primary" onclick="checkAdminPass()">DÉBLOQUER 👑</button>
+    <button class="side-button" style="margin-top:10px;text-align:center" onclick="closeAdminLogin()">⬅ Retour</button>
+    <p id="adminPassError" style="text-align:center;color:#ff7777;font-size:12px;margin-top:10px"></p>
+  </div>
+</div>
+
+<section id="main">
+  <header class="topbar">
+    <div style="display:flex;align-items:center;gap:10px">
+      <button id="menuBtn" class="icon-btn" onclick="toggleSidebar()">☰</button>
+      <div class="brand">TAYA 🤖IA</div>
+    </div>
+    <div style="display:flex;gap:7px">
+      <button class="icon-btn" onclick="openAdmin()">👑 <span id="adminBadge" class="badge hidden">0</span></button>
+      <button class="icon-btn" onclick="newChat()">＋</button>
+      <button class="icon-btn" onclick="showHome()">⌂</button>
+    </div>
+  </header>
+  <div class="layout">
+    <aside id="sidebar" class="sidebar">
+      <button class="side-button" onclick="showHome()">🏠 Accueil</button>
+      <button class="side-button" onclick="newChat()">✚ Nouvelle discussion</button>
+      <button class="side-button" onclick="openContact()">📞 Contacter Maruce</button>
+      <button class="side-button" onclick="openLeaveMessage()">✉️ Laisser un message à Maruce</button>
+      <button class="side-button" onclick="openAdmin()">👑 Administration</button>
+      <div class="side-title">HISTORIQUE</div>
+      <div id="history"></div>
+      <div class="user-box"><div id="userName">Invité</div><div id="userPhone"></div><br><button class="side-button" onclick="logout()">🚪 Changer de compte</button></div>
+    </aside>
+    <main class="workspace">
+      <div id="welcome" class="welcome">
+        <div class="avatar">🤖</div>
+        <h1>Bienvenue <span id="welcomeName">sur TAYA IA</span></h1>
+        <p>Ton assistant intelligent<br>Développé par MARUCE SOLDADO 👑🇬🇳</p>
+      </div>
+      <div id="messages" class="messages hidden"></div>
+      <div id="contactPage" class="page hidden">
+        <div class="top-back"><button class="back-btn" onclick="goBack()">⬅</button><h2>📞 Contacter Maruce</h2></div>
+        <div class="card"><b>MARUCE SOLDADO 👑🇬🇳</b><br><small>Créateur de TAYA IA - Conakry</small></div>
+        <a class="green-btn" href="https://wa.me/224663401157?text=Bonjour%20Maruce%2C%20je%20viens%20de%20TAYA%20IA" target="_blank">💬 WhatsApp : +224 663 40 11 57</a>
+        <a class="blue-btn" href="tel:+224612768878">📞 Appeler : +224 612 76 88 78</a>
+        <button class="primary" onclick="openLeaveMessage()">✉️ Laisser un message dans l'app</button>
+      </div>
+      <div id="leaveMsgPage" class="page hidden">
+        <div class="top-back"><button class="back-btn" onclick="goBack()">⬅</button><h2>✉️ Laisser un message</h2></div>
+        <div class="card">Ton message sera vu uniquement par <b>Maruce</b>.</div>
+        <textarea id="msgText" class="input" rows="5" style="resize:none" placeholder="Écris ton message à Maruce..."></textarea>
+        <button class="primary" onclick="sendMessageToMaruce()">ENVOYER À MARUCE 📩</button>
+        <p id="msgSent" style="text-align:center;color:var(--green);margin-top:12px;font-size:13px"></p>
+      </div>
+      <div id="adminPage" class="page hidden">
+        <div class="top-back"><button class="back-btn" onclick="goBack()">⬅</button><h2>👑 Administration - Maruce</h2></div>
+        <div class="stat-grid">
+          <div class="card" style="text-align:center"><div class="big-num" id="statUsers">0</div><small>Personnes</small></div>
+          <div class="card" style="text-align:center"><div class="big-num" id="statMsgs">0</div><small>Messages reçus</small></div>
+        </div>
+        <h3 style="margin:10px 0">👥 Personnes</h3><div id="adminUsers"></div>
+        <h3 style="margin:16px 0 10px">✉️ Messages reçus</h3><div id="adminMsgs"></div>
+        <button class="side-button" style="text-align:center;color:#ff7777" onclick="lockAdmin()">🔒 Verrouiller Admin</button>
+      </div>
+      <div id="composerArea" class="composer-area">
+        <div class="composer">
+          <textarea id="question" rows="1" placeholder="Pose n'importe quelle question à TAYA..."></textarea>
+          <button id="sendBtn" class="send-btn" onclick="sendMessage()">➤</button>
+        </div>
+        <input id="fileInput" type="file" accept=".txt,.pdf,.md,.csv,image/*" hidden onchange="handleFile(this)">
+        <div class="disclaimer">TAYA IA peut parfois se tromper.</div>
+      </div>
+    </main>
+  </div>
+</section>
 
 <script>
-
-/* CONFIGURATION */
-
-const API_URL = "https://taya-ai-api.onrender.com";
-
-const TOKEN_KEY = "taya_v17_token";
-
-let token =
-  localStorage.getItem("taya_v18_token") ||
-  localStorage.getItem(TOKEN_KEY) ||
-  "";
-
-let currentUser = null;
-let busy = false;
-let recognition = null;
-
-/* OUTILS */
-
-function $(id) {
-  return document.getElementById(id);
+"use strict";
+const API_URL="https://taya-ai-api.onrender.com";
+const $=id=>document.getElementById(id);
+const ADMIN_PASSWORD="526463";
+let currentUser=null, chatHistory=[], projects=[], currentProjectId=null, isGenerating=false, lastAnswer="";
+let allUsers=[]; let allMsgs=[]; let isAdminUnlocked = localStorage.getItem("taya_admin_unlocked")==="yes";
+// --- HISTORIQUE RETOUR GLOBAL FIX ---
+let navStack=["home"];
+function pushNav(p){ if(navStack[navStack.length-1]!==p) navStack.push(p); if(navStack.length>20) navStack.shift(); }
+function showPageOnly(p){
+  hideAllPagesRaw();
+  if(p==="home"){ $("welcome").classList.remove("hidden"); }
+  else if(p==="chat"){ $("messages").classList.remove("hidden"); }
+  else if(p==="contact"){ $("contactPage").classList.remove("hidden"); $("composerArea").classList.add("hidden"); }
+  else if(p==="leave"){ $("leaveMsgPage").classList.remove("hidden"); $("composerArea").classList.add("hidden"); }
+  else if(p==="admin"){ $("adminPage").classList.remove("hidden"); $("composerArea").classList.add("hidden"); renderAdmin(); }
 }
-
-function toast(message) {
-  const box = $("toast");
-
-  box.textContent = message;
-  box.classList.remove("hidden");
-
-  clearTimeout(window.toastTimer);
-
-  window.toastTimer = setTimeout(() => {
-    box.classList.add("hidden");
-  }, 3500);
+function goBack(){
+  closeSidebar();
+  if(navStack.length>1){ navStack.pop(); showPageOnly(navStack[navStack.length-1]); }
+  else { navStack=["home"]; showPageOnly("home"); }
 }
+try{ projects=JSON.parse(localStorage.getItem("taya_v13_projects")||"[]"); if(!Array.isArray(projects))projects=[]; }catch(e){projects=[]}
+try{ allUsers=JSON.parse(localStorage.getItem("taya_users")||"[]"); }catch(e){allUsers=[]}
+try{ allMsgs=JSON.parse(localStorage.getItem("taya_messages_maruce")||"[]"); }catch(e){allMsgs=[]}
+try{ currentUser=JSON.parse(localStorage.getItem("taya_current_user")||"null"); }catch(e){currentUser=null}
+if(window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-function showMessage(id, message, error = false) {
-  const box = $(id);
-
-  if (!box) return;
-
-  box.innerHTML = "";
-
-  if (!message) return;
-
-  const div = document.createElement("div");
-
-  div.className = "notice" + (error ? " error" : "");
-  div.textContent = message;
-
-  box.appendChild(div);
-}
-
-async function api(path, options = {}) {
-  const headers = {
-    "Content-Type":"application/json",
-    ...(options.headers || {})
-  };
-
-  if (token) {
-    headers.Authorization = "Bearer " + token;
-  }
-
-  const response = await fetch(API_URL + path, {
-    ...options,
-    headers
-  });
-
-  const data = await response.json().catch(() => ({
-    success:false,
-    error:"Réponse invalide du serveur."
-  }));
-
-  if (response.status === 401) {
-    token = "";
-
-    localStorage.removeItem("taya_v18_token");
-    localStorage.removeItem(TOKEN_KEY);
-  }
-
-  return {response, data};
-}
-
-function setToken(value) {
-  token = value;
-
-  localStorage.setItem("taya_v18_token", value);
-  localStorage.setItem(TOKEN_KEY, value);
-}
-
-function showScreen(id) {
-  document.querySelectorAll("main > section").forEach(section => {
-    section.classList.add("hidden");
-  });
-
-  $(id).classList.remove("hidden");
-}
-
-function saveUser(user) {
-  currentUser = user;
-
-  $("welcomeName").textContent =
-    "Salut " + (user.name || "utilisateur") + " !";
-
-  const admin = user.role === "admin";
-
-  $("adminShortcut").classList.toggle("hidden", !admin);
-  $("adminMenu").classList.toggle("hidden", !admin);
-}
-
-function requireUser() {
-  if (!currentUser || !token) {
-    showScreen("authScreen");
-    return false;
-  }
-
-  return true;
-}
-
-/* CONNEXION SANS MOT DE PASSE */
-
-async function directAccess() {
-  if (busy) return;
-
-  const name = $("accessName").value.trim();
-  const phone = $("accessPhone").value.trim();
-
-  if (!name || !phone) {
-    return showMessage(
-      "authMessage",
-      "Entre ton nom et ton numéro.",
-      true
-    );
-  }
-
-  if (name.length < 2) {
-    return showMessage(
-      "authMessage",
-      "Ton nom doit contenir au moins 2 caractères.",
-      true
-    );
-  }
-
-  busy = true;
-
-  $("accessButton").disabled = true;
-
-  $("accessButton").textContent = "CONNEXION...";
-
-  showMessage(
-    "authMessage",
-    "Ouverture de TAYA IA..."
-  );
-
-  try {
-    const {data} = await api("/api/auth/access", {
-      method:"POST",
-      body:JSON.stringify({
-        name,
-        phone
-      })
-    });
-
-    if (!data.success) {
-      showMessage(
-        "authMessage",
-        data.error || "Accès impossible.",
-        true
-      );
-
-      return;
-    }
-
-    setToken(data.token);
-
-    saveUser(data.user);
-
-    $("accessName").value = data.user.name || name;
-    $("accessPhone").value = data.user.phone || phone;
-
-    showHome();
-
-    toast(data.message || "Bienvenue sur TAYA IA !");
-
-  } catch (error) {
-    console.error("Erreur de connexion :", error);
-
-    showMessage(
-      "authMessage",
-      "Impossible de contacter le serveur. Vérifie ta connexion.",
-      true
-    );
-
-  } finally {
-    busy = false;
-    $("accessButton").disabled = false;
-    $("accessButton").textContent = "SE CONNECTER ⚡";
-  }
-}
-
-/* SESSION */
-
-async function checkSession() {
-  if (!token) {
-    showScreen("authScreen");
+function doRegister(){
+  const name=$("regName").value.trim();
+  const codePays = $("regCountryCode") ? $("regCountryCode").value : "+224";
+  const numeroSeul = $("regPhone").value.replace(/\D/g,"").trim();
+  const phone = codePays + numeroSeul;
+  if(!name){ alert("Entre ton nom"); return; }
+  if(numeroSeul.length<8){ alert("Entre un bon numéro"); return; }
+  const dejaInscrit = allUsers.find(u => u.phone === phone);
+  if(dejaInscrit){
+    currentUser = dejaInscrit;
+    localStorage.setItem("taya_current_user", JSON.stringify(currentUser));
+    alert("Bienvenue de retour " + dejaInscrit.fullName + " 👋\nTon numéro est déjà inscrit, tu es reconnecté.");
+    openApplication();
     return;
   }
-
-  try {
-    const {data} = await api("/api/auth/me");
-
-    if (!data.success) {
-      showScreen("authScreen");
-      return;
-    }
-
-    saveUser(data.user);
-    showHome();
-
-  } catch (error) {
-    console.error(error);
-
-    showScreen("authScreen");
-
-    showMessage(
-      "authMessage",
-      "Impossible de vérifier la session. Réessaie.",
-      true
-    );
+  currentUser = { fullName:name, phone:phone, role:"user", date:new Date().toLocaleString("fr-FR") };
+  allUsers.unshift(currentUser);
+  localStorage.setItem("taya_users", JSON.stringify(allUsers));
+  localStorage.setItem("taya_current_user", JSON.stringify(currentUser));
+  openApplication();
+}
+function logout(){
+  if(!confirm("Changer de compte ?")) return;
+  localStorage.removeItem("taya_current_user");
+  currentUser=null; chatHistory=[]; navStack=["home"];
+  $("main").style.display="none"; $("registerOverlay").style.display="flex";
+}
+function openAdmin(){
+  if(isAdminUnlocked){
+    closeSidebar(); pushNav("admin"); showPageOnly("admin"); return;
+  }
+  closeSidebar();
+  $("adminLoginOverlay").classList.remove("hidden");
+  $("adminPassInput").value=""; $("adminPassError").textContent="";
+  $("adminPassInput").focus();
+}
+function closeAdminLogin(){ $("adminLoginOverlay").classList.add("hidden"); }
+function checkAdminPass(){
+  const v=$("adminPassInput").value.trim();
+  if(v===ADMIN_PASSWORD){
+    isAdminUnlocked=true;
+    localStorage.setItem("taya_admin_unlocked","yes");
+    $("adminLoginOverlay").classList.add("hidden");
+    alert("Bienvenue Maruce 👑🇬🇳");
+    pushNav("admin"); showPageOnly("admin"); updateBadge();
+  } else {
+    $("adminPassError").textContent="❌ Mot de passe incorrect. Accès refusé.";
+    $("adminPassInput").value="";
   }
 }
-
-function showHome() {
-  if (!requireUser()) return;
-
-  showScreen("homeScreen");
+function lockAdmin(){ isAdminUnlocked=false; localStorage.removeItem("taya_admin_unlocked"); alert("Admin verrouillé 🔒"); showHome(); }
+$("adminPassInput")?.addEventListener("keydown",e=>{ if(e.key==="Enter") checkAdminPass(); });
+function hideAllPagesRaw(){ $("welcome").classList.add("hidden"); $("messages").classList.add("hidden"); $("contactPage").classList.add("hidden"); $("leaveMsgPage").classList.add("hidden"); $("adminPage").classList.add("hidden"); $("composerArea").classList.remove("hidden"); }
+function hideAllPages(){ hideAllPagesRaw(); }
+function showHome(){ closeSidebar(); navStack=["home"]; showPageOnly("home"); chatHistory=[]; currentProjectId=null; }
+function newChat(){ chatHistory=[]; currentProjectId=Date.now().toString(); $("messages").innerHTML=""; closeSidebar(); navStack=["home"]; showPageOnly("home"); $("question").value=""; }
+function openContact(){ closeSidebar(); pushNav("contact"); showPageOnly("contact"); }
+function openLeaveMessage(){ closeSidebar(); pushNav("leave"); showPageOnly("leave"); }
+function openApplication(){
+  if(!currentUser){ $("registerOverlay").style.display="flex"; $("main").style.display="none"; return; }
+  $("registerOverlay").style.display="none"; $("main").style.display="block";
+  $("userName").textContent=currentUser.fullName; $("userPhone").textContent=currentUser.phone; $("welcomeName").textContent=currentUser.fullName;
+  updateBadge(); navStack=["home"]; showPageOnly("home"); renderHistory();
 }
-
-function showChat() {
-  if (!requireUser()) return;
-
-  showScreen("chatScreen");
-  $("chatInput").focus();
+function updateBadge(){
+  if(!isAdminUnlocked) return;
+  const n=allMsgs.length; const b=$("adminBadge");
+  if(n>0){ b.textContent=n; b.classList.remove("hidden"); } else { b.classList.add("hidden"); }
 }
-
-function logout() {
-  token = "";
-  currentUser = null;
-
-  localStorage.removeItem("taya_v18_token");
-  localStorage.removeItem(TOKEN_KEY);
-
-  hideMenu();
-
-  showScreen("authScreen");
-
-  $("accessName").value = "";
-  $("accessPhone").value = "";
-
-  showMessage("authMessage", "");
-
-  toast("Déconnexion effectuée.");
+function sendMessageToMaruce(){
+  const text=$("msgText").value.trim();
+  if(!text){ alert("Écris ton message"); return; }
+  allMsgs.unshift({ name:currentUser.fullName, phone:currentUser.phone, text:text, date:new Date().toLocaleString("fr-FR") });
+  localStorage.setItem("taya_messages_maruce",JSON.stringify(allMsgs));
+  $("msgText").value=""; $("msgSent").textContent="✅ Message envoyé à Maruce !";
+  updateBadge();
+  setTimeout(()=>{ if(confirm("Envoyer aussi sur WhatsApp ?")){ window.open("https://wa.me/224663401157?text="+encodeURIComponent("Bonjour Maruce, je suis "+currentUser.fullName+" ("+currentUser.phone+") : "+text),"_blank"); } },400);
 }
-
-/* CHAT */
-
-function addMessage(role, text) {
-  const box = $("messages");
-
-  const message = document.createElement("div");
-
-  message.className =
-    "message " +
-    (role === "user" ? "user" : "assistant");
-
-  const who = document.createElement("div");
-
-  who.className = "who";
-
-  who.textContent =
-    role === "user" ? "TOI" : "TAYA IA";
-
-  const content = document.createElement("div");
-
-  content.textContent = text;
-
-  message.appendChild(who);
-  message.appendChild(content);
-
-  box.appendChild(message);
-
-  box.scrollTop = box.scrollHeight;
+function renderAdmin(){
+  $("statUsers").textContent=allUsers.length; $("statMsgs").textContent=allMsgs.length;
+  $("adminUsers").innerHTML=""; if(allUsers.length===0) $("adminUsers").innerHTML="<div class='card'>Aucune personne</div>";
+  allUsers.forEach(u=>{ const d=document.createElement("div"); d.className="card"; d.innerHTML="<b>👤 "+u.fullName+"</b><br><small>📞 "+u.phone+" • "+(u.date||"")+"</small><br><a href='https://wa.me/"+String(u.phone).replace(/\D/g,"")+"' target='_blank' style='color:var(--green)'>💬 WhatsApp</a>"; $("adminUsers").appendChild(d); });
+  $("adminMsgs").innerHTML=""; if(allMsgs.length===0) $("adminMsgs").innerHTML="<div class='card'>Aucun message</div>";
+  allMsgs.forEach(m=>{ const d=document.createElement("div"); d.className="card"; d.innerHTML="<b>"+m.name+"</b> <small>• "+m.phone+" • "+m.date+"</small><br><br>"+m.text+"<br><br><a href='https://wa.me/"+String(m.phone).replace(/\D/g,"")+"' target='_blank' style='color:var(--green)'>↩️ Répondre</a>"; $("adminMsgs").appendChild(d); });
 }
-
-async function sendMessage() {
-  if (busy || !requireUser()) return;
-
-  const input = $("chatInput");
-
-  const message = input.value.trim();
-
-  if (!message) return;
-
-  input.value = "";
-  input.style.height = "auto";
-
-  addMessage("user", message);
-
-  busy = true;
-
-  $("typing").classList.remove("hidden");
-
-  try {
-    const {data} = await api("/api/chat", {
-      method:"POST",
-      body:JSON.stringify({
-        message
-      })
-    });
-
-    if (!data.success) {
-      addMessage(
-        "assistant",
-        data.error || "Une erreur est survenue."
-      );
-
-    } else {
-      addMessage(
-        "assistant",
-        data.answer || data.reply || "Réponse vide."
-      );
-    }
-
-  } catch (error) {
-    console.error(error);
-
-    addMessage(
-      "assistant",
-      "Je n'arrive pas à contacter le serveur. Vérifie ta connexion Internet."
-    );
-
-  } finally {
-    busy = false;
-
-    $("typing").classList.add("hidden");
-  }
-}
-
-function newChat() {
-  if (!requireUser()) return;
-
-  $("messages").innerHTML = "";
-
-  addMessage(
-    "assistant",
-    "Nouvelle discussion ! Pose-moi ta question."
-  );
-
-  showChat();
-}
-
-$("chatInput").addEventListener("keydown", event => {
-  if (event.key === "Enter" && !event.shiftKey) {
-    event.preventDefault();
-    sendMessage();
-  }
-});
-
-$("chatInput").addEventListener("input", event => {
-  event.target.style.height = "auto";
-
-  event.target.style.height =
-    Math.min(event.target.scrollHeight, 120) + "px";
-});
-
-/* HISTORIQUE */
-
-async function showHistory() {
-  if (!requireUser()) return;
-
-  showScreen("historyScreen");
-
-  $("historyList").textContent = "Chargement...";
-
-  try {
-    const {data} = await api("/api/history?limit=200");
-
-    if (!data.success) {
-      $("historyList").textContent =
-        data.error || "Erreur.";
-
-      return;
-    }
-
-    const list = $("historyList");
-
-    list.innerHTML = "";
-
-    if (!data.messages || data.messages.length === 0) {
-      list.textContent = "Aucun message enregistré.";
-      return;
-    }
-
-    data.messages.forEach(item => {
-      const div = document.createElement("div");
-
-      div.className = "item";
-
-      const label = document.createElement("strong");
-
-      label.textContent =
-        item.role === "user" ? "👤 Toi" : "🤖 TAYA IA";
-
-      const content = document.createElement("div");
-
-      content.textContent = item.message;
-
-      const date = document.createElement("small");
-
-      date.textContent = item.created_at
-        ? new Date(item.created_at).toLocaleString("fr-FR")
-        : "";
-
-      div.append(label, content, date);
-
-      list.appendChild(div);
-    });
-
-  } catch (error) {
-    console.error(error);
-
-    $("historyList").textContent =
-      "Impossible de charger l'historique.";
-  }
-}
-
-/* MÉMOIRE */
-
-async function showMemory() {
-  if (!requireUser()) return;
-
-  showScreen("memoryScreen");
-
-  $("memoryInput").value = "Chargement...";
-
-  try {
-    const {data} = await api("/api/memory");
-
-    if (!data.success) {
-      $("memoryInput").value = "";
-
-      toast(data.error || "Erreur de chargement.");
-
-      return;
-    }
-
-    $("memoryInput").value = data.memory || "";
-
-  } catch (error) {
-    console.error(error);
-
-    $("memoryInput").value = "";
-
-    toast("Impossible de charger la mémoire.");
-  }
-}
-
-async function saveMemory() {
-  if (!requireUser()) return;
-
-  const memory = $("memoryInput").value;
-
-  try {
-    const {data} = await api("/api/memory", {
-      method:"PUT",
-      body:JSON.stringify({
-        memory
-      })
-    });
-
-    toast(
-      data.success
-        ? "Mémoire enregistrée !"
-        : data.error || "Erreur."
-    );
-
-  } catch (error) {
-    console.error(error);
-
-    toast("Erreur pendant l'enregistrement.");
-  }
-}
-
-/* CONTACT MARUCE */
-
-function showContact() {
-  if (!requireUser()) return;
-
-  showScreen("contactScreen");
-}
-
-async function sendContact() {
-  if (!requireUser()) return;
-
-  const message = $("contactMessage").value.trim();
-
-  if (!message) {
-    return toast("Écris d'abord ton message.");
-  }
-
-  try {
-    const {data} = await api("/api/contact", {
-      method:"POST",
-      body:JSON.stringify({
-        message
-      })
-    });
-
-    if (!data.success) {
-      return toast(data.error || "Envoi impossible.");
-    }
-
-    $("contactMessage").value = "";
-
-    toast("Message envoyé à Maruce !");
-
-  } catch (error) {
-    console.error(error);
-
-    toast("Erreur pendant l'envoi.");
-  }
-}
-
-/* ADMINISTRATION */
-
-function showAdmin() {
-  if (!currentUser || currentUser.role !== "admin") {
-    return toast("Accès interdit.");
-  }
-
-  showScreen("adminScreen");
-
-  $("adminResults").textContent =
-    "Choisis une rubrique.";
-}
-
-async function loadAdminUsers() {
-  if (!currentUser || currentUser.role !== "admin") {
-    return toast("Accès interdit.");
-  }
-
-  $("adminResults").textContent =
-    "Chargement des inscrits...";
-
-  try {
-    const {data} = await api("/api/admin/users");
-
-    if (!data.success) {
-      $("adminResults").textContent =
-        data.error || "Erreur.";
-
-      return;
-    }
-
-    const box = $("adminResults");
-
-    box.innerHTML = "";
-
-    const heading = document.createElement("h3");
-
-    heading.textContent =
-      "Total : " + data.users.length + " comptes";
-
-    heading.style.marginBottom = "12px";
-
-    box.appendChild(heading);
-
-    data.users.forEach(user => {
-      const div = document.createElement("div");
-
-      div.className = "item";
-
-      const name = document.createElement("strong");
-
-      name.textContent = user.name || "Sans nom";
-
-      const phone = document.createElement("div");
-
-      phone.textContent = user.phone || "";
-
-      const role = document.createElement("small");
-
-      role.textContent =
-        user.role === "admin"
-          ? "👑 Administrateur"
-          : "Utilisateur";
-
-      div.append(name, phone, role);
-
-      box.appendChild(div);
-    });
-
-  } catch (error) {
-    console.error(error);
-
-    $("adminResults").textContent =
-      "Impossible de charger les inscrits.";
-  }
-}
-
-async function loadAdminMessages() {
-  if (!currentUser || currentUser.role !== "admin") {
-    return toast("Accès interdit.");
-  }
-
-  $("adminResults").textContent =
-    "Chargement des messages...";
-
-  try {
-    const {data} = await api("/api/admin/messages");
-
-    if (!data.success) {
-      $("adminResults").textContent =
-        data.error || "Erreur.";
-
-      return;
-    }
-
-    const box = $("adminResults");
-
-    box.innerHTML = "";
-
-    const heading = document.createElement("h3");
-
-    heading.textContent =
-      "Messages reçus : " + data.messages.length;
-
-    heading.style.marginBottom = "12px";
-
-    box.appendChild(heading);
-
-    if (!data.messages.length) {
-      box.append("Aucun message reçu.");
-      return;
-    }
-
-    data.messages.forEach(item => {
-      const div = document.createElement("div");
-
-      div.className = "item";
-
-      const name = document.createElement("strong");
-
-      name.textContent = "Utilisateur";
-
-      const message = document.createElement("p");
-
-      message.style.marginTop = "9px";
-      message.textContent = item.message;
-
-      const date = document.createElement("small");
-
-      date.textContent = item.created_at
-        ? new Date(item.created_at).toLocaleString("fr-FR")
-        : "";
-
-      div.append(name, message, date);
-
-      box.appendChild(div);
-    });
-
-  } catch (error) {
-    console.error(error);
-
-    $("adminResults").textContent =
-      "Impossible de charger les messages.";
-  }
-}
-
-/* MICROPHONE */
-
-function toggleVoice() {
-  const SpeechRecognition =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
-
-  if (!SpeechRecognition) {
-    toast(
-      "La reconnaissance vocale n'est pas prise en charge par ce navigateur."
-    );
-
-    return;
-  }
-
-  if (recognition) {
-    recognition.stop();
-    recognition = null;
-
-    $("micButton").classList.remove("recording");
-
-    return;
-  }
-
-  recognition = new SpeechRecognition();
-
-  recognition.lang = "fr-FR";
-  recognition.continuous = false;
-  recognition.interimResults = false;
-
-  recognition.onstart = () => {
-    $("micButton").classList.add("recording");
-
-    toast("Je t'écoute...");
-  };
-
-  recognition.onresult = event => {
-    const text = event.results[0][0].transcript;
-
-    $("chatInput").value = text;
-
-    $("chatInput").focus();
-  };
-
-  recognition.onerror = () => {
-    toast("Microphone indisponible.");
-  };
-
-  recognition.onend = () => {
-    $("micButton").classList.remove("recording");
-
-    recognition = null;
-  };
-
-  recognition.start();
-}
-
-/* MENU */
-
-function openMenu() {
-  $("menu").classList.remove("hidden");
-}
-
-function hideMenu() {
-  $("menu").classList.add("hidden");
-}
-
-function closeMenu(event) {
-  if (event.target.id === "menu") {
-    hideMenu();
-  }
-}
-
-/* DÉMARRAGE */
-
-checkSession();
-
+function toggleSidebar(){ $("sidebar").classList.toggle("open"); }
+function closeSidebar(){ $("sidebar").classList.remove("open"); }
+function saveProjects(){ try{localStorage.setItem("taya_v13_projects",JSON.stringify(projects))}catch(e){} }
+function saveCurrent(){ if(!chatHistory.length)return; if(!currentProjectId)currentProjectId=Date.now().toString(); let p=projects.find(i=>i.id===currentProjectId); if(!p){p={id:currentProjectId,title:chatHistory.find(m=>m.role==="user")?.content?.slice(0,45)||"Nouvelle discussion",messages:[]};projects.unshift(p);} p.messages=chatHistory.slice(); saveProjects(); renderHistory(); }
+function renderHistory(){ $("history").innerHTML=""; projects.forEach(p=>{const d=document.createElement("div"); d.className="history-item"; d.textContent="💬 "+p.title; d.onclick=()=>loadProject(p.id); $("history").appendChild(d);}); }
+function loadProject(id){ const p=projects.find(i=>i.id===id); if(!p)return; currentProjectId=id; chatHistory=p.messages.slice(); pushNav("chat"); showPageOnly("chat"); renderMessages(); closeSidebar(); }
+function addMessage(role,content){ const ms=$("messages"); const row=document.createElement("div"); row.className="message "+(role==="user"?"user":"assistant"); const av=document.createElement("div"); av.className="message-avatar"; av.textContent=role==="user"?"👤":"🤖"; const box=document.createElement("div"); box.className="message-content"; if(role==="user") box.textContent=content; else if(window.marked&&window.DOMPurify) box.innerHTML=DOMPurify.sanitize(marked.parse(content)); else box.textContent=content; row.appendChild(av); row.appendChild(box); ms.appendChild(row); ms.scrollTop=ms.scrollHeight; return box; }
+function renderMessages(){ $("messages").innerHTML=""; chatHistory.forEach(m=>addMessage(m.role,m.content)); }
+async function tryRealAI(){ const ms=chatHistory.filter(m=>["user","assistant"].includes(m.role)).slice(-20).map(m=>({role:m.role,content:m.content})); const c=new AbortController(); const t=setTimeout(()=>c.abort(),65000); try{ const r=await fetch(API_URL+"/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:ms}),signal:c.signal}); const d=await r.json(); if(!r.ok||!d.success) throw new Error("Erreur"); return d.reply||d.answer; } finally{ clearTimeout(t); } }
+function generateImage(prompt,box){ box.textContent="🎨 Génération..."; const url="https://image.pollinations.ai/prompt/"+encodeURIComponent(prompt)+"?width=1024&height=1024&nologo=true&model=flux"; const img=document.createElement("img"); img.style.maxWidth="100%"; img.style.borderRadius="12px"; img.onload=()=>{box.innerHTML="";box.appendChild(img)}; img.onerror=()=>box.textContent="Échec image"; img.src=url; }
+async function askAI(q,botDiv){ if(isGenerating||!q.trim())return; isGenerating=true; $("sendBtn").disabled=true; chatHistory.push({role:"user",content:q}); try{ const low=q.toLowerCase(); if(low.includes("génère une image")||low.startsWith("image:")){ const p=q.replace(/génère une image\s*:?\s*/i,"").replace(/^image:\s*/i,"").trim()||"cyberpunk"; generateImage(p,botDiv); chatHistory.push({role:"assistant",content:"Image générée : "+p}); saveCurrent(); return; } botDiv.innerHTML='<div class="typing"><span></span><span></span><span></span></div>'; const ans=await tryRealAI(); if(window.marked&&window.DOMPurify) botDiv.innerHTML=DOMPurify.sanitize(marked.parse(ans)); else botDiv.textContent=ans; chatHistory.push({role:"assistant",content:ans}); lastAnswer=ans; saveCurrent(); }catch(e){ botDiv.textContent="Problème de connexion, réessaie."; } finally{ isGenerating=false; $("sendBtn").disabled=false; } }
+async function sendMessage(){ if(isGenerating)return; const inp=$("question"); const q=inp.value.trim(); if(!q)return; inp.value=""; inp.style.height="45px"; pushNav("chat"); showPageOnly("chat"); addMessage("user",q); const b=addMessage("assistant",""); await askAI(q,b); }
+$("question").addEventListener("keydown",e=>{ if(e.key==="Enter"&&!e.shiftKey){e.preventDefault(); sendMessage();} });
+$("question").addEventListener("input",function(){ this.style.height="45px"; this.style.height=Math.min(this.scrollHeight,150)+"px"; });
+async function handleFile(input){ const f=input.files[0]; if(!f)return; try{ let c=""; if(f.type==="text/plain"||f.name.endsWith(".md")||f.name.endsWith(".csv")) c=await f.text(); else if(f.type==="application/pdf"||f.name.endsWith(".pdf")) c=await readPDF(f); else {alert("Format non supporté");return;} $("question").value="Analyse ce document :\n\n"+c.slice(0,18000); }catch(e){alert(e.message)} finally{input.value=""} }
+async function readPDF(f){ const buf=await f.arrayBuffer(); const pdf=await pdfjsLib.getDocument({data:buf}).promise; let t=""; const max=Math.min(pdf.numPages,20); for(let i=1;i<=max;i++){ const p=await pdf.getPage(i); const d=await p.getTextContent(); t+=d.items.map(x=>x.str).join(" ")+"\n"; } return t; }
+function startVoice(){ const SR=window.SpeechRecognition||window.webkitSpeechRecognition; if(!SR){alert("Vocal indisponible");return;} const r=new SR(); r.lang="fr-FR"; r.onresult=e=>{ $("question").value+=($("question").value?" ":"")+e.results[0][0].transcript; }; r.start(); }
+function readLastAnswer(){ if(!lastAnswer){alert("Aucune réponse");return;} speechSynthesis.cancel(); const s=new SpeechSynthesisUtterance(lastAnswer); s.lang="fr-FR"; speechSynthesis.speak(s); }
+if(currentUser) openApplication(); else { $("registerOverlay").style.display="flex"; $("main").style.display="none"; }
 </script>
-
 </body>
 </html>
