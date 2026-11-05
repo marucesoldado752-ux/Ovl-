@@ -1,1142 +1,358 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#050807">
-<title>TAYA IA V20 - By Maruce 🇬🇳</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050807">
+  <meta name="description" content="TAYA IA - Votre assistant intelligent par Maruce Soldado">
+  <title>TAYA IA V20 — By Maruce 🇬🇳</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Anton&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet">
 
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
-
-<style>
-:root{
-  --bg:#050807;
-  --panel:#0b110e;
-  --panel2:#111a15;
-  --text:#f3f7f4;
-  --muted:#8b9b90;
-  --green:#00ff88;
-  --blue:#4488ff;
-  --border:rgba(255,255,255,.09);
-  --danger:#ff5263;
-  --sidebar:270px;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:Inter,Arial,sans-serif;
-  height:100dvh;
-  overflow:hidden;
-}
-body.light{
-  --bg:#f5f7f6;
-  --panel:#fff;
-  --panel2:#edf2ef;
-  --text:#142019;
-  --muted:#65756a;
-  --border:rgba(0,0,0,.10);
-}
-button,input,textarea{font:inherit}
-button{cursor:pointer}
-.app{height:100dvh;display:flex;overflow:hidden}
-.sidebar{
-  width:var(--sidebar);
-  background:var(--panel);
-  border-right:1px solid var(--border);
-  display:flex;
-  flex-direction:column;
-  padding:16px;
-  flex-shrink:0;
-  z-index:20;
-  transition:transform .25s;
-}
-.brand{
-  display:flex;align-items:center;gap:11px;
-  padding:7px 4px 20px;
-}
-.logo{
-  width:42px;height:42px;border-radius:14px;
-  display:grid;place-items:center;
-  background:linear-gradient(135deg,var(--green),var(--blue));
-  color:#00150c;font-size:22px;font-weight:900;
-  box-shadow:0 0 25px #00ff8840;
-}
-.brand h2{font-family:Anton,sans-serif;font-size:25px;letter-spacing:1px}
-.brand small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
-.newchat{
-  width:100%;padding:13px;border:1px solid #00ff8840;
-  background:#00ff8810;color:var(--green);
-  border-radius:13px;font-weight:800;text-align:left;
-}
-.nav{margin-top:20px;display:grid;gap:6px}
-.nav button{
-  border:0;background:transparent;color:var(--muted);
-  padding:12px;border-radius:11px;text-align:left;
-  font-weight:600;
-}
-.nav button:hover,.nav button.active{background:var(--panel2);color:var(--text)}
-.section-label{
-  color:var(--muted);font-size:10px;font-weight:800;
-  letter-spacing:1.5px;margin:24px 8px 10px;
-}
-.history{overflow:auto;flex:1;min-height:80px}
-.history-item{
-  display:flex;align-items:center;gap:6px;
-  padding:10px;border-radius:10px;color:var(--muted);
-  font-size:12px;cursor:pointer;margin-bottom:4px;
-}
-.history-item:hover{background:var(--panel2);color:var(--text)}
-.history-item span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
-.history-item.selected{background:var(--panel2);color:var(--text)}
-.history-item button{
-  border:0;background:transparent;color:var(--muted);
-  padding:3px;font-size:13px;
-}
-.userbox{
-  border-top:1px solid var(--border);padding-top:14px;
-  display:flex;align-items:center;gap:10px;
-}
-.user-avatar{
-  width:36px;height:36px;border-radius:50%;
-  display:grid;place-items:center;
-  background:linear-gradient(135deg,var(--green),var(--blue));
-  color:#00150c;font-weight:900;
-}
-.user-info{flex:1;min-width:0}
-.user-info strong{font-size:12px;display:block;overflow:hidden;text-overflow:ellipsis}
-.user-info small{color:var(--muted);font-size:10px}
-.icon-btn{
-  background:transparent;border:0;color:var(--muted);
-  padding:8px;border-radius:9px;font-size:17px;
-}
-.icon-btn:hover{background:var(--panel2);color:var(--text)}
-.main{flex:1;min-width:0;display:flex;flex-direction:column;position:relative}
-.topbar{
-  height:62px;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 20px;flex-shrink:0;
-}
-.top-left,.top-right{display:flex;align-items:center;gap:10px}
-.top-title{font-weight:800;font-size:14px}
-.version{font-size:9px;color:var(--green);border:1px solid #00ff8840;padding:4px 7px;border-radius:20px}
-.content{flex:1;overflow:auto;position:relative}
-.welcome{
-  min-height:100%;display:flex;align-items:center;
-  justify-content:center;padding:35px 18px;
-}
-.welcome-inner{width:min(680px,100%);text-align:center}
-.hero-logo{
-  width:76px;height:76px;margin:0 auto 20px;border-radius:25px;
-  display:grid;place-items:center;font-size:38px;
-  background:linear-gradient(135deg,var(--green),var(--blue));
-  color:#00150c;box-shadow:0 0 50px #00ff8830;
-  animation:float 4s ease-in-out infinite;
-}
-@keyframes float{50%{transform:translateY(-9px)}}
-.welcome h1{font-family:Anton,sans-serif;font-size:clamp(32px,6vw,49px);letter-spacing:1px}
-.welcome h1 span{background:linear-gradient(90deg,var(--green),var(--blue));background-clip:text;color:transparent}
-.welcome p{color:var(--muted);margin:12px 0 27px;font-size:13px;line-height:1.7}
-.quick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;text-align:left}
-.quick{
-  background:var(--panel);border:1px solid var(--border);
-  padding:16px;border-radius:15px;color:var(--text);
-  text-align:left;
-}
-.quick:hover{border-color:#00ff8870;transform:translateY(-2px)}
-.quick strong{display:block;font-size:12px;margin-bottom:6px}
-.quick small{color:var(--muted);font-size:10px}
-.messages{
-  max-width:850px;margin:auto;padding:25px 20px 160px;
-}
-.message{display:flex;gap:12px;margin:22px 0;align-items:flex-start}
-.message.user{flex-direction:row-reverse}
-.msg-avatar{
-  width:32px;height:32px;flex-shrink:0;border-radius:11px;
-  display:grid;place-items:center;font-size:13px;font-weight:900;
-  background:var(--panel2);
-}
-.message.assistant .msg-avatar{
-  background:linear-gradient(135deg,var(--green),var(--blue));color:#00150c;
-}
-.bubble{
-  max-width:min(720px,calc(100% - 45px));
-  padding:13px 15px;border-radius:15px;
-  background:var(--panel);border:1px solid var(--border);
-  font-size:13px;line-height:1.75;overflow-wrap:anywhere;
-}
-.message.user .bubble{background:#00ff8810;border-color:#00ff8830}
-.bubble p{margin:5px 0}
-.bubble pre{
-  background:#020504;padding:13px;border-radius:10px;
-  overflow:auto;margin:10px 0;
-}
-.bubble code{font-size:12px}
-.bubble img{max-width:100%;border-radius:10px}
-.bubble ul,.bubble ol{padding-left:22px}
-.message-actions{display:flex;gap:4px;margin-top:8px;flex-wrap:wrap}
-.message-actions button{
-  background:transparent;border:0;color:var(--muted);
-  padding:5px 7px;border-radius:7px;font-size:11px;
-}
-.message-actions button:hover{background:var(--panel2);color:var(--text)}
-.composer-area{
-  position:absolute;bottom:0;left:0;right:0;
-  padding:15px 18px max(18px,env(safe-area-inset-bottom));
-  background:linear-gradient(transparent,var(--bg) 22%);
-}
-.composer-wrap{max-width:850px;margin:auto}
-.composer{
-  display:flex;align-items:flex-end;gap:8px;
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:19px;padding:10px;
-  box-shadow:0 10px 40px #0004;
-}
-.composer:focus-within{border-color:#00ff8860}
-.composer textarea{
-  flex:1;min-height:28px;max-height:150px;resize:none;
-  background:transparent;border:0;outline:0;color:var(--text);
-  padding:8px 4px;font-size:13px;
-}
-.send-btn{
-  width:40px;height:40px;border:0;border-radius:13px;
-  background:linear-gradient(135deg,var(--green),var(--blue));
-  color:#00150c;font-weight:900;font-size:18px;
-}
-.composer-note{text-align:center;color:var(--muted);font-size:9px;margin-top:9px}
-.file-preview{font-size:11px;color:var(--green);padding:5px}
-.page{max-width:850px;margin:auto;padding:25px 20px 130px}
-.page h2{font-size:22px;margin-bottom:15px}
-.card{
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:15px;padding:17px;margin-bottom:12px;
-}
-.card p{color:var(--muted);font-size:12px;line-height:1.7}
-.field{
-  width:100%;background:var(--bg);border:1px solid var(--border);
-  color:var(--text);padding:12px;border-radius:10px;
-  outline:none;margin:7px 0;font-size:13px;
-}
-.primary{
-  background:linear-gradient(135deg,var(--green),var(--blue));
-  color:#00150c;border:0;padding:12px 16px;
-  border-radius:10px;font-weight:800;
-}
-.secondary{
-  background:var(--panel2);color:var(--text);
-  border:1px solid var(--border);padding:11px 14px;
-  border-radius:10px;font-weight:600;
-}
-.danger{color:var(--danger)}
-.overlay{
-  position:fixed;inset:0;background:#0009;z-index:50;
-  display:none;
-}
-.overlay.show{display:block}
-.auth-screen{
-  position:fixed;inset:0;z-index:100;background:var(--bg);
-  display:flex;align-items:center;justify-content:center;padding:20px;
-}
-.auth-box{
-  width:min(420px,100%);background:var(--panel);
-  border:1px solid var(--border);border-radius:20px;padding:25px;
-}
-.auth-box h1{text-align:center;font-family:Anton;font-size:30px}
-.auth-box p{text-align:center;color:var(--muted);font-size:11px;margin:8px 0 18px}
-.auth-tabs{display:flex;gap:7px;margin-bottom:12px}
-.auth-tabs button{flex:1}
-.auth-error{color:var(--danger);font-size:11px;margin:8px 0}
-.hidden{display:none!important}
-.loading{color:var(--muted);font-size:12px;padding:10px}
-.admin-row{padding:12px 0;border-bottom:1px solid var(--border);font-size:12px}
-.admin-row small{display:block;color:var(--muted);margin-top:5px}
-.mobile-close{display:none}
-@media(max-width:760px){
-  .sidebar{
-    position:fixed;top:0;bottom:0;left:0;
-    transform:translateX(-105%);width:min(290px,85vw);
-    box-shadow:20px 0 50px #0008;
-  }
-  .sidebar.open{transform:translateX(0)}
-  .mobile-close{display:block}
-  .topbar{padding:0 12px}
-  .messages{padding:15px 12px 150px}
-  .message{gap:8px}
-  .bubble{font-size:12px;padding:11px}
-  .composer-area{padding-left:10px;padding-right:10px}
-  .quick-grid{grid-template-columns:1fr}
-  .welcome{padding:25px 15px}
-}
-</style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-<div class="app">
+  <!-- AUTHENTIFICATION -->
+  <section id="authScreen" class="auth-screen">
+    <div class="auth-card">
+      <div class="brand-logo">T</div>
+      <h1>TAYA <span>IA</span></h1>
+      <p class="brand-subtitle">L'intelligence à portée de main 🇬🇳</p>
 
-<aside class="sidebar" id="sidebar">
-  <div class="brand">
-    <div class="logo">T</div>
-    <div><h2>TAYA IA</h2><small>BY MARUCE SOLDADO 🇬🇳</small></div>
-    <button class="icon-btn mobile-close" onclick="toggleSidebar()">✕</button>
-  </div>
-
-  <button class="newchat" onclick="newChat()">＋ Nouveau chat</button>
-
-  <div class="nav">
-    <button class="active" onclick="showPage('chat')">✦ Assistant IA</button>
-    <button onclick="showPage('memory')">🧠 Mémoire</button>
-    <button onclick="showPage('contact')">✉️ Contacter Maruce</button>
-    <button id="adminNav" class="hidden" onclick="showPage('admin')">⚙️ Administration</button>
-    <button onclick="showPage('settings')">⚙️ Paramètres</button>
-  </div>
-
-  <div class="section-label">HISTORIQUE</div>
-  <div class="history" id="historyList"></div>
-
-  <div class="userbox">
-    <div class="user-avatar" id="userInitial">T</div>
-    <div class="user-info">
-      <strong id="userName">Utilisateur</strong>
-      <small id="userRole">Compte TAYA IA</small>
-    </div>
-    <button class="icon-btn" onclick="logout()" title="Déconnexion">⇥</button>
-  </div>
-</aside>
-
-<main class="main">
-  <header class="topbar">
-    <div class="top-left">
-      <button class="icon-btn" onclick="toggleSidebar()">☰</button>
-      <span class="top-title" id="topTitle">TAYA IA</span>
-      <span class="version">V20</span>
-    </div>
-    <div class="top-right">
-      <button class="icon-btn" onclick="toggleTheme()" title="Changer le thème">◐</button>
-      <button class="icon-btn" onclick="newChat()" title="Nouveau chat">＋</button>
-    </div>
-  </header>
-
-  <section class="content" id="content">
-    <div class="welcome" id="welcome">
-      <div class="welcome-inner">
-        <div class="hero-logo">T</div>
-        <h1>Bonjour, <span id="welcomeName">Maruce</span></h1>
-        <p>Je suis TAYA IA, ton assistant intelligent<br>
-        <b>BY MARUCE SOLDADO 👑🇬🇳</b></p>
-
-        <div class="quick-grid">
-          <button class="quick" onclick="quickPrompt('Explique-moi un sujet compliqué simplement')">
-            <strong>💡 Apprendre</strong><small>Comprendre un sujet facilement</small>
-          </button>
-          <button class="quick" onclick="quickPrompt('Aide-moi à écrire un texte professionnel')">
-            <strong>✍️ Écriture</strong><small>Créer et améliorer des textes</small>
-          </button>
-          <button class="quick" onclick="quickPrompt('Aide-moi à créer un site web moderne')">
-            <strong>💻 Programmation</strong><small>Code et développement</small>
-          </button>
-          <button class="quick" onclick="quickPrompt('Fais une recherche Web sur les actualités importantes')">
-            <strong>🌐 Recherche Web</strong><small>Rechercher des informations</small>
-          </button>
-        </div>
+      <div class="auth-tabs">
+        <button id="loginTab" class="auth-tab active" onclick="switchAuth('login')">Connexion</button>
+        <button id="registerTab" class="auth-tab" onclick="switchAuth('register')">Inscription</button>
       </div>
-    </div>
 
-    <div id="messages" class="messages hidden"></div>
-    <div id="pageContent" class="page hidden"></div>
+      <form id="authForm" onsubmit="submitAuth(event)">
+        <div id="nameField" class="form-group hidden">
+          <label for="authName">Nom complet</label>
+          <input id="authName" type="text" placeholder="Votre nom complet" autocomplete="name">
+        </div>
+
+        <div class="form-group">
+          <label for="authPhone">Numéro de téléphone</label>
+          <input id="authPhone" type="tel" placeholder="+224XXXXXXXXX" autocomplete="tel" required>
+        </div>
+
+        <div class="form-group">
+          <label for="authPassword">Mot de passe</label>
+          <input id="authPassword" type="password" placeholder="Votre mot de passe" autocomplete="current-password" required>
+        </div>
+
+        <div id="confirmField" class="form-group hidden">
+          <label for="authConfirm">Confirmer le mot de passe</label>
+          <input id="authConfirm" type="password" placeholder="Confirmez le mot de passe">
+        </div>
+
+        <p id="authError" class="error-message"></p>
+        <button id="authSubmit" class="primary-button" type="submit">Se connecter</button>
+      </form>
+
+      <p class="auth-footer">TAYA IA V20 • By Maruce Soldado 👑</p>
+    </div>
   </section>
 
-  <div class="composer-area" id="composerArea">
-    <div class="composer-wrap">
-      <div id="filePreview" class="file-preview"></div>
-      <div class="composer">
-        <button class="icon-btn" onclick="document.getElementById('fileInput').click()" title="Joindre un fichier">＋</button>
-        <input id="fileInput" type="file" hidden accept="image/*,.txt,.md,.csv,.pdf" onchange="handleFile(this)">
-        <button class="icon-btn" onclick="startDictation()" title="Dicter">🎤</button>
-        <textarea id="prompt" rows="1" placeholder="Pose ta question à TAYA IA..." onkeydown="handleEnter(event)" oninput="resizeInput(this)"></textarea>
-        <button class="icon-btn hidden" id="stopBtn" onclick="stopGeneration()" title="Arrêter">■</button>
-        <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+  <!-- APPLICATION -->
+  <main id="app" class="app hidden">
+
+    <!-- MENU LATÉRAL -->
+    <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar(false)"></div>
+
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="mini-brand">
+          <div class="mini-logo">T</div>
+          <div>
+            <strong>TAYA IA</strong>
+            <small>VERSION 20</small>
+          </div>
+        </div>
+        <button class="icon-button close-sidebar" onclick="toggleSidebar(false)">✕</button>
       </div>
-      <div class="composer-note">TAYA IA peut faire des erreurs. Vérifie les informations importantes.</div>
-    </div>
-  </div>
-</main>
-</div>
 
-<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-
-<!-- AUTHENTIFICATION -->
-<div class="auth-screen" id="authScreen">
-  <div class="auth-box">
-    <div class="hero-logo">T</div>
-    <h1>TAYA IA</h1>
-    <p>Ton assistant intelligent • By Maruce 🇬🇳</p>
-
-    <div class="auth-tabs">
-      <button class="primary" id="loginTab" onclick="setAuthMode('login')">Connexion</button>
-      <button class="secondary" id="registerTab" onclick="setAuthMode('register')">Inscription</button>
-    </div>
-
-    <div id="authNameWrap" class="hidden">
-      <input class="field" id="authName" placeholder="Nom complet">
-    </div>
-    <input class="field" id="authPhone" placeholder="Numéro de téléphone (+224...)" autocomplete="tel">
-    <input class="field" id="authPassword" type="password" placeholder="Mot de passe" autocomplete="current-password">
-    <div id="authConfirmWrap" class="hidden">
-      <input class="field" id="authConfirm" type="password" placeholder="Confirmer le mot de passe">
-    </div>
-
-    <div id="authError" class="auth-error"></div>
-    <button class="primary" style="width:100%" id="authSubmit" onclick="submitAuth()">Se connecter</button>
-  </div>
-</div>
-
-<script>
-/* CONFIGURATION */
-const API = "https://taya-ai-api.onrender.com";
-const $ = id => document.getElementById(id);
-
-let token = localStorage.getItem("taya_token") || "";
-let currentUser = JSON.parse(localStorage.getItem("taya_current_user") || "null");
-let authMode = "login";
-let projects = JSON.parse(localStorage.getItem("taya_v19_projects") || "[]");
-let currentProjectId = null;
-let selectedFile = null;
-let controller = null;
-let generating = false;
-let webSearch = false;
-let speechUtterance = null;
-
-function saveProjects(){
-  localStorage.setItem("taya_v19_projects", JSON.stringify(projects));
-}
-
-function authHeaders(){
-  return {
-    "Content-Type":"application/json",
-    "Authorization":"Bearer "+token
-  };
-}
-
-async function api(path, options={}){
-  const headers = {...(options.headers || {})};
-  if(token) headers.Authorization = "Bearer "+token;
-  if(options.body && !(options.body instanceof FormData)){
-    headers["Content-Type"] = "application/json";
-  }
-  const response = await fetch(API+path,{...options,headers});
-  let data;
-  const type = response.headers.get("content-type") || "";
-  if(type.includes("application/json")) data = await response.json();
-  else data = await response.text();
-  if(!response.ok){
-    throw new Error(data?.error || data?.message || "Erreur serveur ("+response.status+")");
-  }
-  return data;
-}
-
-/* AUTH */
-function setAuthMode(mode){
-  authMode = mode;
-  $("authNameWrap").classList.toggle("hidden",mode==="login");
-  $("authConfirmWrap").classList.toggle("hidden",mode==="login");
-  $("loginTab").className = mode==="login"?"primary":"secondary";
-  $("registerTab").className = mode==="register"?"primary":"secondary";
-  $("authSubmit").textContent = mode==="login"?"Se connecter":"Créer mon compte";
-  $("authError").textContent = "";
-}
-
-async function submitAuth(){
-  const phone = $("authPhone").value.trim();
-  const password = $("authPassword").value;
-  const name = $("authName").value.trim();
-
-  if(!phone || !password){
-    $("authError").textContent = "Remplis ton numéro et ton mot de passe";
-    return;
-  }
-  if(authMode==="register"){
-    if(!name){
-      $("authError").textContent = "Entre ton nom complet";
-      return;
-    }
-    if(password !== $("authConfirm").value){
-      $("authError").textContent = "Les mots de passe ne correspondent pas";
-      return;
-    }
-  }
-
-  $("authSubmit").disabled = true;
-  $("authSubmit").textContent = "Chargement...";
-  $("authError").textContent = "";
-
-  try{
-    const data = await api(
-      authMode==="login"?"/api/auth/login":"/api/auth/register",
-      {
-        method:"POST",
-        body:JSON.stringify(
-          authMode==="login"
-          ? {phone,password}
-          : {name,phone,password}
-        )
-      }
-    );
-
-    if(!data.token) throw new Error(data.error || "Réponse d'authentification invalide");
-
-    token = data.token;
-    currentUser = data.user;
-    localStorage.setItem("taya_token",token);
-    localStorage.setItem("taya_current_user",JSON.stringify(currentUser));
-
-    $("authScreen").classList.add("hidden");
-    await openApplication();
-
-  }catch(error){
-    $("authError").textContent = error.message;
-  }finally{
-    $("authSubmit").disabled = false;
-    $("authSubmit").textContent = authMode==="login"?"Se connecter":"Créer mon compte";
-  }
-}
-
-async function openApplication(){
-  if(!token || !currentUser){
-    $("authScreen").classList.remove("hidden");
-    return;
-  }
-
-  $("authScreen").classList.add("hidden");
-  const name = currentUser.name || currentUser.full_name || "Utilisateur";
-  $("userName").textContent = name;
-  $("welcomeName").textContent = name.split(" ")[0];
-  $("userInitial").textContent = name.charAt(0).toUpperCase();
-  $("userRole").textContent = currentUser.role==="admin"?"Administrateur":"Compte TAYA IA";
-
-  if(currentUser.role==="admin") $("adminNav").classList.remove("hidden");
-
-  renderHistory();
-  if(!projects.length) createProject(false);
-  else openProject(projects[0].id);
-
-  loadCloudHistory();
-}
-
-async function logout(){
-  if(!confirm("Veux-tu vraiment te déconnecter ?")) return;
-  token="";
-  currentUser=null;
-  localStorage.removeItem("taya_token");
-  localStorage.removeItem("taya_current_user");
-  location.reload();
-}
-
-/* CONVERSATIONS LOCALES */
-function createProject(render=true){
-  const project = {
-    id:"local_"+Date.now(),
-    title:"Nouveau chat",
-    messages:[],
-    updatedAt:Date.now()
-  };
-  projects.unshift(project);
-  currentProjectId=project.id;
-  saveProjects();
-  if(render){
-    renderHistory();
-    showPage("chat");
-    renderMessages();
-  }
-  return project;
-}
-
-function newChat(){
-  createProject();
-  $("prompt").focus();
-  toggleSidebar(false);
-}
-
-function getProject(){
-  return projects.find(p=>p.id===currentProjectId);
-}
-
-function openProject(id){
-  const project = projects.find(p=>p.id===id);
-  if(!project) return;
-  currentProjectId=id;
-  renderHistory();
-  showPage("chat");
-  renderMessages();
-  toggleSidebar(false);
-}
-
-function renderHistory(){
-  $("historyList").innerHTML="";
-  projects.forEach(project=>{
-    const row=document.createElement("div");
-    row.className="history-item"+(project.id===currentProjectId?" selected":"");
-
-    const title=document.createElement("span");
-    title.textContent=project.title || "Nouveau chat";
-    title.onclick=()=>openProject(project.id);
-
-    const rename=document.createElement("button");
-    rename.textContent="✎";
-    rename.title="Renommer";
-    rename.onclick=(e)=>{
-      e.stopPropagation();
-      const name=prompt("Nouveau nom :",project.title);
-      if(name && name.trim()){
-        project.title=name.trim();
-        saveProjects();
-        renderHistory();
-      }
-    };
-
-    const del=document.createElement("button");
-    del.textContent="×";
-    del.title="Supprimer";
-    del.onclick=(e)=>{
-      e.stopPropagation();
-      if(!confirm("Supprimer cette conversation de cet appareil ?")) return;
-      projects=projects.filter(p=>p.id!==project.id);
-      if(currentProjectId===project.id){
-        currentProjectId=null;
-        if(projects.length) openProject(projects[0].id);
-        else createProject();
-      }
-      saveProjects();
-      renderHistory();
-    };
-
-    row.append(title,rename,del);
-    $("historyList").appendChild(row);
-  });
-}
-
-function renderMessages(){
-  const project=getProject();
-  $("welcome").classList.toggle("hidden",!!project?.messages.length);
-  $("messages").classList.toggle("hidden",!project?.messages.length);
-  $("pageContent").classList.add("hidden");
-  $("composerArea").classList.remove("hidden");
-
-  if(!project || !project.messages.length){
-    $("messages").innerHTML="";
-    return;
-  }
-
-  $("messages").innerHTML="";
-  project.messages.forEach((message,index)=>{
-    addMessageElement(message,index);
-  });
-  scrollBottom();
-}
-
-function addMessageElement(message,index){
-  const wrapper=document.createElement("div");
-  wrapper.className="message "+message.role;
-
-  const avatar=document.createElement("div");
-  avatar.className="msg-avatar";
-  avatar.textContent=message.role==="user"?"M":"T";
-
-  const body=document.createElement("div");
-  body.className="bubble";
-
-  if(message.role==="assistant"){
-    const html=window.marked
-      ? marked.parse(message.content || "")
-      : (message.content || "").replace(/\n/g,"<br>");
-    body.innerHTML=DOMPurify.sanitize(html);
-  }else{
-    body.textContent=message.content || "";
-  }
-
-  if(message.image){
-    const img=document.createElement("img");
-    img.src=message.image;
-    img.style.display="block";
-    img.style.maxWidth="220px";
-    img.style.marginTop="8px";
-    body.appendChild(img);
-  }
-
-  const actions=document.createElement("div");
-  actions.className="message-actions";
-
-  if(message.role==="assistant"){
-    addAction(actions,"Copier",()=>copyText(message.content));
-    addAction(actions,"Lire",()=>readAloud(message.content));
-    addAction(actions,"Partager",()=>shareText(message.content));
-    addAction(actions,"Régénérer",()=>regenerate(index));
-  }else{
-    addAction(actions,"Copier",()=>copyText(message.content));
-  }
-
-  body.appendChild(actions);
-  wrapper.append(avatar,body);
-  $("messages").appendChild(wrapper);
-}
-
-function addAction(parent,label,callback){
-  const button=document.createElement("button");
-  button.textContent=label;
-  button.onclick=callback;
-  parent.appendChild(button);
-}
-
-function scrollBottom(){
-  $("content").scrollTop=$("content").scrollHeight;
-}
-
-/* CHAT */
-function quickPrompt(text){
-  $("prompt").value=text;
-  sendMessage();
-}
-
-function handleEnter(event){
-  if(event.key==="Enter" && !event.shiftKey){
-    event.preventDefault();
-    sendMessage();
-  }
-}
-
-function resizeInput(element){
-  element.style.height="auto";
-  element.style.height=Math.min(element.scrollHeight,150)+"px";
-}
-
-async function sendMessage(customText=null){
-  if(generating) return;
-
-  const text=(customText ?? $("prompt").value).trim();
-  if(!text && !selectedFile) return;
-
-  if(!getProject()) createProject(false);
-  const project=getProject();
-
-  let userContent=text;
-  let imageData=null;
-
-  if(selectedFile){
-    if(selectedFile.type.startsWith("image/")){
-      imageData=await fileToDataURL(selectedFile);
-    }else if(selectedFile.type==="application/pdf" || selectedFile.name.toLowerCase().endsWith(".pdf")){
-      alert("La lecture PDF n'est pas encore disponible sur ton backend. Tu peux envoyer une image ou un fichier texte.");
-      return;
-    }else{
-      const fileText=await selectedFile.text();
-      userContent += "\n\nContenu du fichier "+selectedFile.name+":\n"+fileText;
-    }
-  }
-
-  if(!userContent) userContent="Analyse cette image.";
-  const userMessage={role:"user",content:userContent,image:imageData};
-  project.messages.push(userMessage);
-
-  if(project.messages.length===1){
-    project.title=text.slice(0,38) || "Nouvelle conversation";
-  }
-  project.updatedAt=Date.now();
-  saveProjects();
-
-  $("prompt").value="";
-  $("prompt").style.height="auto";
-  selectedFile=null;
-  $("fileInput").value="";
-  $("filePreview").textContent="";
-  renderHistory();
-  renderMessages();
-
-  generating=true;
-  controller=new AbortController();
-  $("sendBtn").classList.add("hidden");
-  $("stopBtn").classList.remove("hidden");
-
-  try{
-    let answer="";
-
-    if(imageData){
-      const response=await api("/api/chat/image",{
-        method:"POST",
-        signal:controller.signal,
-        body:JSON.stringify({
-          image_base64:imageData,
-          message:text || "Décris cette image"
-        })
-      });
-      answer=response.answer || response.reply || response.message || "Aucune réponse reçue.";
-    }else{
-      const messages=project.messages
-        .filter(m=>m.role==="user" || m.role==="assistant")
-        .map(m=>({role:m.role,content:m.content}));
-
-      const response=await api("/api/chat",{
-        method:"POST",
-        signal:controller.signal,
-        body:JSON.stringify({
-          messages,
-          web_search:webSearch
-        })
-      });
-      answer=response.answer || response.reply || "Je n'ai pas reçu de réponse.";
-    }
-
-    project.messages.push({role:"assistant",content:answer});
-    project.updatedAt=Date.now();
-    saveProjects();
-    renderMessages();
-
-  }catch(error){
-    if(error.name==="AbortError"){
-      project.messages.push({
-        role:"assistant",
-        content:"Génération arrêtée."
-      });
-    }else{
-      project.messages.push({
-        role:"assistant",
-        content:"**Erreur :** "+error.message+"\n\nVérifie que ton backend Render fonctionne."
-      });
-    }
-    saveProjects();
-    renderMessages();
-  }finally{
-    generating=false;
-    controller=null;
-    $("sendBtn").classList.remove("hidden");
-    $("stopBtn").classList.add("hidden");
-  }
-}
-
-function stopGeneration(){
-  if(controller) controller.abort();
-}
-
-async function regenerate(index){
-  const project=getProject();
-  if(!project || generating) return;
-
-  let userIndex=index-1;
-  while(userIndex>=0 && project.messages[userIndex].role!=="user") userIndex--;
-  if(userIndex<0) return;
-
-  project.messages=project.messages.slice(0,userIndex+1);
-  saveProjects();
-  renderMessages();
-  await sendMessage(project.messages[userIndex].content);
-}
-
-/* FICHIERS */
-function handleFile(input){
-  const file=input.files[0];
-  if(!file) return;
-  selectedFile=file;
-  $("filePreview").textContent="📎 "+file.name;
-}
-
-function fileToDataURL(file){
-  return new Promise((resolve,reject)=>{
-    const reader=new FileReader();
-    reader.onload=()=>resolve(reader.result);
-    reader.onerror=reject;
-    reader.readAsDataURL(file);
-  });
-}
-
-/* ACTIONS DES MESSAGES */
-async function copyText(text){
-  try{
-    await navigator.clipboard.writeText(text);
-    alert("Texte copié !");
-  }catch{
-    prompt("Copie le texte :",text);
-  }
-}
-
-async function shareText(text){
-  if(navigator.share){
-    try{await navigator.share({text});}catch{}
-  }else{
-    copyText(text);
-  }
-}
-
-function readAloud(text){
-  if(!("speechSynthesis" in window)){
-    alert("Lecture vocale non disponible sur cet appareil.");
-    return;
-  }
-  speechSynthesis.cancel();
-  speechUtterance=new SpeechSynthesisUtterance(text);
-  speechUtterance.lang="fr-FR";
-  speechSynthesis.speak(speechUtterance);
-}
-
-/* DICTÉE VOCALE */
-function startDictation(){
-  const SpeechRecognition=window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SpeechRecognition){
-    alert("La dictée vocale n'est pas prise en charge par ce navigateur.");
-    return;
-  }
-  const recognition=new SpeechRecognition();
-  recognition.lang="fr-FR";
-  recognition.interimResults=false;
-  recognition.onresult=(event)=>{
-    $("prompt").value += event.results[0][0].transcript;
-    resizeInput($("prompt"));
-  };
-  recognition.onerror=()=>alert("Impossible de reconnaître la voix.");
-  recognition.start();
-}
-
-/* PAGES */
-function showPage(page){
-  $("welcome").classList.add("hidden");
-  $("messages").classList.add("hidden");
-  $("pageContent").classList.remove("hidden");
-  $("composerArea").classList.add("hidden");
-
-  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
-  const titles={
-    chat:"TAYA IA",
-    memory:"Mémoire IA",
-    contact:"Contacter Maruce",
-    admin:"Administration",
-    settings:"Paramètres"
-  };
-  $("topTitle").textContent=titles[page] || "TAYA IA";
-
-  if(page==="chat"){
-    renderMessages();
-    return;
-  }
-
-  if(page==="memory") renderMemory();
-  if(page==="contact") renderContact();
-  if(page==="admin") renderAdmin();
-  if(page==="settings") renderSettings();
-
-  toggleSidebar(false);
-}
-
-/* MÉMOIRE */
-async function renderMemory(){
-  $("pageContent").innerHTML=`
-    <h2>🧠 Mémoire de TAYA</h2>
-    <div class="card">
-      <p>Les informations enregistrées ici peuvent aider TAYA à mieux comprendre ton contexte.</p>
-      <textarea class="field" id="memoryText" rows="8" placeholder="Écris ici les informations que TAYA doit retenir..."></textarea>
-      <button class="primary" onclick="saveMemory()">Enregistrer la mémoire</button>
-    </div>
-    <div id="memoryStatus" class="loading">Chargement...</div>
-  `;
-  try{
-    const data=await api("/api/memory");
-    $("memoryText").value=data.memory || "";
-    $("memoryStatus").textContent="Mémoire chargée.";
-  }catch(error){
-    $("memoryStatus").textContent="Impossible de charger la mémoire : "+error.message;
-  }
-}
-
-async function saveMemory(){
-  const memory=$("memoryText").value;
-  try{
-    await api("/api/memory",{method:"PUT",body:JSON.stringify({memory})});
-    $("memoryStatus").textContent="Mémoire enregistrée avec succès.";
-  }catch(error){
-    $("memoryStatus").textContent=error.message;
-  }
-}
-
-/* CONTACT */
-function renderContact(){
-  $("pageContent").innerHTML=`
-    <h2>✉️ Contacter Maruce</h2>
-    <div class="card">
-      <p>Envoie un message à l'équipe TAYA IA.</p>
-      <textarea class="field" id="contactMessage" rows="5" placeholder="Écris ton message..."></textarea>
-      <button class="primary" onclick="sendContact()">Envoyer le message</button>
-      <div id="contactStatus" class="loading"></div>
-    </div>
-  `;
-}
-
-async function sendContact(){
-  const message=$("contactMessage").value.trim();
-  if(!message) return;
-  try{
-    await api("/api/contact",{method:"POST",body:JSON.stringify({message})});
-    $("contactStatus").textContent="Message envoyé avec succès.";
-    $("contactMessage").value="";
-  }catch(error){
-    $("contactStatus").textContent=error.message;
-  }
-}
-
-/* ADMINISTRATION */
-async function renderAdmin(){
-  if(currentUser?.role!=="admin"){
-    $("pageContent").innerHTML="<h2>Accès refusé</h2>";
-    return;
-  }
-
-  $("pageContent").innerHTML=`
-    <h2>⚙️ Administration TAYA IA</h2>
-    <div class="card"><h3>👥 Utilisateurs inscrits</h3><div id="adminUsers" class="loading">Chargement...</div></div>
-    <div class="card"><h3>✉️ Messages reçus</h3><div id="adminMessages" class="loading">Chargement...</div></div>
-  `;
-
-  try{
-    const [usersData,messagesData]=await Promise.all([
-      api("/api/admin/users"),
-      api("/api/admin/messages")
-    ]);
-
-    const users=usersData.users || [];
-    $("adminUsers").innerHTML=users.length
-      ? users.map(user=>`
-        <div class="admin-row">
-          <b>${escapeHTML(user.name || "Utilisateur")}</b>
-          <small>${escapeHTML(user.phone || "")} • ${escapeHTML(user.role || "user")}</small>
+      <button class="new-chat-button" onclick="newChat()">
+        <span>＋</span> Nouveau chat
+      </button>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-page="home" onclick="showPage('home')">
+          <span>⌂</span> Accueil
+        </button>
+        <button class="nav-item" data-page="chat" onclick="showPage('chat')">
+          <span>✦</span> Assistant IA
+        </button>
+        <button class="nav-item" data-page="memory" onclick="showPage('memory')">
+          <span>◈</span> Ma mémoire
+        </button>
+        <button class="nav-item" data-page="contact" onclick="showPage('contact')">
+          <span>✉</span> Contacter Maruce
+        </button>
+        <button class="nav-item hidden" id="adminNav" data-page="admin" onclick="showPage('admin')">
+          <span>⚙</span> Administration
+        </button>
+        <button class="nav-item" data-page="settings" onclick="showPage('settings')">
+          <span>☷</span> Paramètres
+        </button>
+      </nav>
+
+      <div class="sidebar-history">
+        <h3>DISCUSSIONS RÉCENTES</h3>
+        <div id="historyList">
+          <p class="muted-text">Aucune discussion récente</p>
         </div>
-      `).join("")
-      : "Aucun utilisateur trouvé.";
+      </div>
 
-    const messages=messagesData.messages || [];
-    $("adminMessages").innerHTML=messages.length
-      ? messages.map(msg=>`
-        <div class="admin-row">
-          <b>${escapeHTML(msg.name || msg.full_name || "Utilisateur")}</b>
-          <small>${escapeHTML(msg.message || "")}</small>
-          <textarea class="field" id="reply_${escapeHTML(msg.user_id)}" placeholder="Écrire une réponse..."></textarea>
-          <button class="primary" onclick="replyAdmin('${escapeHTML(msg.user_id)}')">Répondre</button>
+      <div class="sidebar-user">
+        <div id="userAvatar" class="user-avatar">T</div>
+        <div class="user-details">
+          <strong id="userName">Utilisateur</strong>
+          <small id="userPhone"></small>
         </div>
-      `).join("")
-      : "Aucun message reçu.";
+        <button class="icon-button" onclick="logout()" title="Déconnexion">↪</button>
+      </div>
+    </aside>
 
-  }catch(error){
-    $("adminUsers").textContent=error.message;
-    $("adminMessages").textContent=error.message;
-  }
-}
+    <!-- CONTENU PRINCIPAL -->
+    <section class="main-content">
 
-async function replyAdmin(userId){
-  const input=$("reply_"+userId);
-  if(!input || !input.value.trim()) return;
-  try{
-    await api("/api/admin/messages/"+encodeURIComponent(userId)+"/reply",{
-      method:"POST",
-      body:JSON.stringify({message:input.value.trim()})
-    });
-    input.value="";
-    alert("Réponse envoyée.");
-  }catch(error){
-    alert("Erreur : "+error.message);
-  }
-}
+      <!-- BARRE SUPÉRIEURE -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-button menu-button" onclick="toggleSidebar(true)">☰</button>
+          <button id="backButton" class="icon-button hidden" onclick="goBack()">←</button>
+          <div>
+            <strong id="topTitle">Accueil</strong>
+            <small class="online-status"><span></span> Assistant disponible</small>
+          </div>
+        </div>
 
-/* PARAMÈTRES */
-function renderSettings(){
-  $("pageContent").innerHTML=`
-    <h2>⚙️ Paramètres</h2>
-    <div class="card">
-      <h3>👤 Profil</h3>
-      <p>Nom : ${escapeHTML(currentUser?.name || "")}</p>
-      <p>Téléphone : ${escapeHTML(currentUser?.phone || "")}</p>
-      <p>Rôle : ${escapeHTML(currentUser?.role || "Utilisateur")}</p>
-    </div>
-    <div class="card">
-      <h3>🎨 Apparence</h3>
-      <p>Choisis l'apparence de ton application.</p><br>
-      <button class="secondary" onclick="toggleTheme()">Changer le thème</button>
-    </div>
-    <div class="card">
-      <h3>🔐 Compte</h3>
-      <button class="secondary danger" onclick="logout()">Se déconnecter</button>
-    </div>
-    <div class="card">
-      <h3>À propos</h3>
-      <p>TAYA IA V20<br>By MARUCE SOLDADO 👑🇬🇳</p>
-    </div>
-  `;
-}
+        <div class="topbar-actions">
+          <button class="icon-button" onclick="toggleTheme()" title="Changer le thème">◐</button>
+          <button class="icon-button" onclick="newChat()" title="Nouveau chat">＋</button>
+        </div>
+      </header>
 
-function toggleTheme(){
-  document.body.classList.toggle("light");
-  localStorage.setItem("taya_theme",document.body.classList.contains("light")?"light":"dark");
-}
+      <!-- PAGE ACCUEIL -->
+      <section id="homePage" class="page active">
+        <div class="home-container">
+          <div class="hero-section">
+            <div class="hero-badge">✦ INTELLIGENCE ARTIFICIELLE</div>
+            <div class="hero-logo">T</div>
+            <h1>Bienvenue sur <span>TAYA IA</span></h1>
+            <h2>Salut <span id="welcomeName">Utilisateur</span> 👋</h2>
+            <p>Pose tes questions, crée, apprends et avance avec ton assistant intelligent.</p>
+            <button class="primary-button hero-button" onclick="showPage('chat')">
+              Commencer une conversation →
+            </button>
+            <div class="creator-line">BY MARUCE SOLDADO 👑 🇬🇳</div>
+          </div>
 
-function toggleSidebar(force){
-  const open=typeof force==="boolean"?force:!$("sidebar").classList.contains("open");
-  $("sidebar").classList.toggle("open",open);
-  $("overlay").classList.toggle("show",open);
-}
+          <div class="feature-grid">
+            <button class="feature-card" onclick="newChatWithPrompt('Explique-moi un sujet simplement')">
+              <span class="feature-icon">✦</span>
+              <strong>Questions & réponses</strong>
+              <small>Obtiens des réponses utiles</small>
+            </button>
 
-/* HISTORIQUE SERVEUR */
-async function loadCloudHistory(){
-  try{
-    const data=await api("/api/history");
-    const messages=data.messages || [];
-    if(!messages.length) return;
+            <button class="feature-card" onclick="newChatWithPrompt('Aide-moi à écrire un texte professionnel')">
+              <span class="feature-icon">✎</span>
+              <strong>Écriture</strong>
+              <small>Messages, textes et idées</small>
+            </button>
 
-    // Les anciens messages n'ont pas d'identifiant de conversation.
-    // On les conserve séparément dans un projet historique unique.
-    const existing=projects.find(p=>p.id==="cloud-history");
-    const cloudMessages=messages.map(m=>({
-      role:m.role,
-      content:m.message || m.content || ""
-    })).filter(m=>m.role==="user" || m.role==="assistant");
+            <button class="feature-card" onclick="newChatWithPrompt('Aide-moi à résoudre un calcul')">
+              <span class="feature-icon">∑</span>
+              <strong>Calculs</strong>
+              <small>Résous tes problèmes</small>
+            </button>
 
-    if(existing){
-      existing.messages=cloudMessages;
-    }else{
-      projects.push({
-        id:"cloud-history",
-        title:"Ancien historique cloud",
-        messages:cloudMessages,
-        updatedAt:Date.now()
-      });
-    }
-    saveProjects();
-    renderHistory();
-  }catch(error){
-    console.warn("Historique cloud indisponible :",error.message);
-  }
-}
+            <button class="feature-card" onclick="newChatWithPrompt('Aide-moi à programmer un site web')">
+              <span class="feature-icon">⌘</span>
+              <strong>Programmation</strong>
+              <small>Code et développement</small>
+            </button>
+          </div>
+        </div>
+      </section>
 
-/* UTILITAIRES */
-function escapeHTML(value){
-  return String(value ?? "").replace(/[&<>"']/g,char=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  })[char]);
-}
+      <!-- PAGE CHAT -->
+      <section id="chatPage" class="page">
+        <div class="chat-layout">
+          <div id="welcomeScreen" class="chat-welcome">
+            <div class="welcome-icon">✦</div>
+            <h2>Comment puis-je t'aider ?</h2>
+            <p>Je suis TAYA IA, ton assistant intelligent.</p>
 
-/* DÉMARRAGE */
-if(localStorage.getItem("taya_theme")==="light"){
-  document.body.classList.add("light");
-}
+            <div class="prompt-grid">
+              <button onclick="usePrompt('Explique-moi quelque chose de nouveau')">
+                💡 Apprendre quelque chose
+              </button>
+              <button onclick="usePrompt('Aide-moi à écrire un message')">
+                ✍️ Écrire un message
+              </button>
+              <button onclick="usePrompt('Aide-moi avec un problème informatique')">
+                💻 Informatique
+              </button>
+              <button onclick="usePrompt('Traduis ce texte en français')">
+                🌍 Traduction
+              </button>
+            </div>
+          </div>
 
-(async()=>{
-  if(token && currentUser){
-    try{
-      await openApplication();
-    }catch(error){
-      console.error(error);
-      $("authScreen").classList.remove("hidden");
-    }
-  }else{
-    $("authScreen").classList.remove("hidden");
-  }
-})();
-</script>
+          <div id="messages" class="messages-container"></div>
+
+          <div class="composer-area">
+            <div class="composer-tools">
+              <span>✦ TAYA IA peut faire des erreurs. Vérifie les informations importantes.</span>
+            </div>
+
+            <div id="composer" class="composer">
+              <input id="fileInput" type="file" accept="image/*,.pdf,.txt,.doc,.docx" hidden onchange="handleFile(this)">
+
+              <button class="composer-button" onclick="document.getElementById('fileInput').click()" title="Joindre un fichier">＋</button>
+              <button id="voiceButton" class="composer-button" onclick="startVoice()" title="Dicter un message">🎤</button>
+
+              <textarea id="messageInput" rows="1" placeholder="Écris ton message..." onkeydown="handleComposerKey(event)"></textarea>
+
+              <button id="stopButton" class="composer-button hidden" onclick="stopGeneration()" title="Arrêter">■</button>
+              <button id="sendButton" class="send-button" onclick="sendMessage()" title="Envoyer">↑</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE MÉMOIRE -->
+      <section id="memoryPage" class="page">
+        <div class="content-card">
+          <div class="section-heading">
+            <span class="section-icon">◈</span>
+            <div>
+              <h2>Ma mémoire</h2>
+              <p>Informations que TAYA IA peut utiliser pour mieux t'aider.</p>
+            </div>
+          </div>
+
+          <textarea id="memoryInput" class="large-textarea" placeholder="Ajoute ici les informations que tu souhaites que TAYA IA retienne..."></textarea>
+          <button class="primary-button" onclick="saveMemory()">Enregistrer ma mémoire</button>
+        </div>
+      </section>
+
+      <!-- PAGE CONTACT -->
+      <section id="contactPage" class="page">
+        <div class="content-card">
+          <div class="section-heading">
+            <span class="section-icon">✉</span>
+            <div>
+              <h2>Contacter Maruce</h2>
+              <p>Envoie directement ton message à l'administration de TAYA IA.</p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="contactSubject">Sujet</label>
+            <input id="contactSubject" type="text" placeholder="Sujet du message">
+          </div>
+
+          <div class="form-group">
+            <label for="contactMessage">Ton message</label>
+            <textarea id="contactMessage" class="large-textarea" placeholder="Écris ton message ici..."></textarea>
+          </div>
+
+          <button class="primary-button" onclick="sendContactMessage()">Envoyer le message</button>
+          <p id="contactStatus" class="status-message"></p>
+        </div>
+      </section>
+
+      <!-- PAGE ADMINISTRATION -->
+      <section id="adminPage" class="page">
+        <div class="admin-container">
+          <div class="section-heading">
+            <span class="section-icon">⚙</span>
+            <div>
+              <h2>Administration</h2>
+              <p>Gestion des utilisateurs et des messages.</p>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <small>Utilisateurs inscrits</small>
+              <strong id="adminUserCount">0</strong>
+            </div>
+            <div class="stat-card">
+              <small>Messages reçus</small>
+              <strong id="adminMessageCount">0</strong>
+            </div>
+          </div>
+
+          <div class="admin-panel">
+            <h3>Utilisateurs</h3>
+            <div id="adminUsers"></div>
+          </div>
+
+          <div class="admin-panel">
+            <h3>Messages reçus</h3>
+            <div id="adminMessages"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE PARAMÈTRES -->
+      <section id="settingsPage" class="page">
+        <div class="content-card">
+          <div class="section-heading">
+            <span class="section-icon">☷</span>
+            <div>
+              <h2>Paramètres</h2>
+              <p>Personnalise ton expérience TAYA IA.</p>
+            </div>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              <strong>Apparence</strong>
+              <small>Passer du thème sombre au thème clair</small>
+            </div>
+            <button class="secondary-button" onclick="toggleTheme()">Changer le thème</button>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              <strong>Nouvelle conversation</strong>
+              <small>Commencer une nouvelle discussion</small>
+            </div>
+            <button class="secondary-button" onclick="newChat()">Nouveau chat</button>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              <strong>Déconnexion</strong>
+              <small>Quitter ton compte</small>
+            </div>
+            <button class="danger-button" onclick="logout()">Déconnexion</button>
+          </div>
+
+          <div class="about-card">
+            <div class="mini-logo">T</div>
+            <h3>TAYA IA V20</h3>
+            <p>Une création de Maruce Soldado</p>
+            <strong>Fièrement guinéen 🇬🇳</strong>
+          </div>
+        </div>
+      </section>
+
+    </section>
+  </main>
+
+  <!-- NOTIFICATIONS -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
