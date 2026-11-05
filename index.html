@@ -536,7 +536,7 @@ footer {
 
 <main>
 
-<!-- ACCÈS DIRECT -->
+<!-- CONNEXION -->
 
 <section id="authScreen" class="screen">
 
@@ -576,11 +576,11 @@ footer {
       class="primary"
       onclick="directAccess()"
     >
-      CONTINUER ⚡
+      SE CONNECTER ⚡
     </button>
 
     <p class="home-sub" style="margin-top:14px;text-align:center">
-      Accès simple à TAYA IA 🇬🇳
+      Simple • Rapide • Sans mot de passe 🇬🇳
     </p>
 
   </div>
@@ -817,9 +817,7 @@ footer {
 
 <script>
 
-/* =========================
-   CONFIGURATION
-========================= */
+/* CONFIGURATION */
 
 const API_URL = "https://taya-ai-api.onrender.com";
 
@@ -834,9 +832,7 @@ let currentUser = null;
 let busy = false;
 let recognition = null;
 
-/* =========================
-   OUTILS
-========================= */
+/* OUTILS */
 
 function $(id) {
   return document.getElementById(id);
@@ -938,9 +934,7 @@ function requireUser() {
   return true;
 }
 
-/* =========================
-   ACCÈS DIRECT V18
-========================= */
+/* CONNEXION SANS MOT DE PASSE */
 
 async function directAccess() {
   if (busy) return;
@@ -967,6 +961,8 @@ async function directAccess() {
   busy = true;
 
   $("accessButton").disabled = true;
+
+  $("accessButton").textContent = "CONNEXION...";
 
   showMessage(
     "authMessage",
@@ -1004,7 +1000,7 @@ async function directAccess() {
     toast(data.message || "Bienvenue sur TAYA IA !");
 
   } catch (error) {
-    console.error(error);
+    console.error("Erreur de connexion :", error);
 
     showMessage(
       "authMessage",
@@ -1015,12 +1011,11 @@ async function directAccess() {
   } finally {
     busy = false;
     $("accessButton").disabled = false;
+    $("accessButton").textContent = "SE CONNECTER ⚡";
   }
 }
 
-/* =========================
-   SESSION
-========================= */
+/* SESSION */
 
 async function checkSession() {
   if (!token) {
@@ -1084,9 +1079,7 @@ function logout() {
   toast("Déconnexion effectuée.");
 }
 
-/* =========================
-   CHAT
-========================= */
+/* CHAT */
 
 function addMessage(role, text) {
   const box = $("messages");
@@ -1197,9 +1190,7 @@ $("chatInput").addEventListener("input", event => {
     Math.min(event.target.scrollHeight, 120) + "px";
 });
 
-/* =========================
-   HISTORIQUE
-========================= */
+/* HISTORIQUE */
 
 async function showHistory() {
   if (!requireUser()) return;
@@ -1260,9 +1251,7 @@ async function showHistory() {
   }
 }
 
-/* =========================
-   MÉMOIRE
-========================= */
+/* MÉMOIRE */
 
 async function showMemory() {
   if (!requireUser()) return;
@@ -1319,9 +1308,7 @@ async function saveMemory() {
   }
 }
 
-/* =========================
-   CONTACT MARUCE
-========================= */
+/* CONTACT MARUCE */
 
 function showContact() {
   if (!requireUser()) return;
@@ -1361,9 +1348,7 @@ async function sendContact() {
   }
 }
 
-/* =========================
-   ADMINISTRATION
-========================= */
+/* ADMINISTRATION */
 
 function showAdmin() {
   if (!currentUser || currentUser.role !== "admin") {
@@ -1509,9 +1494,7 @@ async function loadAdminMessages() {
   }
 }
 
-/* =========================
-   MICROPHONE
-========================= */
+/* MICROPHONE */
 
 function toggleVoice() {
   const SpeechRecognition =
@@ -1568,9 +1551,7 @@ function toggleVoice() {
   recognition.start();
 }
 
-/* =========================
-   MENU
-========================= */
+/* MENU */
 
 function openMenu() {
   $("menu").classList.remove("hidden");
@@ -1586,9 +1567,7 @@ function closeMenu(event) {
   }
 }
 
-/* =========================
-   DÉMARRAGE
-========================= */
+/* DÉMARRAGE */
 
 checkSession();
 
