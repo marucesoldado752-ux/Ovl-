@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#050807">
-<title>TAYA IA V17 - by Maruce 🇬🇳</title>
+<title>TAYA IA V18.0.0 - by Maruce 🇬🇳</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet">
@@ -40,8 +40,8 @@ body::before {
   inset:-50%;
   z-index:-1;
   background:
-    radial-gradient(circle at 20% 30%,rgba(0,255,136,.13),transparent 35%),
-    radial-gradient(circle at 80% 70%,rgba(68,136,255,.14),transparent 35%);
+    radial-gradient(circle at 20% 30%,rgba(0,255,136,.15),transparent 35%),
+    radial-gradient(circle at 80% 70%,rgba(68,136,255,.16),transparent 35%);
   animation:backgroundMove 12s ease-in-out infinite alternate;
 }
 
@@ -79,7 +79,7 @@ header {
   justify-content:space-between;
   padding:10px 15px;
   border-bottom:1px solid var(--border);
-  background:rgba(5,8,7,.86);
+  background:rgba(5,8,7,.88);
   backdrop-filter:blur(15px);
   z-index:5;
 }
@@ -131,10 +131,6 @@ header {
   background:#17201a;
   color:white;
   font-size:18px;
-}
-
-.icon-btn:hover {
-  background:#24352a;
 }
 
 main {
@@ -203,26 +199,6 @@ main {
   font-weight:700;
 }
 
-.tabs {
-  display:flex;
-  gap:8px;
-  margin-bottom:18px;
-}
-
-.tab {
-  flex:1;
-  padding:12px;
-  border-radius:12px;
-  background:#19221c;
-  color:#aab9af;
-  font-weight:700;
-}
-
-.tab.active {
-  color:#00180c;
-  background:linear-gradient(90deg,var(--green),#70baff);
-}
-
 .field {
   margin-bottom:13px;
 }
@@ -271,13 +247,6 @@ main {
   color:var(--green);
   font-weight:700;
   margin-top:10px;
-}
-
-.link-btn {
-  color:var(--green);
-  background:transparent;
-  padding:12px 0;
-  font-size:12px;
 }
 
 .notice {
@@ -490,6 +459,7 @@ main {
   padding:20px;
   background:#0c130e;
   border-right:1px solid var(--border);
+  overflow-y:auto;
 }
 
 .drawer h2 {
@@ -553,7 +523,7 @@ footer {
     <button class="icon-btn" onclick="openMenu()">☰</button>
     <div class="logo">🤖</div>
     <div>
-      <div class="brand-name">TAYA IA <span class="version">V17</span></div>
+      <div class="brand-name">TAYA IA <span class="version">V18</span></div>
       <div style="font-size:9px;color:#829187">Intelligence artificielle 🇬🇳</div>
     </div>
   </div>
@@ -566,7 +536,7 @@ footer {
 
 <main>
 
-<!-- AUTHENTIFICATION -->
+<!-- ACCÈS DIRECT -->
 
 <section id="authScreen" class="screen">
 
@@ -579,102 +549,40 @@ footer {
 
   <div class="card">
 
-    <div class="tabs">
-      <button id="loginTab" class="tab active" onclick="showAuthMode('login')">Connexion</button>
-      <button id="registerTab" class="tab" onclick="showAuthMode('register')">Inscription</button>
-    </div>
-
     <div id="authMessage"></div>
 
-    <div id="registerFields" class="hidden">
-      <div class="field">
-        <label>Nom complet</label>
-        <input id="registerName" placeholder="Ton nom complet" autocomplete="name">
-      </div>
+    <div class="field">
+      <label>Ton nom complet</label>
+      <input
+        id="accessName"
+        placeholder="Entre ton nom complet"
+        autocomplete="name"
+        maxlength="80"
+      >
     </div>
 
     <div class="field">
-      <label>Numéro de téléphone avec indicatif</label>
-      <input id="authPhone" placeholder="+224XXXXXXXXX" type="tel" autocomplete="tel">
+      <label>Ton numéro de téléphone</label>
+      <input
+        id="accessPhone"
+        type="tel"
+        placeholder="+224XXXXXXXXX"
+        autocomplete="tel"
+      >
     </div>
 
-    <div class="field">
-      <label>Mot de passe</label>
-      <input id="authPassword" type="password" placeholder="8 caractères minimum" autocomplete="current-password">
-    </div>
+    <button
+      id="accessButton"
+      class="primary"
+      onclick="directAccess()"
+    >
+      CONTINUER ⚡
+    </button>
 
-    <div id="confirmField" class="field hidden">
-      <label>Confirmer le mot de passe</label>
-      <input id="confirmPassword" type="password" placeholder="Confirmer le mot de passe">
-    </div>
+    <p class="home-sub" style="margin-top:14px;text-align:center">
+      Accès simple à TAYA IA 🇬🇳
+    </p>
 
-    <button id="authButton" class="primary" onclick="authenticate()">SE CONNECTER</button>
-
-    <div id="authLinks">
-      <button class="link-btn" onclick="showRecovery()">Mot de passe oublié ?</button>
-    </div>
-
-  </div>
-</section>
-
-<!-- RÉACTIVATION ANCIEN COMPTE -->
-
-<section id="legacyScreen" class="screen hidden">
-  <div class="card">
-    <h2 class="panel-title">Réactiver ton ancien compte</h2>
-    <p class="home-sub">Ton ancien compte doit être réactivé avant de continuer. Entre le nom déjà associé au compte et choisis un nouveau mot de passe.</p>
-
-    <div class="field" style="margin-top:18px">
-      <label>Nom complet enregistré</label>
-      <input id="legacyName" placeholder="Ton ancien nom">
-    </div>
-
-    <div class="field">
-      <label>Nouveau mot de passe</label>
-      <input id="legacyPassword" type="password" placeholder="8 caractères minimum">
-    </div>
-
-    <div class="field">
-      <label>Confirmer le mot de passe</label>
-      <input id="legacyConfirm" type="password" placeholder="Confirmer">
-    </div>
-
-    <button class="primary" onclick="legacyReset()">RÉACTIVER MON COMPTE</button>
-    <button class="secondary" onclick="backToAuth()">Retour</button>
-    <div id="legacyMessage"></div>
-  </div>
-</section>
-
-<!-- RÉCUPÉRATION -->
-
-<section id="recoveryScreen" class="screen hidden">
-  <div class="card">
-    <h2 class="panel-title">Récupérer mon compte</h2>
-    <p class="home-sub">Utilise ton numéro et ton code de récupération personnel.</p>
-
-    <div class="field" style="margin-top:18px">
-      <label>Numéro de téléphone</label>
-      <input id="recoveryPhone" placeholder="+224XXXXXXXXX">
-    </div>
-
-    <div class="field">
-      <label>Code de récupération</label>
-      <input id="recoveryCode" placeholder="Ton code">
-    </div>
-
-    <div class="field">
-      <label>Nouveau mot de passe</label>
-      <input id="recoveryPassword" type="password" placeholder="8 caractères minimum">
-    </div>
-
-    <div class="field">
-      <label>Confirmer le mot de passe</label>
-      <input id="recoveryConfirm" type="password" placeholder="Confirmer">
-    </div>
-
-    <button class="primary" onclick="recoverAccount()">RÉINITIALISER</button>
-    <button class="secondary" onclick="backToAuth()">Retour</button>
-    <div id="recoveryMessage"></div>
   </div>
 </section>
 
@@ -687,7 +595,14 @@ footer {
     <h1>Bienvenue sur <span class="gradient">TAYA IA</span></h1>
     <p id="welcomeName">Ton assistant intelligent t'attend</p>
     <div class="creator">BY MARUCE SOLDADO 👑 🇬🇳</div>
-    <button class="primary" style="margin-top:22px" onclick="showChat()">COMMENCER UNE DISCUSSION ⚡</button>
+
+    <button
+      class="primary"
+      style="margin-top:22px"
+      onclick="showChat()"
+    >
+      COMMENCER UNE DISCUSSION ⚡
+    </button>
   </div>
 
   <div class="card">
@@ -695,6 +610,7 @@ footer {
     <p class="home-sub">Pose tes questions et travaille avec ton assistant.</p>
 
     <div class="feature-grid">
+
       <button class="feature" onclick="showChat()">
         <span>💬</span>
         <strong>Discuter avec TAYA</strong>
@@ -718,12 +634,15 @@ footer {
         <strong>Contacter Maruce</strong>
         <small>Envoyer un message</small>
       </button>
+
     </div>
   </div>
 
   <div id="adminShortcut" class="card hidden">
     <h2 class="home-title">Administration 👑</h2>
-    <button class="secondary" onclick="showAdmin()">Ouvrir le panneau administrateur</button>
+    <button class="secondary" onclick="showAdmin()">
+      Ouvrir le panneau administrateur
+    </button>
   </div>
 
 </section>
@@ -734,7 +653,13 @@ footer {
 
   <div class="chat-heading">
     <h2>🤖 TAYA IA</h2>
-    <button class="secondary" style="width:auto;margin:0;padding:9px 13px" onclick="newChat()">＋ Nouveau</button>
+    <button
+      class="secondary"
+      style="width:auto;margin:0;padding:9px 13px"
+      onclick="newChat()"
+    >
+      ＋ Nouveau
+    </button>
   </div>
 
   <div id="messages">
@@ -744,15 +669,25 @@ footer {
     </div>
   </div>
 
-  <div id="typing" class="typing hidden">TAYA réfléchit...</div>
+  <div id="typing" class="typing hidden">
+    TAYA réfléchit...
+  </div>
 
   <div class="composer">
     <button id="micButton" onclick="toggleVoice()" title="Microphone">🎤</button>
-    <textarea id="chatInput" rows="1" placeholder="Pose ta question à TAYA..."></textarea>
+
+    <textarea
+      id="chatInput"
+      rows="1"
+      placeholder="Pose ta question à TAYA..."
+    ></textarea>
+
     <button class="send" onclick="sendMessage()">➤</button>
   </div>
 
-  <div class="chat-note">Vérifie les informations importantes. TAYA peut parfois se tromper.</div>
+  <div class="chat-note">
+    Vérifie les informations importantes. TAYA peut parfois se tromper.
+  </div>
 
 </section>
 
@@ -771,14 +706,24 @@ footer {
 <section id="memoryScreen" class="screen hidden">
   <div class="card">
     <h2 class="panel-title">🧠 Ma mémoire personnelle</h2>
-    <p class="home-sub">Ajoute des informations que TAYA pourra utiliser comme contexte dans tes prochaines discussions.</p>
+
+    <p class="home-sub">
+      Ajoute des informations que TAYA pourra utiliser comme contexte dans tes prochaines discussions.
+    </p>
 
     <div class="field" style="margin-top:17px">
       <label>Informations à mémoriser</label>
-      <textarea id="memoryInput" rows="8" placeholder="Mes préférences, mes projets, mes objectifs..."></textarea>
+      <textarea
+        id="memoryInput"
+        rows="8"
+        placeholder="Mes préférences, mes projets, mes objectifs..."
+      ></textarea>
     </div>
 
-    <button class="primary" onclick="saveMemory()">ENREGISTRER LA MÉMOIRE</button>
+    <button class="primary" onclick="saveMemory()">
+      ENREGISTRER LA MÉMOIRE
+    </button>
+
     <button class="secondary" onclick="showHome()">Retour</button>
   </div>
 </section>
@@ -788,14 +733,24 @@ footer {
 <section id="contactScreen" class="screen hidden">
   <div class="card">
     <h2 class="panel-title">✉️ Écrire à Maruce</h2>
-    <p class="home-sub">Envoie directement ton message au créateur de TAYA IA.</p>
+
+    <p class="home-sub">
+      Envoie directement ton message au créateur de TAYA IA.
+    </p>
 
     <div class="field" style="margin-top:18px">
       <label>Ton message</label>
-      <textarea id="contactMessage" rows="6" placeholder="Écris ton message ici..."></textarea>
+      <textarea
+        id="contactMessage"
+        rows="6"
+        placeholder="Écris ton message ici..."
+      ></textarea>
     </div>
 
-    <button class="primary" onclick="sendContact()">ENVOYER LE MESSAGE</button>
+    <button class="primary" onclick="sendContact()">
+      ENVOYER LE MESSAGE
+    </button>
+
     <button class="secondary" onclick="showHome()">Retour</button>
   </div>
 </section>
@@ -806,8 +761,13 @@ footer {
   <div class="card">
     <h2 class="panel-title">👑 Administration TAYA IA</h2>
 
-    <button class="secondary" onclick="loadAdminUsers()">👥 Voir les inscrits</button>
-    <button class="secondary" onclick="loadAdminMessages()">✉️ Messages reçus</button>
+    <button class="secondary" onclick="loadAdminUsers()">
+      👥 Voir les inscrits
+    </button>
+
+    <button class="secondary" onclick="loadAdminMessages()">
+      ✉️ Messages reçus
+    </button>
 
     <div id="adminResults" style="margin-top:18px"></div>
 
@@ -817,7 +777,7 @@ footer {
 
 </main>
 
-<footer>TAYA IA V17 • BY MARUCE SOLDADO 🇬🇳</footer>
+<footer>TAYA IA V18.0.0 • BY MARUCE SOLDADO 🇬🇳</footer>
 
 </div>
 
@@ -825,31 +785,52 @@ footer {
 
 <div id="menu" class="menu hidden" onclick="closeMenu(event)">
   <div class="drawer" onclick="event.stopPropagation()">
+
     <button onclick="hideMenu()">✕ Fermer</button>
-    <h2 class="gradient">TAYA IA V17</h2>
+
+    <h2 class="gradient">TAYA IA V18</h2>
+
     <button onclick="showHome();hideMenu()">⌂ Accueil</button>
+
     <button onclick="newChat();hideMenu()">＋ Nouveau chat</button>
+
     <button onclick="showHistory();hideMenu()">📚 Historique</button>
+
     <button onclick="showMemory();hideMenu()">🧠 Ma mémoire</button>
+
     <button onclick="showContact();hideMenu()">✉️ Contacter Maruce</button>
-    <button id="adminMenu" class="hidden" onclick="showAdmin();hideMenu()">👑 Administration</button>
+
+    <button
+      id="adminMenu"
+      class="hidden"
+      onclick="showAdmin();hideMenu()"
+    >
+      👑 Administration
+    </button>
+
     <button onclick="logout()">↪ Déconnexion</button>
+
   </div>
 </div>
 
 <div id="toast" class="hidden"></div>
 
 <script>
+
 /* =========================
    CONFIGURATION
 ========================= */
 
-// Adresse du serveur Render
 const API_URL = "https://taya-ai-api.onrender.com";
 
-let token = localStorage.getItem("taya_v17_token") || "";
+const TOKEN_KEY = "taya_v17_token";
+
+let token =
+  localStorage.getItem("taya_v18_token") ||
+  localStorage.getItem(TOKEN_KEY) ||
+  "";
+
 let currentUser = null;
-let authMode = "login";
 let busy = false;
 let recognition = null;
 
@@ -863,6 +844,7 @@ function $(id) {
 
 function toast(message) {
   const box = $("toast");
+
   box.textContent = message;
   box.classList.remove("hidden");
 
@@ -873,24 +855,17 @@ function toast(message) {
   }, 3500);
 }
 
-function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#039;"
-  })[char]);
-}
-
 function showMessage(id, message, error = false) {
   const box = $(id);
+
+  if (!box) return;
 
   box.innerHTML = "";
 
   if (!message) return;
 
   const div = document.createElement("div");
+
   div.className = "notice" + (error ? " error" : "");
   div.textContent = message;
 
@@ -919,7 +894,9 @@ async function api(path, options = {}) {
 
   if (response.status === 401) {
     token = "";
-    localStorage.removeItem("taya_v17_token");
+
+    localStorage.removeItem("taya_v18_token");
+    localStorage.removeItem(TOKEN_KEY);
   }
 
   return {response, data};
@@ -927,7 +904,9 @@ async function api(path, options = {}) {
 
 function setToken(value) {
   token = value;
-  localStorage.setItem("taya_v17_token", value);
+
+  localStorage.setItem("taya_v18_token", value);
+  localStorage.setItem(TOKEN_KEY, value);
 }
 
 function showScreen(id) {
@@ -950,236 +929,97 @@ function saveUser(user) {
   $("adminMenu").classList.toggle("hidden", !admin);
 }
 
+function requireUser() {
+  if (!currentUser || !token) {
+    showScreen("authScreen");
+    return false;
+  }
+
+  return true;
+}
+
 /* =========================
-   AUTHENTIFICATION
+   ACCÈS DIRECT V18
 ========================= */
 
-function showAuthMode(mode) {
-  authMode = mode;
-
-  $("loginTab").classList.toggle("active", mode === "login");
-  $("registerTab").classList.toggle("active", mode === "register");
-
-  $("registerFields").classList.toggle("hidden", mode !== "register");
-  $("confirmField").classList.toggle("hidden", mode !== "register");
-
-  $("authButton").textContent =
-    mode === "login" ? "SE CONNECTER" : "CRÉER MON COMPTE";
-
-  $("authLinks").classList.toggle("hidden", mode !== "login");
-
-  showMessage("authMessage", "");
-}
-
-function backToAuth() {
-  showScreen("authScreen");
-}
-
-function showRecovery() {
-  showScreen("recoveryScreen");
-}
-
-async function authenticate() {
+async function directAccess() {
   if (busy) return;
 
-  const phone = $("authPhone").value.trim();
-  const password = $("authPassword").value;
+  const name = $("accessName").value.trim();
+  const phone = $("accessPhone").value.trim();
 
-  if (!phone || !password) {
-    return showMessage("authMessage", "Remplis tous les champs.", true);
+  if (!name || !phone) {
+    return showMessage(
+      "authMessage",
+      "Entre ton nom et ton numéro.",
+      true
+    );
   }
 
-  if (authMode === "register") {
-    const name = $("registerName").value.trim();
-    const confirm = $("confirmPassword").value;
-
-    if (!name) {
-      return showMessage("authMessage", "Entre ton nom complet.", true);
-    }
-
-    if (password.length < 8) {
-      return showMessage("authMessage", "Le mot de passe doit contenir au moins 8 caractères.", true);
-    }
-
-    if (password !== confirm) {
-      return showMessage("authMessage", "Les deux mots de passe ne correspondent pas.", true);
-    }
-
-    await register(name, phone, password);
-
-  } else {
-    await login(phone, password);
+  if (name.length < 2) {
+    return showMessage(
+      "authMessage",
+      "Ton nom doit contenir au moins 2 caractères.",
+      true
+    );
   }
-}
 
-async function register(name, phone, password) {
   busy = true;
-  $("authButton").disabled = true;
 
-  showMessage("authMessage", "Création du compte...");
+  $("accessButton").disabled = true;
+
+  showMessage(
+    "authMessage",
+    "Ouverture de TAYA IA..."
+  );
 
   try {
-    const {data} = await api("/api/auth/register", {
+    const {data} = await api("/api/auth/access", {
       method:"POST",
-      body:JSON.stringify({name, phone, password})
+      body:JSON.stringify({
+        name,
+        phone
+      })
     });
 
     if (!data.success) {
-      showMessage("authMessage", data.error || "Inscription impossible.", true);
+      showMessage(
+        "authMessage",
+        data.error || "Accès impossible.",
+        true
+      );
+
       return;
     }
 
     setToken(data.token);
+
     saveUser(data.user);
 
-    alert(
-      "IMPORTANT : conserve ton code de récupération.\n\n" +
-      data.recovery_code +
-      "\n\nIl sera nécessaire si tu oublies ton mot de passe."
-    );
+    $("accessName").value = data.user.name || name;
+    $("accessPhone").value = data.user.phone || phone;
 
     showHome();
 
-  } catch {
-    showMessage("authMessage", "Impossible de contacter le serveur. Vérifie ta connexion.", true);
+    toast(data.message || "Bienvenue sur TAYA IA !");
+
+  } catch (error) {
+    console.error(error);
+
+    showMessage(
+      "authMessage",
+      "Impossible de contacter le serveur. Vérifie ta connexion.",
+      true
+    );
+
   } finally {
     busy = false;
-    $("authButton").disabled = false;
-  }
-}
-
-async function login(phone, password) {
-  busy = true;
-  $("authButton").disabled = true;
-
-  showMessage("authMessage", "Connexion...");
-
-  try {
-    const {data} = await api("/api/auth/login", {
-      method:"POST",
-      body:JSON.stringify({phone, password})
-    });
-
-    if (data.code === "PASSWORD_RESET_REQUIRED") {
-      $("legacyPhone") && ($("legacyPhone").value = phone);
-      localStorage.setItem("taya_legacy_phone", phone);
-      showScreen("legacyScreen");
-      return;
-    }
-
-    if (!data.success) {
-      showMessage("authMessage", data.error || "Connexion impossible.", true);
-      return;
-    }
-
-    setToken(data.token);
-    saveUser(data.user);
-    showHome();
-
-  } catch {
-    showMessage("authMessage", "Serveur inaccessible. Réessaie.", true);
-  } finally {
-    busy = false;
-    $("authButton").disabled = false;
+    $("accessButton").disabled = false;
   }
 }
 
 /* =========================
-   ANCIENS COMPTES
-========================= */
-
-async function legacyReset() {
-  const phone = localStorage.getItem("taya_legacy_phone");
-  const name = $("legacyName").value.trim();
-  const password = $("legacyPassword").value;
-  const confirm = $("legacyConfirm").value;
-
-  if (!phone || !name || !password) {
-    return showMessage("legacyMessage", "Remplis tous les champs.", true);
-  }
-
-  if (password.length < 8 || password !== confirm) {
-    return showMessage("legacyMessage", "Vérifie ton mot de passe et sa confirmation.", true);
-  }
-
-  showMessage("legacyMessage", "Réactivation du compte...");
-
-  try {
-    const {data} = await api("/api/auth/legacy-reset", {
-      method:"POST",
-      body:JSON.stringify({phone, name, password})
-    });
-
-    if (!data.success) {
-      return showMessage("legacyMessage", data.error, true);
-    }
-
-    setToken(data.token);
-    saveUser(data.user);
-
-    alert(
-      "Ton ancien compte est réactivé.\n\n" +
-      "Ton nouveau code de récupération :\n" +
-      data.recovery_code +
-      "\n\nConserve-le précieusement."
-    );
-
-    showHome();
-
-  } catch {
-    showMessage("legacyMessage", "Erreur de connexion au serveur.", true);
-  }
-}
-
-/* =========================
-   RÉCUPÉRATION MOT DE PASSE
-========================= */
-
-async function recoverAccount() {
-  const phone = $("recoveryPhone").value.trim();
-  const recovery_code = $("recoveryCode").value.trim();
-  const password = $("recoveryPassword").value;
-  const confirm = $("recoveryConfirm").value;
-
-  if (!phone || !recovery_code || !password) {
-    return showMessage("recoveryMessage", "Remplis tous les champs.", true);
-  }
-
-  if (password.length < 8 || password !== confirm) {
-    return showMessage("recoveryMessage", "Vérifie le nouveau mot de passe.", true);
-  }
-
-  showMessage("recoveryMessage", "Vérification du code...");
-
-  try {
-    const {data} = await api("/api/auth/recover", {
-      method:"POST",
-      body:JSON.stringify({phone, recovery_code, password})
-    });
-
-    if (!data.success) {
-      return showMessage("recoveryMessage", data.error, true);
-    }
-
-    setToken(data.token);
-    saveUser(data.user);
-
-    alert(
-      "Mot de passe réinitialisé.\n\n" +
-      "Ton nouveau code de récupération :\n" +
-      data.recovery_code +
-      "\n\nConserve-le précieusement."
-    );
-
-    showHome();
-
-  } catch {
-    showMessage("recoveryMessage", "Serveur inaccessible.", true);
-  }
-}
-
-/* =========================
-   SESSION ET NAVIGATION
+   SESSION
 ========================= */
 
 async function checkSession() {
@@ -1199,22 +1039,28 @@ async function checkSession() {
     saveUser(data.user);
     showHome();
 
-  } catch {
+  } catch (error) {
+    console.error(error);
+
     showScreen("authScreen");
-    showMessage("authMessage", "Impossible de vérifier la session. Réessaie.", true);
+
+    showMessage(
+      "authMessage",
+      "Impossible de vérifier la session. Réessaie.",
+      true
+    );
   }
 }
 
 function showHome() {
-  if (!currentUser) {
-    showScreen("authScreen");
-    return;
-  }
+  if (!requireUser()) return;
 
   showScreen("homeScreen");
 }
 
 function showChat() {
+  if (!requireUser()) return;
+
   showScreen("chatScreen");
   $("chatInput").focus();
 }
@@ -1223,12 +1069,17 @@ function logout() {
   token = "";
   currentUser = null;
 
-  localStorage.removeItem("taya_v17_token");
-  localStorage.removeItem("taya_legacy_phone");
+  localStorage.removeItem("taya_v18_token");
+  localStorage.removeItem(TOKEN_KEY);
 
   hideMenu();
+
   showScreen("authScreen");
-  showAuthMode("login");
+
+  $("accessName").value = "";
+  $("accessPhone").value = "";
+
+  showMessage("authMessage", "");
 
   toast("Déconnexion effectuée.");
 }
@@ -1239,29 +1090,37 @@ function logout() {
 
 function addMessage(role, text) {
   const box = $("messages");
+
   const message = document.createElement("div");
 
-  message.className = "message " +
+  message.className =
+    "message " +
     (role === "user" ? "user" : "assistant");
 
   const who = document.createElement("div");
+
   who.className = "who";
-  who.textContent = role === "user" ? "TOI" : "TAYA IA";
+
+  who.textContent =
+    role === "user" ? "TOI" : "TAYA IA";
 
   const content = document.createElement("div");
+
   content.textContent = text;
 
   message.appendChild(who);
   message.appendChild(content);
 
   box.appendChild(message);
+
   box.scrollTop = box.scrollHeight;
 }
 
 async function sendMessage() {
-  if (busy) return;
+  if (busy || !requireUser()) return;
 
   const input = $("chatInput");
+
   const message = input.value.trim();
 
   if (!message) return;
@@ -1272,29 +1131,48 @@ async function sendMessage() {
   addMessage("user", message);
 
   busy = true;
+
   $("typing").classList.remove("hidden");
 
   try {
     const {data} = await api("/api/chat", {
       method:"POST",
-      body:JSON.stringify({message})
+      body:JSON.stringify({
+        message
+      })
     });
 
     if (!data.success) {
-      addMessage("assistant", data.error || "Une erreur est survenue.");
+      addMessage(
+        "assistant",
+        data.error || "Une erreur est survenue."
+      );
+
     } else {
-      addMessage("assistant", data.answer);
+      addMessage(
+        "assistant",
+        data.answer || data.reply || "Réponse vide."
+      );
     }
 
-  } catch {
-    addMessage("assistant", "Je n'arrive pas à contacter le serveur. Vérifie ta connexion Internet.");
+  } catch (error) {
+    console.error(error);
+
+    addMessage(
+      "assistant",
+      "Je n'arrive pas à contacter le serveur. Vérifie ta connexion Internet."
+    );
+
   } finally {
     busy = false;
+
     $("typing").classList.add("hidden");
   }
 }
 
 function newChat() {
+  if (!requireUser()) return;
+
   $("messages").innerHTML = "";
 
   addMessage(
@@ -1314,6 +1192,7 @@ $("chatInput").addEventListener("keydown", event => {
 
 $("chatInput").addEventListener("input", event => {
   event.target.style.height = "auto";
+
   event.target.style.height =
     Math.min(event.target.scrollHeight, 120) + "px";
 });
@@ -1323,6 +1202,8 @@ $("chatInput").addEventListener("input", event => {
 ========================= */
 
 async function showHistory() {
+  if (!requireUser()) return;
+
   showScreen("historyScreen");
 
   $("historyList").textContent = "Chargement...";
@@ -1331,11 +1212,14 @@ async function showHistory() {
     const {data} = await api("/api/history?limit=200");
 
     if (!data.success) {
-      $("historyList").textContent = data.error || "Erreur.";
+      $("historyList").textContent =
+        data.error || "Erreur.";
+
       return;
     }
 
     const list = $("historyList");
+
     list.innerHTML = "";
 
     if (!data.messages || data.messages.length === 0) {
@@ -1345,26 +1229,34 @@ async function showHistory() {
 
     data.messages.forEach(item => {
       const div = document.createElement("div");
+
       div.className = "item";
 
       const label = document.createElement("strong");
+
       label.textContent =
         item.role === "user" ? "👤 Toi" : "🤖 TAYA IA";
 
       const content = document.createElement("div");
+
       content.textContent = item.message;
 
       const date = document.createElement("small");
+
       date.textContent = item.created_at
         ? new Date(item.created_at).toLocaleString("fr-FR")
         : "";
 
       div.append(label, content, date);
+
       list.appendChild(div);
     });
 
-  } catch {
-    $("historyList").textContent = "Impossible de charger l'historique.";
+  } catch (error) {
+    console.error(error);
+
+    $("historyList").textContent =
+      "Impossible de charger l'historique.";
   }
 }
 
@@ -1373,7 +1265,10 @@ async function showHistory() {
 ========================= */
 
 async function showMemory() {
+  if (!requireUser()) return;
+
   showScreen("memoryScreen");
+
   $("memoryInput").value = "Chargement...";
 
   try {
@@ -1381,30 +1276,45 @@ async function showMemory() {
 
     if (!data.success) {
       $("memoryInput").value = "";
+
       toast(data.error || "Erreur de chargement.");
+
       return;
     }
 
     $("memoryInput").value = data.memory || "";
 
-  } catch {
+  } catch (error) {
+    console.error(error);
+
     $("memoryInput").value = "";
+
     toast("Impossible de charger la mémoire.");
   }
 }
 
 async function saveMemory() {
+  if (!requireUser()) return;
+
   const memory = $("memoryInput").value;
 
   try {
     const {data} = await api("/api/memory", {
       method:"PUT",
-      body:JSON.stringify({memory})
+      body:JSON.stringify({
+        memory
+      })
     });
 
-    toast(data.success ? "Mémoire enregistrée !" : data.error);
+    toast(
+      data.success
+        ? "Mémoire enregistrée !"
+        : data.error || "Erreur."
+    );
 
-  } catch {
+  } catch (error) {
+    console.error(error);
+
     toast("Erreur pendant l'enregistrement.");
   }
 }
@@ -1414,10 +1324,14 @@ async function saveMemory() {
 ========================= */
 
 function showContact() {
+  if (!requireUser()) return;
+
   showScreen("contactScreen");
 }
 
 async function sendContact() {
+  if (!requireUser()) return;
+
   const message = $("contactMessage").value.trim();
 
   if (!message) {
@@ -1427,7 +1341,9 @@ async function sendContact() {
   try {
     const {data} = await api("/api/contact", {
       method:"POST",
-      body:JSON.stringify({message})
+      body:JSON.stringify({
+        message
+      })
     });
 
     if (!data.success) {
@@ -1435,9 +1351,12 @@ async function sendContact() {
     }
 
     $("contactMessage").value = "";
+
     toast("Message envoyé à Maruce !");
 
-  } catch {
+  } catch (error) {
+    console.error(error);
+
     toast("Erreur pendant l'envoi.");
   }
 }
@@ -1446,75 +1365,110 @@ async function sendContact() {
    ADMINISTRATION
 ========================= */
 
-async function showAdmin() {
+function showAdmin() {
   if (!currentUser || currentUser.role !== "admin") {
     return toast("Accès interdit.");
   }
 
   showScreen("adminScreen");
-  $("adminResults").textContent = "Choisis une rubrique.";
+
+  $("adminResults").textContent =
+    "Choisis une rubrique.";
 }
 
 async function loadAdminUsers() {
-  $("adminResults").textContent = "Chargement des inscrits...";
+  if (!currentUser || currentUser.role !== "admin") {
+    return toast("Accès interdit.");
+  }
+
+  $("adminResults").textContent =
+    "Chargement des inscrits...";
 
   try {
     const {data} = await api("/api/admin/users");
 
     if (!data.success) {
-      $("adminResults").textContent = data.error || "Erreur.";
+      $("adminResults").textContent =
+        data.error || "Erreur.";
+
       return;
     }
 
     const box = $("adminResults");
+
     box.innerHTML = "";
 
     const heading = document.createElement("h3");
-    heading.textContent = "Total : " + data.total + " comptes";
+
+    heading.textContent =
+      "Total : " + data.users.length + " comptes";
+
     heading.style.marginBottom = "12px";
+
     box.appendChild(heading);
 
     data.users.forEach(user => {
       const div = document.createElement("div");
+
       div.className = "item";
 
       const name = document.createElement("strong");
+
       name.textContent = user.name || "Sans nom";
 
       const phone = document.createElement("div");
-      phone.textContent = user.phone;
+
+      phone.textContent = user.phone || "";
 
       const role = document.createElement("small");
-      role.textContent = user.role === "admin"
-        ? "👑 Administrateur"
-        : "Utilisateur";
+
+      role.textContent =
+        user.role === "admin"
+          ? "👑 Administrateur"
+          : "Utilisateur";
 
       div.append(name, phone, role);
+
       box.appendChild(div);
     });
 
-  } catch {
-    $("adminResults").textContent = "Impossible de charger les inscrits.";
+  } catch (error) {
+    console.error(error);
+
+    $("adminResults").textContent =
+      "Impossible de charger les inscrits.";
   }
 }
 
 async function loadAdminMessages() {
-  $("adminResults").textContent = "Chargement des messages...";
+  if (!currentUser || currentUser.role !== "admin") {
+    return toast("Accès interdit.");
+  }
+
+  $("adminResults").textContent =
+    "Chargement des messages...";
 
   try {
     const {data} = await api("/api/admin/messages");
 
     if (!data.success) {
-      $("adminResults").textContent = data.error || "Erreur.";
+      $("adminResults").textContent =
+        data.error || "Erreur.";
+
       return;
     }
 
     const box = $("adminResults");
+
     box.innerHTML = "";
 
     const heading = document.createElement("h3");
-    heading.textContent = "Messages reçus : " + data.total;
+
+    heading.textContent =
+      "Messages reçus : " + data.messages.length;
+
     heading.style.marginBottom = "12px";
+
     box.appendChild(heading);
 
     if (!data.messages.length) {
@@ -1524,29 +1478,34 @@ async function loadAdminMessages() {
 
     data.messages.forEach(item => {
       const div = document.createElement("div");
+
       div.className = "item";
 
       const name = document.createElement("strong");
-      name.textContent = item.user?.name || "Utilisateur";
 
-      const phone = document.createElement("small");
-      phone.textContent = item.user?.phone || "";
+      name.textContent = "Utilisateur";
 
       const message = document.createElement("p");
+
       message.style.marginTop = "9px";
       message.textContent = item.message;
 
       const date = document.createElement("small");
+
       date.textContent = item.created_at
         ? new Date(item.created_at).toLocaleString("fr-FR")
         : "";
 
-      div.append(name, phone, message, date);
+      div.append(name, message, date);
+
       box.appendChild(div);
     });
 
-  } catch {
-    $("adminResults").textContent = "Impossible de charger les messages.";
+  } catch (error) {
+    console.error(error);
+
+    $("adminResults").textContent =
+      "Impossible de charger les messages.";
   }
 }
 
@@ -1560,30 +1519,39 @@ function toggleVoice() {
     window.webkitSpeechRecognition;
 
   if (!SpeechRecognition) {
-    toast("La reconnaissance vocale n'est pas prise en charge par ce navigateur.");
+    toast(
+      "La reconnaissance vocale n'est pas prise en charge par ce navigateur."
+    );
+
     return;
   }
 
   if (recognition) {
     recognition.stop();
     recognition = null;
+
     $("micButton").classList.remove("recording");
+
     return;
   }
 
   recognition = new SpeechRecognition();
+
   recognition.lang = "fr-FR";
   recognition.continuous = false;
   recognition.interimResults = false;
 
   recognition.onstart = () => {
     $("micButton").classList.add("recording");
+
     toast("Je t'écoute...");
   };
 
   recognition.onresult = event => {
     const text = event.results[0][0].transcript;
+
     $("chatInput").value = text;
+
     $("chatInput").focus();
   };
 
@@ -1593,6 +1561,7 @@ function toggleVoice() {
 
   recognition.onend = () => {
     $("micButton").classList.remove("recording");
+
     recognition = null;
   };
 
@@ -1622,6 +1591,7 @@ function closeMenu(event) {
 ========================= */
 
 checkSession();
+
 </script>
 
 </body>
