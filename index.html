@@ -4,12 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#050807">
-<title>TAYA IA V19 | MARUCE SOLDADO 🇬🇳</title>
+<title>TAYA IA V19.1 | MARUCE SOLDADO 🇬🇳</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Anton&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
 <style>
 :root{
@@ -39,6 +38,7 @@ body:before{
  radial-gradient(circle at 20% 20%,rgba(0,255,136,.09),transparent 35%),
  radial-gradient(circle at 80% 70%,rgba(68,136,255,.10),transparent 35%);
  animation:backgroundMove 15s ease-in-out infinite alternate;
+ pointer-events:none;
 }
 @keyframes backgroundMove{
  from{transform:translate(-2%,-2%)}
@@ -46,6 +46,7 @@ body:before{
 }
 button,input,textarea,select{font-family:inherit}
 button{cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
 .hidden{display:none!important}
 #main{display:none;min-height:100vh}
 
@@ -166,9 +167,7 @@ button{cursor:pointer}
  box-shadow:0 0 35px rgba(0,255,136,.13);
  animation:float 3s ease-in-out infinite;
 }
-@keyframes float{
- 50%{transform:translateY(-8px)}
-}
+@keyframes float{50%{transform:translateY(-8px)}}
 .welcome h1{font-size:28px;margin-bottom:8px}
 .welcome h1 span{color:var(--green)}
 .welcome p{
@@ -221,6 +220,15 @@ button{cursor:pointer}
  padding:2px 5px;
  border-radius:4px;
 }
+.message-content table{
+ display:block;
+ overflow-x:auto;
+ border-collapse:collapse;
+}
+.message-content th,.message-content td{
+ border:1px solid var(--border);
+ padding:6px;
+}
 .typing{display:flex;gap:5px;padding:6px}
 .typing span{
  width:7px;height:7px;
@@ -253,6 +261,7 @@ button{cursor:pointer}
  color:white;
  font-size:14px;
  padding:10px;
+ min-width:0;
 }
 .send-btn{
  width:44px;
@@ -274,6 +283,23 @@ button{cursor:pointer}
  color:white;
  font-size:17px;
  flex-shrink:0;
+}
+.tool-btn.active{
+ border-color:var(--green);
+ color:var(--green);
+ background:#123b29;
+}
+.search-status{
+ max-width:850px;
+ margin:0 auto 7px;
+ color:var(--green);
+ font-size:11px;
+}
+.file-status{
+ max-width:850px;
+ margin:0 auto 7px;
+ color:var(--muted);
+ font-size:11px;
 }
 .disclaimer{
  text-align:center;
@@ -446,6 +472,7 @@ button{cursor:pointer}
  }
  .sidebar.open{left:0}
  .workspace{height:calc(100vh - 60px)}
+ .message-content{max-width:90%}
 }
 @media(min-width:761px){#menuBtn{display:none}}
 </style>
@@ -457,7 +484,7 @@ button{cursor:pointer}
 <div id="registerOverlay" class="overlay">
  <div class="auth-card">
   <div class="logo">TAYA IA</div>
-  <div class="logo-sub">V19 • BY MARUCE SOLDADO 🇬🇳</div>
+  <div class="logo-sub">V19.1 • BY MARUCE SOLDADO 🇬🇳</div>
 
   <div class="auth-tabs">
    <button id="loginTab" class="auth-tab active" onclick="setAuthMode('login')">Connexion</button>
@@ -675,13 +702,19 @@ button{cursor:pointer}
 
    <!-- COMPOSITEUR -->
    <div id="composerArea" class="composer-area">
+    <div id="searchStatus" class="search-status hidden">🔎 Recherche Web activée</div>
+    <div id="fileStatus" class="file-status hidden"></div>
+
     <div class="composer">
-     <button class="tool-btn" title="Joindre un document" onclick="$('fileInput').click()">📎</button>
+     <button id="searchBtn" class="tool-btn" title="Activer ou désactiver la recherche Web" onclick="toggleWebSearch()">🔎</button>
+     <button class="tool-btn" title="Joindre une image ou un document" onclick="$('fileInput').click()">📎</button>
      <button class="tool-btn" title="Dicter un message" onclick="startVoice()">🎤</button>
      <textarea id="question" rows="1" placeholder="Pose n'importe quelle question à TAYA..."></textarea>
      <button id="sendBtn" class="send-btn" onclick="sendMessage()">➤</button>
     </div>
-    <input id="fileInput" type="file" accept=".txt,.pdf,.md,.csv" hidden onchange="handleFile(this)">
+
+    <input id="fileInput" type="file" accept=".txt,.pdf,.md,.csv,image/*" hidden onchange="handleFile(this)">
+
     <div class="disclaimer">TAYA IA peut parfois se tromper. Vérifie les informations importantes.</div>
    </div>
 
@@ -697,6 +730,10 @@ button{cursor:pointer}
 ===================================== */
 
 const API_URL = "https://taya-ai-api.onrender.com";
+const MAX_IMAGE_SIZE = 8 * 1024 * 1024;
+const MAX_PDF_SIZE = 18 * 1024 * 1024;
+const MAX_TEXT_SIZE = 2 * 1024 * 1024;
+
 const $ = id => document.getElementById(id);
 
 let authMode = "login";
@@ -708,17 +745,16 @@ let currentProjectId = null;
 let isGenerating = false;
 let lastAnswer = "";
 let isAdminUnlocked = false;
+let webSearchEnabled = false;
 let navStack = ["home"];
+let selectedFile = null;
 let allMsgs = [];
 
 try {
  projects = JSON.parse(localStorage.getItem("taya_v19_projects") || "[]");
  if (!Array.isArray(projects)) projects = [];
-} catch(e) { projects = []; }
-
-if (window.pdfjsLib) {
- pdfjsLib.GlobalWorkerOptions.workerSrc =
- "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+} catch(e) {
+ projects = [];
 }
 
 /* =====================================
@@ -727,9 +763,12 @@ if (window.pdfjsLib) {
 
 async function api(path, options = {}) {
  const headers = {
-  "Content-Type": "application/json",
   ...(options.headers || {})
  };
+
+ if (options.body && !headers["Content-Type"]) {
+  headers["Content-Type"] = "application/json";
+ }
 
  if (authToken) {
   headers.Authorization = "Bearer " + authToken;
@@ -741,13 +780,47 @@ async function api(path, options = {}) {
  });
 
  let data = {};
- try { data = await response.json(); } catch(e) {}
+
+ try {
+  data = await response.json();
+ } catch(e) {
+  data = {};
+ }
 
  if (!response.ok || data.success === false) {
-  throw new Error(data.error || "Une erreur est survenue.");
+  throw new Error(data.error || data.message || "Une erreur est survenue.");
  }
 
  return data;
+}
+
+async function apiBinary(path, body) {
+ const headers = {
+  "Content-Type": "application/json"
+ };
+
+ if (authToken) {
+  headers.Authorization = "Bearer " + authToken;
+ }
+
+ const response = await fetch(API_URL + path, {
+  method: "POST",
+  headers,
+  body: JSON.stringify(body)
+ });
+
+ if (!response.ok) {
+  let message = "Lecture vocale indisponible.";
+
+  try {
+   const data = await response.json();
+   message = data.error || message;
+  } catch(e) {}
+
+  throw new Error(message);
+ }
+
+ return await response.blob();
 }
 
 /* =====================================
@@ -764,7 +837,7 @@ function setAuthMode(mode) {
  $("confirmField").classList.toggle("hidden", mode !== "register");
 
  $("authButton").textContent =
- mode === "login" ? "SE CONNECTER ⚡" : "CRÉER MON COMPTE ⚡";
+  mode === "login" ? "SE CONNECTER ⚡" : "CRÉER MON COMPTE ⚡";
 
  $("authError").textContent = "";
  $("authPassword").value = "";
@@ -868,7 +941,7 @@ async function recoverAccount() {
 
   alert(
    "Mot de passe modifié avec succès.\n\nNouveau code de récupération :\n" +
-   result.recovery_code +
+   (result.recovery_code || "Aucun nouveau code fourni") +
    "\n\nConserve-le précieusement."
   );
 
@@ -899,6 +972,7 @@ async function openApplication() {
  }
 
  $("registerOverlay").style.display = "none";
+ $("recoveryOverlay").classList.add("hidden");
  $("main").style.display = "block";
 
  $("userName").textContent = currentUser.name || "Utilisateur";
@@ -930,7 +1004,11 @@ async function openApplication() {
  }
 
  if (admin) {
-  try { await loadAdmin(); } catch(e) { console.warn(e); }
+  try {
+   await loadAdmin();
+  } catch(error) {
+   console.warn(error);
+  }
  }
 }
 
@@ -1000,7 +1078,10 @@ function showPageOnly(page) {
 }
 
 function pushNav(page) {
- if (navStack[navStack.length - 1] !== page) navStack.push(page);
+ if (navStack[navStack.length - 1] !== page) {
+  navStack.push(page);
+ }
+
  if (navStack.length > 20) navStack.shift();
 }
 
@@ -1022,10 +1103,17 @@ function showHome() {
 }
 
 function newChat() {
+ if (chatHistory.length) saveCurrent();
+
  chatHistory = [];
  currentProjectId = Date.now().toString();
+
  $("messages").innerHTML = "";
  $("question").value = "";
+ selectedFile = null;
+
+ updateFileStatus();
+
  closeSidebar();
  navStack = ["home"];
  showPageOnly("home");
@@ -1058,11 +1146,15 @@ function closeSidebar() {
 }
 
 /* =====================================
-   HISTORIQUE LOCAL + SERVEUR
+   HISTORIQUE
 ===================================== */
 
 function saveProjects() {
- localStorage.setItem("taya_v19_projects", JSON.stringify(projects));
+ try {
+  localStorage.setItem("taya_v19_projects", JSON.stringify(projects));
+ } catch(error) {
+  console.warn("Stockage local indisponible", error);
+ }
 }
 
 function saveCurrent() {
@@ -1087,6 +1179,7 @@ function saveCurrent() {
  }
 
  project.messages = chatHistory.slice();
+
  saveProjects();
  renderHistory();
 }
@@ -1097,7 +1190,7 @@ function renderHistory() {
  projects.forEach(project => {
   const item = document.createElement("div");
   item.className = "history-item";
-  item.textContent = "💬 " + project.title;
+  item.textContent = "💬 " + (project.title || "Discussion");
   item.onclick = () => loadProject(project.id);
   $("history").appendChild(item);
  });
@@ -1118,13 +1211,10 @@ function loadProject(id) {
 
 async function loadCloudHistory() {
  const result = await api("/api/history");
-
  const rows = result.messages || [];
 
  if (!rows.length) return;
 
- // La table V12 ne contient pas d'identifiant de conversation confirmé.
- // On affiche donc les anciens messages comme un historique synchronisé unique.
  const cloudMessages = rows
   .filter(row =>
    ["user", "assistant"].includes(row.role) &&
@@ -1196,7 +1286,22 @@ function renderMessages() {
 }
 
 /* =====================================
-   IA
+   RECHERCHE WEB
+===================================== */
+
+function toggleWebSearch() {
+ webSearchEnabled = !webSearchEnabled;
+
+ $("searchBtn").classList.toggle("active", webSearchEnabled);
+ $("searchStatus").classList.toggle("hidden", !webSearchEnabled);
+
+ $("searchBtn").title = webSearchEnabled
+  ? "Désactiver la recherche Web"
+  : "Activer la recherche Web";
+}
+
+/* =====================================
+   INTELLIGENCE ARTIFICIELLE
 ===================================== */
 
 async function tryRealAI() {
@@ -1215,12 +1320,24 @@ async function tryRealAI() {
   const result = await api("/api/chat", {
    method: "POST",
    signal: controller.signal,
-   body: JSON.stringify({ messages })
+   body: JSON.stringify({
+    messages,
+    web_search: webSearchEnabled
+   })
   });
 
   return result.reply || result.answer || "Je n'ai pas reçu de réponse.";
+
  } finally {
   clearTimeout(timeout);
+ }
+}
+
+function showAnswer(box, answer) {
+ if (window.marked && window.DOMPurify) {
+  box.innerHTML = DOMPurify.sanitize(marked.parse(answer));
+ } else {
+  box.textContent = answer;
  }
 }
 
@@ -1241,11 +1358,7 @@ async function askAI(question, botBox) {
  try {
   const answer = await tryRealAI();
 
-  if (window.marked && window.DOMPurify) {
-   botBox.innerHTML = DOMPurify.sanitize(marked.parse(answer));
-  } else {
-   botBox.textContent = answer;
-  }
+  showAnswer(botBox, answer);
 
   chatHistory.push({
    role: "assistant",
@@ -1256,20 +1369,26 @@ async function askAI(question, botBox) {
   saveCurrent();
 
  } catch(error) {
-  botBox.textContent =
-   error.name === "AbortError"
-    ? "La réponse prend trop de temps. Réessaie."
-    : "Erreur : " + error.message;
+  const message = error.name === "AbortError"
+   ? "La réponse prend trop de temps. Réessaie."
+   : "Erreur : " + error.message;
 
-  // Retire le message utilisateur de la conversation locale
-  // afin de permettre une nouvelle tentative sans le dupliquer.
+  botBox.textContent = message;
+
+  // On conserve la question pour permettre de la réessayer.
   chatHistory.pop();
 
  } finally {
   isGenerating = false;
   $("sendBtn").disabled = false;
+  $("messages").scrollTop = $("messages").scrollHeight;
  }
+
 }
+
+/* =====================================
+   ENVOI DES MESSAGES
+===================================== */
 
 async function sendMessage() {
  if (isGenerating) return;
@@ -1277,13 +1396,18 @@ async function sendMessage() {
  const input = $("question");
  const question = input.value.trim();
 
- if (!question) return;
+ if (!question && !selectedFile) return;
 
  input.value = "";
  input.style.height = "45px";
 
  pushNav("chat");
  showPageOnly("chat");
+
+ if (selectedFile) {
+  await sendFileToAI(selectedFile, question);
+  return;
+ }
 
  addMessage("user", question);
  const botBox = addMessage("assistant", "");
@@ -1304,60 +1428,185 @@ $("question").addEventListener("input", function() {
 });
 
 /* =====================================
-   DOCUMENTS PDF / TXT
+   FICHIERS ET DOCUMENTS
 ===================================== */
 
+function updateFileStatus() {
+ const status = $("fileStatus");
+
+ if (!selectedFile) {
+  status.classList.add("hidden");
+  status.textContent = "";
+  return;
+ }
+
+ status.classList.remove("hidden");
+ status.textContent = "📎 Fichier sélectionné : " + selectedFile.name;
+}
+
+function readAsDataURL(file) {
+ return new Promise((resolve, reject) => {
+  const reader = new FileReader();
+
+  reader.onload = () => resolve(reader.result);
+  reader.onerror = () => reject(new Error("Lecture du fichier impossible."));
+
+  reader.readAsDataURL(file);
+}
+
+function readFileText(file) {
+ return new Promise((resolve, reject) => {
+  const reader = new FileReader();
+
+  reader.onload = () => resolve(String(reader.result || ""));
+  reader.onerror = () => reject(new Error("Lecture du document impossible."));
+
+  reader.readAsText(file);
+ });
+}
+
 async function handleFile(input) {
- const file = input.files[0];
+ const file = input.files && input.files[0];
  if (!file) return;
 
  try {
-  let content = "";
+  const isImage = file.type.startsWith("image/");
+  const isPDF = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
+  const isText =
+   file.type.startsWith("text/") ||
+   /\.(txt|md|csv)$/i.test(file.name);
 
-  if (
-   file.type === "text/plain" ||
-   file.name.endsWith(".md") ||
-   file.name.endsWith(".csv")
-  ) {
-   content = await file.text();
-  } else if (
-   file.type === "application/pdf" ||
-   file.name.endsWith(".pdf")
-  ) {
-   content = await readPDF(file);
-  } else {
-   alert("Format non supporté.");
+  if (isImage) {
+   if (file.size > MAX_IMAGE_SIZE) {
+    throw new Error("Image trop lourde. Taille maximale : 8 Mo.");
+   }
+
+   selectedFile = {
+    type: "image",
+    file
+   };
+
+  } else if (isPDF) {
+   if (file.size > MAX_PDF_SIZE) {
+    throw new Error("PDF trop lourd. Taille maximale : 18 Mo.");
+   }
+
+   selectedFile = {
+    type: "pdf",
+    file
+   };
+
+  } else if (isText) {
+   if (file.size > MAX_TEXT_SIZE) {
+    throw new Error("Document texte trop lourd. Taille maximale : 2 Mo.");
+   }
+
+   const content = await readFileText(file);
+
+   $("question").value =
+    "Analyse ce document et explique-moi les informations importantes :\n\n" +
+    content.slice(0, 18000);
+
+   selectedFile = null;
+   updateFileStatus();
+
+   alert("Document chargé. Tu peux maintenant envoyer ta question à TAYA.");
+
+   $("question").focus();
    return;
+
+  } else {
+   throw new Error("Format non supporté. Utilise une image, un PDF, TXT, MD ou CSV.");
   }
 
-  $("question").value =
-   "Analyse ce document et explique-moi les informations importantes :\n\n" +
-   content.slice(0, 18000);
+  updateFileStatus();
 
  } catch(error) {
-  alert("Impossible de lire ce fichier : " + error.message);
+  alert(error.message);
+  selectedFile = null;
+  updateFileStatus();
+
  } finally {
   input.value = "";
  }
 }
 
-async function readPDF(file) {
- if (!window.pdfjsLib) throw new Error("Lecteur PDF indisponible.");
+async function sendFileToAI(item, question) {
+ if (isGenerating) return;
 
- const buffer = await file.arrayBuffer();
- const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+ isGenerating = true;
+ $("sendBtn").disabled = true;
 
- let text = "";
- const maxPages = Math.min(pdf.numPages, 20);
+ const file = item.file;
+ const prompt = question || (
+  item.type === "image"
+   ? "Décris cette image et explique ce qu'elle représente."
+   : "Analyse ce PDF et résume les informations importantes."
+ );
 
- for (let i = 1; i <= maxPages; i++) {
-  const page = await pdf.getPage(i);
-  const data = await page.getTextContent();
+ const label = "📎 " + file.name + "\n" + prompt;
 
-  text += data.items.map(item => item.str).join(" ") + "\n";
+ addMessage("user", label);
+ const botBox = addMessage("assistant", "");
+
+ botBox.innerHTML =
+  '<div class="typing"><span></span><span></span><span></span></div>';
+
+ chatHistory.push({
+  role: "user",
+  content: label
+ });
+
+ try {
+  const dataURL = await readAsDataURL(file);
+
+  let result;
+
+  if (item.type === "image") {
+   result = await api("/api/chat/image", {
+    method: "POST",
+    body: JSON.stringify({
+     image: dataURL,
+     question: prompt
+    })
+   });
+  } else {
+   result = await api("/api/chat/pdf", {
+    method: "POST",
+    body: JSON.stringify({
+     pdf: dataURL,
+     question: prompt
+    })
+   });
+  }
+
+  const answer =
+   result.reply ||
+   result.answer ||
+   result.message ||
+   "Je n'ai pas reçu de réponse.";
+
+  showAnswer(botBox, answer);
+
+  chatHistory.push({
+   role: "assistant",
+   content: answer
+  });
+
+  lastAnswer = answer;
+  saveCurrent();
+
+ } catch(error) {
+  botBox.textContent = "Erreur d'analyse : " + error.message;
+  chatHistory.pop();
+
+ } finally {
+  selectedFile = null;
+  updateFileStatus();
+  isGenerating = false;
+  $("sendBtn").disabled = false;
+  $("messages").scrollTop = $("messages").scrollHeight;
  }
-
- return text;
 }
 
 /* =====================================
@@ -1369,42 +1618,82 @@ function startVoice() {
   window.SpeechRecognition || window.webkitSpeechRecognition;
 
  if (!SpeechRecognition) {
-  alert("La dictée vocale n'est pas disponible dans ce navigateur.");
+  alert("La dictée vocale n'est pas disponible dans ce navigateur. Essaie avec Safari ou Chrome.");
   return;
  }
 
  const recognition = new SpeechRecognition();
+
  recognition.lang = "fr-FR";
  recognition.interimResults = false;
+ recognition.continuous = false;
+
+ recognition.onstart = () => {
+  $("question").placeholder = "🎤 Je t'écoute...";
+ };
 
  recognition.onresult = event => {
   const text = event.results[0][0].transcript;
-  $("question").value += ($("question").value ? " " : "") + text;
+
+  $("question").value +=
+   ($("question").value ? " " : "") + text;
+
+  $("question").focus();
  };
 
- recognition.onerror = () => {
-  alert("Impossible de reconnaître la voix.");
+ recognition.onerror = event => {
+  console.error("Erreur vocale :", event.error);
+  alert("Impossible de reconnaître la voix. Vérifie les autorisations du microphone.");
  };
 
- recognition.start();
+ recognition.onend = () => {
+  $("question").placeholder = "Pose n'importe quelle question à TAYA...";
+ };
+
+ try {
+  recognition.start();
+ } catch(error) {
+  alert("Impossible de démarrer le microphone.");
+ }
 }
 
-function readLastAnswer() {
+/* =====================================
+   LECTURE VOCALE
+===================================== */
+
+async function readLastAnswer() {
  if (!lastAnswer) {
   alert("Aucune réponse à lire.");
   return;
  }
 
- if (!("speechSynthesis" in window)) {
-  alert("Lecture vocale indisponible.");
-  return;
+ try {
+  const blob = await apiBinary("/api/audio/speech", {
+   text: lastAnswer
+  });
+
+  const url = URL.createObjectURL(blob);
+  const audio = new Audio(url);
+
+  audio.onended = () => URL.revokeObjectURL(url);
+  audio.onerror = () => URL.revokeObjectURL(url);
+
+  await audio.play();
+
+ } catch(error) {
+  console.warn("Lecture vocale serveur indisponible :", error);
+
+  if (!("speechSynthesis" in window)) {
+   alert("Lecture vocale indisponible.");
+   return;
+  }
+
+  speechSynthesis.cancel();
+
+  const speech = new SpeechSynthesisUtterance(lastAnswer);
+  speech.lang = "fr-FR";
+  speechSynthesis.speak(speech);
  }
-
- speechSynthesis.cancel();
-
- const speech = new SpeechSynthesisUtterance(lastAnswer);
- speech.lang = "fr-FR";
- speechSynthesis.speak(speech);
 }
 
 /* =====================================
@@ -1434,6 +1723,7 @@ async function saveMemory() {
 
  } catch(error) {
   $("memoryStatus").textContent = error.message;
+
  } finally {
   button.disabled = false;
  }
@@ -1471,13 +1761,14 @@ async function sendMessageToMaruce() {
 
  } catch(error) {
   $("msgSent").textContent = "❌ " + error.message;
+
  } finally {
   button.disabled = false;
  }
 }
 
 /* =====================================
-   ADMINISTRATION SÉCURISÉE
+   ADMINISTRATION
 ===================================== */
 
 function openAdmin() {
@@ -1558,6 +1849,7 @@ function renderAdminUsers(users) {
   details.style.marginTop = "7px";
 
   const small = document.createElement("small");
+
   small.textContent =
    "📞 " + (user.phone || "") +
    " • " +
@@ -1634,11 +1926,17 @@ async function initialize() {
   const result = await api("/api/auth/me");
   currentUser = result.user;
 
+  if (!currentUser) {
+   throw new Error("Session invalide.");
+  }
+
   localStorage.setItem("taya_current_user", JSON.stringify(currentUser));
 
   await openApplication();
 
  } catch(error) {
+  console.warn("Session non restaurée :", error.message);
+
   authToken = "";
   currentUser = null;
 
