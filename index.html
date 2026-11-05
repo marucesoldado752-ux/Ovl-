@@ -480,7 +480,6 @@ button:disabled{opacity:.5;cursor:not-allowed}
 
 <body>
 
-<!-- AUTHENTIFICATION -->
 <div id="registerOverlay" class="overlay">
  <div class="auth-card">
   <div class="logo">TAYA IA</div>
@@ -559,7 +558,6 @@ button:disabled{opacity:.5;cursor:not-allowed}
  </div>
 </div>
 
-<!-- RÉCUPÉRATION -->
 <div id="recoveryOverlay" class="overlay hidden">
  <div class="auth-card">
   <div class="logo">RÉCUPÉRATION</div>
@@ -583,7 +581,6 @@ button:disabled{opacity:.5;cursor:not-allowed}
  </div>
 </div>
 
-<!-- APPLICATION -->
 <section id="main">
  <header class="topbar">
   <div style="display:flex;align-items:center;gap:10px">
@@ -629,7 +626,6 @@ button:disabled{opacity:.5;cursor:not-allowed}
 
    <div id="messages" class="messages hidden"></div>
 
-   <!-- CONTACT -->
    <div id="contactPage" class="page hidden">
     <div class="top-back">
      <button class="back-btn" onclick="goBack()">⬅</button>
@@ -644,7 +640,6 @@ button:disabled{opacity:.5;cursor:not-allowed}
     <button class="primary" onclick="openLeaveMessage()">✉️ Laisser un message dans l'application</button>
    </div>
 
-   <!-- MESSAGE À MARUCE -->
    <div id="leaveMsgPage" class="page hidden">
     <div class="top-back">
      <button class="back-btn" onclick="goBack()">⬅</button>
@@ -656,7 +651,6 @@ button:disabled{opacity:.5;cursor:not-allowed}
     <p id="msgSent" style="text-align:center;color:var(--green);margin-top:12px;font-size:13px"></p>
    </div>
 
-   <!-- MÉMOIRE -->
    <div id="memoryPage" class="page hidden">
     <div class="top-back">
      <button class="back-btn" onclick="goBack()">⬅</button>
@@ -670,7 +664,6 @@ button:disabled{opacity:.5;cursor:not-allowed}
     <p id="memoryStatus" class="auth-error"></p>
    </div>
 
-   <!-- ADMIN -->
    <div id="adminPage" class="page hidden">
     <div class="top-back">
      <button class="back-btn" onclick="goBack()">⬅</button>
@@ -700,7 +693,6 @@ button:disabled{opacity:.5;cursor:not-allowed}
     <div id="adminMsgs"><div class="card">Chargement...</div></div>
    </div>
 
-   <!-- COMPOSITEUR -->
    <div id="composerArea" class="composer-area">
     <div id="searchStatus" class="search-status hidden">🔎 Recherche Web activée</div>
     <div id="fileStatus" class="file-status hidden"></div>
@@ -724,10 +716,6 @@ button:disabled{opacity:.5;cursor:not-allowed}
 
 <script>
 "use strict";
-
-/* =====================================
-   CONFIGURATION
-===================================== */
 
 const API_URL = "https://taya-ai-api.onrender.com";
 const MAX_IMAGE_SIZE = 8 * 1024 * 1024;
@@ -757,14 +745,10 @@ try {
  projects = [];
 }
 
-/* =====================================
-   API
-===================================== */
+/* API */
 
 async function api(path, options = {}) {
- const headers = {
-  ...(options.headers || {})
- };
+ const headers = {...(options.headers || {})};
 
  if (options.body && !headers["Content-Type"]) {
   headers["Content-Type"] = "application/json";
@@ -774,10 +758,16 @@ async function api(path, options = {}) {
   headers.Authorization = "Bearer " + authToken;
  }
 
- const response = await fetch(API_URL + path, {
-  ...options,
-  headers
- });
+ let response;
+
+ try {
+  response = await fetch(API_URL + path, {
+   ...options,
+   headers
+  });
+ } catch(error) {
+  throw new Error("Impossible de contacter le serveur. Vérifie ta connexion Internet ou le serveur Render.");
+ }
 
  let data = {};
 
@@ -795,18 +785,16 @@ async function api(path, options = {}) {
 }
 
 async function apiBinary(path, body) {
- const headers = {
-  "Content-Type": "application/json"
- };
+ const headers = {"Content-Type":"application/json"};
 
  if (authToken) {
   headers.Authorization = "Bearer " + authToken;
  }
 
  const response = await fetch(API_URL + path, {
-  method: "POST",
+  method:"POST",
   headers,
-  body: JSON.stringify(body)
+  body:JSON.stringify(body)
  });
 
  if (!response.ok) {
@@ -823,9 +811,7 @@ async function apiBinary(path, body) {
  return await response.blob();
 }
 
-/* =====================================
-   AUTHENTIFICATION
-===================================== */
+/* AUTHENTIFICATION */
 
 function setAuthMode(mode) {
  authMode = mode;
@@ -881,8 +867,8 @@ async function submitAuth() {
    if (password !== confirmation) throw new Error("Les mots de passe ne correspondent pas.");
 
    result = await api("/api/auth/register", {
-    method: "POST",
-    body: JSON.stringify({ name, phone, password })
+    method:"POST",
+    body:JSON.stringify({name,phone,password})
    });
 
    if (result.recovery_code) {
@@ -895,8 +881,8 @@ async function submitAuth() {
    }
   } else {
    result = await api("/api/auth/login", {
-    method: "POST",
-    body: JSON.stringify({ phone, password })
+    method:"POST",
+    body:JSON.stringify({phone,password})
    });
   }
 
@@ -935,8 +921,8 @@ async function recoverAccount() {
 
  try {
   const result = await api("/api/auth/recover", {
-   method: "POST",
-   body: JSON.stringify({ phone, recovery_code, new_password })
+   method:"POST",
+   body:JSON.stringify({phone,recovery_code,new_password})
   });
 
   alert(
@@ -961,9 +947,7 @@ function closeRecovery() {
  $("recoveryOverlay").classList.add("hidden");
 }
 
-/* =====================================
-   SESSION
-===================================== */
+/* SESSION */
 
 async function openApplication() {
  if (!currentUser || !authToken) {
@@ -1038,9 +1022,7 @@ async function logout() {
  setAuthMode("login");
 }
 
-/* =====================================
-   NAVIGATION
-===================================== */
+/* NAVIGATION */
 
 function hideAllPagesRaw() {
  [
@@ -1145,9 +1127,7 @@ function closeSidebar() {
  $("sidebar").classList.remove("open");
 }
 
-/* =====================================
-   HISTORIQUE
-===================================== */
+/* HISTORIQUE */
 
 function saveProjects() {
  try {
@@ -1170,9 +1150,9 @@ function saveCurrent() {
   const first = chatHistory.find(m => m.role === "user");
 
   project = {
-   id: currentProjectId,
-   title: first ? first.content.slice(0, 45) : "Nouvelle discussion",
-   messages: []
+   id:currentProjectId,
+   title:first ? first.content.slice(0,45) : "Nouvelle discussion",
+   messages:[]
   };
 
   projects.unshift(project);
@@ -1217,12 +1197,12 @@ async function loadCloudHistory() {
 
  const cloudMessages = rows
   .filter(row =>
-   ["user", "assistant"].includes(row.role) &&
+   ["user","assistant"].includes(row.role) &&
    typeof row.message === "string"
   )
   .map(row => ({
-   role: row.role,
-   content: row.message
+   role:row.role,
+   content:row.message
   }));
 
  if (!cloudMessages.length) return;
@@ -1231,9 +1211,9 @@ async function loadCloudHistory() {
 
  if (!existing) {
   projects.push({
-   id: "cloud-history",
-   title: "Historique synchronisé",
-   messages: cloudMessages
+   id:"cloud-history",
+   title:"Historique synchronisé",
+   messages:cloudMessages
   });
  } else {
   existing.messages = cloudMessages;
@@ -1243,9 +1223,7 @@ async function loadCloudHistory() {
  renderHistory();
 }
 
-/* =====================================
-   AFFICHAGE DES MESSAGES
-===================================== */
+/* AFFICHAGE DES MESSAGES */
 
 function addMessage(role, content) {
  const container = $("messages");
@@ -1281,48 +1259,44 @@ function renderMessages() {
  $("messages").innerHTML = "";
 
  chatHistory.forEach(message => {
-  addMessage(message.role, message.content);
+  addMessage(message.role,message.content);
  });
 }
 
-/* =====================================
-   RECHERCHE WEB
-===================================== */
+/* RECHERCHE WEB */
 
 function toggleWebSearch() {
  webSearchEnabled = !webSearchEnabled;
 
- $("searchBtn").classList.toggle("active", webSearchEnabled);
- $("searchStatus").classList.toggle("hidden", !webSearchEnabled);
+ $("searchBtn").classList.toggle("active",webSearchEnabled);
+ $("searchStatus").classList.toggle("hidden",!webSearchEnabled);
 
  $("searchBtn").title = webSearchEnabled
   ? "Désactiver la recherche Web"
   : "Activer la recherche Web";
 }
 
-/* =====================================
-   INTELLIGENCE ARTIFICIELLE
-===================================== */
+/* INTELLIGENCE ARTIFICIELLE */
 
 async function tryRealAI() {
  const messages = chatHistory
-  .filter(m => ["user", "assistant"].includes(m.role))
+  .filter(m => ["user","assistant"].includes(m.role))
   .slice(-20)
   .map(m => ({
-   role: m.role,
-   content: m.content
+   role:m.role,
+   content:m.content
   }));
 
  const controller = new AbortController();
- const timeout = setTimeout(() => controller.abort(), 90000);
+ const timeout = setTimeout(() => controller.abort(),90000);
 
  try {
-  const result = await api("/api/chat", {
-   method: "POST",
-   signal: controller.signal,
-   body: JSON.stringify({
+  const result = await api("/api/chat",{
+   method:"POST",
+   signal:controller.signal,
+   body:JSON.stringify({
     messages,
-    web_search: webSearchEnabled
+    web_search:webSearchEnabled
    })
   });
 
@@ -1333,7 +1307,7 @@ async function tryRealAI() {
  }
 }
 
-function showAnswer(box, answer) {
+function showAnswer(box,answer) {
  if (window.marked && window.DOMPurify) {
   box.innerHTML = DOMPurify.sanitize(marked.parse(answer));
  } else {
@@ -1341,15 +1315,15 @@ function showAnswer(box, answer) {
  }
 }
 
-async function askAI(question, botBox) {
+async function askAI(question,botBox) {
  if (isGenerating || !question.trim()) return;
 
  isGenerating = true;
  $("sendBtn").disabled = true;
 
  chatHistory.push({
-  role: "user",
-  content: question
+  role:"user",
+  content:question
  });
 
  botBox.innerHTML =
@@ -1358,11 +1332,11 @@ async function askAI(question, botBox) {
  try {
   const answer = await tryRealAI();
 
-  showAnswer(botBox, answer);
+  showAnswer(botBox,answer);
 
   chatHistory.push({
-   role: "assistant",
-   content: answer
+   role:"assistant",
+   content:answer
   });
 
   lastAnswer = answer;
@@ -1374,8 +1348,6 @@ async function askAI(question, botBox) {
    : "Erreur : " + error.message;
 
   botBox.textContent = message;
-
-  // On conserve la question pour permettre de la réessayer.
   chatHistory.pop();
 
  } finally {
@@ -1383,12 +1355,9 @@ async function askAI(question, botBox) {
   $("sendBtn").disabled = false;
   $("messages").scrollTop = $("messages").scrollHeight;
  }
-
 }
 
-/* =====================================
-   ENVOI DES MESSAGES
-===================================== */
+/* ENVOI DES MESSAGES */
 
 async function sendMessage() {
  if (isGenerating) return;
@@ -1405,31 +1374,29 @@ async function sendMessage() {
  showPageOnly("chat");
 
  if (selectedFile) {
-  await sendFileToAI(selectedFile, question);
+  await sendFileToAI(selectedFile,question);
   return;
  }
 
- addMessage("user", question);
- const botBox = addMessage("assistant", "");
+ addMessage("user",question);
+ const botBox = addMessage("assistant","");
 
- await askAI(question, botBox);
+ await askAI(question,botBox);
 }
 
-$("question").addEventListener("keydown", event => {
+$("question").addEventListener("keydown",event => {
  if (event.key === "Enter" && !event.shiftKey) {
   event.preventDefault();
   sendMessage();
  }
 });
 
-$("question").addEventListener("input", function() {
+$("question").addEventListener("input",function() {
  this.style.height = "45px";
- this.style.height = Math.min(this.scrollHeight, 150) + "px";
+ this.style.height = Math.min(this.scrollHeight,150) + "px";
 });
 
-/* =====================================
-   FICHIERS ET DOCUMENTS
-===================================== */
+/* FICHIERS ET DOCUMENTS */
 
 function updateFileStatus() {
  const status = $("fileStatus");
@@ -1441,21 +1408,26 @@ function updateFileStatus() {
  }
 
  status.classList.remove("hidden");
- status.textContent = "📎 Fichier sélectionné : " + selectedFile.name;
+ status.textContent = "📎 Fichier sélectionné : " + selectedFile.file.name;
 }
 
+/* FONCTION CORRIGÉE : FERMETURE MANQUANTE AJOUTÉE */
+
 function readAsDataURL(file) {
- return new Promise((resolve, reject) => {
+ return new Promise((resolve,reject) => {
   const reader = new FileReader();
 
   reader.onload = () => resolve(reader.result);
-  reader.onerror = () => reject(new Error("Lecture du fichier impossible."));
+  reader.onerror = () => reject(
+   new Error("Lecture du fichier impossible.")
+  );
 
   reader.readAsDataURL(file);
+ });
 }
 
 function readFileText(file) {
- return new Promise((resolve, reject) => {
+ return new Promise((resolve,reject) => {
   const reader = new FileReader();
 
   reader.onload = () => resolve(String(reader.result || ""));
@@ -1481,20 +1453,14 @@ async function handleFile(input) {
     throw new Error("Image trop lourde. Taille maximale : 8 Mo.");
    }
 
-   selectedFile = {
-    type: "image",
-    file
-   };
+   selectedFile = {type:"image",file};
 
   } else if (isPDF) {
    if (file.size > MAX_PDF_SIZE) {
     throw new Error("PDF trop lourd. Taille maximale : 18 Mo.");
    }
 
-   selectedFile = {
-    type: "pdf",
-    file
-   };
+   selectedFile = {type:"pdf",file};
 
   } else if (isText) {
    if (file.size > MAX_TEXT_SIZE) {
@@ -1505,7 +1471,7 @@ async function handleFile(input) {
 
    $("question").value =
     "Analyse ce document et explique-moi les informations importantes :\n\n" +
-    content.slice(0, 18000);
+    content.slice(0,18000);
 
    selectedFile = null;
    updateFileStatus();
@@ -1531,7 +1497,7 @@ async function handleFile(input) {
  }
 }
 
-async function sendFileToAI(item, question) {
+async function sendFileToAI(item,question) {
  if (isGenerating) return;
 
  isGenerating = true;
@@ -1546,16 +1512,13 @@ async function sendFileToAI(item, question) {
 
  const label = "📎 " + file.name + "\n" + prompt;
 
- addMessage("user", label);
- const botBox = addMessage("assistant", "");
+ addMessage("user",label);
+ const botBox = addMessage("assistant","");
 
  botBox.innerHTML =
   '<div class="typing"><span></span><span></span><span></span></div>';
 
- chatHistory.push({
-  role: "user",
-  content: label
- });
+ chatHistory.push({role:"user",content:label});
 
  try {
   const dataURL = await readAsDataURL(file);
@@ -1563,19 +1526,19 @@ async function sendFileToAI(item, question) {
   let result;
 
   if (item.type === "image") {
-   result = await api("/api/chat/image", {
-    method: "POST",
-    body: JSON.stringify({
-     image: dataURL,
-     question: prompt
+   result = await api("/api/chat/image",{
+    method:"POST",
+    body:JSON.stringify({
+     image:dataURL,
+     question:prompt
     })
    });
   } else {
-   result = await api("/api/chat/pdf", {
-    method: "POST",
-    body: JSON.stringify({
-     pdf: dataURL,
-     question: prompt
+   result = await api("/api/chat/pdf",{
+    method:"POST",
+    body:JSON.stringify({
+     pdf:dataURL,
+     question:prompt
     })
    });
   }
@@ -1586,12 +1549,9 @@ async function sendFileToAI(item, question) {
    result.message ||
    "Je n'ai pas reçu de réponse.";
 
-  showAnswer(botBox, answer);
+  showAnswer(botBox,answer);
 
-  chatHistory.push({
-   role: "assistant",
-   content: answer
-  });
+  chatHistory.push({role:"assistant",content:answer});
 
   lastAnswer = answer;
   saveCurrent();
@@ -1609,9 +1569,7 @@ async function sendFileToAI(item, question) {
  }
 }
 
-/* =====================================
-   DICTÉE VOCALE
-===================================== */
+/* DICTÉE VOCALE */
 
 function startVoice() {
  const SpeechRecognition =
@@ -1642,7 +1600,7 @@ function startVoice() {
  };
 
  recognition.onerror = event => {
-  console.error("Erreur vocale :", event.error);
+  console.error("Erreur vocale :",event.error);
   alert("Impossible de reconnaître la voix. Vérifie les autorisations du microphone.");
  };
 
@@ -1657,9 +1615,7 @@ function startVoice() {
  }
 }
 
-/* =====================================
-   LECTURE VOCALE
-===================================== */
+/* LECTURE VOCALE */
 
 async function readLastAnswer() {
  if (!lastAnswer) {
@@ -1668,8 +1624,8 @@ async function readLastAnswer() {
  }
 
  try {
-  const blob = await apiBinary("/api/audio/speech", {
-   text: lastAnswer
+  const blob = await apiBinary("/api/audio/speech",{
+   text:lastAnswer
   });
 
   const url = URL.createObjectURL(blob);
@@ -1681,7 +1637,7 @@ async function readLastAnswer() {
   await audio.play();
 
  } catch(error) {
-  console.warn("Lecture vocale serveur indisponible :", error);
+  console.warn("Lecture vocale serveur indisponible :",error);
 
   if (!("speechSynthesis" in window)) {
    alert("Lecture vocale indisponible.");
@@ -1696,9 +1652,7 @@ async function readLastAnswer() {
  }
 }
 
-/* =====================================
-   MÉMOIRE SUPABASE
-===================================== */
+/* MÉMOIRE SUPABASE */
 
 async function loadMemory() {
  const result = await api("/api/memory");
@@ -1713,9 +1667,9 @@ async function saveMemory() {
  $("memoryStatus").textContent = "Enregistrement...";
 
  try {
-  const result = await api("/api/memory", {
-   method: "PUT",
-   body: JSON.stringify({ memory })
+  const result = await api("/api/memory",{
+   method:"PUT",
+   body:JSON.stringify({memory})
   });
 
   $("memoryStatus").textContent =
@@ -1729,9 +1683,7 @@ async function saveMemory() {
  }
 }
 
-/* =====================================
-   CONTACT MARUCE
-===================================== */
+/* CONTACT MARUCE */
 
 async function sendMessageToMaruce() {
  const message = $("msgText").value.trim();
@@ -1746,9 +1698,9 @@ async function sendMessageToMaruce() {
  $("msgSent").textContent = "Envoi en cours...";
 
  try {
-  const result = await api("/api/contact", {
-   method: "POST",
-   body: JSON.stringify({ message })
+  const result = await api("/api/contact",{
+   method:"POST",
+   body:JSON.stringify({message})
   });
 
   $("msgText").value = "";
@@ -1767,9 +1719,7 @@ async function sendMessageToMaruce() {
  }
 }
 
-/* =====================================
-   ADMINISTRATION
-===================================== */
+/* ADMINISTRATION */
 
 function openAdmin() {
  if (!currentUser || currentUser.role !== "admin") {
@@ -1798,7 +1748,7 @@ async function loadAdmin() {
  $("adminMsgs").innerHTML = "<div class='card'>Chargement...</div>";
 
  try {
-  const [usersResult, messagesResult] = await Promise.all([
+  const [usersResult,messagesResult] = await Promise.all([
    api("/api/admin/users"),
    api("/api/admin/messages")
   ]);
@@ -1812,7 +1762,7 @@ async function loadAdmin() {
   $("statMsgs").textContent = messages.length;
 
   $("adminBadge").textContent = messages.length;
-  $("adminBadge").classList.toggle("hidden", messages.length === 0);
+  $("adminBadge").classList.toggle("hidden",messages.length === 0);
 
   renderAdminUsers(users);
   renderAdminMessages(messages);
@@ -1863,7 +1813,7 @@ function renderAdminUsers(users) {
   link.style.color = "var(--green)";
   link.target = "_blank";
   link.rel = "noopener";
-  link.href = "https://wa.me/" + String(user.phone || "").replace(/\D/g, "");
+  link.href = "https://wa.me/" + String(user.phone || "").replace(/\D/g,"");
   link.textContent = "💬 WhatsApp";
 
   details.appendChild(small);
@@ -1912,9 +1862,7 @@ function renderAdminMessages(messages) {
  });
 }
 
-/* =====================================
-   DÉMARRAGE
-===================================== */
+/* DÉMARRAGE */
 
 async function initialize() {
  if (!authToken) {
@@ -1930,12 +1878,12 @@ async function initialize() {
    throw new Error("Session invalide.");
   }
 
-  localStorage.setItem("taya_current_user", JSON.stringify(currentUser));
+  localStorage.setItem("taya_current_user",JSON.stringify(currentUser));
 
   await openApplication();
 
  } catch(error) {
-  console.warn("Session non restaurée :", error.message);
+  console.warn("Session non restaurée :",error.message);
 
   authToken = "";
   currentUser = null;
