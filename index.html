@@ -6,11 +6,14 @@
   <meta name="theme-color" content="#050807">
   <meta name="description" content="TAYA IA - Votre assistant intelligent par Maruce Soldado">
   <title>TAYA IA V20 — By Maruce 🇬🇳</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <!-- AUTHENTIFICATION -->
   <section id="authScreen" class="auth-screen">
@@ -18,306 +21,336 @@
       <div class="brand-logo">T</div>
       <h1>TAYA <span>IA</span></h1>
       <p class="brand-subtitle">L'intelligence à portée de main 🇬🇳</p>
-  <div class="auth-tabs">
-    <button id="loginTab" class="auth-tab active" onclick="switchAuth('login')">Connexion</button>
-    <button id="registerTab" class="auth-tab" onclick="switchAuth('register')">Inscription</button>
-  </div>
-  <form id="authForm" onsubmit="submitAuth(event)">
-    <div id="nameField" class="form-group hidden">
-      <label for="authName">Nom complet</label>
-      <input id="authName" type="text" placeholder="Votre nom complet" autocomplete="name">
+
+      <div class="auth-tabs">
+        <button id="loginTab" class="auth-tab active" onclick="switchAuth('login')">Connexion</button>
+        <button id="registerTab" class="auth-tab" onclick="switchAuth('register')">Inscription</button>
+      </div>
+
+      <form id="authForm" onsubmit="submitAuth(event)">
+        <div id="nameField" class="form-group hidden">
+          <label for="authName">Nom complet</label>
+          <input id="authName" type="text" placeholder="Votre nom complet" autocomplete="name">
+        </div>
+
+        <div class="form-group">
+          <label for="authPhone">Numéro de téléphone</label>
+          <input id="authPhone" type="tel" placeholder="+224XXXXXXXXX" autocomplete="tel" required>
+        </div>
+
+        <div class="form-group">
+          <label for="authPassword">Mot de passe</label>
+          <input id="authPassword" type="password" placeholder="Votre mot de passe" autocomplete="current-password" required>
+        </div>
+
+        <div id="confirmField" class="form-group hidden">
+          <label for="authConfirm">Confirmer le mot de passe</label>
+          <input id="authConfirm" type="password" placeholder="Confirmez le mot de passe">
+        </div>
+
+        <p id="authError" class="error-message"></p>
+        <button id="authSubmit" class="primary-button" type="submit">Se connecter</button>
+      </form>
+
+      <p class="auth-footer">TAYA IA V20 • By Maruce Soldado 👑</p>
     </div>
-    <div class="form-group">
-      <label for="authPhone">Numéro de téléphone</label>
-      <input id="authPhone" type="tel" placeholder="+224XXXXXXXXX" autocomplete="tel" required>
-    </div>
-    <div class="form-group">
-      <label for="authPassword">Mot de passe</label>
-      <input id="authPassword" type="password" placeholder="Votre mot de passe" autocomplete="current-password" required>
-    </div>
-    <div id="confirmField" class="form-group hidden">
-      <label for="authConfirm">Confirmer le mot de passe</label>
-      <input id="authConfirm" type="password" placeholder="Confirmez le mot de passe">
-    </div>
-    <p id="authError" class="error-message"></p>
-    <button id="authSubmit" class="primary-button" type="submit">Se connecter</button>
-  </form>
-  <p class="auth-footer">TAYA IA V20 • By Maruce Soldado 👑</p>
-</div>
   </section>
+
   <!-- APPLICATION -->
   <main id="app" class="app hidden">
-<!-- MENU LATÉRAL -->
-<div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar(false)"></div>
-<aside id="sidebar" class="sidebar">
-  <div class="sidebar-header">
-    <div class="mini-brand">
-      <div class="mini-logo">T</div>
-      <div>
-        <strong>TAYA IA</strong>
-        <small>VERSION 20</small>
-      </div>
-    </div>
-    <button class="icon-button close-sidebar" onclick="toggleSidebar(false)">✕</button>
-  </div>
-  <button class="new-chat-button" onclick="newChat()">
-    <span>＋</span> Nouveau chat
-  </button>
-  <nav class="sidebar-nav">
-    <button class="nav-item active" data-page="home" onclick="showPage('home')">
-      <span>⌂</span> Accueil
-    </button>
-    <button class="nav-item" data-page="chat" onclick="showPage('chat')">
-      <span>✦</span> Assistant IA
-    </button>
-    <button class="nav-item" data-page="memory" onclick="showPage('memory')">
-      <span>◈</span> Ma mémoire
-    </button>
-    <button class="nav-item" data-page="contact" onclick="showPage('contact')">
-      <span>✉</span> Contacter Maruce
-    </button>
-    <button class="nav-item hidden" id="adminNav" data-page="admin" onclick="showPage('admin')">
-      <span>⚙</span> Administration
-    </button>
-    <button class="nav-item" data-page="settings" onclick="showPage('settings')">
-      <span>☷</span> Paramètres
-    </button>
-  </nav>
-  <div class="sidebar-history">
-    <h3>DISCUSSIONS RÉCENTES</h3>
-    <div id="historyList">
-      <p class="muted-text">Aucune discussion récente</p>
-    </div>
-  </div>
-  <div class="sidebar-user">
-    <div id="userAvatar" class="user-avatar">T</div>
-    <div class="user-details">
-      <strong id="userName">Utilisateur</strong>
-      <small id="userPhone"></small>
-    </div>
-    <button class="icon-button" onclick="logout()" title="Déconnexion">↪</button>
-  </div>
-</aside>
-<!-- CONTENU PRINCIPAL -->
-<section class="main-content">
-  <!-- BARRE SUPÉRIEURE -->
-  <header class="topbar">
-    <div class="topbar-left">
-      <button class="icon-button menu-button" onclick="toggleSidebar(true)">☰</button>
-      <button id="backButton" class="icon-button hidden" onclick="goBack()">←</button>
-      <div>
-        <strong id="topTitle">Accueil</strong>
-        <small class="online-status"><span></span> Assistant disponible</small>
-      </div>
-    </div>
-    <div class="topbar-actions">
-      <button class="icon-button" onclick="toggleTheme()" title="Changer le thème">◐</button>
-      <button class="icon-button" onclick="newChat()" title="Nouveau chat">＋</button>
-    </div>
-  </header>
-  <!-- PAGE ACCUEIL -->
-  <section id="homePage" class="page active">
-    <div class="home-container">
-      <div class="hero-section">
-        <div class="hero-badge">✦ INTELLIGENCE ARTIFICIELLE</div>
-        <div class="hero-logo">T</div>
-        <h1>Bienvenue sur <span>TAYA IA</span></h1>
-        <h2>Salut <span id="welcomeName">Utilisateur</span> 👋</h2>
-        <p>Pose tes questions, crée, apprends et avance avec ton assistant intelligent.</p>
-        <button class="primary-button hero-button" onclick="showPage('chat')">
-          Commencer une conversation →
-        </button>
-        <div class="creator-line">BY MARUCE SOLDADO 👑 🇬🇳</div>
-      </div>
-      <div class="feature-grid">
-        <button class="feature-card" onclick="newChatWithPrompt('Explique-moi un sujet simplement')">
-          <span class="feature-icon">✦</span>
-          <strong>Questions & réponses</strong>
-          <small>Obtiens des réponses utiles</small>
-        </button>
-        <button class="feature-card" onclick="newChatWithPrompt('Aide-moi à écrire un texte professionnel')">
-          <span class="feature-icon">✎</span>
-          <strong>Écriture</strong>
-          <small>Messages, textes et idées</small>
-        </button>
-        <button class="feature-card" onclick="newChatWithPrompt('Aide-moi à résoudre un calcul')">
-          <span class="feature-icon">∑</span>
-          <strong>Calculs</strong>
-          <small>Résous tes problèmes</small>
-        </button>
-        <button class="feature-card" onclick="newChatWithPrompt('Aide-moi à programmer un site web')">
-          <span class="feature-icon">⌘</span>
-          <strong>Programmation</strong>
-          <small>Code et développement</small>
-        </button>
-      </div>
-    </div>
-  </section>
-  <!-- PAGE CHAT -->
-  <section id="chatPage" class="page">
-    <div class="chat-layout">
-      <div id="welcomeScreen" class="chat-welcome">
-        <div class="welcome-icon">✦</div>
-        <h2>Comment puis-je t'aider ?</h2>
-        <p>Je suis TAYA IA, ton assistant intelligent.</p>
-        <div class="prompt-grid">
-          <button onclick="usePrompt('Explique-moi quelque chose de nouveau')">
-            💡 Apprendre quelque chose
-          </button>
-          <button onclick="usePrompt('Aide-moi à écrire un message')">
-            ✍️ Écrire un message
-          </button>
-          <button onclick="usePrompt('Aide-moi avec un problème informatique')">
-            💻 Informatique
-          </button>
-          <button onclick="usePrompt('Traduis ce texte en français')">
-            🌍 Traduction
-          </button>
+
+    <!-- MENU LATÉRAL -->
+    <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar(false)"></div>
+
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="mini-brand">
+          <div class="mini-logo">T</div>
+          <div>
+            <strong>TAYA IA</strong>
+            <small>VERSION 20</small>
+          </div>
         </div>
+        <button class="icon-button close-sidebar" onclick="toggleSidebar(false)">✕</button>
       </div>
-      <div id="messages" class="messages-container"></div>
-      <div class="composer-area">
-        <div class="composer-tools">
-          <span>✦ TAYA IA peut faire des erreurs. Vérifie les informations importantes.</span>
-        </div>
-        <div id="composer" class="composer">
-          <input id="fileInput" type="file" accept="image/*,.pdf,.txt,.doc,.docx" hidden onchange="handleFile(this)">
-          <button class="composer-button" onclick="document.getElementById('fileInput').click()" title="Joindre un fichier">＋</button>
-          <button id="voiceButton" class="composer-button" onclick="startVoice()" title="Dicter un message">🎤</button>
-          <textarea id="messageInput" rows="1" placeholder="Écris ton message..." onkeydown="handleComposerKey(event)"></textarea>
-          <button id="stopButton" class="composer-button hidden" onclick="stopGeneration()" title="Arrêter">■</button>
-          <button id="sendButton" class="send-button" onclick="sendMessage()" title="Envoyer">↑</button>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- PAGE MÉMOIRE -->
-  <section id="memoryPage" class="page">
-    <div class="content-card">
-      <div class="section-heading">
-        <span class="section-icon">◈</span>
-        <div>
-          <h2>Ma mémoire</h2>
-          <p>Informations que TAYA IA peut utiliser pour mieux t'aider.</p>
-        </div>
-      </div>
-      <textarea id="memoryInput" class="large-textarea" placeholder="Ajoute ici les informations que tu souhaites que TAYA IA retienne..."></textarea>
-      <button class="primary-button" onclick="saveMemory()">Enregistrer ma mémoire</button>
-    </div>
-  </section>
-  <!-- PAGE CONTACT -->
-  <section id="contactPage" class="page">
-    <div class="content-card">
-      <div class="section-heading">
-        <span class="section-icon">✉</span>
-        <div>
-          <h2>Contacter Maruce</h2>
-          <p>Envoie directement ton message à l'administration de TAYA IA.</p>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="contactSubject">Sujet</label>
-        <input id="contactSubject" type="text" placeholder="Sujet du message">
-      </div>
-      <div class="form-group">
-        <label for="contactMessage">Ton message</label>
-        <textarea id="contactMessage" class="large-textarea" placeholder="Écris ton message ici..."></textarea>
-      </div>
-      <button class="primary-button" onclick="sendContactMessage()">Envoyer le message</button>
-      <p id="contactStatus" class="status-message"></p>
-      <div class="admin-panel contact-inbox">
-        <h3>Ma conversation avec Maruce</h3>
-        <div id="myContactMessages">
-          <p class="muted-text">Tes messages apparaîtront ici.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- PAGE ADMINISTRATION -->
-  <section id="adminPage" class="page">
-    <div class="admin-container">
-      <div class="section-heading">
-        <span class="section-icon">⚙</span>
-        <div>
-          <h2>Administration</h2>
-          <p>Gestion des utilisateurs et des messages.</p>
-        </div>
-      </div>
-      <button class="secondary-button admin-refresh" onclick="renderAdmin()">
-        ↻ Actualiser les données
+
+      <button class="new-chat-button" onclick="newChat()">
+        <span>＋</span> Nouveau chat
       </button>
-      <div class="stats-grid">
-        <div class="stat-card">
-          <small>Utilisateurs inscrits</small>
-          <strong id="adminUserCount">0</strong>
-        </div>
-        <div class="stat-card">
-          <small>Utilisateurs actifs</small>
-          <strong id="adminOnlineCount">0</strong>
-        </div>
-        <div class="stat-card">
-          <small>Messages reçus</small>
-          <strong id="adminMessageCount">0</strong>
-        </div>
-      </div>
-      <div class="admin-panel">
-        <h3>👥 Utilisateurs inscrits</h3>
-        <div id="adminUsers">
-          <p class="muted-text">Chargement des utilisateurs...</p>
-        </div>
-      </div>
-      <div class="admin-panel">
-        <h3>✉ Messages reçus</h3>
-        <div id="adminMessages">
-          <p class="muted-text">Chargement des messages...</p>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- PAGE PARAMÈTRES -->
-  <section id="settingsPage" class="page">
-    <div class="content-card">
-      <div class="section-heading">
-        <span class="section-icon">☷</span>
-        <div>
-          <h2>Paramètres</h2>
-          <p>Personnalise ton expérience TAYA IA.</p>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-page="home" onclick="showPage('home')">
+          <span>⌂</span> Accueil
+        </button>
+        <button class="nav-item" data-page="chat" onclick="showPage('chat')">
+          <span>✦</span> Assistant IA
+        </button>
+        <button class="nav-item" data-page="memory" onclick="showPage('memory')">
+          <span>◈</span> Ma mémoire
+        </button>
+        <button class="nav-item" data-page="contact" onclick="showPage('contact')">
+          <span>✉</span> Contacter Maruce
+        </button>
+        <button class="nav-item hidden" id="adminNav" data-page="admin" onclick="showPage('admin')">
+          <span>⚙</span> Administration
+        </button>
+        <button class="nav-item" data-page="settings" onclick="showPage('settings')">
+          <span>☷</span> Paramètres
+        </button>
+      </nav>
+
+      <div class="sidebar-history">
+        <h3>DISCUSSIONS RÉCENTES</h3>
+        <div id="historyList">
+          <p class="muted-text">Aucune discussion récente</p>
         </div>
       </div>
-      <div class="setting-row">
-        <div>
-          <strong>Apparence</strong>
-          <small>Passer du thème sombre au thème clair</small>
+
+      <div class="sidebar-user">
+        <div id="userAvatar" class="user-avatar">T</div>
+        <div class="user-details">
+          <strong id="userName">Utilisateur</strong>
+          <small id="userPhone"></small>
         </div>
-        <button class="secondary-button" onclick="toggleTheme()">Changer le thème</button>
+        <button class="icon-button" onclick="logout()" title="Déconnexion">↪</button>
       </div>
-      <div class="setting-row">
-        <div>
-          <strong>Nouvelle conversation</strong>
-          <small>Commencer une nouvelle discussion</small>
+    </aside>
+
+    <!-- CONTENU PRINCIPAL -->
+    <section class="main-content">
+
+      <!-- BARRE SUPÉRIEURE -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-button menu-button" onclick="toggleSidebar(true)">☰</button>
+          <button id="backButton" class="icon-button hidden" onclick="goBack()">←</button>
+          <div>
+            <strong id="topTitle">Accueil</strong>
+            <small class="online-status"><span></span> Assistant disponible</small>
+          </div>
         </div>
-        <button class="secondary-button" onclick="newChat()">Nouveau chat</button>
-      </div>
-      <div class="setting-row">
-        <div>
-          <strong>Déconnexion</strong>
-          <small>Quitter ton compte</small>
+
+        <div class="topbar-actions">
+          <button class="icon-button" onclick="toggleTheme()" title="Changer le thème">◐</button>
+          <button class="icon-button" onclick="newChat()" title="Nouveau chat">＋</button>
         </div>
-        <button class="danger-button" onclick="logout()">Déconnexion</button>
-      </div>
-      <div class="about-card">
-        <div class="mini-logo">T</div>
-        <h3>TAYA IA V20</h3>
-        <p>Une création de Maruce Soldado</p>
-        <strong>Fièrement guinéen 🇬🇳</strong>
-      </div>
-    </div>
-  </section>
-</section>
+      </header>
+
+      <!-- PAGE ACCUEIL -->
+      <section id="homePage" class="page active">
+        <div class="home-container">
+          <div class="hero-section">
+            <div class="hero-badge">✦ INTELLIGENCE ARTIFICIELLE</div>
+            <div class="hero-logo">T</div>
+            <h1>Bienvenue sur <span>TAYA IA</span></h1>
+            <h2>Salut <span id="welcomeName">Utilisateur</span> 👋</h2>
+            <p>Pose tes questions, crée, apprends et avance avec ton assistant intelligent.</p>
+            <button class="primary-button hero-button" onclick="showPage('chat')">
+              Commencer une conversation →
+            </button>
+            <div class="creator-line">BY MARUCE SOLDADO 👑 🇬🇳</div>
+          </div>
+
+          <div class="feature-grid">
+            <button class="feature-card" onclick="newChatWithPrompt('Explique-moi un sujet simplement')">
+              <span class="feature-icon">✦</span>
+              <strong>Questions & réponses</strong>
+              <small>Obtiens des réponses utiles</small>
+            </button>
+
+            <button class="feature-card" onclick="newChatWithPrompt('Aide-moi à écrire un texte professionnel')">
+              <span class="feature-icon">✎</span>
+              <strong>Écriture</strong>
+              <small>Messages, textes et idées</small>
+            </button>
+
+            <button class="feature-card" onclick="newChatWithPrompt('Aide-moi à résoudre un calcul')">
+              <span class="feature-icon">∑</span>
+              <strong>Calculs</strong>
+              <small>Résous tes problèmes</small>
+            </button>
+
+            <button class="feature-card" onclick="newChatWithPrompt('Aide-moi à programmer un site web')">
+              <span class="feature-icon">⌘</span>
+              <strong>Programmation</strong>
+              <small>Code et développement</small>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE CHAT -->
+      <section id="chatPage" class="page">
+        <div class="chat-layout">
+          <div id="welcomeScreen" class="chat-welcome">
+            <div class="welcome-icon">✦</div>
+            <h2>Comment puis-je t'aider ?</h2>
+            <p>Je suis TAYA IA, ton assistant intelligent.</p>
+
+            <div class="prompt-grid">
+              <button onclick="usePrompt('Explique-moi quelque chose de nouveau')">
+                💡 Apprendre quelque chose
+              </button>
+              <button onclick="usePrompt('Aide-moi à écrire un message')">
+                ✍️ Écrire un message
+              </button>
+              <button onclick="usePrompt('Aide-moi avec un problème informatique')">
+                💻 Informatique
+              </button>
+              <button onclick="usePrompt('Traduis ce texte en français')">
+                🌍 Traduction
+              </button>
+            </div>
+          </div>
+
+          <div id="messages" class="messages-container"></div>
+
+          <div class="composer-area">
+            <div class="composer-tools">
+              <span>✦ TAYA IA peut faire des erreurs. Vérifie les informations importantes.</span>
+            </div>
+
+            <div id="composer" class="composer">
+              <input id="fileInput" type="file" accept="image/*,.pdf,.txt,.doc,.docx" hidden onchange="handleFile(this)">
+
+              <button class="composer-button" onclick="document.getElementById('fileInput').click()" title="Joindre un fichier">＋</button>
+              <button id="voiceButton" class="composer-button" onclick="startVoice()" title="Dicter un message">🎤</button>
+
+              <textarea id="messageInput" rows="1" placeholder="Écris ton message..." onkeydown="handleComposerKey(event)"></textarea>
+
+              <button id="stopButton" class="composer-button hidden" onclick="stopGeneration()" title="Arrêter">■</button>
+              <button id="sendButton" class="send-button" onclick="sendMessage()" title="Envoyer">↑</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE MÉMOIRE -->
+      <section id="memoryPage" class="page">
+        <div class="content-card">
+          <div class="section-heading">
+            <span class="section-icon">◈</span>
+            <div>
+              <h2>Ma mémoire</h2>
+              <p>Informations que TAYA IA peut utiliser pour mieux t'aider.</p>
+            </div>
+          </div>
+
+          <textarea id="memoryInput" class="large-textarea" placeholder="Ajoute ici les informations que tu souhaites que TAYA IA retienne..."></textarea>
+          <button class="primary-button" onclick="saveMemory()">Enregistrer ma mémoire</button>
+        </div>
+      </section>
+
+      <!-- PAGE CONTACT -->
+      <section id="contactPage" class="page">
+        <div class="content-card">
+          <div class="section-heading">
+            <span class="section-icon">✉</span>
+            <div>
+              <h2>Contacter Maruce</h2>
+              <p>Envoie directement ton message à l'administration de TAYA IA.</p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="contactSubject">Sujet</label>
+            <input id="contactSubject" type="text" placeholder="Sujet du message">
+          </div>
+
+          <div class="form-group">
+            <label for="contactMessage">Ton message</label>
+            <textarea id="contactMessage" class="large-textarea" placeholder="Écris ton message ici..."></textarea>
+          </div>
+
+          <button class="primary-button" onclick="sendContactMessage()">Envoyer le message</button>
+          <p id="contactStatus" class="status-message"></p>
+        </div>
+      </section>
+
+      <!-- PAGE ADMINISTRATION -->
+      <section id="adminPage" class="page">
+        <div class="admin-container">
+          <div class="section-heading">
+            <span class="section-icon">⚙</span>
+            <div>
+              <h2>Administration</h2>
+              <p>Gestion des utilisateurs et des messages.</p>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <small>Utilisateurs inscrits</small>
+              <strong id="adminUserCount">0</strong>
+            </div>
+            <div class="stat-card">
+              <small>Messages reçus</small>
+              <strong id="adminMessageCount">0</strong>
+            </div>
+          </div>
+
+          <div class="admin-panel">
+            <h3>Utilisateurs</h3>
+            <div id="adminUsers"></div>
+          </div>
+
+          <div class="admin-panel">
+            <h3>Messages reçus</h3>
+            <div id="adminMessages"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE PARAMÈTRES -->
+      <section id="settingsPage" class="page">
+        <div class="content-card">
+          <div class="section-heading">
+            <span class="section-icon">☷</span>
+            <div>
+              <h2>Paramètres</h2>
+              <p>Personnalise ton expérience TAYA IA.</p>
+            </div>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              <strong>Apparence</strong>
+              <small>Passer du thème sombre au thème clair</small>
+            </div>
+            <button class="secondary-button" onclick="toggleTheme()">Changer le thème</button>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              <strong>Nouvelle conversation</strong>
+              <small>Commencer une nouvelle discussion</small>
+            </div>
+            <button class="secondary-button" onclick="newChat()">Nouveau chat</button>
+          </div>
+
+          <div class="setting-row">
+            <div>
+              <strong>Déconnexion</strong>
+              <small>Quitter ton compte</small>
+            </div>
+            <button class="danger-button" onclick="logout()">Déconnexion</button>
+          </div>
+
+          <div class="about-card">
+            <div class="mini-logo">T</div>
+            <h3>TAYA IA V20</h3>
+            <p>Une création de Maruce Soldado</p>
+            <strong>Fièrement guinéen 🇬🇳</strong>
+          </div>
+        </div>
+      </section>
+
+    </section>
   </main>
+
   <!-- NOTIFICATIONS -->
   <div id="toastContainer" class="toast-container"></div>
-  <!-- BIBLIOTHÈQUES -->
+
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
   <script src="script.js"></script>
