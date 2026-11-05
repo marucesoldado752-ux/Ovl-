@@ -2,1901 +2,1141 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#050807">
-<title>TAYA IA V19.1 | MARUCE SOLDADO 🇬🇳</title>
+<title>TAYA IA V20 - By Maruce 🇬🇳</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Anton&display=swap" rel="stylesheet">
+
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
 
 <style>
 :root{
- --bg:#050807;
- --panel:#0b1210;
- --panel2:#111c16;
- --green:#00ff88;
- --blue:#4488ff;
- --text:#f4fff9;
- --muted:#899b90;
- --border:rgba(255,255,255,.09);
+  --bg:#050807;
+  --panel:#0b110e;
+  --panel2:#111a15;
+  --text:#f3f7f4;
+  --muted:#8b9b90;
+  --green:#00ff88;
+  --blue:#4488ff;
+  --border:rgba(255,255,255,.09);
+  --danger:#ff5263;
+  --sidebar:270px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
- font-family:Inter,sans-serif;
- background:var(--bg);
- color:var(--text);
- min-height:100vh;
- overflow-x:hidden;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,Arial,sans-serif;
+  height:100dvh;
+  overflow:hidden;
 }
-body:before{
- content:"";
- position:fixed;
- inset:-50%;
- z-index:-1;
- background:
- radial-gradient(circle at 20% 20%,rgba(0,255,136,.09),transparent 35%),
- radial-gradient(circle at 80% 70%,rgba(68,136,255,.10),transparent 35%);
- animation:backgroundMove 15s ease-in-out infinite alternate;
- pointer-events:none;
+body.light{
+  --bg:#f5f7f6;
+  --panel:#fff;
+  --panel2:#edf2ef;
+  --text:#142019;
+  --muted:#65756a;
+  --border:rgba(0,0,0,.10);
 }
-@keyframes backgroundMove{
- from{transform:translate(-2%,-2%)}
- to{transform:translate(3%,3%)}
-}
-button,input,textarea,select{font-family:inherit}
+button,input,textarea{font:inherit}
 button{cursor:pointer}
-button:disabled{opacity:.5;cursor:not-allowed}
-.hidden{display:none!important}
-#main{display:none;min-height:100vh}
-
-.topbar{
- height:60px;
- display:flex;
- align-items:center;
- justify-content:space-between;
- padding:0 12px;
- border-bottom:1px solid var(--border);
- background:rgba(5,8,7,.95);
- position:sticky;
- top:0;
- z-index:20;
- backdrop-filter:blur(15px);
+.app{height:100dvh;display:flex;overflow:hidden}
+.sidebar{
+  width:var(--sidebar);
+  background:var(--panel);
+  border-right:1px solid var(--border);
+  display:flex;
+  flex-direction:column;
+  padding:16px;
+  flex-shrink:0;
+  z-index:20;
+  transition:transform .25s;
 }
 .brand{
- font-family:Anton,sans-serif;
- font-size:24px;
- background:linear-gradient(90deg,var(--green),var(--blue));
- color:transparent;
- background-clip:text;
-}
-.icon-btn{
- border:1px solid var(--border);
- background:var(--panel);
- color:white;
- min-width:39px;
- height:39px;
- border-radius:11px;
- font-size:17px;
- position:relative;
- padding:0 7px;
-}
-.badge{
- position:absolute;
- top:-6px;
- right:-6px;
- background:#ff3344;
- color:white;
- font-size:10px;
- min-width:19px;
- height:19px;
- border-radius:10px;
- display:grid;
- place-items:center;
- padding:0 4px;
- font-weight:800;
-}
-.layout{display:flex;min-height:calc(100vh - 60px)}
-.sidebar{
- width:255px;
- flex-shrink:0;
- border-right:1px solid var(--border);
- padding:15px;
- background:#07100b;
-}
-.side-button{
- width:100%;
- text-align:left;
- border:1px solid var(--border);
- background:var(--panel);
- color:white;
- padding:13px;
- border-radius:11px;
- margin-bottom:9px;
- font-size:13px;
-}
-.side-button:active{transform:scale(.98)}
-.side-title{
- color:var(--muted);
- font-size:10px;
- font-weight:800;
- margin:20px 0 10px;
-}
-.history-item{
- padding:11px;
- border-radius:9px;
- font-size:12px;
- color:#b8c8bf;
- cursor:pointer;
- overflow:hidden;
- white-space:nowrap;
- text-overflow:ellipsis;
- margin-bottom:5px;
- background:rgba(255,255,255,.025);
-}
-.history-item:hover{background:var(--panel2)}
-.user-box{
- border-top:1px solid var(--border);
- padding-top:12px;
- margin-top:15px;
- font-size:12px;
- color:var(--muted);
-}
-.workspace{
- flex:1;
- min-width:0;
- display:flex;
- flex-direction:column;
- height:calc(100vh - 60px);
-}
-.welcome{
- margin:auto;
- text-align:center;
- padding:25px 16px;
- max-width:650px;
-}
-.avatar{
- width:85px;
- height:85px;
- margin:0 auto 18px;
- border-radius:26px;
- display:grid;
- place-items:center;
- font-size:42px;
- background:linear-gradient(140deg,#063d27,#142b60);
- box-shadow:0 0 35px rgba(0,255,136,.13);
- animation:float 3s ease-in-out infinite;
-}
-@keyframes float{50%{transform:translateY(-8px)}}
-.welcome h1{font-size:28px;margin-bottom:8px}
-.welcome h1 span{color:var(--green)}
-.welcome p{
- color:var(--muted);
- font-size:13px;
- line-height:1.8;
-}
-.messages{
- flex:1;
- overflow-y:auto;
- padding:18px max(14px,calc((100% - 850px)/2));
-}
-.message{
- display:flex;
- gap:10px;
- margin-bottom:20px;
-}
-.message.user{flex-direction:row-reverse}
-.message-avatar{
- width:32px;
- height:32px;
- min-width:32px;
- border-radius:11px;
- display:grid;
- place-items:center;
- background:var(--panel2);
-}
-.message-content{
- max-width:85%;
- padding:12px 14px;
- border-radius:14px;
- background:var(--panel);
- border:1px solid var(--border);
- font-size:14px;
- line-height:1.65;
- overflow-wrap:anywhere;
-}
-.message.user .message-content{background:#10271c}
-.message-content pre{
- background:#030705;
- padding:12px;
- border-radius:9px;
- overflow-x:auto;
- margin:8px 0;
-}
-.message-content img{max-width:100%;border-radius:10px}
-.message-content a{color:var(--green)}
-.message-content code{
- background:#030705;
- padding:2px 5px;
- border-radius:4px;
-}
-.message-content table{
- display:block;
- overflow-x:auto;
- border-collapse:collapse;
-}
-.message-content th,.message-content td{
- border:1px solid var(--border);
- padding:6px;
-}
-.typing{display:flex;gap:5px;padding:6px}
-.typing span{
- width:7px;height:7px;
- border-radius:50%;
- background:var(--green);
- animation:t .8s infinite alternate;
-}
-@keyframes t{to{opacity:.2;transform:translateY(-4px)}}
-
-.composer-area{padding:12px 14px 16px}
-.composer{
- max-width:850px;
- margin:auto;
- border:1px solid var(--border);
- background:#0c1510;
- border-radius:16px;
- padding:10px;
- display:flex;
- gap:8px;
- align-items:flex-end;
-}
-.composer textarea{
- flex:1;
- min-height:45px;
- max-height:150px;
- resize:none;
- border:0;
- outline:0;
- background:transparent;
- color:white;
- font-size:14px;
- padding:10px;
- min-width:0;
-}
-.send-btn{
- width:44px;
- height:44px;
- border:0;
- border-radius:12px;
- background:linear-gradient(120deg,var(--green),var(--blue));
- font-size:18px;
- flex-shrink:0;
- color:#00150c;
- font-weight:900;
-}
-.tool-btn{
- width:42px;
- height:44px;
- border:1px solid var(--border);
- border-radius:11px;
- background:var(--panel2);
- color:white;
- font-size:17px;
- flex-shrink:0;
-}
-.tool-btn.active{
- border-color:var(--green);
- color:var(--green);
- background:#123b29;
-}
-.search-status{
- max-width:850px;
- margin:0 auto 7px;
- color:var(--green);
- font-size:11px;
-}
-.file-status{
- max-width:850px;
- margin:0 auto 7px;
- color:var(--muted);
- font-size:11px;
-}
-.disclaimer{
- text-align:center;
- color:#64746b;
- font-size:10px;
- margin-top:8px;
-}
-.page{
- padding:16px;
- max-width:850px;
- margin:auto;
- width:100%;
- flex:1;
- overflow-y:auto;
-}
-.top-back{
- display:flex;
- align-items:center;
- gap:10px;
- margin-bottom:16px;
-}
-.top-back h2{font-size:18px}
-.back-btn{
- width:40px;
- height:40px;
- border-radius:11px;
- border:1px solid var(--border);
- background:var(--panel);
- color:white;
- font-size:18px;
-}
-.card{
- background:var(--panel);
- border:1px solid var(--border);
- border-radius:14px;
- padding:15px;
- margin-bottom:10px;
- font-size:13px;
- overflow-wrap:anywhere;
-}
-.card small{color:var(--muted)}
-.big-num{font-size:28px;font-weight:800;color:var(--green)}
-.stat-grid{
- display:grid;
- grid-template-columns:1fr 1fr;
- gap:10px;
- margin-bottom:16px;
-}
-.input{
- width:100%;
- padding:14px;
- border-radius:11px;
- border:1px solid var(--border);
- background:#080e0b;
- color:white;
- outline:none;
- margin-bottom:12px;
-}
-.input:focus{border-color:var(--green)}
-.primary{
- width:100%;
- padding:15px;
- border:0;
- border-radius:12px;
- background:linear-gradient(100deg,var(--green),var(--blue));
- color:#00150c;
- font-weight:800;
- font-size:14px;
-}
-.primary:disabled{opacity:.5;cursor:not-allowed}
-.green-btn,.blue-btn{
- display:block;
- text-align:center;
- text-decoration:none;
- padding:14px;
- border-radius:12px;
- font-weight:800;
- margin-bottom:10px;
-}
-.green-btn{background:#25D366;color:#00150c}
-.blue-btn{background:#4488ff;color:white}
-.overlay{
- position:fixed;
- inset:0;
- background:rgba(0,0,0,.96);
- z-index:100;
- display:flex;
- align-items:center;
- justify-content:center;
- padding:18px;
- overflow-y:auto;
-}
-.auth-card{
- width:100%;
- max-width:420px;
- padding:26px 20px;
- border:1px solid var(--border);
- border-radius:22px;
- background:#0a120e;
+  display:flex;align-items:center;gap:11px;
+  padding:7px 4px 20px;
 }
 .logo{
- font-family:Anton,sans-serif;
- font-size:40px;
- text-align:center;
- background:linear-gradient(90deg,var(--green),var(--blue));
- color:transparent;
- background-clip:text;
+  width:42px;height:42px;border-radius:14px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--green),var(--blue));
+  color:#00150c;font-size:22px;font-weight:900;
+  box-shadow:0 0 25px #00ff8840;
 }
-.logo-sub{
- text-align:center;
- color:var(--muted);
- font-size:12px;
- margin:8px 0 20px;
+.brand h2{font-family:Anton,sans-serif;font-size:25px;letter-spacing:1px}
+.brand small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+.newchat{
+  width:100%;padding:13px;border:1px solid #00ff8840;
+  background:#00ff8810;color:var(--green);
+  border-radius:13px;font-weight:800;text-align:left;
 }
-.field{margin-bottom:13px}
-.field label{
- display:block;
- font-size:12px;
- color:#b4c7bc;
- margin-bottom:6px;
+.nav{margin-top:20px;display:grid;gap:6px}
+.nav button{
+  border:0;background:transparent;color:var(--muted);
+  padding:12px;border-radius:11px;text-align:left;
+  font-weight:600;
 }
-.auth-tabs{display:flex;gap:8px;margin-bottom:18px}
-.auth-tab{
- flex:1;
- padding:11px;
- border:1px solid var(--border);
- border-radius:10px;
- background:var(--panel);
- color:white;
- font-weight:700;
+.nav button:hover,.nav button.active{background:var(--panel2);color:var(--text)}
+.section-label{
+  color:var(--muted);font-size:10px;font-weight:800;
+  letter-spacing:1.5px;margin:24px 8px 10px;
 }
-.auth-tab.active{
- background:#123b29;
- border-color:var(--green);
- color:var(--green);
+.history{overflow:auto;flex:1;min-height:80px}
+.history-item{
+  display:flex;align-items:center;gap:6px;
+  padding:10px;border-radius:10px;color:var(--muted);
+  font-size:12px;cursor:pointer;margin-bottom:4px;
 }
-.auth-error{
- color:#ff7777;
- font-size:12px;
- text-align:center;
- margin:10px 0;
- min-height:16px;
+.history-item:hover{background:var(--panel2);color:var(--text)}
+.history-item span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.history-item.selected{background:var(--panel2);color:var(--text)}
+.history-item button{
+  border:0;background:transparent;color:var(--muted);
+  padding:3px;font-size:13px;
 }
-.auth-note{
- color:var(--muted);
- font-size:11px;
- text-align:center;
- line-height:1.6;
- margin-top:12px;
+.userbox{
+  border-top:1px solid var(--border);padding-top:14px;
+  display:flex;align-items:center;gap:10px;
 }
-.small-link{
- display:block;
- border:0;
- background:none;
- color:var(--green);
- font-size:12px;
- margin:14px auto 0;
+.user-avatar{
+  width:36px;height:36px;border-radius:50%;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--green),var(--blue));
+  color:#00150c;font-weight:900;
 }
-.admin-actions{display:flex;gap:8px;flex-wrap:wrap}
-.admin-actions button{flex:1;min-width:120px}
+.user-info{flex:1;min-width:0}
+.user-info strong{font-size:12px;display:block;overflow:hidden;text-overflow:ellipsis}
+.user-info small{color:var(--muted);font-size:10px}
+.icon-btn{
+  background:transparent;border:0;color:var(--muted);
+  padding:8px;border-radius:9px;font-size:17px;
+}
+.icon-btn:hover{background:var(--panel2);color:var(--text)}
+.main{flex:1;min-width:0;display:flex;flex-direction:column;position:relative}
+.topbar{
+  height:62px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;flex-shrink:0;
+}
+.top-left,.top-right{display:flex;align-items:center;gap:10px}
+.top-title{font-weight:800;font-size:14px}
+.version{font-size:9px;color:var(--green);border:1px solid #00ff8840;padding:4px 7px;border-radius:20px}
+.content{flex:1;overflow:auto;position:relative}
+.welcome{
+  min-height:100%;display:flex;align-items:center;
+  justify-content:center;padding:35px 18px;
+}
+.welcome-inner{width:min(680px,100%);text-align:center}
+.hero-logo{
+  width:76px;height:76px;margin:0 auto 20px;border-radius:25px;
+  display:grid;place-items:center;font-size:38px;
+  background:linear-gradient(135deg,var(--green),var(--blue));
+  color:#00150c;box-shadow:0 0 50px #00ff8830;
+  animation:float 4s ease-in-out infinite;
+}
+@keyframes float{50%{transform:translateY(-9px)}}
+.welcome h1{font-family:Anton,sans-serif;font-size:clamp(32px,6vw,49px);letter-spacing:1px}
+.welcome h1 span{background:linear-gradient(90deg,var(--green),var(--blue));background-clip:text;color:transparent}
+.welcome p{color:var(--muted);margin:12px 0 27px;font-size:13px;line-height:1.7}
+.quick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;text-align:left}
+.quick{
+  background:var(--panel);border:1px solid var(--border);
+  padding:16px;border-radius:15px;color:var(--text);
+  text-align:left;
+}
+.quick:hover{border-color:#00ff8870;transform:translateY(-2px)}
+.quick strong{display:block;font-size:12px;margin-bottom:6px}
+.quick small{color:var(--muted);font-size:10px}
+.messages{
+  max-width:850px;margin:auto;padding:25px 20px 160px;
+}
+.message{display:flex;gap:12px;margin:22px 0;align-items:flex-start}
+.message.user{flex-direction:row-reverse}
+.msg-avatar{
+  width:32px;height:32px;flex-shrink:0;border-radius:11px;
+  display:grid;place-items:center;font-size:13px;font-weight:900;
+  background:var(--panel2);
+}
+.message.assistant .msg-avatar{
+  background:linear-gradient(135deg,var(--green),var(--blue));color:#00150c;
+}
+.bubble{
+  max-width:min(720px,calc(100% - 45px));
+  padding:13px 15px;border-radius:15px;
+  background:var(--panel);border:1px solid var(--border);
+  font-size:13px;line-height:1.75;overflow-wrap:anywhere;
+}
+.message.user .bubble{background:#00ff8810;border-color:#00ff8830}
+.bubble p{margin:5px 0}
+.bubble pre{
+  background:#020504;padding:13px;border-radius:10px;
+  overflow:auto;margin:10px 0;
+}
+.bubble code{font-size:12px}
+.bubble img{max-width:100%;border-radius:10px}
+.bubble ul,.bubble ol{padding-left:22px}
+.message-actions{display:flex;gap:4px;margin-top:8px;flex-wrap:wrap}
+.message-actions button{
+  background:transparent;border:0;color:var(--muted);
+  padding:5px 7px;border-radius:7px;font-size:11px;
+}
+.message-actions button:hover{background:var(--panel2);color:var(--text)}
+.composer-area{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:15px 18px max(18px,env(safe-area-inset-bottom));
+  background:linear-gradient(transparent,var(--bg) 22%);
+}
+.composer-wrap{max-width:850px;margin:auto}
+.composer{
+  display:flex;align-items:flex-end;gap:8px;
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:19px;padding:10px;
+  box-shadow:0 10px 40px #0004;
+}
+.composer:focus-within{border-color:#00ff8860}
+.composer textarea{
+  flex:1;min-height:28px;max-height:150px;resize:none;
+  background:transparent;border:0;outline:0;color:var(--text);
+  padding:8px 4px;font-size:13px;
+}
+.send-btn{
+  width:40px;height:40px;border:0;border-radius:13px;
+  background:linear-gradient(135deg,var(--green),var(--blue));
+  color:#00150c;font-weight:900;font-size:18px;
+}
+.composer-note{text-align:center;color:var(--muted);font-size:9px;margin-top:9px}
+.file-preview{font-size:11px;color:var(--green);padding:5px}
+.page{max-width:850px;margin:auto;padding:25px 20px 130px}
+.page h2{font-size:22px;margin-bottom:15px}
+.card{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:15px;padding:17px;margin-bottom:12px;
+}
+.card p{color:var(--muted);font-size:12px;line-height:1.7}
+.field{
+  width:100%;background:var(--bg);border:1px solid var(--border);
+  color:var(--text);padding:12px;border-radius:10px;
+  outline:none;margin:7px 0;font-size:13px;
+}
+.primary{
+  background:linear-gradient(135deg,var(--green),var(--blue));
+  color:#00150c;border:0;padding:12px 16px;
+  border-radius:10px;font-weight:800;
+}
+.secondary{
+  background:var(--panel2);color:var(--text);
+  border:1px solid var(--border);padding:11px 14px;
+  border-radius:10px;font-weight:600;
+}
+.danger{color:var(--danger)}
+.overlay{
+  position:fixed;inset:0;background:#0009;z-index:50;
+  display:none;
+}
+.overlay.show{display:block}
+.auth-screen{
+  position:fixed;inset:0;z-index:100;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+.auth-box{
+  width:min(420px,100%);background:var(--panel);
+  border:1px solid var(--border);border-radius:20px;padding:25px;
+}
+.auth-box h1{text-align:center;font-family:Anton;font-size:30px}
+.auth-box p{text-align:center;color:var(--muted);font-size:11px;margin:8px 0 18px}
+.auth-tabs{display:flex;gap:7px;margin-bottom:12px}
+.auth-tabs button{flex:1}
+.auth-error{color:var(--danger);font-size:11px;margin:8px 0}
+.hidden{display:none!important}
+.loading{color:var(--muted);font-size:12px;padding:10px}
+.admin-row{padding:12px 0;border-bottom:1px solid var(--border);font-size:12px}
+.admin-row small{display:block;color:var(--muted);margin-top:5px}
+.mobile-close{display:none}
 @media(max-width:760px){
- .sidebar{
-  position:fixed;
-  left:-270px;
-  top:60px;
-  bottom:0;
-  z-index:30;
-  transition:.25s;
-  overflow-y:auto;
- }
- .sidebar.open{left:0}
- .workspace{height:calc(100vh - 60px)}
- .message-content{max-width:90%}
+  .sidebar{
+    position:fixed;top:0;bottom:0;left:0;
+    transform:translateX(-105%);width:min(290px,85vw);
+    box-shadow:20px 0 50px #0008;
+  }
+  .sidebar.open{transform:translateX(0)}
+  .mobile-close{display:block}
+  .topbar{padding:0 12px}
+  .messages{padding:15px 12px 150px}
+  .message{gap:8px}
+  .bubble{font-size:12px;padding:11px}
+  .composer-area{padding-left:10px;padding-right:10px}
+  .quick-grid{grid-template-columns:1fr}
+  .welcome{padding:25px 15px}
 }
-@media(min-width:761px){#menuBtn{display:none}}
 </style>
 </head>
 
 <body>
+<div class="app">
 
-<div id="registerOverlay" class="overlay">
- <div class="auth-card">
-  <div class="logo">TAYA IA</div>
-  <div class="logo-sub">V19.1 • BY MARUCE SOLDADO 🇬🇳</div>
-
-  <div class="auth-tabs">
-   <button id="loginTab" class="auth-tab active" onclick="setAuthMode('login')">Connexion</button>
-   <button id="registerTab" class="auth-tab" onclick="setAuthMode('register')">Inscription</button>
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="logo">T</div>
+    <div><h2>TAYA IA</h2><small>BY MARUCE SOLDADO 🇬🇳</small></div>
+    <button class="icon-btn mobile-close" onclick="toggleSidebar()">✕</button>
   </div>
 
-  <div id="registerFields" class="hidden">
-   <div class="field">
-    <label>Ton nom complet</label>
-    <input id="regName" class="input" placeholder="Ex : Mamadou Diallo" autocomplete="name">
-   </div>
+  <button class="newchat" onclick="newChat()">＋ Nouveau chat</button>
+
+  <div class="nav">
+    <button class="active" onclick="showPage('chat')">✦ Assistant IA</button>
+    <button onclick="showPage('memory')">🧠 Mémoire</button>
+    <button onclick="showPage('contact')">✉️ Contacter Maruce</button>
+    <button id="adminNav" class="hidden" onclick="showPage('admin')">⚙️ Administration</button>
+    <button onclick="showPage('settings')">⚙️ Paramètres</button>
   </div>
 
-  <div class="field">
-   <label>Ton numéro de téléphone</label>
-   <div style="display:flex;gap:8px">
-    <select id="countryCode" class="input" style="width:125px;flex-shrink:0;padding:14px 5px">
-     <option value="+224">🇬🇳 +224</option>
-     <option value="+223">🇲🇱 +223</option>
-     <option value="+221">🇸🇳 +221</option>
-     <option value="+225">🇨🇮 +225</option>
-     <option value="+226">🇧🇫 +226</option>
-     <option value="+227">🇳🇪 +227</option>
-     <option value="+228">🇹🇬 +228</option>
-     <option value="+229">🇧🇯 +229</option>
-     <option value="+231">🇱🇷 +231</option>
-     <option value="+232">🇸🇱 +232</option>
-     <option value="+233">🇬🇭 +233</option>
-     <option value="+234">🇳🇬 +234</option>
-     <option value="+237">🇨🇲 +237</option>
-     <option value="+241">🇬🇦 +241</option>
-     <option value="+242">🇨🇬 +242</option>
-     <option value="+243">🇨🇩 +243</option>
-     <option value="+245">🇬🇼 +245</option>
-     <option value="+27">🇿🇦 +27</option>
-     <option value="+33">🇫🇷 +33</option>
-     <option value="+32">🇧🇪 +32</option>
-     <option value="+34">🇪🇸 +34</option>
-     <option value="+39">🇮🇹 +39</option>
-     <option value="+41">🇨🇭 +41</option>
-     <option value="+44">🇬🇧 +44</option>
-     <option value="+49">🇩🇪 +49</option>
-     <option value="+1">🇺🇸 +1</option>
-     <option value="+212">🇲🇦 +212</option>
-     <option value="+213">🇩🇿 +213</option>
-     <option value="+216">🇹🇳 +216</option>
-     <option value="+220">🇬🇲 +220</option>
-     <option value="+222">🇲🇷 +222</option>
-     <option value="+91">🇮🇳 +91</option>
-     <option value="+971">🇦🇪 +971</option>
-     <option value="+966">🇸🇦 +966</option>
-    </select>
-    <input id="regPhone" class="input" type="tel" placeholder="622 00 00 00" style="flex:1;min-width:0" autocomplete="tel">
-   </div>
+  <div class="section-label">HISTORIQUE</div>
+  <div class="history" id="historyList"></div>
+
+  <div class="userbox">
+    <div class="user-avatar" id="userInitial">T</div>
+    <div class="user-info">
+      <strong id="userName">Utilisateur</strong>
+      <small id="userRole">Compte TAYA IA</small>
+    </div>
+    <button class="icon-btn" onclick="logout()" title="Déconnexion">⇥</button>
   </div>
+</aside>
 
-  <div class="field">
-   <label>Mot de passe</label>
-   <input id="authPassword" class="input" type="password" placeholder="Au moins 6 caractères" autocomplete="current-password">
+<main class="main">
+  <header class="topbar">
+    <div class="top-left">
+      <button class="icon-btn" onclick="toggleSidebar()">☰</button>
+      <span class="top-title" id="topTitle">TAYA IA</span>
+      <span class="version">V20</span>
+    </div>
+    <div class="top-right">
+      <button class="icon-btn" onclick="toggleTheme()" title="Changer le thème">◐</button>
+      <button class="icon-btn" onclick="newChat()" title="Nouveau chat">＋</button>
+    </div>
+  </header>
+
+  <section class="content" id="content">
+    <div class="welcome" id="welcome">
+      <div class="welcome-inner">
+        <div class="hero-logo">T</div>
+        <h1>Bonjour, <span id="welcomeName">Maruce</span></h1>
+        <p>Je suis TAYA IA, ton assistant intelligent<br>
+        <b>BY MARUCE SOLDADO 👑🇬🇳</b></p>
+
+        <div class="quick-grid">
+          <button class="quick" onclick="quickPrompt('Explique-moi un sujet compliqué simplement')">
+            <strong>💡 Apprendre</strong><small>Comprendre un sujet facilement</small>
+          </button>
+          <button class="quick" onclick="quickPrompt('Aide-moi à écrire un texte professionnel')">
+            <strong>✍️ Écriture</strong><small>Créer et améliorer des textes</small>
+          </button>
+          <button class="quick" onclick="quickPrompt('Aide-moi à créer un site web moderne')">
+            <strong>💻 Programmation</strong><small>Code et développement</small>
+          </button>
+          <button class="quick" onclick="quickPrompt('Fais une recherche Web sur les actualités importantes')">
+            <strong>🌐 Recherche Web</strong><small>Rechercher des informations</small>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="messages" class="messages hidden"></div>
+    <div id="pageContent" class="page hidden"></div>
+  </section>
+
+  <div class="composer-area" id="composerArea">
+    <div class="composer-wrap">
+      <div id="filePreview" class="file-preview"></div>
+      <div class="composer">
+        <button class="icon-btn" onclick="document.getElementById('fileInput').click()" title="Joindre un fichier">＋</button>
+        <input id="fileInput" type="file" hidden accept="image/*,.txt,.md,.csv,.pdf" onchange="handleFile(this)">
+        <button class="icon-btn" onclick="startDictation()" title="Dicter">🎤</button>
+        <textarea id="prompt" rows="1" placeholder="Pose ta question à TAYA IA..." onkeydown="handleEnter(event)" oninput="resizeInput(this)"></textarea>
+        <button class="icon-btn hidden" id="stopBtn" onclick="stopGeneration()" title="Arrêter">■</button>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+      </div>
+      <div class="composer-note">TAYA IA peut faire des erreurs. Vérifie les informations importantes.</div>
+    </div>
   </div>
-
-  <div id="confirmField" class="field hidden">
-   <label>Confirmer le mot de passe</label>
-   <input id="confirmPassword" class="input" type="password" placeholder="Répète ton mot de passe" autocomplete="new-password">
-  </div>
-
-  <button id="authButton" class="primary" onclick="submitAuth()">SE CONNECTER ⚡</button>
-  <p id="authError" class="auth-error"></p>
-
-  <button class="small-link" onclick="showRecovery()">Mot de passe oublié ?</button>
-  <p class="auth-note">Tes informations sont enregistrées dans la base de données TAYA IA.</p>
- </div>
+</main>
 </div>
 
-<div id="recoveryOverlay" class="overlay hidden">
- <div class="auth-card">
-  <div class="logo">RÉCUPÉRATION</div>
-  <div class="logo-sub">Récupère ton compte TAYA IA</div>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
-  <div class="field">
-   <label>Numéro complet avec indicatif</label>
-   <input id="recoveryPhone" class="input" placeholder="+224622000000">
+<!-- AUTHENTIFICATION -->
+<div class="auth-screen" id="authScreen">
+  <div class="auth-box">
+    <div class="hero-logo">T</div>
+    <h1>TAYA IA</h1>
+    <p>Ton assistant intelligent • By Maruce 🇬🇳</p>
+
+    <div class="auth-tabs">
+      <button class="primary" id="loginTab" onclick="setAuthMode('login')">Connexion</button>
+      <button class="secondary" id="registerTab" onclick="setAuthMode('register')">Inscription</button>
+    </div>
+
+    <div id="authNameWrap" class="hidden">
+      <input class="field" id="authName" placeholder="Nom complet">
+    </div>
+    <input class="field" id="authPhone" placeholder="Numéro de téléphone (+224...)" autocomplete="tel">
+    <input class="field" id="authPassword" type="password" placeholder="Mot de passe" autocomplete="current-password">
+    <div id="authConfirmWrap" class="hidden">
+      <input class="field" id="authConfirm" type="password" placeholder="Confirmer le mot de passe">
+    </div>
+
+    <div id="authError" class="auth-error"></div>
+    <button class="primary" style="width:100%" id="authSubmit" onclick="submitAuth()">Se connecter</button>
   </div>
-  <div class="field">
-   <label>Code de récupération</label>
-   <input id="recoveryCode" class="input" placeholder="Ton code secret">
-  </div>
-  <div class="field">
-   <label>Nouveau mot de passe</label>
-   <input id="recoveryPassword" class="input" type="password" placeholder="Au moins 6 caractères">
-  </div>
-  <button class="primary" onclick="recoverAccount()">RÉINITIALISER</button>
-  <p id="recoveryError" class="auth-error"></p>
-  <button class="small-link" onclick="closeRecovery()">Retour à la connexion</button>
- </div>
 </div>
-
-<section id="main">
- <header class="topbar">
-  <div style="display:flex;align-items:center;gap:10px">
-   <button id="menuBtn" class="icon-btn" onclick="toggleSidebar()">☰</button>
-   <div class="brand">TAYA 🤖IA</div>
-  </div>
-  <div style="display:flex;gap:7px">
-   <button id="adminTopBtn" class="icon-btn hidden" onclick="openAdmin()">👑 <span id="adminBadge" class="badge hidden">0</span></button>
-   <button class="icon-btn" onclick="newChat()">＋</button>
-   <button class="icon-btn" onclick="showHome()">⌂</button>
-  </div>
- </header>
-
- <div class="layout">
-  <aside id="sidebar" class="sidebar">
-   <button class="side-button" onclick="showHome()">🏠 Accueil</button>
-   <button class="side-button" onclick="newChat()">✚ Nouvelle discussion</button>
-   <button class="side-button" onclick="openMemory()">🧠 Ma mémoire</button>
-   <button class="side-button" onclick="openContact()">📞 Contacter Maruce</button>
-   <button class="side-button" onclick="openLeaveMessage()">✉️ Laisser un message</button>
-   <button id="adminSideBtn" class="side-button hidden" onclick="openAdmin()">👑 Administration</button>
-
-   <div class="side-title">HISTORIQUE</div>
-   <div id="history"></div>
-
-   <div class="user-box">
-    <div id="userName">Utilisateur</div>
-    <div id="userPhone"></div>
-    <div id="userRole" style="margin-top:5px"></div>
-    <br>
-    <button class="side-button" onclick="logout()">🚪 Déconnexion</button>
-   </div>
-  </aside>
-
-  <main class="workspace">
-
-   <div id="welcome" class="welcome">
-    <div class="avatar">🤖</div>
-    <h1>Bienvenue <span id="welcomeName">sur TAYA IA</span></h1>
-    <p>Ton assistant intelligent<br>Développé par MARUCE SOLDADO 👑🇬🇳</p>
-    <p style="margin-top:15px;color:var(--green)">Pose-moi ta première question.</p>
-   </div>
-
-   <div id="messages" class="messages hidden"></div>
-
-   <div id="contactPage" class="page hidden">
-    <div class="top-back">
-     <button class="back-btn" onclick="goBack()">⬅</button>
-     <h2>📞 Contacter Maruce</h2>
-    </div>
-    <div class="card">
-     <b>MARUCE SOLDADO 👑🇬🇳</b><br>
-     <small>Créateur de TAYA IA - Conakry</small>
-    </div>
-    <a class="green-btn" href="https://wa.me/224663401157" target="_blank" rel="noopener">💬 WhatsApp : +224 663 40 11 57</a>
-    <a class="blue-btn" href="tel:+224612768878">📞 Appeler : +224 612 76 88 78</a>
-    <button class="primary" onclick="openLeaveMessage()">✉️ Laisser un message dans l'application</button>
-   </div>
-
-   <div id="leaveMsgPage" class="page hidden">
-    <div class="top-back">
-     <button class="back-btn" onclick="goBack()">⬅</button>
-     <h2>✉️ Laisser un message</h2>
-    </div>
-    <div class="card">Ton message sera enregistré pour Maruce.</div>
-    <textarea id="msgText" class="input" rows="5" style="resize:none" placeholder="Écris ton message à Maruce..."></textarea>
-    <button id="contactSendBtn" class="primary" onclick="sendMessageToMaruce()">ENVOYER À MARUCE 📩</button>
-    <p id="msgSent" style="text-align:center;color:var(--green);margin-top:12px;font-size:13px"></p>
-   </div>
-
-   <div id="memoryPage" class="page hidden">
-    <div class="top-back">
-     <button class="back-btn" onclick="goBack()">⬅</button>
-     <h2>🧠 Ma mémoire</h2>
-    </div>
-    <div class="card">
-     TAYA peut utiliser ces informations pour mieux comprendre tes préférences dans les prochaines discussions.
-    </div>
-    <textarea id="memoryText" class="input" rows="8" style="resize:vertical" placeholder="Écris les informations que TAYA doit retenir..."></textarea>
-    <button id="memorySaveBtn" class="primary" onclick="saveMemory()">ENREGISTRER MA MÉMOIRE</button>
-    <p id="memoryStatus" class="auth-error"></p>
-   </div>
-
-   <div id="adminPage" class="page hidden">
-    <div class="top-back">
-     <button class="back-btn" onclick="goBack()">⬅</button>
-     <h2>👑 Administration</h2>
-    </div>
-
-    <div class="stat-grid">
-     <div class="card" style="text-align:center">
-      <div class="big-num" id="statUsers">0</div>
-      <small>Personnes inscrites</small>
-     </div>
-     <div class="card" style="text-align:center">
-      <div class="big-num" id="statMsgs">0</div>
-      <small>Messages reçus</small>
-     </div>
-    </div>
-
-    <div class="admin-actions">
-     <button class="side-button" onclick="loadAdmin()">🔄 Actualiser</button>
-     <button class="side-button" onclick="lockAdmin()">🔒 Verrouiller</button>
-    </div>
-
-    <h3 style="margin:10px 0">👥 Personnes inscrites</h3>
-    <div id="adminUsers"><div class="card">Chargement...</div></div>
-
-    <h3 style="margin:16px 0 10px">✉️ Messages reçus</h3>
-    <div id="adminMsgs"><div class="card">Chargement...</div></div>
-   </div>
-
-   <div id="composerArea" class="composer-area">
-    <div id="searchStatus" class="search-status hidden">🔎 Recherche Web activée</div>
-    <div id="fileStatus" class="file-status hidden"></div>
-
-    <div class="composer">
-     <button id="searchBtn" class="tool-btn" title="Activer ou désactiver la recherche Web" onclick="toggleWebSearch()">🔎</button>
-     <button class="tool-btn" title="Joindre une image ou un document" onclick="$('fileInput').click()">📎</button>
-     <button class="tool-btn" title="Dicter un message" onclick="startVoice()">🎤</button>
-     <textarea id="question" rows="1" placeholder="Pose n'importe quelle question à TAYA..."></textarea>
-     <button id="sendBtn" class="send-btn" onclick="sendMessage()">➤</button>
-    </div>
-
-    <input id="fileInput" type="file" accept=".txt,.pdf,.md,.csv,image/*" hidden onchange="handleFile(this)">
-
-    <div class="disclaimer">TAYA IA peut parfois se tromper. Vérifie les informations importantes.</div>
-   </div>
-
-  </main>
- </div>
-</section>
 
 <script>
-"use strict";
-
-const API_URL = "https://taya-ai-api.onrender.com";
-const MAX_IMAGE_SIZE = 8 * 1024 * 1024;
-const MAX_PDF_SIZE = 18 * 1024 * 1024;
-const MAX_TEXT_SIZE = 2 * 1024 * 1024;
-
+/* CONFIGURATION */
+const API = "https://taya-ai-api.onrender.com";
 const $ = id => document.getElementById(id);
 
+let token = localStorage.getItem("taya_token") || "";
+let currentUser = JSON.parse(localStorage.getItem("taya_current_user") || "null");
 let authMode = "login";
-let currentUser = null;
-let authToken = localStorage.getItem("taya_token") || "";
-let chatHistory = [];
-let projects = [];
+let projects = JSON.parse(localStorage.getItem("taya_v19_projects") || "[]");
 let currentProjectId = null;
-let isGenerating = false;
-let lastAnswer = "";
-let isAdminUnlocked = false;
-let webSearchEnabled = false;
-let navStack = ["home"];
 let selectedFile = null;
-let allMsgs = [];
-
-try {
- projects = JSON.parse(localStorage.getItem("taya_v19_projects") || "[]");
- if (!Array.isArray(projects)) projects = [];
-} catch(e) {
- projects = [];
-}
-
-/* API */
-
-async function api(path, options = {}) {
- const headers = {...(options.headers || {})};
-
- if (options.body && !headers["Content-Type"]) {
-  headers["Content-Type"] = "application/json";
- }
-
- if (authToken) {
-  headers.Authorization = "Bearer " + authToken;
- }
-
- let response;
-
- try {
-  response = await fetch(API_URL + path, {
-   ...options,
-   headers
-  });
- } catch(error) {
-  throw new Error("Impossible de contacter le serveur. Vérifie ta connexion Internet ou le serveur Render.");
- }
-
- let data = {};
-
- try {
-  data = await response.json();
- } catch(e) {
-  data = {};
- }
-
- if (!response.ok || data.success === false) {
-  throw new Error(data.error || data.message || "Une erreur est survenue.");
- }
-
- return data;
-}
-
-async function apiBinary(path, body) {
- const headers = {"Content-Type":"application/json"};
-
- if (authToken) {
-  headers.Authorization = "Bearer " + authToken;
- }
-
- const response = await fetch(API_URL + path, {
-  method:"POST",
-  headers,
-  body:JSON.stringify(body)
- });
-
- if (!response.ok) {
-  let message = "Lecture vocale indisponible.";
-
-  try {
-   const data = await response.json();
-   message = data.error || message;
-  } catch(e) {}
-
-  throw new Error(message);
- }
-
- return await response.blob();
-}
-
-/* AUTHENTIFICATION */
-
-function setAuthMode(mode) {
- authMode = mode;
-
- $("loginTab").classList.toggle("active", mode === "login");
- $("registerTab").classList.toggle("active", mode === "register");
-
- $("registerFields").classList.toggle("hidden", mode !== "register");
- $("confirmField").classList.toggle("hidden", mode !== "register");
-
- $("authButton").textContent =
-  mode === "login" ? "SE CONNECTER ⚡" : "CRÉER MON COMPTE ⚡";
-
- $("authError").textContent = "";
- $("authPassword").value = "";
- $("confirmPassword").value = "";
-}
-
-function getPhone() {
- const code = $("countryCode").value;
- const number = $("regPhone").value.replace(/\D/g, "");
- return code + number;
-}
-
-async function submitAuth() {
- const button = $("authButton");
- const phone = getPhone();
- const password = $("authPassword").value.trim();
-
- $("authError").textContent = "";
-
- if ($("regPhone").value.replace(/\D/g, "").length < 6) {
-  $("authError").textContent = "Entre un numéro valide.";
-  return;
- }
-
- if (password.length < 6) {
-  $("authError").textContent = "Le mot de passe doit contenir au moins 6 caractères.";
-  return;
- }
-
- button.disabled = true;
- button.textContent = "CONNEXION...";
-
- try {
-  let result;
-
-  if (authMode === "register") {
-   const name = $("regName").value.trim();
-   const confirmation = $("confirmPassword").value.trim();
-
-   if (!name) throw new Error("Entre ton nom complet.");
-   if (password !== confirmation) throw new Error("Les mots de passe ne correspondent pas.");
-
-   result = await api("/api/auth/register", {
-    method:"POST",
-    body:JSON.stringify({name,phone,password})
-   });
-
-   if (result.recovery_code) {
-    alert(
-     "Ton compte est créé !\n\n" +
-     "TON CODE DE RÉCUPÉRATION :\n" +
-     result.recovery_code +
-     "\n\nConserve ce code dans un endroit sûr. Il ne sera plus affiché."
-    );
-   }
-  } else {
-   result = await api("/api/auth/login", {
-    method:"POST",
-    body:JSON.stringify({phone,password})
-   });
-  }
-
-  authToken = result.token;
-  currentUser = result.user;
-
-  if (!authToken || !currentUser) {
-   throw new Error("Réponse de connexion invalide.");
-  }
-
-  localStorage.setItem("taya_token", authToken);
-  localStorage.setItem("taya_current_user", JSON.stringify(currentUser));
-
-  await openApplication();
-
- } catch(error) {
-  $("authError").textContent = error.message;
- } finally {
-  button.disabled = false;
-  button.textContent =
-   authMode === "login" ? "SE CONNECTER ⚡" : "CRÉER MON COMPTE ⚡";
- }
-}
-
-async function recoverAccount() {
- const phone = $("recoveryPhone").value.trim();
- const recovery_code = $("recoveryCode").value.trim();
- const new_password = $("recoveryPassword").value.trim();
-
- $("recoveryError").textContent = "";
-
- if (!phone || !recovery_code || new_password.length < 6) {
-  $("recoveryError").textContent = "Vérifie les informations saisies.";
-  return;
- }
-
- try {
-  const result = await api("/api/auth/recover", {
-   method:"POST",
-   body:JSON.stringify({phone,recovery_code,new_password})
-  });
-
-  alert(
-   "Mot de passe modifié avec succès.\n\nNouveau code de récupération :\n" +
-   (result.recovery_code || "Aucun nouveau code fourni") +
-   "\n\nConserve-le précieusement."
-  );
-
-  closeRecovery();
-  setAuthMode("login");
-
- } catch(error) {
-  $("recoveryError").textContent = error.message;
- }
-}
-
-function showRecovery() {
- $("recoveryOverlay").classList.remove("hidden");
-}
-
-function closeRecovery() {
- $("recoveryOverlay").classList.add("hidden");
-}
-
-/* SESSION */
-
-async function openApplication() {
- if (!currentUser || !authToken) {
-  showLogin();
-  return;
- }
-
- $("registerOverlay").style.display = "none";
- $("recoveryOverlay").classList.add("hidden");
- $("main").style.display = "block";
-
- $("userName").textContent = currentUser.name || "Utilisateur";
- $("userPhone").textContent = currentUser.phone || "";
- $("welcomeName").textContent = currentUser.name || "sur TAYA IA";
-
- const admin = currentUser.role === "admin";
-
- isAdminUnlocked = admin;
- $("adminTopBtn").classList.toggle("hidden", !admin);
- $("adminSideBtn").classList.toggle("hidden", !admin);
- $("userRole").textContent = admin ? "👑 Administrateur" : "👤 Membre TAYA IA";
-
- navStack = ["home"];
- showPageOnly("home");
-
- renderHistory();
-
- try {
-  await loadCloudHistory();
- } catch(error) {
-  console.warn("Historique non chargé :", error.message);
- }
-
- try {
-  await loadMemory();
- } catch(error) {
-  console.warn("Mémoire non chargée :", error.message);
- }
-
- if (admin) {
-  try {
-   await loadAdmin();
-  } catch(error) {
-   console.warn(error);
-  }
- }
-}
-
-function showLogin() {
- $("main").style.display = "none";
- $("registerOverlay").style.display = "flex";
-}
-
-async function logout() {
- if (!confirm("Veux-tu vraiment te déconnecter ?")) return;
-
- authToken = "";
- currentUser = null;
- isAdminUnlocked = false;
-
- localStorage.removeItem("taya_token");
- localStorage.removeItem("taya_current_user");
-
- chatHistory = [];
- currentProjectId = null;
-
- $("main").style.display = "none";
- $("registerOverlay").style.display = "flex";
- $("adminTopBtn").classList.add("hidden");
- $("adminSideBtn").classList.add("hidden");
-
- setAuthMode("login");
-}
-
-/* NAVIGATION */
-
-function hideAllPagesRaw() {
- [
-  "welcome",
-  "messages",
-  "contactPage",
-  "leaveMsgPage",
-  "memoryPage",
-  "adminPage"
- ].forEach(id => $(id).classList.add("hidden"));
-
- $("composerArea").classList.remove("hidden");
-}
-
-function showPageOnly(page) {
- hideAllPagesRaw();
-
- if (page === "home") {
-  $("welcome").classList.remove("hidden");
- } else if (page === "chat") {
-  $("messages").classList.remove("hidden");
- } else if (page === "contact") {
-  $("contactPage").classList.remove("hidden");
-  $("composerArea").classList.add("hidden");
- } else if (page === "leave") {
-  $("leaveMsgPage").classList.remove("hidden");
-  $("composerArea").classList.add("hidden");
- } else if (page === "memory") {
-  $("memoryPage").classList.remove("hidden");
-  $("composerArea").classList.add("hidden");
- } else if (page === "admin") {
-  $("adminPage").classList.remove("hidden");
-  $("composerArea").classList.add("hidden");
- }
-}
-
-function pushNav(page) {
- if (navStack[navStack.length - 1] !== page) {
-  navStack.push(page);
- }
-
- if (navStack.length > 20) navStack.shift();
-}
-
-function goBack() {
- closeSidebar();
-
- if (navStack.length > 1) {
-  navStack.pop();
-  showPageOnly(navStack[navStack.length - 1]);
- } else {
-  showHome();
- }
-}
-
-function showHome() {
- closeSidebar();
- navStack = ["home"];
- showPageOnly("home");
-}
-
-function newChat() {
- if (chatHistory.length) saveCurrent();
-
- chatHistory = [];
- currentProjectId = Date.now().toString();
-
- $("messages").innerHTML = "";
- $("question").value = "";
- selectedFile = null;
-
- updateFileStatus();
-
- closeSidebar();
- navStack = ["home"];
- showPageOnly("home");
-}
-
-function openContact() {
- closeSidebar();
- pushNav("contact");
- showPageOnly("contact");
-}
-
-function openLeaveMessage() {
- closeSidebar();
- pushNav("leave");
- showPageOnly("leave");
-}
-
-function openMemory() {
- closeSidebar();
- pushNav("memory");
- showPageOnly("memory");
-}
-
-function toggleSidebar() {
- $("sidebar").classList.toggle("open");
-}
-
-function closeSidebar() {
- $("sidebar").classList.remove("open");
-}
-
-/* HISTORIQUE */
-
-function saveProjects() {
- try {
+let controller = null;
+let generating = false;
+let webSearch = false;
+let speechUtterance = null;
+
+function saveProjects(){
   localStorage.setItem("taya_v19_projects", JSON.stringify(projects));
- } catch(error) {
-  console.warn("Stockage local indisponible", error);
- }
 }
 
-function saveCurrent() {
- if (!chatHistory.length) return;
-
- if (!currentProjectId) {
-  currentProjectId = Date.now().toString();
- }
-
- let project = projects.find(p => p.id === currentProjectId);
-
- if (!project) {
-  const first = chatHistory.find(m => m.role === "user");
-
-  project = {
-   id:currentProjectId,
-   title:first ? first.content.slice(0,45) : "Nouvelle discussion",
-   messages:[]
+function authHeaders(){
+  return {
+    "Content-Type":"application/json",
+    "Authorization":"Bearer "+token
   };
+}
 
+async function api(path, options={}){
+  const headers = {...(options.headers || {})};
+  if(token) headers.Authorization = "Bearer "+token;
+  if(options.body && !(options.body instanceof FormData)){
+    headers["Content-Type"] = "application/json";
+  }
+  const response = await fetch(API+path,{...options,headers});
+  let data;
+  const type = response.headers.get("content-type") || "";
+  if(type.includes("application/json")) data = await response.json();
+  else data = await response.text();
+  if(!response.ok){
+    throw new Error(data?.error || data?.message || "Erreur serveur ("+response.status+")");
+  }
+  return data;
+}
+
+/* AUTH */
+function setAuthMode(mode){
+  authMode = mode;
+  $("authNameWrap").classList.toggle("hidden",mode==="login");
+  $("authConfirmWrap").classList.toggle("hidden",mode==="login");
+  $("loginTab").className = mode==="login"?"primary":"secondary";
+  $("registerTab").className = mode==="register"?"primary":"secondary";
+  $("authSubmit").textContent = mode==="login"?"Se connecter":"Créer mon compte";
+  $("authError").textContent = "";
+}
+
+async function submitAuth(){
+  const phone = $("authPhone").value.trim();
+  const password = $("authPassword").value;
+  const name = $("authName").value.trim();
+
+  if(!phone || !password){
+    $("authError").textContent = "Remplis ton numéro et ton mot de passe";
+    return;
+  }
+  if(authMode==="register"){
+    if(!name){
+      $("authError").textContent = "Entre ton nom complet";
+      return;
+    }
+    if(password !== $("authConfirm").value){
+      $("authError").textContent = "Les mots de passe ne correspondent pas";
+      return;
+    }
+  }
+
+  $("authSubmit").disabled = true;
+  $("authSubmit").textContent = "Chargement...";
+  $("authError").textContent = "";
+
+  try{
+    const data = await api(
+      authMode==="login"?"/api/auth/login":"/api/auth/register",
+      {
+        method:"POST",
+        body:JSON.stringify(
+          authMode==="login"
+          ? {phone,password}
+          : {name,phone,password}
+        )
+      }
+    );
+
+    if(!data.token) throw new Error(data.error || "Réponse d'authentification invalide");
+
+    token = data.token;
+    currentUser = data.user;
+    localStorage.setItem("taya_token",token);
+    localStorage.setItem("taya_current_user",JSON.stringify(currentUser));
+
+    $("authScreen").classList.add("hidden");
+    await openApplication();
+
+  }catch(error){
+    $("authError").textContent = error.message;
+  }finally{
+    $("authSubmit").disabled = false;
+    $("authSubmit").textContent = authMode==="login"?"Se connecter":"Créer mon compte";
+  }
+}
+
+async function openApplication(){
+  if(!token || !currentUser){
+    $("authScreen").classList.remove("hidden");
+    return;
+  }
+
+  $("authScreen").classList.add("hidden");
+  const name = currentUser.name || currentUser.full_name || "Utilisateur";
+  $("userName").textContent = name;
+  $("welcomeName").textContent = name.split(" ")[0];
+  $("userInitial").textContent = name.charAt(0).toUpperCase();
+  $("userRole").textContent = currentUser.role==="admin"?"Administrateur":"Compte TAYA IA";
+
+  if(currentUser.role==="admin") $("adminNav").classList.remove("hidden");
+
+  renderHistory();
+  if(!projects.length) createProject(false);
+  else openProject(projects[0].id);
+
+  loadCloudHistory();
+}
+
+async function logout(){
+  if(!confirm("Veux-tu vraiment te déconnecter ?")) return;
+  token="";
+  currentUser=null;
+  localStorage.removeItem("taya_token");
+  localStorage.removeItem("taya_current_user");
+  location.reload();
+}
+
+/* CONVERSATIONS LOCALES */
+function createProject(render=true){
+  const project = {
+    id:"local_"+Date.now(),
+    title:"Nouveau chat",
+    messages:[],
+    updatedAt:Date.now()
+  };
   projects.unshift(project);
- }
-
- project.messages = chatHistory.slice();
-
- saveProjects();
- renderHistory();
+  currentProjectId=project.id;
+  saveProjects();
+  if(render){
+    renderHistory();
+    showPage("chat");
+    renderMessages();
+  }
+  return project;
 }
 
-function renderHistory() {
- $("history").innerHTML = "";
-
- projects.forEach(project => {
-  const item = document.createElement("div");
-  item.className = "history-item";
-  item.textContent = "💬 " + (project.title || "Discussion");
-  item.onclick = () => loadProject(project.id);
-  $("history").appendChild(item);
- });
+function newChat(){
+  createProject();
+  $("prompt").focus();
+  toggleSidebar(false);
 }
 
-function loadProject(id) {
- const project = projects.find(p => p.id === id);
- if (!project) return;
-
- currentProjectId = id;
- chatHistory = project.messages.slice();
-
- pushNav("chat");
- showPageOnly("chat");
- renderMessages();
- closeSidebar();
+function getProject(){
+  return projects.find(p=>p.id===currentProjectId);
 }
 
-async function loadCloudHistory() {
- const result = await api("/api/history");
- const rows = result.messages || [];
+function openProject(id){
+  const project = projects.find(p=>p.id===id);
+  if(!project) return;
+  currentProjectId=id;
+  renderHistory();
+  showPage("chat");
+  renderMessages();
+  toggleSidebar(false);
+}
 
- if (!rows.length) return;
+function renderHistory(){
+  $("historyList").innerHTML="";
+  projects.forEach(project=>{
+    const row=document.createElement("div");
+    row.className="history-item"+(project.id===currentProjectId?" selected":"");
 
- const cloudMessages = rows
-  .filter(row =>
-   ["user","assistant"].includes(row.role) &&
-   typeof row.message === "string"
-  )
-  .map(row => ({
-   role:row.role,
-   content:row.message
-  }));
+    const title=document.createElement("span");
+    title.textContent=project.title || "Nouveau chat";
+    title.onclick=()=>openProject(project.id);
 
- if (!cloudMessages.length) return;
+    const rename=document.createElement("button");
+    rename.textContent="✎";
+    rename.title="Renommer";
+    rename.onclick=(e)=>{
+      e.stopPropagation();
+      const name=prompt("Nouveau nom :",project.title);
+      if(name && name.trim()){
+        project.title=name.trim();
+        saveProjects();
+        renderHistory();
+      }
+    };
 
- const existing = projects.find(p => p.id === "cloud-history");
+    const del=document.createElement("button");
+    del.textContent="×";
+    del.title="Supprimer";
+    del.onclick=(e)=>{
+      e.stopPropagation();
+      if(!confirm("Supprimer cette conversation de cet appareil ?")) return;
+      projects=projects.filter(p=>p.id!==project.id);
+      if(currentProjectId===project.id){
+        currentProjectId=null;
+        if(projects.length) openProject(projects[0].id);
+        else createProject();
+      }
+      saveProjects();
+      renderHistory();
+    };
 
- if (!existing) {
-  projects.push({
-   id:"cloud-history",
-   title:"Historique synchronisé",
-   messages:cloudMessages
+    row.append(title,rename,del);
+    $("historyList").appendChild(row);
   });
- } else {
-  existing.messages = cloudMessages;
- }
-
- saveProjects();
- renderHistory();
 }
 
-/* AFFICHAGE DES MESSAGES */
+function renderMessages(){
+  const project=getProject();
+  $("welcome").classList.toggle("hidden",!!project?.messages.length);
+  $("messages").classList.toggle("hidden",!project?.messages.length);
+  $("pageContent").classList.add("hidden");
+  $("composerArea").classList.remove("hidden");
 
-function addMessage(role, content) {
- const container = $("messages");
+  if(!project || !project.messages.length){
+    $("messages").innerHTML="";
+    return;
+  }
 
- const row = document.createElement("div");
- row.className = "message " + (role === "user" ? "user" : "assistant");
-
- const avatar = document.createElement("div");
- avatar.className = "message-avatar";
- avatar.textContent = role === "user" ? "👤" : "🤖";
-
- const box = document.createElement("div");
- box.className = "message-content";
-
- if (role === "user") {
-  box.textContent = content;
- } else if (window.marked && window.DOMPurify) {
-  box.innerHTML = DOMPurify.sanitize(marked.parse(content));
- } else {
-  box.textContent = content;
- }
-
- row.appendChild(avatar);
- row.appendChild(box);
- container.appendChild(row);
-
- container.scrollTop = container.scrollHeight;
-
- return box;
-}
-
-function renderMessages() {
- $("messages").innerHTML = "";
-
- chatHistory.forEach(message => {
-  addMessage(message.role,message.content);
- });
-}
-
-/* RECHERCHE WEB */
-
-function toggleWebSearch() {
- webSearchEnabled = !webSearchEnabled;
-
- $("searchBtn").classList.toggle("active",webSearchEnabled);
- $("searchStatus").classList.toggle("hidden",!webSearchEnabled);
-
- $("searchBtn").title = webSearchEnabled
-  ? "Désactiver la recherche Web"
-  : "Activer la recherche Web";
-}
-
-/* INTELLIGENCE ARTIFICIELLE */
-
-async function tryRealAI() {
- const messages = chatHistory
-  .filter(m => ["user","assistant"].includes(m.role))
-  .slice(-20)
-  .map(m => ({
-   role:m.role,
-   content:m.content
-  }));
-
- const controller = new AbortController();
- const timeout = setTimeout(() => controller.abort(),90000);
-
- try {
-  const result = await api("/api/chat",{
-   method:"POST",
-   signal:controller.signal,
-   body:JSON.stringify({
-    messages,
-    web_search:webSearchEnabled
-   })
+  $("messages").innerHTML="";
+  project.messages.forEach((message,index)=>{
+    addMessageElement(message,index);
   });
-
-  return result.reply || result.answer || "Je n'ai pas reçu de réponse.";
-
- } finally {
-  clearTimeout(timeout);
- }
+  scrollBottom();
 }
 
-function showAnswer(box,answer) {
- if (window.marked && window.DOMPurify) {
-  box.innerHTML = DOMPurify.sanitize(marked.parse(answer));
- } else {
-  box.textContent = answer;
- }
+function addMessageElement(message,index){
+  const wrapper=document.createElement("div");
+  wrapper.className="message "+message.role;
+
+  const avatar=document.createElement("div");
+  avatar.className="msg-avatar";
+  avatar.textContent=message.role==="user"?"M":"T";
+
+  const body=document.createElement("div");
+  body.className="bubble";
+
+  if(message.role==="assistant"){
+    const html=window.marked
+      ? marked.parse(message.content || "")
+      : (message.content || "").replace(/\n/g,"<br>");
+    body.innerHTML=DOMPurify.sanitize(html);
+  }else{
+    body.textContent=message.content || "";
+  }
+
+  if(message.image){
+    const img=document.createElement("img");
+    img.src=message.image;
+    img.style.display="block";
+    img.style.maxWidth="220px";
+    img.style.marginTop="8px";
+    body.appendChild(img);
+  }
+
+  const actions=document.createElement("div");
+  actions.className="message-actions";
+
+  if(message.role==="assistant"){
+    addAction(actions,"Copier",()=>copyText(message.content));
+    addAction(actions,"Lire",()=>readAloud(message.content));
+    addAction(actions,"Partager",()=>shareText(message.content));
+    addAction(actions,"Régénérer",()=>regenerate(index));
+  }else{
+    addAction(actions,"Copier",()=>copyText(message.content));
+  }
+
+  body.appendChild(actions);
+  wrapper.append(avatar,body);
+  $("messages").appendChild(wrapper);
 }
 
-async function askAI(question,botBox) {
- if (isGenerating || !question.trim()) return;
-
- isGenerating = true;
- $("sendBtn").disabled = true;
-
- chatHistory.push({
-  role:"user",
-  content:question
- });
-
- botBox.innerHTML =
-  '<div class="typing"><span></span><span></span><span></span></div>';
-
- try {
-  const answer = await tryRealAI();
-
-  showAnswer(botBox,answer);
-
-  chatHistory.push({
-   role:"assistant",
-   content:answer
-  });
-
-  lastAnswer = answer;
-  saveCurrent();
-
- } catch(error) {
-  const message = error.name === "AbortError"
-   ? "La réponse prend trop de temps. Réessaie."
-   : "Erreur : " + error.message;
-
-  botBox.textContent = message;
-  chatHistory.pop();
-
- } finally {
-  isGenerating = false;
-  $("sendBtn").disabled = false;
-  $("messages").scrollTop = $("messages").scrollHeight;
- }
+function addAction(parent,label,callback){
+  const button=document.createElement("button");
+  button.textContent=label;
+  button.onclick=callback;
+  parent.appendChild(button);
 }
 
-/* ENVOI DES MESSAGES */
-
-async function sendMessage() {
- if (isGenerating) return;
-
- const input = $("question");
- const question = input.value.trim();
-
- if (!question && !selectedFile) return;
-
- input.value = "";
- input.style.height = "45px";
-
- pushNav("chat");
- showPageOnly("chat");
-
- if (selectedFile) {
-  await sendFileToAI(selectedFile,question);
-  return;
- }
-
- addMessage("user",question);
- const botBox = addMessage("assistant","");
-
- await askAI(question,botBox);
+function scrollBottom(){
+  $("content").scrollTop=$("content").scrollHeight;
 }
 
-$("question").addEventListener("keydown",event => {
- if (event.key === "Enter" && !event.shiftKey) {
-  event.preventDefault();
+/* CHAT */
+function quickPrompt(text){
+  $("prompt").value=text;
   sendMessage();
- }
-});
-
-$("question").addEventListener("input",function() {
- this.style.height = "45px";
- this.style.height = Math.min(this.scrollHeight,150) + "px";
-});
-
-/* FICHIERS ET DOCUMENTS */
-
-function updateFileStatus() {
- const status = $("fileStatus");
-
- if (!selectedFile) {
-  status.classList.add("hidden");
-  status.textContent = "";
-  return;
- }
-
- status.classList.remove("hidden");
- status.textContent = "📎 Fichier sélectionné : " + selectedFile.file.name;
 }
 
-/* FONCTION CORRIGÉE : FERMETURE MANQUANTE AJOUTÉE */
-
-function readAsDataURL(file) {
- return new Promise((resolve,reject) => {
-  const reader = new FileReader();
-
-  reader.onload = () => resolve(reader.result);
-  reader.onerror = () => reject(
-   new Error("Lecture du fichier impossible.")
-  );
-
-  reader.readAsDataURL(file);
- });
+function handleEnter(event){
+  if(event.key==="Enter" && !event.shiftKey){
+    event.preventDefault();
+    sendMessage();
+  }
 }
 
-function readFileText(file) {
- return new Promise((resolve,reject) => {
-  const reader = new FileReader();
-
-  reader.onload = () => resolve(String(reader.result || ""));
-  reader.onerror = () => reject(new Error("Lecture du document impossible."));
-
-  reader.readAsText(file);
- });
+function resizeInput(element){
+  element.style.height="auto";
+  element.style.height=Math.min(element.scrollHeight,150)+"px";
 }
 
-async function handleFile(input) {
- const file = input.files && input.files[0];
- if (!file) return;
+async function sendMessage(customText=null){
+  if(generating) return;
 
- try {
-  const isImage = file.type.startsWith("image/");
-  const isPDF = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
-  const isText =
-   file.type.startsWith("text/") ||
-   /\.(txt|md|csv)$/i.test(file.name);
+  const text=(customText ?? $("prompt").value).trim();
+  if(!text && !selectedFile) return;
 
-  if (isImage) {
-   if (file.size > MAX_IMAGE_SIZE) {
-    throw new Error("Image trop lourde. Taille maximale : 8 Mo.");
-   }
+  if(!getProject()) createProject(false);
+  const project=getProject();
 
-   selectedFile = {type:"image",file};
+  let userContent=text;
+  let imageData=null;
 
-  } else if (isPDF) {
-   if (file.size > MAX_PDF_SIZE) {
-    throw new Error("PDF trop lourd. Taille maximale : 18 Mo.");
-   }
-
-   selectedFile = {type:"pdf",file};
-
-  } else if (isText) {
-   if (file.size > MAX_TEXT_SIZE) {
-    throw new Error("Document texte trop lourd. Taille maximale : 2 Mo.");
-   }
-
-   const content = await readFileText(file);
-
-   $("question").value =
-    "Analyse ce document et explique-moi les informations importantes :\n\n" +
-    content.slice(0,18000);
-
-   selectedFile = null;
-   updateFileStatus();
-
-   alert("Document chargé. Tu peux maintenant envoyer ta question à TAYA.");
-
-   $("question").focus();
-   return;
-
-  } else {
-   throw new Error("Format non supporté. Utilise une image, un PDF, TXT, MD ou CSV.");
+  if(selectedFile){
+    if(selectedFile.type.startsWith("image/")){
+      imageData=await fileToDataURL(selectedFile);
+    }else if(selectedFile.type==="application/pdf" || selectedFile.name.toLowerCase().endsWith(".pdf")){
+      alert("La lecture PDF n'est pas encore disponible sur ton backend. Tu peux envoyer une image ou un fichier texte.");
+      return;
+    }else{
+      const fileText=await selectedFile.text();
+      userContent += "\n\nContenu du fichier "+selectedFile.name+":\n"+fileText;
+    }
   }
 
-  updateFileStatus();
+  if(!userContent) userContent="Analyse cette image.";
+  const userMessage={role:"user",content:userContent,image:imageData};
+  project.messages.push(userMessage);
 
- } catch(error) {
-  alert(error.message);
-  selectedFile = null;
-  updateFileStatus();
+  if(project.messages.length===1){
+    project.title=text.slice(0,38) || "Nouvelle conversation";
+  }
+  project.updatedAt=Date.now();
+  saveProjects();
 
- } finally {
-  input.value = "";
- }
+  $("prompt").value="";
+  $("prompt").style.height="auto";
+  selectedFile=null;
+  $("fileInput").value="";
+  $("filePreview").textContent="";
+  renderHistory();
+  renderMessages();
+
+  generating=true;
+  controller=new AbortController();
+  $("sendBtn").classList.add("hidden");
+  $("stopBtn").classList.remove("hidden");
+
+  try{
+    let answer="";
+
+    if(imageData){
+      const response=await api("/api/chat/image",{
+        method:"POST",
+        signal:controller.signal,
+        body:JSON.stringify({
+          image_base64:imageData,
+          message:text || "Décris cette image"
+        })
+      });
+      answer=response.answer || response.reply || response.message || "Aucune réponse reçue.";
+    }else{
+      const messages=project.messages
+        .filter(m=>m.role==="user" || m.role==="assistant")
+        .map(m=>({role:m.role,content:m.content}));
+
+      const response=await api("/api/chat",{
+        method:"POST",
+        signal:controller.signal,
+        body:JSON.stringify({
+          messages,
+          web_search:webSearch
+        })
+      });
+      answer=response.answer || response.reply || "Je n'ai pas reçu de réponse.";
+    }
+
+    project.messages.push({role:"assistant",content:answer});
+    project.updatedAt=Date.now();
+    saveProjects();
+    renderMessages();
+
+  }catch(error){
+    if(error.name==="AbortError"){
+      project.messages.push({
+        role:"assistant",
+        content:"Génération arrêtée."
+      });
+    }else{
+      project.messages.push({
+        role:"assistant",
+        content:"**Erreur :** "+error.message+"\n\nVérifie que ton backend Render fonctionne."
+      });
+    }
+    saveProjects();
+    renderMessages();
+  }finally{
+    generating=false;
+    controller=null;
+    $("sendBtn").classList.remove("hidden");
+    $("stopBtn").classList.add("hidden");
+  }
 }
 
-async function sendFileToAI(item,question) {
- if (isGenerating) return;
+function stopGeneration(){
+  if(controller) controller.abort();
+}
 
- isGenerating = true;
- $("sendBtn").disabled = true;
+async function regenerate(index){
+  const project=getProject();
+  if(!project || generating) return;
 
- const file = item.file;
- const prompt = question || (
-  item.type === "image"
-   ? "Décris cette image et explique ce qu'elle représente."
-   : "Analyse ce PDF et résume les informations importantes."
- );
+  let userIndex=index-1;
+  while(userIndex>=0 && project.messages[userIndex].role!=="user") userIndex--;
+  if(userIndex<0) return;
 
- const label = "📎 " + file.name + "\n" + prompt;
+  project.messages=project.messages.slice(0,userIndex+1);
+  saveProjects();
+  renderMessages();
+  await sendMessage(project.messages[userIndex].content);
+}
 
- addMessage("user",label);
- const botBox = addMessage("assistant","");
+/* FICHIERS */
+function handleFile(input){
+  const file=input.files[0];
+  if(!file) return;
+  selectedFile=file;
+  $("filePreview").textContent="📎 "+file.name;
+}
 
- botBox.innerHTML =
-  '<div class="typing"><span></span><span></span><span></span></div>';
+function fileToDataURL(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=()=>resolve(reader.result);
+    reader.onerror=reject;
+    reader.readAsDataURL(file);
+  });
+}
 
- chatHistory.push({role:"user",content:label});
-
- try {
-  const dataURL = await readAsDataURL(file);
-
-  let result;
-
-  if (item.type === "image") {
-   result = await api("/api/chat/image",{
-    method:"POST",
-    body:JSON.stringify({
-     image:dataURL,
-     question:prompt
-    })
-   });
-  } else {
-   result = await api("/api/chat/pdf",{
-    method:"POST",
-    body:JSON.stringify({
-     pdf:dataURL,
-     question:prompt
-    })
-   });
+/* ACTIONS DES MESSAGES */
+async function copyText(text){
+  try{
+    await navigator.clipboard.writeText(text);
+    alert("Texte copié !");
+  }catch{
+    prompt("Copie le texte :",text);
   }
+}
 
-  const answer =
-   result.reply ||
-   result.answer ||
-   result.message ||
-   "Je n'ai pas reçu de réponse.";
+async function shareText(text){
+  if(navigator.share){
+    try{await navigator.share({text});}catch{}
+  }else{
+    copyText(text);
+  }
+}
 
-  showAnswer(botBox,answer);
-
-  chatHistory.push({role:"assistant",content:answer});
-
-  lastAnswer = answer;
-  saveCurrent();
-
- } catch(error) {
-  botBox.textContent = "Erreur d'analyse : " + error.message;
-  chatHistory.pop();
-
- } finally {
-  selectedFile = null;
-  updateFileStatus();
-  isGenerating = false;
-  $("sendBtn").disabled = false;
-  $("messages").scrollTop = $("messages").scrollHeight;
- }
+function readAloud(text){
+  if(!("speechSynthesis" in window)){
+    alert("Lecture vocale non disponible sur cet appareil.");
+    return;
+  }
+  speechSynthesis.cancel();
+  speechUtterance=new SpeechSynthesisUtterance(text);
+  speechUtterance.lang="fr-FR";
+  speechSynthesis.speak(speechUtterance);
 }
 
 /* DICTÉE VOCALE */
-
-function startVoice() {
- const SpeechRecognition =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
-
- if (!SpeechRecognition) {
-  alert("La dictée vocale n'est pas disponible dans ce navigateur. Essaie avec Safari ou Chrome.");
-  return;
- }
-
- const recognition = new SpeechRecognition();
-
- recognition.lang = "fr-FR";
- recognition.interimResults = false;
- recognition.continuous = false;
-
- recognition.onstart = () => {
-  $("question").placeholder = "🎤 Je t'écoute...";
- };
-
- recognition.onresult = event => {
-  const text = event.results[0][0].transcript;
-
-  $("question").value +=
-   ($("question").value ? " " : "") + text;
-
-  $("question").focus();
- };
-
- recognition.onerror = event => {
-  console.error("Erreur vocale :",event.error);
-  alert("Impossible de reconnaître la voix. Vérifie les autorisations du microphone.");
- };
-
- recognition.onend = () => {
-  $("question").placeholder = "Pose n'importe quelle question à TAYA...";
- };
-
- try {
+function startDictation(){
+  const SpeechRecognition=window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SpeechRecognition){
+    alert("La dictée vocale n'est pas prise en charge par ce navigateur.");
+    return;
+  }
+  const recognition=new SpeechRecognition();
+  recognition.lang="fr-FR";
+  recognition.interimResults=false;
+  recognition.onresult=(event)=>{
+    $("prompt").value += event.results[0][0].transcript;
+    resizeInput($("prompt"));
+  };
+  recognition.onerror=()=>alert("Impossible de reconnaître la voix.");
   recognition.start();
- } catch(error) {
-  alert("Impossible de démarrer le microphone.");
- }
 }
 
-/* LECTURE VOCALE */
+/* PAGES */
+function showPage(page){
+  $("welcome").classList.add("hidden");
+  $("messages").classList.add("hidden");
+  $("pageContent").classList.remove("hidden");
+  $("composerArea").classList.add("hidden");
 
-async function readLastAnswer() {
- if (!lastAnswer) {
-  alert("Aucune réponse à lire.");
-  return;
- }
+  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+  const titles={
+    chat:"TAYA IA",
+    memory:"Mémoire IA",
+    contact:"Contacter Maruce",
+    admin:"Administration",
+    settings:"Paramètres"
+  };
+  $("topTitle").textContent=titles[page] || "TAYA IA";
 
- try {
-  const blob = await apiBinary("/api/audio/speech",{
-   text:lastAnswer
-  });
-
-  const url = URL.createObjectURL(blob);
-  const audio = new Audio(url);
-
-  audio.onended = () => URL.revokeObjectURL(url);
-  audio.onerror = () => URL.revokeObjectURL(url);
-
-  await audio.play();
-
- } catch(error) {
-  console.warn("Lecture vocale serveur indisponible :",error);
-
-  if (!("speechSynthesis" in window)) {
-   alert("Lecture vocale indisponible.");
-   return;
+  if(page==="chat"){
+    renderMessages();
+    return;
   }
 
-  speechSynthesis.cancel();
+  if(page==="memory") renderMemory();
+  if(page==="contact") renderContact();
+  if(page==="admin") renderAdmin();
+  if(page==="settings") renderSettings();
 
-  const speech = new SpeechSynthesisUtterance(lastAnswer);
-  speech.lang = "fr-FR";
-  speechSynthesis.speak(speech);
- }
+  toggleSidebar(false);
 }
 
-/* MÉMOIRE SUPABASE */
-
-async function loadMemory() {
- const result = await api("/api/memory");
- $("memoryText").value = result.memory || "";
-}
-
-async function saveMemory() {
- const button = $("memorySaveBtn");
- const memory = $("memoryText").value;
-
- button.disabled = true;
- $("memoryStatus").textContent = "Enregistrement...";
-
- try {
-  const result = await api("/api/memory",{
-   method:"PUT",
-   body:JSON.stringify({memory})
-  });
-
-  $("memoryStatus").textContent =
-   result.message || "Mémoire enregistrée.";
-
- } catch(error) {
-  $("memoryStatus").textContent = error.message;
-
- } finally {
-  button.disabled = false;
- }
-}
-
-/* CONTACT MARUCE */
-
-async function sendMessageToMaruce() {
- const message = $("msgText").value.trim();
-
- if (!message) {
-  alert("Écris ton message avant de l'envoyer.");
-  return;
- }
-
- const button = $("contactSendBtn");
- button.disabled = true;
- $("msgSent").textContent = "Envoi en cours...";
-
- try {
-  const result = await api("/api/contact",{
-   method:"POST",
-   body:JSON.stringify({message})
-  });
-
-  $("msgText").value = "";
-  $("msgSent").textContent =
-   "✅ " + (result.message || "Message envoyé à Maruce.");
-
-  if (currentUser.role === "admin") {
-   await loadAdmin();
+/* MÉMOIRE */
+async function renderMemory(){
+  $("pageContent").innerHTML=`
+    <h2>🧠 Mémoire de TAYA</h2>
+    <div class="card">
+      <p>Les informations enregistrées ici peuvent aider TAYA à mieux comprendre ton contexte.</p>
+      <textarea class="field" id="memoryText" rows="8" placeholder="Écris ici les informations que TAYA doit retenir..."></textarea>
+      <button class="primary" onclick="saveMemory()">Enregistrer la mémoire</button>
+    </div>
+    <div id="memoryStatus" class="loading">Chargement...</div>
+  `;
+  try{
+    const data=await api("/api/memory");
+    $("memoryText").value=data.memory || "";
+    $("memoryStatus").textContent="Mémoire chargée.";
+  }catch(error){
+    $("memoryStatus").textContent="Impossible de charger la mémoire : "+error.message;
   }
+}
 
- } catch(error) {
-  $("msgSent").textContent = "❌ " + error.message;
+async function saveMemory(){
+  const memory=$("memoryText").value;
+  try{
+    await api("/api/memory",{method:"PUT",body:JSON.stringify({memory})});
+    $("memoryStatus").textContent="Mémoire enregistrée avec succès.";
+  }catch(error){
+    $("memoryStatus").textContent=error.message;
+  }
+}
 
- } finally {
-  button.disabled = false;
- }
+/* CONTACT */
+function renderContact(){
+  $("pageContent").innerHTML=`
+    <h2>✉️ Contacter Maruce</h2>
+    <div class="card">
+      <p>Envoie un message à l'équipe TAYA IA.</p>
+      <textarea class="field" id="contactMessage" rows="5" placeholder="Écris ton message..."></textarea>
+      <button class="primary" onclick="sendContact()">Envoyer le message</button>
+      <div id="contactStatus" class="loading"></div>
+    </div>
+  `;
+}
+
+async function sendContact(){
+  const message=$("contactMessage").value.trim();
+  if(!message) return;
+  try{
+    await api("/api/contact",{method:"POST",body:JSON.stringify({message})});
+    $("contactStatus").textContent="Message envoyé avec succès.";
+    $("contactMessage").value="";
+  }catch(error){
+    $("contactStatus").textContent=error.message;
+  }
 }
 
 /* ADMINISTRATION */
+async function renderAdmin(){
+  if(currentUser?.role!=="admin"){
+    $("pageContent").innerHTML="<h2>Accès refusé</h2>";
+    return;
+  }
 
-function openAdmin() {
- if (!currentUser || currentUser.role !== "admin") {
-  alert("Accès réservé aux administrateurs.");
-  return;
- }
+  $("pageContent").innerHTML=`
+    <h2>⚙️ Administration TAYA IA</h2>
+    <div class="card"><h3>👥 Utilisateurs inscrits</h3><div id="adminUsers" class="loading">Chargement...</div></div>
+    <div class="card"><h3>✉️ Messages reçus</h3><div id="adminMessages" class="loading">Chargement...</div></div>
+  `;
 
- isAdminUnlocked = true;
- closeSidebar();
+  try{
+    const [usersData,messagesData]=await Promise.all([
+      api("/api/admin/users"),
+      api("/api/admin/messages")
+    ]);
 
- pushNav("admin");
- showPageOnly("admin");
+    const users=usersData.users || [];
+    $("adminUsers").innerHTML=users.length
+      ? users.map(user=>`
+        <div class="admin-row">
+          <b>${escapeHTML(user.name || "Utilisateur")}</b>
+          <small>${escapeHTML(user.phone || "")} • ${escapeHTML(user.role || "user")}</small>
+        </div>
+      `).join("")
+      : "Aucun utilisateur trouvé.";
 
- loadAdmin();
+    const messages=messagesData.messages || [];
+    $("adminMessages").innerHTML=messages.length
+      ? messages.map(msg=>`
+        <div class="admin-row">
+          <b>${escapeHTML(msg.name || msg.full_name || "Utilisateur")}</b>
+          <small>${escapeHTML(msg.message || "")}</small>
+          <textarea class="field" id="reply_${escapeHTML(msg.user_id)}" placeholder="Écrire une réponse..."></textarea>
+          <button class="primary" onclick="replyAdmin('${escapeHTML(msg.user_id)}')">Répondre</button>
+        </div>
+      `).join("")
+      : "Aucun message reçu.";
+
+  }catch(error){
+    $("adminUsers").textContent=error.message;
+    $("adminMessages").textContent=error.message;
+  }
 }
 
-function lockAdmin() {
- isAdminUnlocked = false;
- showHome();
+async function replyAdmin(userId){
+  const input=$("reply_"+userId);
+  if(!input || !input.value.trim()) return;
+  try{
+    await api("/api/admin/messages/"+encodeURIComponent(userId)+"/reply",{
+      method:"POST",
+      body:JSON.stringify({message:input.value.trim()})
+    });
+    input.value="";
+    alert("Réponse envoyée.");
+  }catch(error){
+    alert("Erreur : "+error.message);
+  }
 }
 
-async function loadAdmin() {
- if (!currentUser || currentUser.role !== "admin") return;
-
- $("adminUsers").innerHTML = "<div class='card'>Chargement...</div>";
- $("adminMsgs").innerHTML = "<div class='card'>Chargement...</div>";
-
- try {
-  const [usersResult,messagesResult] = await Promise.all([
-   api("/api/admin/users"),
-   api("/api/admin/messages")
-  ]);
-
-  const users = usersResult.users || [];
-  const messages = messagesResult.messages || [];
-
-  allMsgs = messages;
-
-  $("statUsers").textContent = users.length;
-  $("statMsgs").textContent = messages.length;
-
-  $("adminBadge").textContent = messages.length;
-  $("adminBadge").classList.toggle("hidden",messages.length === 0);
-
-  renderAdminUsers(users);
-  renderAdminMessages(messages);
-
- } catch(error) {
-  $("adminUsers").innerHTML = "";
-  $("adminMsgs").innerHTML = "";
-
-  const message = document.createElement("div");
-  message.className = "card";
-  message.textContent = "Erreur : " + error.message;
-
-  $("adminUsers").appendChild(message);
- }
+/* PARAMÈTRES */
+function renderSettings(){
+  $("pageContent").innerHTML=`
+    <h2>⚙️ Paramètres</h2>
+    <div class="card">
+      <h3>👤 Profil</h3>
+      <p>Nom : ${escapeHTML(currentUser?.name || "")}</p>
+      <p>Téléphone : ${escapeHTML(currentUser?.phone || "")}</p>
+      <p>Rôle : ${escapeHTML(currentUser?.role || "Utilisateur")}</p>
+    </div>
+    <div class="card">
+      <h3>🎨 Apparence</h3>
+      <p>Choisis l'apparence de ton application.</p><br>
+      <button class="secondary" onclick="toggleTheme()">Changer le thème</button>
+    </div>
+    <div class="card">
+      <h3>🔐 Compte</h3>
+      <button class="secondary danger" onclick="logout()">Se déconnecter</button>
+    </div>
+    <div class="card">
+      <h3>À propos</h3>
+      <p>TAYA IA V20<br>By MARUCE SOLDADO 👑🇬🇳</p>
+    </div>
+  `;
 }
 
-function renderAdminUsers(users) {
- const container = $("adminUsers");
- container.innerHTML = "";
-
- if (!users.length) {
-  container.textContent = "Aucun utilisateur.";
-  return;
- }
-
- users.forEach(user => {
-  const card = document.createElement("div");
-  card.className = "card";
-
-  const name = document.createElement("b");
-  name.textContent = "👤 " + (user.name || "Utilisateur");
-
-  const details = document.createElement("div");
-  details.style.marginTop = "7px";
-
-  const small = document.createElement("small");
-
-  small.textContent =
-   "📞 " + (user.phone || "") +
-   " • " +
-   (user.role === "admin" ? "Administrateur" : "Membre") +
-   " • " +
-   (user.created_at ? new Date(user.created_at).toLocaleDateString("fr-FR") : "");
-
-  const link = document.createElement("a");
-  link.style.display = "inline-block";
-  link.style.marginTop = "9px";
-  link.style.color = "var(--green)";
-  link.target = "_blank";
-  link.rel = "noopener";
-  link.href = "https://wa.me/" + String(user.phone || "").replace(/\D/g,"");
-  link.textContent = "💬 WhatsApp";
-
-  details.appendChild(small);
-  details.appendChild(document.createElement("br"));
-  details.appendChild(link);
-
-  card.appendChild(name);
-  card.appendChild(details);
-
-  container.appendChild(card);
- });
+function toggleTheme(){
+  document.body.classList.toggle("light");
+  localStorage.setItem("taya_theme",document.body.classList.contains("light")?"light":"dark");
 }
 
-function renderAdminMessages(messages) {
- const container = $("adminMsgs");
- container.innerHTML = "";
+function toggleSidebar(force){
+  const open=typeof force==="boolean"?force:!$("sidebar").classList.contains("open");
+  $("sidebar").classList.toggle("open",open);
+  $("overlay").classList.toggle("show",open);
+}
 
- if (!messages.length) {
-  container.textContent = "Aucun message reçu.";
-  return;
- }
+/* HISTORIQUE SERVEUR */
+async function loadCloudHistory(){
+  try{
+    const data=await api("/api/history");
+    const messages=data.messages || [];
+    if(!messages.length) return;
 
- messages.forEach(message => {
-  const card = document.createElement("div");
-  card.className = "card";
+    // Les anciens messages n'ont pas d'identifiant de conversation.
+    // On les conserve séparément dans un projet historique unique.
+    const existing=projects.find(p=>p.id==="cloud-history");
+    const cloudMessages=messages.map(m=>({
+      role:m.role,
+      content:m.message || m.content || ""
+    })).filter(m=>m.role==="user" || m.role==="assistant");
 
-  const title = document.createElement("b");
-  title.textContent = "✉️ Message reçu";
+    if(existing){
+      existing.messages=cloudMessages;
+    }else{
+      projects.push({
+        id:"cloud-history",
+        title:"Ancien historique cloud",
+        messages:cloudMessages,
+        updatedAt:Date.now()
+      });
+    }
+    saveProjects();
+    renderHistory();
+  }catch(error){
+    console.warn("Historique cloud indisponible :",error.message);
+  }
+}
 
-  const text = document.createElement("p");
-  text.style.margin = "12px 0";
-  text.style.whiteSpace = "pre-wrap";
-  text.textContent = message.message || "";
-
-  const date = document.createElement("small");
-  date.textContent = message.created_at
-   ? new Date(message.created_at).toLocaleString("fr-FR")
-   : "";
-
-  card.appendChild(title);
-  card.appendChild(document.createElement("br"));
-  card.appendChild(text);
-  card.appendChild(date);
-
-  container.appendChild(card);
- });
+/* UTILITAIRES */
+function escapeHTML(value){
+  return String(value ?? "").replace(/[&<>"']/g,char=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[char]);
 }
 
 /* DÉMARRAGE */
-
-async function initialize() {
- if (!authToken) {
-  showLogin();
-  return;
- }
-
- try {
-  const result = await api("/api/auth/me");
-  currentUser = result.user;
-
-  if (!currentUser) {
-   throw new Error("Session invalide.");
-  }
-
-  localStorage.setItem("taya_current_user",JSON.stringify(currentUser));
-
-  await openApplication();
-
- } catch(error) {
-  console.warn("Session non restaurée :",error.message);
-
-  authToken = "";
-  currentUser = null;
-
-  localStorage.removeItem("taya_token");
-  localStorage.removeItem("taya_current_user");
-
-  showLogin();
- }
+if(localStorage.getItem("taya_theme")==="light"){
+  document.body.classList.add("light");
 }
 
-initialize();
-
+(async()=>{
+  if(token && currentUser){
+    try{
+      await openApplication();
+    }catch(error){
+      console.error(error);
+      $("authScreen").classList.remove("hidden");
+    }
+  }else{
+    $("authScreen").classList.remove("hidden");
+  }
+})();
 </script>
 </body>
 </html>
