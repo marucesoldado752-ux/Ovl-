@@ -1,8 +1,9 @@
 /* =========================================================
-   TAYA IA V20 — FRONTEND
+   TAYA IA V20 — FRONTEND COMPLET
    By Maruce Soldado 🇬🇳
 
-   Backend API : https://taya-ai-api.onrender.com
+   Backend API :
+   https://taya-ai-api.onrender.com/api
    ========================================================= */
 
 "use strict";
@@ -25,6 +26,8 @@ let abortController = null;
 let isGenerating = false;
 let mediaRecorder = null;
 let audioChunks = [];
+let presenceTimer = null;
+let adminRefreshTimer = null;
 
 /* ================= OUTILS ================= */
 
@@ -34,8 +37,9 @@ function $(id) {
 
 function toast(message) {
   const container = $("toastContainer");
+
   if (!container) {
-    alert(message);
+    console.log(message);
     return;
   }
 
@@ -56,7 +60,10 @@ async function api(path, options = {}) {
     headers.Authorization = `Bearer ${authToken}`;
   }
 
-  if (options.body && !(options.body instanceof FormData)) {
+  if (
+    options.body &&
+    !(options.body instanceof FormData)
+  ) {
     headers["Content-Type"] = "application/json";
   }
 
@@ -65,7 +72,8 @@ async function api(path, options = {}) {
     headers
   });
 
-  const contentType = response.headers.get("content-type") || "";
+  const contentType =
+    response.headers.get("content-type") || "";
 
   let data;
 
@@ -93,7 +101,10 @@ function saveSession(token, user) {
   currentUser = user;
 
   localStorage.setItem(STORAGE.token, token);
-  localStorage.setItem(STORAGE.user, JSON.stringify(user));
+  localStorage.setItem(
+    STORAGE.user,
+    JSON.stringify(user)
+  );
 }
 
 function clearSession() {
@@ -102,6 +113,9 @@ function clearSession() {
 
   localStorage.removeItem(STORAGE.token);
   localStorage.removeItem(STORAGE.user);
+
+  stopPresence();
+  stopAdminRefresh();
 }
 
 function escapeHTML(value) {
@@ -115,11 +129,49 @@ function escapeHTML(value) {
 }
 
 function getUserName() {
-  return currentUser?.name || currentUser?.full_name || "Utilisateur";
+  return (
+    currentUser?.name ||
+    currentUser?.full_name ||
+    "Utilisateur"
+  );
 }
 
 function getInitial(name) {
-  return String(name || "T").trim().charAt(0).toUpperCase();
+  return String(name || "T")
+    .trim()
+    .charAt(0)
+    .toUpperCase();
+}
+
+function formatDate(date) {
+  if (!date) return "";
+
+  const parsed = new Date(date);
+
+  if (Number.isNaN(parsed.getTime())) {
+    return "";
+  }
+
+  return parsed.toLocaleString("fr-FR", {
+    dateStyle: "short",
+    timeStyle: "short"
+  });
+}
+
+function setText(id, value) {
+  const element = $(id);
+
+  if (element) {
+    element.textContent = value;
+  }
+}
+
+function setHTML(id, value) {
+  const element = $(id);
+
+  if (element) {
+    element.innerHTML = value;
+  }
 }
 
 /* ================= AUTHENTIFICATION ================= */
@@ -127,26 +179,43 @@ function getInitial(name) {
 function switchAuth(mode) {
   const register = mode === "register";
 
-  $("loginTab")?.classList.toggle("active", !register);
-  $("registerTab")?.classList.toggle("active", register);
-
-  $("nameField")?.classList.toggle("hidden", !register);
-  $("confirmField")?.classList.toggle("hidden", !register);
-
-  $("authTitle") && (
-    $("authTitle").textContent = register ? "Créer un compte" : "Connexion"
+  $("loginTab")?.classList.toggle(
+    "active",
+    !register
   );
 
-  if ($("authSubmit")) {
-    $("authSubmit").textContent = register
-      ? "Créer mon compte"
-      : "Se connecter";
-  }
+  $("registerTab")?.classList.toggle(
+    "active",
+    register
+  );
 
-  $("authError").textContent = "";
-  $("authPassword").autocomplete = register
-    ? "new-password"
-    : "current-password";
+  $("nameField")?.classList.toggle(
+    "hidden",
+    !register
+  );
+
+  $("confirmField")?.classList.toggle(
+    "hidden",
+    !register
+  );
+
+  setText(
+    "authTitle",
+    register ? "Créer un compte" : "Connexion"
+  );
+
+  setText(
+    "authSubmit",
+    register ? "Créer mon compte" : "Se connecter"
+  );
+
+  setText("authError", "");
+
+  if ($("authPassword")) {
+    $("authPassword").autocomplete = register
+      ? "new-password"
+      : "current-password";
+  }
 }
 
 async function submitAuth(event) {
@@ -155,21 +224,25 @@ async function submitAuth(event) {
   const button = $("authSubmit");
   const error = $("authError");
 
+  if (!button || !error) return;
+
   error.textContent = "";
 
-  const isRegister = $("registerTab").classList.contains("active");
+  const isRegister =
+    $("registerTab")?.classList.contains("active");
 
-  const phone = $("authPhone").value.trim();
-  const password = $("authPassword").value;
+  const phone = $("authPhone")?.value.trim();
+  const password = $("authPassword")?.value;
 
   if (!phone || !password) {
-    error.textContent = "Remplis tous les champs obligatoires.";
+    error.textContent =
+      "Remplis les champs obligatoires.";
     return;
   }
 
   if (isRegister) {
-    const name = $("authName").value.trim();
-    const confirm = $("authConfirm").value;
+    const name = $("authName")?.value.trim();
+    const confirm = $("authConfirm")?.value;
 
     if (!name) {
       error.textContent = "Entre ton nom complet.";
@@ -177,17 +250,20 @@ async function submitAuth(event) {
     }
 
     if (password.length < 6) {
-      error.textContent = "Le mot de passe doit contenir au moins 6 caractères.";
+      error.textContent =
+        "Le mot de passe doit contenir au moins 6 caractères.";
       return;
     }
 
     if (password !== confirm) {
-      error.textContent = "Les deux mots de passe ne correspondent pas.";
+      error.textContent =
+        "Les deux mots de passe ne correspondent pas.";
       return;
     }
   }
 
   const originalText = button.textContent;
+
   button.disabled = true;
   button.textContent = "Connexion en cours...";
 
@@ -213,13 +289,20 @@ async function submitAuth(event) {
     });
 
     if (!result.token || !result.user) {
-      throw new Error("Le serveur n'a pas retourné les informations du compte.");
+      throw new Error(
+        "Le serveur n'a pas retourné les informations du compte."
+      );
     }
 
     saveSession(result.token, result.user);
 
-    $("authPassword").value = "";
-    $("authConfirm").value = "";
+    if ($("authPassword")) {
+      $("authPassword").value = "";
+    }
+
+    if ($("authConfirm")) {
+      $("authConfirm").value = "";
+    }
 
     openApplication();
 
@@ -235,7 +318,8 @@ async function submitAuth(event) {
     }
 
   } catch (err) {
-    error.textContent = err.message || "Impossible de se connecter.";
+    error.textContent =
+      err.message || "Impossible de se connecter.";
   } finally {
     button.disabled = false;
     button.textContent = originalText;
@@ -252,9 +336,14 @@ async function checkSession() {
     const result = await api("/auth/me");
 
     currentUser = result.user || result;
-    localStorage.setItem(STORAGE.user, JSON.stringify(currentUser));
+
+    localStorage.setItem(
+      STORAGE.user,
+      JSON.stringify(currentUser)
+    );
 
     openApplication();
+
   } catch (err) {
     clearSession();
     showAuth();
@@ -277,21 +366,31 @@ function openApplication() {
 
   loadHistory();
   loadMemory();
+  startPresence();
 
   if (isAdmin()) {
     $("adminNav")?.classList.remove("hidden");
+    renderAdmin();
+    startAdminRefresh();
   } else {
     $("adminNav")?.classList.add("hidden");
   }
+
+  loadContactMessages();
 }
 
 function logout() {
-  if (!confirm("Veux-tu vraiment te déconnecter ?")) return;
+  if (!confirm("Veux-tu vraiment te déconnecter ?")) {
+    return;
+  }
 
   clearSession();
-  currentMessages = [];
 
-  $("messages").innerHTML = "";
+  currentMessages = [];
+  pendingFile = null;
+
+  setHTML("messages", "");
+
   showAuth();
 
   toast("Déconnexion effectuée.");
@@ -301,10 +400,10 @@ function updateUserInterface() {
   const name = getUserName();
   const phone = currentUser?.phone || "";
 
-  if ($("userName")) $("userName").textContent = name;
-  if ($("userPhone")) $("userPhone").textContent = phone;
-  if ($("welcomeName")) $("welcomeName").textContent = name;
-  if ($("userAvatar")) $("userAvatar").textContent = getInitial(name);
+  setText("userName", name);
+  setText("userPhone", phone);
+  setText("welcomeName", name);
+  setText("userAvatar", getInitial(name));
 
   if (isAdmin()) {
     $("adminNav")?.classList.remove("hidden");
@@ -312,8 +411,52 @@ function updateUserInterface() {
 }
 
 function isAdmin() {
-  return currentUser?.role === "admin" ||
-         currentUser?.role === "administrator";
+  return (
+    currentUser?.role === "admin" ||
+    currentUser?.role === "administrator"
+  );
+}
+
+/* ================= PRÉSENCE UTILISATEUR ================= */
+
+/*
+  IMPORTANT :
+  Le backend actuel doit être complété avec :
+  POST /api/presence/heartbeat
+  GET  /api/admin/presence
+
+  Tant que ces routes ne sont pas ajoutées,
+  le compteur des utilisateurs connectés restera indisponible.
+*/
+
+async function sendPresenceHeartbeat() {
+  if (!authToken) return;
+
+  try {
+    await api("/presence/heartbeat", {
+      method: "POST",
+      body: JSON.stringify({})
+    });
+  } catch (err) {
+    // La route sera activée lors de la mise à jour du backend.
+  }
+}
+
+function startPresence() {
+  stopPresence();
+
+  sendPresenceHeartbeat();
+
+  presenceTimer = setInterval(() => {
+    sendPresenceHeartbeat();
+  }, 45000);
+}
+
+function stopPresence() {
+  if (presenceTimer) {
+    clearInterval(presenceTimer);
+    presenceTimer = null;
+  }
 }
 
 /* ================= NAVIGATION ================= */
@@ -337,8 +480,12 @@ function showPage(page) {
 
   pages.forEach(name => {
     const element = $(name + "Page");
+
     if (element) {
-      element.classList.toggle("active", name === page);
+      element.classList.toggle(
+        "active",
+        name === page
+      );
     }
   });
 
@@ -358,9 +505,12 @@ function showPage(page) {
     settings: "Paramètres"
   };
 
-  $("topTitle").textContent = titles[page] || "TAYA IA";
+  setText("topTitle", titles[page] || "TAYA IA");
 
-  $("backButton")?.classList.toggle("hidden", page === "home");
+  $("backButton")?.classList.toggle(
+    "hidden",
+    page === "home"
+  );
 
   toggleSidebar(false);
 
@@ -368,8 +518,14 @@ function showPage(page) {
     renderAdmin();
   }
 
+  if (page === "contact") {
+    loadContactMessages();
+  }
+
   if (page === "chat") {
-    setTimeout(() => $("messageInput")?.focus(), 100);
+    setTimeout(() => {
+      $("messageInput")?.focus();
+    }, 100);
   }
 }
 
@@ -394,12 +550,18 @@ function toggleSidebar(force) {
 /* ================= THÈME ================= */
 
 function applySavedTheme() {
-  const theme = localStorage.getItem(STORAGE.theme) || "dark";
-  document.body.classList.toggle("light", theme === "light");
+  const theme =
+    localStorage.getItem(STORAGE.theme) || "dark";
+
+  document.body.classList.toggle(
+    "light",
+    theme === "light"
+  );
 }
 
 function toggleTheme() {
-  const light = !document.body.classList.contains("light");
+  const light =
+    !document.body.classList.contains("light");
 
   document.body.classList.toggle("light", light);
 
@@ -414,11 +576,19 @@ function toggleTheme() {
 function newChat() {
   currentMessages = [];
 
-  $("messages").innerHTML = "";
+  setHTML("messages", "");
+
   $("welcomeScreen")?.classList.remove("hidden");
 
-  $("messageInput").value = "";
+  if ($("messageInput")) {
+    $("messageInput").value = "";
+  }
+
   pendingFile = null;
+
+  if ($("fileInput")) {
+    $("fileInput").value = "";
+  }
 
   showPage("chat");
 }
@@ -426,18 +596,25 @@ function newChat() {
 function newChatWithPrompt(prompt) {
   newChat();
 
-  $("messageInput").value = prompt;
+  if ($("messageInput")) {
+    $("messageInput").value = prompt;
+  }
 
   setTimeout(() => sendMessage(), 100);
 }
 
 function usePrompt(prompt) {
+  if (!$("messageInput")) return;
+
   $("messageInput").value = prompt;
   sendMessage();
 }
 
 function handleComposerKey(event) {
-  if (event.key === "Enter" && !event.shiftKey) {
+  if (
+    event.key === "Enter" &&
+    !event.shiftKey
+  ) {
     event.preventDefault();
     sendMessage();
   }
@@ -447,13 +624,13 @@ function renderMarkdown(text) {
   let html;
 
   if (window.marked) {
-    html = marked.parse(String(text || ""));
+    html = window.marked.parse(String(text || ""));
   } else {
     html = escapeHTML(text).replace(/\n/g, "<br>");
   }
 
   if (window.DOMPurify) {
-    return DOMPurify.sanitize(html);
+    return window.DOMPurify.sanitize(html);
   }
 
   return escapeHTML(text).replace(/\n/g, "<br>");
@@ -462,6 +639,8 @@ function renderMarkdown(text) {
 function addMessage(role, content) {
   const container = $("messages");
 
+  if (!container) return null;
+
   $("welcomeScreen")?.classList.add("hidden");
 
   const message = document.createElement("div");
@@ -469,6 +648,7 @@ function addMessage(role, content) {
 
   const avatar = document.createElement("div");
   avatar.className = "message-avatar";
+
   avatar.textContent = role === "user"
     ? getInitial(getUserName())
     : "T";
@@ -488,22 +668,22 @@ function addMessage(role, content) {
       speakText(content);
     });
 
-    bubble.appendChild(document.createElement("br"));
+    bubble.appendChild(
+      document.createElement("br")
+    );
+
     bubble.appendChild(speakButton);
   } else {
     bubble.textContent = content;
   }
 
   if (role === "user") {
-    message.appendChild(bubble);
-    message.appendChild(avatar);
+    message.append(bubble, avatar);
   } else {
-    message.appendChild(avatar);
-    message.appendChild(bubble);
+    message.append(avatar, bubble);
   }
 
   container.appendChild(message);
-
   container.scrollTop = container.scrollHeight;
 
   return message;
@@ -512,42 +692,65 @@ function addMessage(role, content) {
 /* ================= ENVOI DES MESSAGES ================= */
 
 function needsWebSearch(message) {
-  return /\b(recherche|cherche sur internet|sur le web|actualité|actualités|aujourd'hui|aujourd’hui|cette semaine|dernier|dernière|récent|récente|météo|prix actuel|actualité|news|latest|today|current)\b/i.test(message);
+  return /\b(recherche|cherche sur internet|sur le web|actualité|actualités|aujourd'hui|aujourd’hui|cette semaine|dernier|dernière|récent|récente|météo|prix actuel|news|latest|today|current)\b/i.test(message);
 }
 
 async function sendMessage() {
   if (isGenerating) return;
 
   const input = $("messageInput");
+
+  if (!input) return;
+
   const message = input.value.trim();
   const file = pendingFile;
 
   if (!message && !file) return;
 
   if (file && file.type.startsWith("image/")) {
-    await sendImage(file, message || "Analyse cette image.");
+    await sendImage(
+      file,
+      message || "Analyse cette image."
+    );
+    return;
+  }
+
+  if (
+    file &&
+    file.type === "application/pdf"
+  ) {
+    await sendPDF(
+      file,
+      message || "Lis et analyse ce document PDF."
+    );
     return;
   }
 
   if (file && file.type === "text/plain") {
-    const text = await file.text();
+    try {
+      const text = await file.text();
 
-    input.value = "";
+      input.value = "";
+      pendingFile = null;
 
-    pendingFile = null;
-    $("fileInput").value = "";
+      if ($("fileInput")) {
+        $("fileInput").value = "";
+      }
 
-    await sendTextMessage(
-      message
-        ? `${message}\n\nContenu du fichier :\n${text}`
-        : `Lis et analyse ce fichier :\n\n${text}`
-    );
+      await sendTextMessage(
+        message
+          ? `${message}\n\nContenu du fichier :\n${text}`
+          : `Lis et analyse ce fichier :\n\n${text}`
+      );
+    } catch (err) {
+      toast("Impossible de lire ce fichier.");
+    }
 
     return;
   }
 
   if (file) {
-    toast("Ce type de fichier n'est pas encore pris en charge par le backend.");
+    toast("Format de fichier non pris en charge.");
     return;
   }
 
@@ -557,7 +760,9 @@ async function sendMessage() {
 async function sendTextMessage(message) {
   if (!message || isGenerating) return;
 
-  $("messageInput").value = "";
+  if ($("messageInput")) {
+    $("messageInput").value = "";
+  }
 
   currentMessages.push({
     role: "user",
@@ -569,7 +774,10 @@ async function sendTextMessage(message) {
   isGenerating = true;
   setGenerationUI(true);
 
-  const loading = addMessage("assistant", "TAYA IA réfléchit...");
+  const loading = addMessage(
+    "assistant",
+    "TAYA IA réfléchit..."
+  );
 
   abortController = new AbortController();
 
@@ -587,10 +795,12 @@ async function sendTextMessage(message) {
     const answer = result.answer || result.message;
 
     if (!answer) {
-      throw new Error("Le serveur n'a pas retourné de réponse.");
+      throw new Error(
+        "Le serveur n'a pas retourné de réponse."
+      );
     }
 
-    loading.remove();
+    loading?.remove();
 
     currentMessages.push({
       role: "assistant",
@@ -606,14 +816,14 @@ async function sendTextMessage(message) {
     loadHistory();
 
   } catch (err) {
-    loading.remove();
+    loading?.remove();
 
     if (err.name === "AbortError") {
       addMessage("assistant", "Génération arrêtée.");
     } else {
       addMessage(
         "assistant",
-        `Une erreur est survenue : ${err.message}\n\nVérifie que ton backend Render fonctionne et que les services sont configurés.`
+        `Une erreur est survenue : ${err.message}\n\nVérifie que ton backend Render fonctionne.`
       );
     }
 
@@ -623,6 +833,8 @@ async function sendTextMessage(message) {
     setGenerationUI(false);
   }
 }
+
+/* ================= IMAGES ================= */
 
 async function sendImage(file, message) {
   if (isGenerating) return;
@@ -635,7 +847,10 @@ async function sendImage(file, message) {
   isGenerating = true;
   setGenerationUI(true);
 
-  const loading = addMessage("assistant", "Analyse de l'image en cours...");
+  const loading = addMessage(
+    "assistant",
+    "Analyse de l'image en cours..."
+  );
 
   addMessage("user", message);
 
@@ -651,9 +866,11 @@ async function sendImage(file, message) {
       })
     });
 
-    const answer = result.answer || "Aucune réponse reçue.";
+    const answer =
+      result.answer || result.message ||
+      "Aucune réponse reçue.";
 
-    loading.remove();
+    loading?.remove();
 
     addMessage("assistant", answer);
 
@@ -665,15 +882,97 @@ async function sendImage(file, message) {
     loadHistory();
 
   } catch (err) {
-    loading.remove();
-    addMessage("assistant", `Impossible d'analyser cette image : ${err.message}`);
+    loading?.remove();
+
+    addMessage(
+      "assistant",
+      `Impossible d'analyser cette image : ${err.message}`
+    );
   } finally {
     pendingFile = null;
-    $("fileInput").value = "";
+
+    if ($("fileInput")) {
+      $("fileInput").value = "";
+    }
+
     isGenerating = false;
     setGenerationUI(false);
   }
 }
+
+/* ================= PDF ================= */
+
+async function sendPDF(file, message) {
+  if (isGenerating) return;
+
+  if (file.size > 8 * 1024 * 1024) {
+    toast("Le PDF dépasse la limite de 8 Mo.");
+    return;
+  }
+
+  isGenerating = true;
+  setGenerationUI(true);
+
+  addMessage("user", `${message}\n📄 ${file.name}`);
+
+  const loading = addMessage(
+    "assistant",
+    "Lecture du document PDF en cours..."
+  );
+
+  try {
+    const base64 = await fileToBase64(file);
+
+    const result = await api("/chat/pdf", {
+      method: "POST",
+      body: JSON.stringify({
+        pdf_base64: base64,
+        filename: file.name,
+        message
+      })
+    });
+
+    const answer =
+      result.answer || result.message ||
+      "Aucune réponse reçue.";
+
+    loading?.remove();
+
+    addMessage("assistant", answer);
+
+    currentMessages.push(
+      {
+        role: "user",
+        content: `${message} (${file.name})`
+      },
+      {
+        role: "assistant",
+        content: answer
+      }
+    );
+
+    loadHistory();
+
+  } catch (err) {
+    loading?.remove();
+
+    addMessage(
+      "assistant",
+      `Impossible de lire ce PDF : ${err.message}`
+    );
+  } finally {
+    pendingFile = null;
+
+    if ($("fileInput")) {
+      $("fileInput").value = "";
+    }
+
+    isGenerating = false;
+    setGenerationUI(false);
+  }
+}
+
+/* ================= FICHIERS ================= */
 
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {
@@ -684,9 +983,11 @@ function fileToBase64(file) {
       resolve(result.split(",")[1]);
     };
 
-    reader.onerror = () => reject(
-      new Error("Impossible de lire le fichier.")
-    );
+    reader.onerror = () => {
+      reject(
+        new Error("Impossible de lire le fichier.")
+      );
+    };
 
     reader.readAsDataURL(file);
   });
@@ -699,20 +1000,35 @@ function handleFile(input) {
 
   const allowedImage = file.type.startsWith("image/");
   const allowedText = file.type === "text/plain";
+  const allowedPDF = file.type === "application/pdf";
 
-  if (!allowedImage && !allowedText) {
-    toast("Pour le moment, seules les images et les fichiers TXT sont pris en charge.");
+  if (!allowedImage && !allowedText && !allowedPDF) {
+    toast("Choisis une image, un PDF ou un fichier TXT.");
+    input.value = "";
+    return;
+  }
+
+  if (file.size > 8 * 1024 * 1024) {
+    toast("Le fichier dépasse la limite de 8 Mo.");
     input.value = "";
     return;
   }
 
   pendingFile = file;
+
   toast(`Fichier ajouté : ${file.name}`);
 }
 
 function setGenerationUI(active) {
-  $("sendButton")?.classList.toggle("hidden", active);
-  $("stopButton")?.classList.toggle("hidden", !active);
+  $("sendButton")?.classList.toggle(
+    "hidden",
+    active
+  );
+
+  $("stopButton")?.classList.toggle(
+    "hidden",
+    !active
+  );
 
   if ($("messageInput")) {
     $("messageInput").disabled = active;
@@ -735,6 +1051,7 @@ async function loadHistory() {
     const messages = result.messages || [];
 
     const history = $("historyList");
+
     if (!history) return;
 
     history.innerHTML = "";
@@ -745,23 +1062,28 @@ async function loadHistory() {
       .reverse();
 
     if (!userMessages.length) {
-      history.innerHTML = '<p class="muted-text">Aucune discussion récente</p>';
+      history.innerHTML =
+        '<p class="muted-text">Aucune discussion récente</p>';
       return;
     }
 
     userMessages.forEach(item => {
       const button = document.createElement("button");
+
       button.className = "nav-item";
       button.style.fontSize = "11px";
 
-      const label = String(item.message || "Conversation")
-        .slice(0, 35);
-
-      button.textContent = "• " + label;
+      button.textContent =
+        "• " +
+        String(item.message || "Conversation").slice(0, 35);
 
       button.addEventListener("click", () => {
         newChat();
-        $("messageInput").value = item.message || "";
+
+        if ($("messageInput")) {
+          $("messageInput").value =
+            item.message || "";
+        }
       });
 
       history.appendChild(button);
@@ -781,7 +1103,8 @@ async function loadMemory() {
     const result = await api("/memory");
 
     if ($("memoryInput")) {
-      $("memoryInput").value = result.memory || "";
+      $("memoryInput").value =
+        result.memory || "";
     }
   } catch (err) {
     console.warn("Mémoire :", err.message);
@@ -789,7 +1112,8 @@ async function loadMemory() {
 }
 
 async function saveMemory() {
-  const memory = $("memoryInput").value.trim();
+  const memory =
+    $("memoryInput")?.value.trim() || "";
 
   try {
     await api("/memory", {
@@ -798,16 +1122,23 @@ async function saveMemory() {
     });
 
     toast("Mémoire enregistrée avec succès.");
+
   } catch (err) {
-    toast("Erreur lors de l'enregistrement : " + err.message);
+    toast(
+      "Erreur lors de l'enregistrement : " +
+      err.message
+    );
   }
 }
 
 /* ================= CONTACT MARUCE ================= */
 
 async function sendContactMessage() {
-  const subject = $("contactSubject").value.trim();
-  const message = $("contactMessage").value.trim();
+  const subject =
+    $("contactSubject")?.value.trim() || "";
+
+  const message =
+    $("contactMessage")?.value.trim() || "";
 
   if (!message) {
     toast("Écris ton message avant de l'envoyer.");
@@ -826,14 +1157,88 @@ async function sendContactMessage() {
       })
     });
 
-    $("contactSubject").value = "";
-    $("contactMessage").value = "";
+    if ($("contactSubject")) {
+      $("contactSubject").value = "";
+    }
 
-    $("contactStatus").textContent = "Message envoyé avec succès.";
+    if ($("contactMessage")) {
+      $("contactMessage").value = "";
+    }
+
+    setText(
+      "contactStatus",
+      "Message envoyé avec succès."
+    );
 
     toast("Ton message a été envoyé à Maruce.");
+
+    loadContactMessages();
+
   } catch (err) {
-    $("contactStatus").textContent = "Erreur : " + err.message;
+    setText(
+      "contactStatus",
+      "Erreur : " + err.message
+    );
+  }
+}
+
+/* ================= MESSAGES DE L'UTILISATEUR ================= */
+
+async function loadContactMessages() {
+  if (!authToken) return;
+
+  const container = $("myContactMessages");
+
+  if (!container) return;
+
+  container.innerHTML = "Chargement des messages...";
+
+  try {
+    const result = await api("/contact/messages");
+
+    const messages = result.messages || [];
+
+    container.innerHTML = "";
+
+    if (!messages.length) {
+      container.innerHTML =
+        '<div class="empty-state">Tu n’as pas encore de message.</div>';
+      return;
+    }
+
+    messages.forEach(message => {
+      const card = document.createElement("div");
+
+      card.className = "contact-message";
+
+      const sender = document.createElement("strong");
+
+      sender.textContent =
+        message.sender_role === "admin"
+          ? "Réponse de Maruce"
+          : "Ton message";
+
+      const content = document.createElement("p");
+      content.textContent = message.message || "";
+
+      const date = document.createElement("small");
+      date.className = "date";
+      date.textContent = formatDate(message.created_at);
+
+      card.append(sender, content, date);
+
+      if (message.sender_role === "admin") {
+        card.classList.add("admin-reply");
+      }
+
+      container.appendChild(card);
+    });
+
+  } catch (err) {
+    container.innerHTML =
+      '<div class="empty-state">Impossible de charger les messages.</div>';
+
+    console.warn("Messages contact :", err.message);
   }
 }
 
@@ -842,101 +1247,369 @@ async function sendContactMessage() {
 async function renderAdmin() {
   if (!isAdmin()) return;
 
-  $("adminUsers").innerHTML = "Chargement...";
-  $("adminMessages").innerHTML = "Chargement...";
+  const usersContainer = $("adminUsers");
+  const messagesContainer = $("adminMessages");
+
+  if (!usersContainer || !messagesContainer) {
+    console.warn(
+      "Les éléments adminUsers ou adminMessages sont absents du HTML."
+    );
+    return;
+  }
+
+  usersContainer.textContent = "Chargement des utilisateurs...";
+  messagesContainer.textContent = "Chargement des messages...";
+
+  setText("adminOnlineCount", "—");
 
   try {
-    const [usersResult, messagesResult] = await Promise.all([
-      api("/admin/users"),
-      api("/admin/messages")
-    ]);
+    const [usersResult, messagesResult] =
+      await Promise.all([
+        api("/admin/users"),
+        api("/admin/messages")
+      ]);
 
     const users = usersResult.users || [];
     const messages = messagesResult.messages || [];
 
-    $("adminUserCount").textContent = users.length;
-    $("adminMessageCount").textContent = messages.length;
+    setText("adminUserCount", users.length);
+    setText("adminMessageCount", messages.length);
 
     const userMap = new Map(
-      users.map(user => [user.id, user])
+      users.map(user => [String(user.id), user])
     );
 
-    $("adminUsers").innerHTML = "";
+    renderAdminUsers(users);
+    renderAdminMessages(messages, userMap);
 
-    if (!users.length) {
-      $("adminUsers").textContent = "Aucun utilisateur.";
-    }
-
-    users.forEach(user => {
-      const row = document.createElement("div");
-      row.className = "admin-user";
-
-      const name = document.createElement("strong");
-      name.textContent = user.name || "Utilisateur";
-
-      const phone = document.createElement("small");
-      phone.textContent = user.phone || "";
-
-      const role = document.createElement("small");
-      role.textContent = "Rôle : " + (user.role || "user");
-
-      row.append(name, phone, role);
-      $("adminUsers").appendChild(row);
-    });
-
-    $("adminMessages").innerHTML = "";
-
-    if (!messages.length) {
-      $("adminMessages").textContent = "Aucun message reçu.";
-    }
-
-    messages.forEach(message => {
-      const row = document.createElement("div");
-      row.className = "admin-message";
-
-      const user = userMap.get(message.user_id);
-
-      const name = document.createElement("strong");
-      name.textContent = user?.name || "Utilisateur";
-
-      const phone = document.createElement("small");
-      phone.textContent = user?.phone || "";
-
-      const content = document.createElement("p");
-      content.textContent = message.message || "";
-
-      const date = document.createElement("small");
-      date.textContent = message.created_at
-        ? new Date(message.created_at).toLocaleString("fr-FR")
-        : "";
-
-      row.append(name, phone, content, date);
-      $("adminMessages").appendChild(row);
-    });
+    await loadOnlineCount();
 
   } catch (err) {
-    $("adminUsers").textContent = "Erreur : " + err.message;
-    $("adminMessages").textContent = "Impossible de charger les messages.";
+    usersContainer.textContent =
+      "Erreur : " + err.message;
+
+    messagesContainer.textContent =
+      "Impossible de charger les messages.";
+
+    toast("Erreur du tableau de bord : " + err.message);
+  }
+}
+
+/* ================= LISTE DES UTILISATEURS ADMIN ================= */
+
+function renderAdminUsers(users) {
+  const container = $("adminUsers");
+
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  if (!users.length) {
+    container.innerHTML =
+      '<div class="empty-state">Aucun utilisateur inscrit.</div>';
+    return;
+  }
+
+  users.forEach(user => {
+    const row = document.createElement("div");
+
+    row.className = "user-card admin-user-card";
+
+    const avatar = document.createElement("div");
+    avatar.className = "user-avatar";
+    avatar.textContent = getInitial(
+      user.name || user.full_name
+    );
+
+    const info = document.createElement("div");
+    info.className = "user-info";
+
+    const name = document.createElement("strong");
+    name.textContent =
+      user.name || user.full_name || "Utilisateur";
+
+    const phone = document.createElement("small");
+    phone.textContent =
+      user.phone || "Numéro non disponible";
+
+    const role = document.createElement("small");
+    role.textContent =
+      "Rôle : " + (user.role || "user");
+
+    info.append(name, phone, role);
+    row.append(avatar, info);
+
+    container.appendChild(row);
+  });
+}
+
+/* ================= BOÎTE DE RÉCEPTION ADMIN ================= */
+
+function renderAdminMessages(messages, userMap) {
+  const container = $("adminMessages");
+
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  if (!messages.length) {
+    container.innerHTML =
+      '<div class="empty-state">Aucun message reçu pour le moment.</div>';
+    return;
+  }
+
+  /*
+    Regroupement des messages par utilisateur.
+    Cela permet d'afficher une conversation complète,
+    et pas seulement le dernier message.
+  */
+
+  const conversations = new Map();
+
+  messages.forEach(message => {
+    const userId = String(message.user_id || "");
+
+    if (!userId) return;
+
+    if (!conversations.has(userId)) {
+      conversations.set(userId, []);
+    }
+
+    conversations.get(userId).push(message);
+  });
+
+  const sortedConversations =
+    Array.from(conversations.entries()).sort((a, b) => {
+      const dateA = new Date(
+        a[1][a[1].length - 1]?.created_at || 0
+      );
+
+      const dateB = new Date(
+        b[1][b[1].length - 1]?.created_at || 0
+      );
+
+      return dateB - dateA;
+    });
+
+  sortedConversations.forEach(([userId, conversation]) => {
+    const user = userMap.get(userId);
+
+    const card = document.createElement("div");
+    card.className = "admin-message-card inbox-card";
+
+    const header = document.createElement("div");
+    header.className = "message-header";
+
+    const sender = document.createElement("div");
+    sender.className = "message-sender";
+
+    const name = document.createElement("strong");
+    name.textContent =
+      user?.name ||
+      user?.full_name ||
+      "Utilisateur";
+
+    const phone = document.createElement("small");
+    phone.textContent =
+      user?.phone ||
+      "Numéro non disponible";
+
+    sender.append(name, phone);
+
+    const count = document.createElement("span");
+    count.className = "badge badge-online";
+    count.textContent =
+      `${conversation.length} message(s)`;
+
+    header.append(sender, count);
+
+    const history = document.createElement("div");
+    history.className = "conversation-history";
+
+    conversation
+      .slice()
+      .sort((a, b) =>
+        new Date(a.created_at || 0) -
+        new Date(b.created_at || 0)
+      )
+      .forEach(message => {
+        const item = document.createElement("div");
+
+        item.className = "message-content";
+
+        const role = document.createElement("strong");
+
+        role.textContent =
+          message.sender_role === "admin"
+            ? "Maruce : "
+            : "Utilisateur : ";
+
+        const content = document.createElement("p");
+        content.textContent = message.message || "";
+
+        const date = document.createElement("small");
+        date.className = "message-date";
+        date.textContent = formatDate(message.created_at);
+
+        item.append(role, content, date);
+
+        history.appendChild(item);
+      });
+
+    const replyArea = document.createElement("div");
+    replyArea.className = "reply-area";
+
+    const replyInput = document.createElement("textarea");
+
+    replyInput.placeholder =
+      "Écris ta réponse à cet utilisateur...";
+
+    replyInput.rows = 3;
+
+    const replyButton = document.createElement("button");
+
+    replyButton.className = "btn";
+    replyButton.textContent = "Envoyer la réponse";
+
+    replyButton.addEventListener("click", async () => {
+      await replyToUser(
+        userId,
+        replyInput,
+        replyButton
+      );
+    });
+
+    replyArea.append(replyInput, replyButton);
+
+    card.append(
+      header,
+      history,
+      replyArea
+    );
+
+    container.appendChild(card);
+  });
+}
+
+/* ================= RÉPONDRE À UN UTILISATEUR ================= */
+
+async function replyToUser(userId, input, button) {
+  const message = input.value.trim();
+
+  if (!message) {
+    toast("Écris une réponse avant de l'envoyer.");
+    return;
+  }
+
+  const originalText = button.textContent;
+
+  button.disabled = true;
+  button.textContent = "Envoi...";
+
+  try {
+    await api(
+      `/admin/messages/${encodeURIComponent(userId)}/reply`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          message
+        })
+      }
+    );
+
+    input.value = "";
+
+    toast("Réponse envoyée avec succès.");
+
+    await renderAdmin();
+
+  } catch (err) {
+    toast(
+      "Impossible d'envoyer la réponse : " +
+      err.message
+    );
+  } finally {
+    button.disabled = false;
+    button.textContent = originalText;
+  }
+}
+
+/* ================= UTILISATEURS CONNECTÉS ================= */
+
+/*
+  Cette fonction attend la future route :
+  GET /api/admin/presence
+
+  Le backend actuel ne possède pas encore cette route.
+*/
+
+async function loadOnlineCount() {
+  if (!isAdmin()) return;
+
+  try {
+    const result = await api("/admin/presence");
+
+    const count =
+      result.online_count ??
+      result.count ??
+      result.online ??
+      null;
+
+    if (count !== null) {
+      setText("adminOnlineCount", count);
+    } else {
+      setText("adminOnlineCount", "—");
+    }
+
+  } catch (err) {
+    setText("adminOnlineCount", "—");
+  }
+}
+
+function startAdminRefresh() {
+  stopAdminRefresh();
+
+  adminRefreshTimer = setInterval(() => {
+    if (
+      isAdmin() &&
+      $("adminPage")?.classList.contains("active")
+    ) {
+      renderAdmin();
+    }
+  }, 60000);
+}
+
+function stopAdminRefresh() {
+  if (adminRefreshTimer) {
+    clearInterval(adminRefreshTimer);
+    adminRefreshTimer = null;
   }
 }
 
 /* ================= DICTÉE VOCALE ================= */
 
 async function startVoice() {
-  if (mediaRecorder && mediaRecorder.state === "recording") {
+  if (
+    mediaRecorder &&
+    mediaRecorder.state === "recording"
+  ) {
     mediaRecorder.stop();
     return;
   }
 
-  if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
+  if (
+    !navigator.mediaDevices?.getUserMedia ||
+    !window.MediaRecorder
+  ) {
     useBrowserVoiceRecognition();
     return;
   }
 
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: true
-    });
+    const stream =
+      await navigator.mediaDevices.getUserMedia({
+        audio: true
+      });
 
     audioChunks = [];
 
@@ -949,7 +1622,9 @@ async function startVoice() {
     };
 
     mediaRecorder.onstop = async () => {
-      stream.getTracks().forEach(track => track.stop());
+      stream.getTracks().forEach(track => {
+        track.stop();
+      });
 
       const blob = new Blob(audioChunks, {
         type: mediaRecorder.mimeType || "audio/webm"
@@ -960,20 +1635,29 @@ async function startVoice() {
 
         const base64 = await fileToBase64(blob);
 
-        const result = await api("/audio/transcriptions", {
-          method: "POST",
-          body: JSON.stringify({
-            audio_base64: base64,
-            filename: "taya-audio.webm",
-            mime_type: blob.type
-          })
-        });
+        const result = await api(
+          "/audio/transcriptions",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              audio_base64: base64,
+              filename: "taya-audio.webm",
+              mime_type: blob.type
+            })
+          }
+        );
 
         if (result.text) {
-          $("messageInput").value =
-            ($("messageInput").value + " " + result.text).trim();
+          if ($("messageInput")) {
+            $("messageInput").value = (
+              $("messageInput").value +
+              " " +
+              result.text
+            ).trim();
 
-          $("messageInput").focus();
+            $("messageInput").focus();
+          }
+
           toast("Dictée terminée.");
         } else {
           toast("Aucun texte détecté.");
@@ -986,7 +1670,9 @@ async function startVoice() {
 
     mediaRecorder.start();
 
-    toast("Enregistrement en cours. Appuie sur le micro pour terminer.");
+    toast(
+      "Enregistrement en cours. Appuie sur le micro pour terminer."
+    );
 
   } catch (err) {
     useBrowserVoiceRecognition();
@@ -999,7 +1685,9 @@ function useBrowserVoiceRecognition() {
     window.webkitSpeechRecognition;
 
   if (!Recognition) {
-    toast("La dictée vocale n'est pas disponible sur ce navigateur.");
+    toast(
+      "La dictée vocale n'est pas disponible sur ce navigateur."
+    );
     return;
   }
 
@@ -1010,10 +1698,14 @@ function useBrowserVoiceRecognition() {
   recognition.interimResults = false;
 
   recognition.onresult = event => {
-    const text = event.results[0][0].transcript;
+    const text =
+      event.results[0][0].transcript;
 
-    $("messageInput").value =
-      ($("messageInput").value + " " + text).trim();
+    if ($("messageInput")) {
+      $("messageInput").value = (
+        $("messageInput").value + " " + text
+      ).trim();
+    }
   };
 
   recognition.onerror = () => {
@@ -1027,31 +1719,44 @@ function useBrowserVoiceRecognition() {
 
 async function speakText(text) {
   try {
-    const response = await fetch(`${API_BASE}/audio/speech`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authToken}`
-      },
-      body: JSON.stringify({ text })
-    });
+    const response = await fetch(
+      `${API_BASE}/audio/speech`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`
+        },
+        body: JSON.stringify({ text })
+      }
+    );
 
     if (!response.ok) {
-      throw new Error("Service vocal indisponible.");
+      throw new Error(
+        "Service vocal indisponible."
+      );
     }
 
     const blob = await response.blob();
-    const audioURL = URL.createObjectURL(blob);
+
+    const audioURL =
+      URL.createObjectURL(blob);
 
     const audio = new Audio(audioURL);
 
-    audio.onended = () => URL.revokeObjectURL(audioURL);
+    audio.onended = () => {
+      URL.revokeObjectURL(audioURL);
+    };
+
     await audio.play();
 
   } catch (err) {
     if ("speechSynthesis" in window) {
-      const utterance = new SpeechSynthesisUtterance(text);
+      const utterance =
+        new SpeechSynthesisUtterance(text);
+
       utterance.lang = "fr-FR";
+
       speechSynthesis.speak(utterance);
     } else {
       toast("Lecture vocale indisponible.");
@@ -1064,13 +1769,19 @@ async function speakText(text) {
 document.addEventListener("DOMContentLoaded", () => {
   applySavedTheme();
 
-  $("messageInput")?.addEventListener("input", event => {
-    const textarea = event.target;
+  $("messageInput")?.addEventListener(
+    "input",
+    event => {
+      const textarea = event.target;
 
-    textarea.style.height = "auto";
-    textarea.style.height =
-      Math.min(textarea.scrollHeight, 150) + "px";
-  });
+      textarea.style.height = "auto";
+
+      textarea.style.height =
+        Math.min(textarea.scrollHeight, 150) + "px";
+    }
+  );
 
   checkSession();
 });
+
+/* ================= FIN TAYA IA V20 ================= */
