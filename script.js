@@ -1,9 +1,7 @@
 /* =========================================================
-   TAYA IA V20 — FRONTEND COMPLET
+   TAYA IA V21.0.3 — FRONTEND CORRIGÉ
    By Maruce Soldado 🇬🇳
-
-   Backend API :
-   https://taya-ai-api.onrender.com/api
+   Backend : https://taya-ai-api.onrender.com/api
    ========================================================= */
 
 "use strict";
@@ -24,8 +22,6 @@ let currentMessages = [];
 let pendingFile = null;
 let abortController = null;
 let isGenerating = false;
-let mediaRecorder = null;
-let audioChunks = [];
 let presenceTimer = null;
 let adminRefreshTimer = null;
 
@@ -53,6 +49,7 @@ function toast(message) {
 
 async function api(path, options = {}) {
   const headers = {
+    Accept: "application/json",
     ...(options.headers || {})
   };
 
@@ -67,10 +64,18 @@ async function api(path, options = {}) {
     headers["Content-Type"] = "application/json";
   }
 
-  const response = await fetch(`${API_BASE}${path}`, {
-    ...options,
-    headers
-  });
+  let response;
+
+  try {
+    response = await fetch(`${API_BASE}${path}`, {
+      ...options,
+      headers
+    });
+  } catch (error) {
+    throw new Error(
+      "Impossible de joindre le serveur TAYA IA. Vérifie ta connexion Internet."
+    );
+  }
 
   const contentType =
     response.headers.get("content-type") || "";
@@ -83,10 +88,10 @@ async function api(path, options = {}) {
     data = await response.text();
   }
 
-  if (!response.ok) {
+  if (!response.ok || data?.success === false) {
     const message =
-      data?.message ||
       data?.error ||
+      data?.message ||
       (typeof data === "string" ? data : "") ||
       `Erreur serveur (${response.status})`;
 
@@ -179,30 +184,11 @@ function setHTML(id, value) {
 function switchAuth(mode) {
   const register = mode === "register";
 
-  $("loginTab")?.classList.toggle(
-    "active",
-    !register
-  );
+  $("loginTab")?.classList.toggle("active", !register);
+  $("registerTab")?.classList.toggle("active", register);
 
-  $("registerTab")?.classList.toggle(
-    "active",
-    register
-  );
-
-  $("nameField")?.classList.toggle(
-    "hidden",
-    !register
-  );
-
-  $("confirmField")?.classList.toggle(
-    "hidden",
-    !register
-  );
-
-  setText(
-    "authTitle",
-    register ? "Créer un compte" : "Connexion"
-  );
+  $("nameField")?.classList.toggle("hidden", !register);
+  $("confirmField")?.classList.toggle("hidden", !register);
 
   setText(
     "authSubmit",
@@ -215,6 +201,14 @@ function switchAuth(mode) {
     $("authPassword").autocomplete = register
       ? "new-password"
       : "current-password";
+  }
+
+  if ($("authName")) {
+    $("authName").required = register;
+  }
+
+  if ($("authConfirm")) {
+    $("authConfirm").required = register;
   }
 }
 
@@ -235,10 +229,11 @@ async function submitAuth(event) {
   const password = $("authPassword")?.value;
 
   if (!phone || !password) {
-    error.textContent =
-      "Remplis les champs obligatoires.";
+    error.textContent = "Remplis les champs obligatoires.";
     return;
   }
+
+  let body;
 
   if (isRegister) {
     const name = $("authName")?.value.trim();
@@ -260,28 +255,30 @@ async function submitAuth(event) {
         "Les deux mots de passe ne correspondent pas.";
       return;
     }
+
+    body = {
+      name,
+      phone,
+      password
+    };
+  } else {
+    body = {
+      phone,
+      password
+    };
   }
 
   const originalText = button.textContent;
 
   button.disabled = true;
-  button.textContent = "Connexion en cours...";
+  button.textContent = isRegister
+    ? "Création du compte..."
+    : "Connexion en cours...";
 
   try {
     const endpoint = isRegister
       ? "/auth/register"
       : "/auth/login";
-
-    const body = isRegister
-      ? {
-          name: $("authName").value.trim(),
-          phone,
-          password
-        }
-      : {
-          phone,
-          password
-        };
 
     const result = await api(endpoint, {
       method: "POST",
@@ -290,23 +287,18 @@ async function submitAuth(event) {
 
     if (!result.token || !result.user) {
       throw new Error(
-        "Le serveur n'a pas retourné les informations du compte."
+        "Le serveur n'a pas retourné le compte et le jeton de connexion."
       );
     }
 
     saveSession(result.token, result.user);
 
-    if ($("authPassword")) {
-      $("authPassword").value = "";
-    }
-
-    if ($("authConfirm")) {
-      $("authConfirm").value = "";
-    }
+    $("authPassword").value = "";
+    $("authConfirm").value = "";
 
     openApplication();
 
-    if (isRegister && result.recovery_code) {
+    if (result.recovery_code) {
       alert(
         "Ton compte TAYA IA a été créé !\n\n" +
         "Ton code de récupération est :\n\n" +
@@ -314,12 +306,19 @@ async function submitAuth(event) {
         "\n\nConserve-le dans un endroit sûr."
       );
     } else {
-      toast("Connexion réussie !");
+      toast(
+        isRegister
+          ? "Compte créé avec succès !"
+          : "Connexion réussie !"
+      );
     }
 
   } catch (err) {
+    console.error("Authentification :", err);
+
     error.textContent =
       err.message || "Impossible de se connecter.";
+
   } finally {
     button.disabled = false;
     button.textContent = originalText;
@@ -345,6 +344,8 @@ async function checkSession() {
     openApplication();
 
   } catch (err) {
+    console.warn("Session invalide :", err.message);
+
     clearSession();
     showAuth();
   }
@@ -375,8 +376,6 @@ function openApplication() {
   } else {
     $("adminNav")?.classList.add("hidden");
   }
-
-  loadContactMessages();
 }
 
 function logout() {
@@ -405,9 +404,10 @@ function updateUserInterface() {
   setText("welcomeName", name);
   setText("userAvatar", getInitial(name));
 
-  if (isAdmin()) {
-    $("adminNav")?.classList.remove("hidden");
-  }
+  $("adminNav")?.classList.toggle(
+    "hidden",
+    !isAdmin()
+  );
 }
 
 function isAdmin() {
@@ -417,17 +417,7 @@ function isAdmin() {
   );
 }
 
-/* ================= PRÉSENCE UTILISATEUR ================= */
-
-/*
-  IMPORTANT :
-  Le backend actuel doit être complété avec :
-  POST /api/presence/heartbeat
-  GET  /api/admin/presence
-
-  Tant que ces routes ne sont pas ajoutées,
-  le compteur des utilisateurs connectés restera indisponible.
-*/
+/* ================= PRÉSENCE ================= */
 
 async function sendPresenceHeartbeat() {
   if (!authToken) return;
@@ -438,7 +428,7 @@ async function sendPresenceHeartbeat() {
       body: JSON.stringify({})
     });
   } catch (err) {
-    // La route sera activée lors de la mise à jour du backend.
+    console.warn("Présence :", err.message);
   }
 }
 
@@ -447,9 +437,10 @@ function startPresence() {
 
   sendPresenceHeartbeat();
 
-  presenceTimer = setInterval(() => {
-    sendPresenceHeartbeat();
-  }, 45000);
+  presenceTimer = setInterval(
+    sendPresenceHeartbeat,
+    45000
+  );
 }
 
 function stopPresence() {
@@ -479,14 +470,10 @@ function showPage(page) {
   }
 
   pages.forEach(name => {
-    const element = $(name + "Page");
-
-    if (element) {
-      element.classList.toggle(
-        "active",
-        name === page
-      );
-    }
+    $(name + "Page")?.classList.toggle(
+      "active",
+      name === page
+    );
   });
 
   document.querySelectorAll(".nav-item").forEach(button => {
@@ -518,14 +505,8 @@ function showPage(page) {
     renderAdmin();
   }
 
-  if (page === "contact") {
-    loadContactMessages();
-  }
-
   if (page === "chat") {
-    setTimeout(() => {
-      $("messageInput")?.focus();
-    }, 100);
+    setTimeout(() => $("messageInput")?.focus(), 100);
   }
 }
 
@@ -582,6 +563,7 @@ function newChat() {
 
   if ($("messageInput")) {
     $("messageInput").value = "";
+    $("messageInput").style.height = "auto";
   }
 
   pendingFile = null;
@@ -600,7 +582,7 @@ function newChatWithPrompt(prompt) {
     $("messageInput").value = prompt;
   }
 
-  setTimeout(() => sendMessage(), 100);
+  setTimeout(sendMessage, 100);
 }
 
 function usePrompt(prompt) {
@@ -648,7 +630,6 @@ function addMessage(role, content) {
 
   const avatar = document.createElement("div");
   avatar.className = "message-avatar";
-
   avatar.textContent = role === "user"
     ? getInitial(getUserName())
     : "T";
@@ -699,7 +680,6 @@ async function sendMessage() {
   if (isGenerating) return;
 
   const input = $("messageInput");
-
   if (!input) return;
 
   const message = input.value.trim();
@@ -708,21 +688,12 @@ async function sendMessage() {
   if (!message && !file) return;
 
   if (file && file.type.startsWith("image/")) {
-    await sendImage(
-      file,
-      message || "Analyse cette image."
-    );
+    await sendImage(file, message || "Analyse cette image.");
     return;
   }
 
-  if (
-    file &&
-    file.type === "application/pdf"
-  ) {
-    await sendPDF(
-      file,
-      message || "Lis et analyse ce document PDF."
-    );
+  if (file && file.type === "application/pdf") {
+    await sendPDF(file, message || "Lis et analyse ce document PDF.");
     return;
   }
 
@@ -733,9 +704,7 @@ async function sendMessage() {
       input.value = "";
       pendingFile = null;
 
-      if ($("fileInput")) {
-        $("fileInput").value = "";
-      }
+      if ($("fileInput")) $("fileInput").value = "";
 
       await sendTextMessage(
         message
@@ -762,6 +731,7 @@ async function sendTextMessage(message) {
 
   if ($("messageInput")) {
     $("messageInput").value = "";
+    $("messageInput").style.height = "auto";
   }
 
   currentMessages.push({
@@ -823,7 +793,7 @@ async function sendTextMessage(message) {
     } else {
       addMessage(
         "assistant",
-        `Une erreur est survenue : ${err.message}\n\nVérifie que ton backend Render fonctionne.`
+        `Une erreur est survenue : ${err.message}`
       );
     }
 
@@ -847,12 +817,12 @@ async function sendImage(file, message) {
   isGenerating = true;
   setGenerationUI(true);
 
+  addMessage("user", message);
+
   const loading = addMessage(
     "assistant",
     "Analyse de l'image en cours..."
   );
-
-  addMessage("user", message);
 
   try {
     const base64 = await fileToBase64(file);
@@ -871,7 +841,6 @@ async function sendImage(file, message) {
       "Aucune réponse reçue.";
 
     loading?.remove();
-
     addMessage("assistant", answer);
 
     currentMessages.push(
@@ -888,12 +857,11 @@ async function sendImage(file, message) {
       "assistant",
       `Impossible d'analyser cette image : ${err.message}`
     );
+
   } finally {
     pendingFile = null;
 
-    if ($("fileInput")) {
-      $("fileInput").value = "";
-    }
+    if ($("fileInput")) $("fileInput").value = "";
 
     isGenerating = false;
     setGenerationUI(false);
@@ -937,7 +905,6 @@ async function sendPDF(file, message) {
       "Aucune réponse reçue.";
 
     loading?.remove();
-
     addMessage("assistant", answer);
 
     currentMessages.push(
@@ -960,12 +927,11 @@ async function sendPDF(file, message) {
       "assistant",
       `Impossible de lire ce PDF : ${err.message}`
     );
+
   } finally {
     pendingFile = null;
 
-    if ($("fileInput")) {
-      $("fileInput").value = "";
-    }
+    if ($("fileInput")) $("fileInput").value = "";
 
     isGenerating = false;
     setGenerationUI(false);
@@ -984,9 +950,7 @@ function fileToBase64(file) {
     };
 
     reader.onerror = () => {
-      reject(
-        new Error("Impossible de lire le fichier.")
-      );
+      reject(new Error("Impossible de lire le fichier."));
     };
 
     reader.readAsDataURL(file);
@@ -1015,20 +979,12 @@ function handleFile(input) {
   }
 
   pendingFile = file;
-
   toast(`Fichier ajouté : ${file.name}`);
 }
 
 function setGenerationUI(active) {
-  $("sendButton")?.classList.toggle(
-    "hidden",
-    active
-  );
-
-  $("stopButton")?.classList.toggle(
-    "hidden",
-    !active
-  );
+  $("sendButton")?.classList.toggle("hidden", active);
+  $("stopButton")?.classList.toggle("hidden", !active);
 
   if ($("messageInput")) {
     $("messageInput").disabled = active;
@@ -1051,7 +1007,6 @@ async function loadHistory() {
     const messages = result.messages || [];
 
     const history = $("historyList");
-
     if (!history) return;
 
     history.innerHTML = "";
@@ -1081,8 +1036,7 @@ async function loadHistory() {
         newChat();
 
         if ($("messageInput")) {
-          $("messageInput").value =
-            item.message || "";
+          $("messageInput").value = item.message || "";
         }
       });
 
@@ -1103,8 +1057,7 @@ async function loadMemory() {
     const result = await api("/memory");
 
     if ($("memoryInput")) {
-      $("memoryInput").value =
-        result.memory || "";
+      $("memoryInput").value = result.memory || "";
     }
   } catch (err) {
     console.warn("Mémoire :", err.message);
@@ -1112,8 +1065,7 @@ async function loadMemory() {
 }
 
 async function saveMemory() {
-  const memory =
-    $("memoryInput")?.value.trim() || "";
+  const memory = $("memoryInput")?.value.trim() || "";
 
   try {
     await api("/memory", {
@@ -1124,10 +1076,7 @@ async function saveMemory() {
     toast("Mémoire enregistrée avec succès.");
 
   } catch (err) {
-    toast(
-      "Erreur lors de l'enregistrement : " +
-      err.message
-    );
+    toast("Erreur mémoire : " + err.message);
   }
 }
 
@@ -1145,25 +1094,17 @@ async function sendContactMessage() {
     return;
   }
 
-  const finalMessage = subject
-    ? `Sujet : ${subject}\n\n${message}`
-    : message;
-
   try {
     await api("/contact", {
       method: "POST",
       body: JSON.stringify({
-        message: finalMessage
+        subject,
+        message
       })
     });
 
-    if ($("contactSubject")) {
-      $("contactSubject").value = "";
-    }
-
-    if ($("contactMessage")) {
-      $("contactMessage").value = "";
-    }
+    if ($("contactSubject")) $("contactSubject").value = "";
+    if ($("contactMessage")) $("contactMessage").value = "";
 
     setText(
       "contactStatus",
@@ -1172,73 +1113,8 @@ async function sendContactMessage() {
 
     toast("Ton message a été envoyé à Maruce.");
 
-    loadContactMessages();
-
   } catch (err) {
-    setText(
-      "contactStatus",
-      "Erreur : " + err.message
-    );
-  }
-}
-
-/* ================= MESSAGES DE L'UTILISATEUR ================= */
-
-async function loadContactMessages() {
-  if (!authToken) return;
-
-  const container = $("myContactMessages");
-
-  if (!container) return;
-
-  container.innerHTML = "Chargement des messages...";
-
-  try {
-    const result = await api("/contact/messages");
-
-    const messages = result.messages || [];
-
-    container.innerHTML = "";
-
-    if (!messages.length) {
-      container.innerHTML =
-        '<div class="empty-state">Tu n’as pas encore de message.</div>';
-      return;
-    }
-
-    messages.forEach(message => {
-      const card = document.createElement("div");
-
-      card.className = "contact-message";
-
-      const sender = document.createElement("strong");
-
-      sender.textContent =
-        message.sender_role === "admin"
-          ? "Réponse de Maruce"
-          : "Ton message";
-
-      const content = document.createElement("p");
-      content.textContent = message.message || "";
-
-      const date = document.createElement("small");
-      date.className = "date";
-      date.textContent = formatDate(message.created_at);
-
-      card.append(sender, content, date);
-
-      if (message.sender_role === "admin") {
-        card.classList.add("admin-reply");
-      }
-
-      container.appendChild(card);
-    });
-
-  } catch (err) {
-    container.innerHTML =
-      '<div class="empty-state">Impossible de charger les messages.</div>';
-
-    console.warn("Messages contact :", err.message);
+    setText("contactStatus", "Erreur : " + err.message);
   }
 }
 
@@ -1250,17 +1126,10 @@ async function renderAdmin() {
   const usersContainer = $("adminUsers");
   const messagesContainer = $("adminMessages");
 
-  if (!usersContainer || !messagesContainer) {
-    console.warn(
-      "Les éléments adminUsers ou adminMessages sont absents du HTML."
-    );
-    return;
-  }
+  if (!usersContainer || !messagesContainer) return;
 
   usersContainer.textContent = "Chargement des utilisateurs...";
   messagesContainer.textContent = "Chargement des messages...";
-
-  setText("adminOnlineCount", "—");
 
   try {
     const [usersResult, messagesResult] =
@@ -1282,37 +1151,28 @@ async function renderAdmin() {
     renderAdminUsers(users);
     renderAdminMessages(messages, userMap);
 
-    await loadOnlineCount();
-
   } catch (err) {
-    usersContainer.textContent =
-      "Erreur : " + err.message;
-
+    usersContainer.textContent = "Erreur : " + err.message;
     messagesContainer.textContent =
       "Impossible de charger les messages.";
 
-    toast("Erreur du tableau de bord : " + err.message);
+    toast("Erreur administration : " + err.message);
   }
 }
 
-/* ================= LISTE DES UTILISATEURS ADMIN ================= */
-
 function renderAdminUsers(users) {
   const container = $("adminUsers");
-
   if (!container) return;
 
   container.innerHTML = "";
 
   if (!users.length) {
-    container.innerHTML =
-      '<div class="empty-state">Aucun utilisateur inscrit.</div>';
+    container.textContent = "Aucun utilisateur inscrit.";
     return;
   }
 
   users.forEach(user => {
     const row = document.createElement("div");
-
     row.className = "user-card admin-user-card";
 
     const avatar = document.createElement("div");
@@ -1329,242 +1189,72 @@ function renderAdminUsers(users) {
       user.name || user.full_name || "Utilisateur";
 
     const phone = document.createElement("small");
-    phone.textContent =
-      user.phone || "Numéro non disponible";
+    phone.textContent = user.phone || "Numéro non disponible";
 
     const role = document.createElement("small");
-    role.textContent =
-      "Rôle : " + (user.role || "user");
+    role.textContent = "Rôle : " + (user.role || "user");
 
     info.append(name, phone, role);
     row.append(avatar, info);
-
     container.appendChild(row);
   });
 }
 
-/* ================= BOÎTE DE RÉCEPTION ADMIN ================= */
-
 function renderAdminMessages(messages, userMap) {
   const container = $("adminMessages");
-
   if (!container) return;
 
   container.innerHTML = "";
 
   if (!messages.length) {
-    container.innerHTML =
-      '<div class="empty-state">Aucun message reçu pour le moment.</div>';
+    container.textContent = "Aucun message reçu pour le moment.";
     return;
   }
 
-  /*
-    Regroupement des messages par utilisateur.
-    Cela permet d'afficher une conversation complète,
-    et pas seulement le dernier message.
-  */
+  messages
+    .slice()
+    .sort((a, b) =>
+      new Date(b.created_at || 0) -
+      new Date(a.created_at || 0)
+    )
+    .forEach(message => {
+      const user = userMap.get(String(message.user_id || ""));
 
-  const conversations = new Map();
+      const card = document.createElement("div");
+      card.className = "admin-message-card inbox-card";
 
-  messages.forEach(message => {
-    const userId = String(message.user_id || "");
+      const header = document.createElement("div");
+      header.className = "message-header";
 
-    if (!userId) return;
+      const sender = document.createElement("strong");
+      sender.textContent =
+        user?.name ||
+        user?.full_name ||
+        "Utilisateur";
 
-    if (!conversations.has(userId)) {
-      conversations.set(userId, []);
-    }
+      const phone = document.createElement("small");
+      phone.textContent = user?.phone || "";
 
-    conversations.get(userId).push(message);
-  });
+      const content = document.createElement("p");
+      content.textContent = message.message || "";
 
-  const sortedConversations =
-    Array.from(conversations.entries()).sort((a, b) => {
-      const dateA = new Date(
-        a[1][a[1].length - 1]?.created_at || 0
-      );
+      const date = document.createElement("small");
+      date.textContent = formatDate(message.created_at);
 
-      const dateB = new Date(
-        b[1][b[1].length - 1]?.created_at || 0
-      );
+      const type = document.createElement("small");
+      type.textContent =
+        message.type === "contact"
+          ? "Message de contact"
+          : "Message de support";
 
-      return dateB - dateA;
+      header.append(sender, phone);
+      card.append(header, type, content, date);
+
+      container.appendChild(card);
     });
-
-  sortedConversations.forEach(([userId, conversation]) => {
-    const user = userMap.get(userId);
-
-    const card = document.createElement("div");
-    card.className = "admin-message-card inbox-card";
-
-    const header = document.createElement("div");
-    header.className = "message-header";
-
-    const sender = document.createElement("div");
-    sender.className = "message-sender";
-
-    const name = document.createElement("strong");
-    name.textContent =
-      user?.name ||
-      user?.full_name ||
-      "Utilisateur";
-
-    const phone = document.createElement("small");
-    phone.textContent =
-      user?.phone ||
-      "Numéro non disponible";
-
-    sender.append(name, phone);
-
-    const count = document.createElement("span");
-    count.className = "badge badge-online";
-    count.textContent =
-      `${conversation.length} message(s)`;
-
-    header.append(sender, count);
-
-    const history = document.createElement("div");
-    history.className = "conversation-history";
-
-    conversation
-      .slice()
-      .sort((a, b) =>
-        new Date(a.created_at || 0) -
-        new Date(b.created_at || 0)
-      )
-      .forEach(message => {
-        const item = document.createElement("div");
-
-        item.className = "message-content";
-
-        const role = document.createElement("strong");
-
-        role.textContent =
-          message.sender_role === "admin"
-            ? "Maruce : "
-            : "Utilisateur : ";
-
-        const content = document.createElement("p");
-        content.textContent = message.message || "";
-
-        const date = document.createElement("small");
-        date.className = "message-date";
-        date.textContent = formatDate(message.created_at);
-
-        item.append(role, content, date);
-
-        history.appendChild(item);
-      });
-
-    const replyArea = document.createElement("div");
-    replyArea.className = "reply-area";
-
-    const replyInput = document.createElement("textarea");
-
-    replyInput.placeholder =
-      "Écris ta réponse à cet utilisateur...";
-
-    replyInput.rows = 3;
-
-    const replyButton = document.createElement("button");
-
-    replyButton.className = "btn";
-    replyButton.textContent = "Envoyer la réponse";
-
-    replyButton.addEventListener("click", async () => {
-      await replyToUser(
-        userId,
-        replyInput,
-        replyButton
-      );
-    });
-
-    replyArea.append(replyInput, replyButton);
-
-    card.append(
-      header,
-      history,
-      replyArea
-    );
-
-    container.appendChild(card);
-  });
 }
 
-/* ================= RÉPONDRE À UN UTILISATEUR ================= */
-
-async function replyToUser(userId, input, button) {
-  const message = input.value.trim();
-
-  if (!message) {
-    toast("Écris une réponse avant de l'envoyer.");
-    return;
-  }
-
-  const originalText = button.textContent;
-
-  button.disabled = true;
-  button.textContent = "Envoi...";
-
-  try {
-    await api(
-      `/admin/messages/${encodeURIComponent(userId)}/reply`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          message
-        })
-      }
-    );
-
-    input.value = "";
-
-    toast("Réponse envoyée avec succès.");
-
-    await renderAdmin();
-
-  } catch (err) {
-    toast(
-      "Impossible d'envoyer la réponse : " +
-      err.message
-    );
-  } finally {
-    button.disabled = false;
-    button.textContent = originalText;
-  }
-}
-
-/* ================= UTILISATEURS CONNECTÉS ================= */
-
-/*
-  Cette fonction attend la future route :
-  GET /api/admin/presence
-
-  Le backend actuel ne possède pas encore cette route.
-*/
-
-async function loadOnlineCount() {
-  if (!isAdmin()) return;
-
-  try {
-    const result = await api("/admin/presence");
-
-    const count =
-      result.online_count ??
-      result.count ??
-      result.online ??
-      null;
-
-    if (count !== null) {
-      setText("adminOnlineCount", count);
-    } else {
-      setText("adminOnlineCount", "—");
-    }
-
-  } catch (err) {
-    setText("adminOnlineCount", "—");
-  }
-}
+/* ================= RAFRAÎCHISSEMENT ADMIN ================= */
 
 function startAdminRefresh() {
   stopAdminRefresh();
@@ -1588,98 +1278,7 @@ function stopAdminRefresh() {
 
 /* ================= DICTÉE VOCALE ================= */
 
-async function startVoice() {
-  if (
-    mediaRecorder &&
-    mediaRecorder.state === "recording"
-  ) {
-    mediaRecorder.stop();
-    return;
-  }
-
-  if (
-    !navigator.mediaDevices?.getUserMedia ||
-    !window.MediaRecorder
-  ) {
-    useBrowserVoiceRecognition();
-    return;
-  }
-
-  try {
-    const stream =
-      await navigator.mediaDevices.getUserMedia({
-        audio: true
-      });
-
-    audioChunks = [];
-
-    mediaRecorder = new MediaRecorder(stream);
-
-    mediaRecorder.ondataavailable = event => {
-      if (event.data.size > 0) {
-        audioChunks.push(event.data);
-      }
-    };
-
-    mediaRecorder.onstop = async () => {
-      stream.getTracks().forEach(track => {
-        track.stop();
-      });
-
-      const blob = new Blob(audioChunks, {
-        type: mediaRecorder.mimeType || "audio/webm"
-      });
-
-      try {
-        toast("Transcription audio en cours...");
-
-        const base64 = await fileToBase64(blob);
-
-        const result = await api(
-          "/audio/transcriptions",
-          {
-            method: "POST",
-            body: JSON.stringify({
-              audio_base64: base64,
-              filename: "taya-audio.webm",
-              mime_type: blob.type
-            })
-          }
-        );
-
-        if (result.text) {
-          if ($("messageInput")) {
-            $("messageInput").value = (
-              $("messageInput").value +
-              " " +
-              result.text
-            ).trim();
-
-            $("messageInput").focus();
-          }
-
-          toast("Dictée terminée.");
-        } else {
-          toast("Aucun texte détecté.");
-        }
-
-      } catch (err) {
-        toast("Erreur audio : " + err.message);
-      }
-    };
-
-    mediaRecorder.start();
-
-    toast(
-      "Enregistrement en cours. Appuie sur le micro pour terminer."
-    );
-
-  } catch (err) {
-    useBrowserVoiceRecognition();
-  }
-}
-
-function useBrowserVoiceRecognition() {
+function startVoice() {
   const Recognition =
     window.SpeechRecognition ||
     window.webkitSpeechRecognition;
@@ -1697,14 +1296,19 @@ function useBrowserVoiceRecognition() {
   recognition.continuous = false;
   recognition.interimResults = false;
 
+  recognition.onstart = () => {
+    toast("Je t'écoute...");
+  };
+
   recognition.onresult = event => {
-    const text =
-      event.results[0][0].transcript;
+    const text = event.results[0][0].transcript;
 
     if ($("messageInput")) {
       $("messageInput").value = (
         $("messageInput").value + " " + text
       ).trim();
+
+      $("messageInput").focus();
     }
   };
 
@@ -1717,51 +1321,22 @@ function useBrowserVoiceRecognition() {
 
 /* ================= LECTURE VOCALE ================= */
 
-async function speakText(text) {
-  try {
-    const response = await fetch(
-      `${API_BASE}/audio/speech`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`
-        },
-        body: JSON.stringify({ text })
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(
-        "Service vocal indisponible."
-      );
-    }
-
-    const blob = await response.blob();
-
-    const audioURL =
-      URL.createObjectURL(blob);
-
-    const audio = new Audio(audioURL);
-
-    audio.onended = () => {
-      URL.revokeObjectURL(audioURL);
-    };
-
-    await audio.play();
-
-  } catch (err) {
-    if ("speechSynthesis" in window) {
-      const utterance =
-        new SpeechSynthesisUtterance(text);
-
-      utterance.lang = "fr-FR";
-
-      speechSynthesis.speak(utterance);
-    } else {
-      toast("Lecture vocale indisponible.");
-    }
+function speakText(text) {
+  if (!("speechSynthesis" in window)) {
+    toast("Lecture vocale indisponible.");
+    return;
   }
+
+  speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(
+    String(text || "")
+  );
+
+  utterance.lang = "fr-FR";
+  utterance.rate = 1;
+
+  speechSynthesis.speak(utterance);
 }
 
 /* ================= DÉMARRAGE ================= */
@@ -1769,13 +1344,14 @@ async function speakText(text) {
 document.addEventListener("DOMContentLoaded", () => {
   applySavedTheme();
 
+  switchAuth("login");
+
   $("messageInput")?.addEventListener(
     "input",
     event => {
       const textarea = event.target;
 
       textarea.style.height = "auto";
-
       textarea.style.height =
         Math.min(textarea.scrollHeight, 150) + "px";
     }
@@ -1784,4 +1360,4 @@ document.addEventListener("DOMContentLoaded", () => {
   checkSession();
 });
 
-/* ================= FIN TAYA IA V20 ================= */
+/* ================= FIN TAYA IA V21.0.3 ================= */
