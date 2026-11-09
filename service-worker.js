@@ -1,5 +1,4 @@
 const CACHE_NAME = "taya-ia-cache-v1";
-
 const OFFLINE_URL = "/Ovl-/";
 
 self.addEventListener("install", (event) => {
@@ -17,7 +16,11 @@ self.addEventListener("activate", (event) => {
     caches.keys().then((keys) =>
       Promise.all(
         keys
-          .filter((key) => key !== CACHE_NAME)
+          .filter(
+            (key) =>
+              key.startsWith("taya-ia-cache-") &&
+              key !== CACHE_NAME
+          )
           .map((key) => caches.delete(key))
       )
     )
@@ -42,16 +45,20 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       fetch(request)
         .then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) =>
-            cache.put(request, copy)
-          );
+          if (response.ok) {
+            const copy = response.clone();
+
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(request, copy);
+            });
+          }
+
           return response;
         })
         .catch(async () => {
           return (
-            await caches.match(request) ||
-            await caches.match(OFFLINE_URL)
+            (await caches.match(request)) ||
+            (await caches.match(OFFLINE_URL))
           );
         })
     );
