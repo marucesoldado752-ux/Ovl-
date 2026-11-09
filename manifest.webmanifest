@@ -1,21 +1,27 @@
 {
-  "id": "./",
-  "name": "TAYA IA - MARUCE SOLDADO",
-  "short_name": "TAYA IA",
-  "description": "Votre intelligence artificielle partout avec vous.",
-  "lang": "fr",
-  "start_url": "./",
-  "scope": "./",
-  "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#080d0b",
-  "theme_color": "#00ff88",
-  "icons": [
-    {
-      "src": "./Logo.png",
-      "sizes": "any",
-      "type": "image/png",
-      "purpose": "any"
-    }
-  ]
+“id”: “/Ovl-/”,
+“name”: “TAYA IA - MARUCE SOLDADO”,
+“short_name”: “TAYA IA”,
+“description”: “Votre intelligence artificielle partout avec vous.”,
+“lang”: “fr”,
+“start_url”: “./”,
+“scope”: “./”,
+“display”: “standalone”,
+“orientation”: “portrait”,
+“background_color”: “#080d0b”,
+“theme_color”: “#00ff88”,
+“icons”: [
+{
+“src”: “./Logo.png”,
+“sizes”: “192x192”,
+“type”: “image/png”,
+“purpose”: “any”
+},
+{
+“src”: “./Logo.png”,
+“sizes”: “512x512”,
+“type”: “image/png”,
+“purpose”: “any maskable”
+}
+]
 }
