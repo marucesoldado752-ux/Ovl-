@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#00ff88">
   <meta name="description" content="TAYA IA - Votre assistant intelligent par Maruce Soldado">
   <meta name="mobile-web-app-capable" content="yes">
@@ -21,9 +21,9 @@
   <!-- AUTHENTIFICATION -->
   <section id="authScreen" class="auth-screen" aria-label="Authentification">
     <div class="auth-card">
-      <div class="brand-logo" aria-hidden="true">T</div>
-      <h1>TAYA <span>IA</span></h1>
-      <p class="brand-subtitle">L'intelligence à portée de main 🇬🇳</p>
+  <div class="brand-logo" aria-hidden="true">T</div>
+  <h1>TAYA <span>IA</span></h1>
+  <p class="brand-subtitle">L'intelligence à portée de main 🇬🇳</p>
   <div class="auth-tabs">
     <button id="loginTab" class="auth-tab active" type="button" onclick="switchAuth('login')">Connexion</button>
     <button id="registerTab" class="auth-tab" type="button" onclick="switchAuth('register')">Inscription</button>
@@ -53,13 +53,16 @@
   </section>
   <!-- APPLICATION -->
   <main id="app" class="app hidden">
-    <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar(false)"></div>
+<div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar(false)"></div>
 <!-- MENU -->
 <aside id="sidebar" class="sidebar" aria-label="Menu principal">
   <div class="sidebar-header">
     <div class="mini-brand">
       <div class="mini-logo" aria-hidden="true">T</div>
-      <div><strong>TAYA IA</strong><small>VERSION 21</small></div>
+      <div>
+        <strong>TAYA IA</strong>
+        <small>VERSION 21</small>
+      </div>
     </div>
     <button class="icon-button close-sidebar" type="button" onclick="toggleSidebar(false)" aria-label="Fermer le menu">✕</button>
   </div>
@@ -76,7 +79,9 @@
   </nav>
   <div class="sidebar-history">
     <h3>DISCUSSIONS RÉCENTES</h3>
-    <div id="historyList"><p class="muted-text">Aucune discussion récente</p></div>
+    <div id="historyList">
+      <p class="muted-text">Aucune discussion récente</p>
+    </div>
   </div>
   <div class="sidebar-user">
     <div id="userAvatar" class="user-avatar">T</div>
@@ -112,7 +117,9 @@
         <h1>Bienvenue sur <span>TAYA IA</span></h1>
         <h2>Salut <span id="welcomeName">Utilisateur</span> 👋</h2>
         <p>Pose tes questions, crée, apprends et avance avec ton assistant intelligent.</p>
-        <button class="primary-button hero-button" type="button" onclick="showPage('chat')">Commencer une conversation →</button>
+        <button class="primary-button hero-button" type="button" onclick="showPage('chat')">
+          Commencer une conversation →
+        </button>
         <div class="creator-line">BY MARUCE SOLDADO 👑 🇬🇳</div>
       </div>
       <div class="feature-grid">
@@ -155,9 +162,6 @@
       </div>
       <div id="messages" class="messages-container" aria-live="polite"></div>
       <div class="composer-area">
-        <div class="composer-tools">
-          <span>✦ TAYA IA peut faire des erreurs. Vérifie les informations importantes.</span>
-        </div>
         <div id="composer" class="composer">
           <input id="fileInput" type="file" accept="image/*,.pdf,.txt,.doc,.docx" hidden onchange="handleFile(this)">
           <button class="composer-button" type="button" onclick="document.getElementById('fileInput').click()" title="Joindre un fichier" aria-label="Joindre un fichier">＋</button>
@@ -174,7 +178,10 @@
     <div class="content-card">
       <div class="section-heading">
         <span class="section-icon">◈</span>
-        <div><h2>Ma mémoire</h2><p>Informations que TAYA IA peut utiliser pour mieux t'aider.</p></div>
+        <div>
+          <h2>Ma mémoire</h2>
+          <p>Informations que TAYA IA peut utiliser pour mieux t'aider.</p>
+        </div>
       </div>
       <textarea id="memoryInput" class="large-textarea" placeholder="Ajoute ici les informations que tu souhaites que TAYA IA retienne..."></textarea>
       <button class="primary-button" type="button" onclick="saveMemory()">Enregistrer ma mémoire</button>
@@ -185,7 +192,10 @@
     <div class="content-card">
       <div class="section-heading">
         <span class="section-icon">✉</span>
-        <div><h2>Contacter Maruce</h2><p>Envoie directement ton message à l'administration de TAYA IA.</p></div>
+        <div>
+          <h2>Contacter Maruce</h2>
+          <p>Envoie directement ton message à l'administration de TAYA IA.</p>
+        </div>
       </div>
       <div class="form-group">
         <label for="contactSubject">Sujet</label>
@@ -199,7 +209,9 @@
       <p id="contactStatus" class="status-message" role="status" aria-live="polite"></p>
       <div class="admin-panel contact-inbox">
         <h3>Ma conversation avec Maruce</h3>
-        <div id="myContactMessages"><p class="muted-text">Tes messages apparaîtront ici.</p></div>
+        <div id="myContactMessages">
+          <p class="muted-text">Tes messages apparaîtront ici.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -208,21 +220,37 @@
     <div class="admin-container">
       <div class="section-heading">
         <span class="section-icon">⚙</span>
-        <div><h2>Administration</h2><p>Gestion des utilisateurs et des messages.</p></div>
+        <div>
+          <h2>Administration</h2>
+          <p>Gestion des utilisateurs et des messages.</p>
+        </div>
       </div>
       <button class="secondary-button admin-refresh" type="button" onclick="renderAdmin()">↻ Actualiser les données</button>
       <div class="stats-grid">
-        <div class="stat-card"><small>Utilisateurs inscrits</small><strong id="adminUserCount">0</strong></div>
-        <div class="stat-card"><small>Utilisateurs actifs</small><strong id="adminOnlineCount">0</strong></div>
-        <div class="stat-card"><small>Messages reçus</small><strong id="adminMessageCount">0</strong></div>
+        <div class="stat-card">
+          <small>Utilisateurs inscrits</small>
+          <strong id="adminUserCount">0</strong>
+        </div>
+        <div class="stat-card">
+          <small>Utilisateurs actifs</small>
+          <strong id="adminOnlineCount">0</strong>
+        </div>
+        <div class="stat-card">
+          <small>Messages reçus</small>
+          <strong id="adminMessageCount">0</strong>
+        </div>
       </div>
       <div class="admin-panel">
         <h3>👥 Utilisateurs inscrits</h3>
-        <div id="adminUsers"><p class="muted-text">Chargement des utilisateurs...</p></div>
+        <div id="adminUsers">
+          <p class="muted-text">Chargement des utilisateurs...</p>
+        </div>
       </div>
       <div class="admin-panel">
         <h3>✉ Messages reçus</h3>
-        <div id="adminMessages"><p class="muted-text">Chargement des messages...</p></div>
+        <div id="adminMessages">
+          <p class="muted-text">Chargement des messages...</p>
+        </div>
       </div>
     </div>
   </section>
@@ -231,18 +259,30 @@
     <div class="content-card">
       <div class="section-heading">
         <span class="section-icon">☷</span>
-        <div><h2>Paramètres</h2><p>Personnalise ton expérience TAYA IA.</p></div>
+        <div>
+          <h2>Paramètres</h2>
+          <p>Personnalise ton expérience TAYA IA.</p>
+        </div>
       </div>
       <div class="setting-row">
-        <div><strong>Apparence</strong><small>Passer du thème sombre au thème clair</small></div>
+        <div>
+          <strong>Apparence</strong>
+          <small>Passer du thème sombre au thème clair</small>
+        </div>
         <button class="secondary-button" type="button" onclick="toggleTheme()">Changer le thème</button>
       </div>
       <div class="setting-row">
-        <div><strong>Nouvelle conversation</strong><small>Commencer une nouvelle discussion</small></div>
+        <div>
+          <strong>Nouvelle conversation</strong>
+          <small>Commencer une nouvelle discussion</small>
+        </div>
         <button class="secondary-button" type="button" onclick="newChat()">Nouveau chat</button>
       </div>
       <div class="setting-row">
-        <div><strong>Déconnexion</strong><small>Quitter ton compte</small></div>
+        <div>
+          <strong>Déconnexion</strong>
+          <small>Quitter ton compte</small>
+        </div>
         <button class="danger-button" type="button" onclick="logout()">Déconnexion</button>
       </div>
       <div class="about-card">
@@ -260,7 +300,7 @@
   <!-- BIBLIOTHÈQUES -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
-  <!-- SCRIPT PRINCIPAL : script.js EST À LA RACINE -->
+  <!-- SCRIPT PRINCIPAL -->
   <script src="./script.js"></script>
   <!-- SERVICE WORKER PWA -->
   <script>
