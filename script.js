@@ -1,7 +1,7 @@
 /* =========================================================
-   TAYA IA V21.0.3 — FRONTEND CORRIGÉ
-   By Maruce Soldado 🇬🇳
-   Backend : https://taya-ai-api.onrender.com/api
+   TAYA IA V22.0.0 — FRONTEND
+   BY MARUCE SOLDADO 🇬🇳
+   Backend officiel V22
    ========================================================= */
 
 "use strict";
@@ -71,31 +71,26 @@ async function api(path, options = {}) {
       ...options,
       headers
     });
-  } catch (error) {
+  } catch {
     throw new Error(
-      "Impossible de joindre le serveur TAYA IA. Vérifie ta connexion Internet."
+      "Impossible de joindre le serveur TAYA IA. Vérifie Internet."
     );
   }
 
   const contentType =
     response.headers.get("content-type") || "";
 
-  let data;
-
-  if (contentType.includes("application/json")) {
-    data = await response.json();
-  } else {
-    data = await response.text();
-  }
+  const data = contentType.includes("application/json")
+    ? await response.json()
+    : await response.text();
 
   if (!response.ok || data?.success === false) {
-    const message =
+    throw new Error(
       data?.error ||
       data?.message ||
       (typeof data === "string" ? data : "") ||
-      `Erreur serveur (${response.status})`;
-
-    throw new Error(message);
+      `Erreur serveur (${response.status})`
+    );
   }
 
   return data;
@@ -124,13 +119,13 @@ function clearSession() {
 }
 
 function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, character => ({
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
     "&": "&amp;",
     "<": "&lt;",
     ">": "&gt;",
     '"': "&quot;",
     "'": "&#039;"
-  })[character]);
+  })[c]);
 }
 
 function getUserName() {
@@ -151,32 +146,24 @@ function getInitial(name) {
 function formatDate(date) {
   if (!date) return "";
 
-  const parsed = new Date(date);
+  const d = new Date(date);
 
-  if (Number.isNaN(parsed.getTime())) {
-    return "";
-  }
+  if (Number.isNaN(d.getTime())) return "";
 
-  return parsed.toLocaleString("fr-FR", {
+  return d.toLocaleString("fr-FR", {
     dateStyle: "short",
     timeStyle: "short"
   });
 }
 
 function setText(id, value) {
-  const element = $(id);
-
-  if (element) {
-    element.textContent = value;
-  }
+  const el = $(id);
+  if (el) el.textContent = value;
 }
 
 function setHTML(id, value) {
-  const element = $(id);
-
-  if (element) {
-    element.innerHTML = value;
-  }
+  const el = $(id);
+  if (el) el.innerHTML = value;
 }
 
 /* ================= AUTHENTIFICATION ================= */
@@ -184,11 +171,25 @@ function setHTML(id, value) {
 function switchAuth(mode) {
   const register = mode === "register";
 
-  $("loginTab")?.classList.toggle("active", !register);
-  $("registerTab")?.classList.toggle("active", register);
+  $("loginTab")?.classList.toggle(
+    "active",
+    !register
+  );
 
-  $("nameField")?.classList.toggle("hidden", !register);
-  $("confirmField")?.classList.toggle("hidden", !register);
+  $("registerTab")?.classList.toggle(
+    "active",
+    register
+  );
+
+  $("nameField")?.classList.toggle(
+    "hidden",
+    !register
+  );
+
+  $("confirmField")?.classList.toggle(
+    "hidden",
+    !register
+  );
 
   setText(
     "authSubmit",
@@ -212,6 +213,8 @@ function switchAuth(mode) {
   }
 }
 
+/* INSCRIPTION ET CONNEXION V22 */
+
 async function submitAuth(event) {
   event.preventDefault();
 
@@ -229,7 +232,8 @@ async function submitAuth(event) {
   const password = $("authPassword")?.value;
 
   if (!phone || !password) {
-    error.textContent = "Remplis les champs obligatoires.";
+    error.textContent =
+      "Remplis les champs obligatoires.";
     return;
   }
 
@@ -261,6 +265,7 @@ async function submitAuth(event) {
       phone,
       password
     };
+
   } else {
     body = {
       phone,
@@ -271,14 +276,17 @@ async function submitAuth(event) {
   const originalText = button.textContent;
 
   button.disabled = true;
+
   button.textContent = isRegister
     ? "Création du compte..."
     : "Connexion en cours...";
 
   try {
+
+    // ROUTES CORRIGÉES POUR V22
     const endpoint = isRegister
-      ? "/auth/register"
-      : "/auth/login";
+      ? "/register"
+      : "/login";
 
     const result = await api(endpoint, {
       method: "POST",
@@ -287,21 +295,29 @@ async function submitAuth(event) {
 
     if (!result.token || !result.user) {
       throw new Error(
-        "Le serveur n'a pas retourné le compte et le jeton de connexion."
+        "Le serveur n'a pas retourné les informations du compte."
       );
     }
 
-    saveSession(result.token, result.user);
+    saveSession(
+      result.token,
+      result.user
+    );
 
-    $("authPassword").value = "";
-    $("authConfirm").value = "";
+    if ($("authPassword")) {
+      $("authPassword").value = "";
+    }
+
+    if ($("authConfirm")) {
+      $("authConfirm").value = "";
+    }
 
     openApplication();
 
     if (result.recovery_code) {
       alert(
-        "Ton compte TAYA IA a été créé !\n\n" +
-        "Ton code de récupération est :\n\n" +
+        "Compte créé avec succès !\n\n" +
+        "Code de récupération :\n" +
         result.recovery_code +
         "\n\nConserve-le dans un endroit sûr."
       );
@@ -314,16 +330,20 @@ async function submitAuth(event) {
     }
 
   } catch (err) {
+
     console.error("Authentification :", err);
 
     error.textContent =
       err.message || "Impossible de se connecter.";
 
   } finally {
+
     button.disabled = false;
     button.textContent = originalText;
   }
 }
+
+/* VÉRIFICATION DE SESSION V22 */
 
 async function checkSession() {
   if (!authToken) {
@@ -332,7 +352,8 @@ async function checkSession() {
   }
 
   try {
-    const result = await api("/auth/me");
+
+    const result = await api("/me");
 
     currentUser = result.user || result;
 
@@ -344,7 +365,11 @@ async function checkSession() {
     openApplication();
 
   } catch (err) {
-    console.warn("Session invalide :", err.message);
+
+    console.warn(
+      "Session invalide :",
+      err.message
+    );
 
     clearSession();
     showAuth();
@@ -367,14 +392,19 @@ function openApplication() {
 
   loadHistory();
   loadMemory();
+  loadMyContactMessages();
+
   startPresence();
 
   if (isAdmin()) {
     $("adminNav")?.classList.remove("hidden");
+
     renderAdmin();
     startAdminRefresh();
+
   } else {
     $("adminNav")?.classList.add("hidden");
+    stopAdminRefresh();
   }
 }
 
@@ -397,10 +427,9 @@ function logout() {
 
 function updateUserInterface() {
   const name = getUserName();
-  const phone = currentUser?.phone || "";
 
   setText("userName", name);
-  setText("userPhone", phone);
+  setText("userPhone", currentUser?.phone || "");
   setText("welcomeName", name);
   setText("userAvatar", getInitial(name));
 
@@ -427,6 +456,7 @@ async function sendPresenceHeartbeat() {
       method: "POST",
       body: JSON.stringify({})
     });
+
   } catch (err) {
     console.warn("Présence :", err.message);
   }
@@ -492,7 +522,10 @@ function showPage(page) {
     settings: "Paramètres"
   };
 
-  setText("topTitle", titles[page] || "TAYA IA");
+  setText(
+    "topTitle",
+    titles[page] || "TAYA IA"
+  );
 
   $("backButton")?.classList.toggle(
     "hidden",
@@ -506,7 +539,10 @@ function showPage(page) {
   }
 
   if (page === "chat") {
-    setTimeout(() => $("messageInput")?.focus(), 100);
+    setTimeout(
+      () => $("messageInput")?.focus(),
+      100
+    );
   }
 }
 
@@ -520,12 +556,12 @@ function toggleSidebar(force) {
 
   if (!sidebar) return;
 
-  const shouldOpen = typeof force === "boolean"
+  const open = typeof force === "boolean"
     ? force
     : !sidebar.classList.contains("open");
 
-  sidebar.classList.toggle("open", shouldOpen);
-  overlay?.classList.toggle("show", shouldOpen);
+  sidebar.classList.toggle("open", open);
+  overlay?.classList.toggle("show", open);
 }
 
 /* ================= THÈME ================= */
@@ -602,11 +638,15 @@ function handleComposerKey(event) {
   }
 }
 
+/* ================= AFFICHAGE MESSAGES ================= */
+
 function renderMarkdown(text) {
   let html;
 
   if (window.marked) {
-    html = window.marked.parse(String(text || ""));
+    html = window.marked.parse(
+      String(text || "")
+    );
   } else {
     html = escapeHTML(text).replace(/\n/g, "<br>");
   }
@@ -630,6 +670,7 @@ function addMessage(role, content) {
 
   const avatar = document.createElement("div");
   avatar.className = "message-avatar";
+
   avatar.textContent = role === "user"
     ? getInitial(getUserName())
     : "T";
@@ -638,9 +679,11 @@ function addMessage(role, content) {
   bubble.className = "message-content";
 
   if (role === "assistant") {
+
     bubble.innerHTML = renderMarkdown(content);
 
     const speakButton = document.createElement("button");
+
     speakButton.className = "secondary-button";
     speakButton.textContent = "🔊 Écouter";
     speakButton.style.marginTop = "12px";
@@ -649,12 +692,13 @@ function addMessage(role, content) {
       speakText(content);
     });
 
-    bubble.appendChild(
-      document.createElement("br")
+    bubble.append(
+      document.createElement("br"),
+      speakButton
     );
 
-    bubble.appendChild(speakButton);
   } else {
+
     bubble.textContent = content;
   }
 
@@ -665,12 +709,13 @@ function addMessage(role, content) {
   }
 
   container.appendChild(message);
+
   container.scrollTop = container.scrollHeight;
 
   return message;
 }
 
-/* ================= ENVOI DES MESSAGES ================= */
+/* ================= CHAT IA ================= */
 
 function needsWebSearch(message) {
   return /\b(recherche|cherche sur internet|sur le web|actualité|actualités|aujourd'hui|aujourd’hui|cette semaine|dernier|dernière|récent|récente|météo|prix actuel|news|latest|today|current)\b/i.test(message);
@@ -680,6 +725,7 @@ async function sendMessage() {
   if (isGenerating) return;
 
   const input = $("messageInput");
+
   if (!input) return;
 
   const message = input.value.trim();
@@ -688,12 +734,18 @@ async function sendMessage() {
   if (!message && !file) return;
 
   if (file && file.type.startsWith("image/")) {
-    await sendImage(file, message || "Analyse cette image.");
+    await sendImage(
+      file,
+      message || "Analyse cette image."
+    );
     return;
   }
 
   if (file && file.type === "application/pdf") {
-    await sendPDF(file, message || "Lis et analyse ce document PDF.");
+    await sendPDF(
+      file,
+      message || "Lis et analyse ce document PDF."
+    );
     return;
   }
 
@@ -704,14 +756,17 @@ async function sendMessage() {
       input.value = "";
       pendingFile = null;
 
-      if ($("fileInput")) $("fileInput").value = "";
+      if ($("fileInput")) {
+        $("fileInput").value = "";
+      }
 
       await sendTextMessage(
         message
           ? `${message}\n\nContenu du fichier :\n${text}`
           : `Lis et analyse ce fichier :\n\n${text}`
       );
-    } catch (err) {
+
+    } catch {
       toast("Impossible de lire ce fichier.");
     }
 
@@ -752,9 +807,11 @@ async function sendTextMessage(message) {
   abortController = new AbortController();
 
   try {
+
     const result = await api("/chat", {
       method: "POST",
       signal: abortController.signal,
+
       body: JSON.stringify({
         message,
         messages: currentMessages.slice(-20),
@@ -762,7 +819,8 @@ async function sendTextMessage(message) {
       })
     });
 
-    const answer = result.answer || result.message;
+    const answer =
+      result.answer || result.message;
 
     if (!answer) {
       throw new Error(
@@ -786,6 +844,7 @@ async function sendTextMessage(message) {
     loadHistory();
 
   } catch (err) {
+
     loading?.remove();
 
     if (err.name === "AbortError") {
@@ -798,13 +857,31 @@ async function sendTextMessage(message) {
     }
 
   } finally {
+
     isGenerating = false;
     abortController = null;
+
     setGenerationUI(false);
   }
 }
 
 /* ================= IMAGES ================= */
+
+function fileToDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      resolve(String(reader.result));
+    };
+
+    reader.onerror = () => {
+      reject(new Error("Impossible de lire l'image."));
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
 
 async function sendImage(file, message) {
   if (isGenerating) return;
@@ -825,22 +902,25 @@ async function sendImage(file, message) {
   );
 
   try {
-    const base64 = await fileToBase64(file);
+
+    const image = await fileToDataURL(file);
 
     const result = await api("/chat/image", {
       method: "POST",
+
       body: JSON.stringify({
-        image_base64: base64,
-        mime_type: file.type,
+        image,
         message
       })
     });
 
     const answer =
-      result.answer || result.message ||
+      result.answer ||
+      result.message ||
       "Aucune réponse reçue.";
 
     loading?.remove();
+
     addMessage("assistant", answer);
 
     currentMessages.push(
@@ -851,6 +931,7 @@ async function sendImage(file, message) {
     loadHistory();
 
   } catch (err) {
+
     loading?.remove();
 
     addMessage(
@@ -859,9 +940,12 @@ async function sendImage(file, message) {
     );
 
   } finally {
+
     pendingFile = null;
 
-    if ($("fileInput")) $("fileInput").value = "";
+    if ($("fileInput")) {
+      $("fileInput").value = "";
+    }
 
     isGenerating = false;
     setGenerationUI(false);
@@ -869,76 +953,6 @@ async function sendImage(file, message) {
 }
 
 /* ================= PDF ================= */
-
-async function sendPDF(file, message) {
-  if (isGenerating) return;
-
-  if (file.size > 8 * 1024 * 1024) {
-    toast("Le PDF dépasse la limite de 8 Mo.");
-    return;
-  }
-
-  isGenerating = true;
-  setGenerationUI(true);
-
-  addMessage("user", `${message}\n📄 ${file.name}`);
-
-  const loading = addMessage(
-    "assistant",
-    "Lecture du document PDF en cours..."
-  );
-
-  try {
-    const base64 = await fileToBase64(file);
-
-    const result = await api("/chat/pdf", {
-      method: "POST",
-      body: JSON.stringify({
-        pdf_base64: base64,
-        filename: file.name,
-        message
-      })
-    });
-
-    const answer =
-      result.answer || result.message ||
-      "Aucune réponse reçue.";
-
-    loading?.remove();
-    addMessage("assistant", answer);
-
-    currentMessages.push(
-      {
-        role: "user",
-        content: `${message} (${file.name})`
-      },
-      {
-        role: "assistant",
-        content: answer
-      }
-    );
-
-    loadHistory();
-
-  } catch (err) {
-    loading?.remove();
-
-    addMessage(
-      "assistant",
-      `Impossible de lire ce PDF : ${err.message}`
-    );
-
-  } finally {
-    pendingFile = null;
-
-    if ($("fileInput")) $("fileInput").value = "";
-
-    isGenerating = false;
-    setGenerationUI(false);
-  }
-}
-
-/* ================= FICHIERS ================= */
 
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {
@@ -957,16 +971,98 @@ function fileToBase64(file) {
   });
 }
 
+async function sendPDF(file, message) {
+  if (isGenerating) return;
+
+  if (file.size > 8 * 1024 * 1024) {
+    toast("Le PDF dépasse la limite de 8 Mo.");
+    return;
+  }
+
+  isGenerating = true;
+  setGenerationUI(true);
+
+  addMessage(
+    "user",
+    `${message}\n📄 ${file.name}`
+  );
+
+  const loading = addMessage(
+    "assistant",
+    "Lecture du document PDF en cours..."
+  );
+
+  try {
+
+    const pdf_base64 = await fileToBase64(file);
+
+    const result = await api("/chat/pdf", {
+      method: "POST",
+
+      body: JSON.stringify({
+        pdf_base64,
+        filename: file.name,
+        message
+      })
+    });
+
+    const answer =
+      result.answer ||
+      result.message ||
+      "Aucune réponse reçue.";
+
+    loading?.remove();
+
+    addMessage("assistant", answer);
+
+    currentMessages.push(
+      {
+        role: "user",
+        content: `${message} (${file.name})`
+      },
+      {
+        role: "assistant",
+        content: answer
+      }
+    );
+
+    loadHistory();
+
+  } catch (err) {
+
+    loading?.remove();
+
+    addMessage(
+      "assistant",
+      `Impossible de lire ce PDF : ${err.message}`
+    );
+
+  } finally {
+
+    pendingFile = null;
+
+    if ($("fileInput")) {
+      $("fileInput").value = "";
+    }
+
+    isGenerating = false;
+    setGenerationUI(false);
+  }
+}
+
+/* ================= FICHIERS ================= */
+
 function handleFile(input) {
   const file = input.files?.[0];
 
   if (!file) return;
 
-  const allowedImage = file.type.startsWith("image/");
-  const allowedText = file.type === "text/plain";
-  const allowedPDF = file.type === "application/pdf";
+  const allowed =
+    file.type.startsWith("image/") ||
+    file.type === "text/plain" ||
+    file.type === "application/pdf";
 
-  if (!allowedImage && !allowedText && !allowedPDF) {
+  if (!allowed) {
     toast("Choisis une image, un PDF ou un fichier TXT.");
     input.value = "";
     return;
@@ -979,12 +1075,20 @@ function handleFile(input) {
   }
 
   pendingFile = file;
+
   toast(`Fichier ajouté : ${file.name}`);
 }
 
 function setGenerationUI(active) {
-  $("sendButton")?.classList.toggle("hidden", active);
-  $("stopButton")?.classList.toggle("hidden", !active);
+  $("sendButton")?.classList.toggle(
+    "hidden",
+    active
+  );
+
+  $("stopButton")?.classList.toggle(
+    "hidden",
+    !active
+  );
 
   if ($("messageInput")) {
     $("messageInput").disabled = active;
@@ -1003,10 +1107,12 @@ async function loadHistory() {
   if (!authToken) return;
 
   try {
-    const result = await api("/history");
-    const messages = result.messages || [];
 
+    const result = await api("/history");
+
+    const messages = result.messages || [];
     const history = $("historyList");
+
     if (!history) return;
 
     history.innerHTML = "";
@@ -1023,6 +1129,7 @@ async function loadHistory() {
     }
 
     userMessages.forEach(item => {
+
       const button = document.createElement("button");
 
       button.className = "nav-item";
@@ -1044,6 +1151,7 @@ async function loadHistory() {
     });
 
   } catch (err) {
+
     console.warn("Historique :", err.message);
   }
 }
@@ -1054,20 +1162,25 @@ async function loadMemory() {
   if (!authToken) return;
 
   try {
+
     const result = await api("/memory");
 
     if ($("memoryInput")) {
       $("memoryInput").value = result.memory || "";
     }
+
   } catch (err) {
+
     console.warn("Mémoire :", err.message);
   }
 }
 
 async function saveMemory() {
-  const memory = $("memoryInput")?.value.trim() || "";
+  const memory =
+    $("memoryInput")?.value.trim() || "";
 
   try {
+
     await api("/memory", {
       method: "PUT",
       body: JSON.stringify({ memory })
@@ -1076,6 +1189,7 @@ async function saveMemory() {
     toast("Mémoire enregistrée avec succès.");
 
   } catch (err) {
+
     toast("Erreur mémoire : " + err.message);
   }
 }
@@ -1095,16 +1209,24 @@ async function sendContactMessage() {
   }
 
   try {
+
     await api("/contact", {
       method: "POST",
+
       body: JSON.stringify({
-        subject,
-        message
+        message: subject
+          ? `${subject}\n\n${message}`
+          : message
       })
     });
 
-    if ($("contactSubject")) $("contactSubject").value = "";
-    if ($("contactMessage")) $("contactMessage").value = "";
+    if ($("contactSubject")) {
+      $("contactSubject").value = "";
+    }
+
+    if ($("contactMessage")) {
+      $("contactMessage").value = "";
+    }
 
     setText(
       "contactStatus",
@@ -1113,8 +1235,53 @@ async function sendContactMessage() {
 
     toast("Ton message a été envoyé à Maruce.");
 
+    loadMyContactMessages();
+
   } catch (err) {
-    setText("contactStatus", "Erreur : " + err.message);
+
+    setText(
+      "contactStatus",
+      "Erreur : " + err.message
+    );
+  }
+}
+
+async function loadMyContactMessages() {
+  if (!authToken || !$("myContactMessages")) return;
+
+  try {
+
+    const result = await api("/contact/messages");
+
+    const messages = result.messages || [];
+    const box = $("myContactMessages");
+
+    box.innerHTML = "";
+
+    if (!messages.length) {
+      box.innerHTML =
+        '<p class="muted-text">Tes messages apparaîtront ici.</p>';
+      return;
+    }
+
+    messages.forEach(item => {
+
+      const p = document.createElement("p");
+
+      p.textContent =
+        `${item.sender_role === "admin" ? "Maruce" : "Moi"} : ` +
+        `${item.message || ""} ` +
+        `(${formatDate(item.created_at)})`;
+
+      box.appendChild(p);
+    });
+
+  } catch (err) {
+
+    console.warn(
+      "Messages de contact :",
+      err.message
+    );
   }
 }
 
@@ -1128,10 +1295,14 @@ async function renderAdmin() {
 
   if (!usersContainer || !messagesContainer) return;
 
-  usersContainer.textContent = "Chargement des utilisateurs...";
-  messagesContainer.textContent = "Chargement des messages...";
+  usersContainer.textContent =
+    "Chargement des utilisateurs...";
+
+  messagesContainer.textContent =
+    "Chargement des messages...";
 
   try {
+
     const [usersResult, messagesResult] =
       await Promise.all([
         api("/admin/users"),
@@ -1144,39 +1315,51 @@ async function renderAdmin() {
     setText("adminUserCount", users.length);
     setText("adminMessageCount", messages.length);
 
-    const userMap = new Map(
-      users.map(user => [String(user.id), user])
+    renderAdminUsers(users);
+
+    renderAdminMessages(
+      messages,
+      new Map(users.map(user => [
+        String(user.id),
+        user
+      ]))
     );
 
-    renderAdminUsers(users);
-    renderAdminMessages(messages, userMap);
-
   } catch (err) {
-    usersContainer.textContent = "Erreur : " + err.message;
+
+    usersContainer.textContent =
+      "Erreur : " + err.message;
+
     messagesContainer.textContent =
       "Impossible de charger les messages.";
 
-    toast("Erreur administration : " + err.message);
+    toast(
+      "Erreur administration : " + err.message
+    );
   }
 }
 
 function renderAdminUsers(users) {
   const container = $("adminUsers");
+
   if (!container) return;
 
   container.innerHTML = "";
 
   if (!users.length) {
-    container.textContent = "Aucun utilisateur inscrit.";
+    container.textContent =
+      "Aucun utilisateur inscrit.";
     return;
   }
 
   users.forEach(user => {
+
     const row = document.createElement("div");
     row.className = "user-card admin-user-card";
 
     const avatar = document.createElement("div");
     avatar.className = "user-avatar";
+
     avatar.textContent = getInitial(
       user.name || user.full_name
     );
@@ -1185,29 +1368,38 @@ function renderAdminUsers(users) {
     info.className = "user-info";
 
     const name = document.createElement("strong");
+
     name.textContent =
       user.name || user.full_name || "Utilisateur";
 
     const phone = document.createElement("small");
-    phone.textContent = user.phone || "Numéro non disponible";
+
+    phone.textContent =
+      user.phone || "Numéro non disponible";
 
     const role = document.createElement("small");
-    role.textContent = "Rôle : " + (user.role || "user");
+
+    role.textContent =
+      "Rôle : " + (user.role || "user");
 
     info.append(name, phone, role);
+
     row.append(avatar, info);
+
     container.appendChild(row);
   });
 }
 
 function renderAdminMessages(messages, userMap) {
   const container = $("adminMessages");
+
   if (!container) return;
 
   container.innerHTML = "";
 
   if (!messages.length) {
-    container.textContent = "Aucun message reçu pour le moment.";
+    container.textContent =
+      "Aucun message reçu pour le moment.";
     return;
   }
 
@@ -1218,7 +1410,10 @@ function renderAdminMessages(messages, userMap) {
       new Date(a.created_at || 0)
     )
     .forEach(message => {
-      const user = userMap.get(String(message.user_id || ""));
+
+      const user = userMap.get(
+        String(message.user_id || "")
+      );
 
       const card = document.createElement("div");
       card.className = "admin-message-card inbox-card";
@@ -1227,6 +1422,7 @@ function renderAdminMessages(messages, userMap) {
       header.className = "message-header";
 
       const sender = document.createElement("strong");
+
       sender.textContent =
         user?.name ||
         user?.full_name ||
@@ -1242,13 +1438,16 @@ function renderAdminMessages(messages, userMap) {
       date.textContent = formatDate(message.created_at);
 
       const type = document.createElement("small");
-      type.textContent =
-        message.type === "contact"
-          ? "Message de contact"
-          : "Message de support";
+      type.textContent = "Message de support";
 
       header.append(sender, phone);
-      card.append(header, type, content, date);
+
+      card.append(
+        header,
+        type,
+        content,
+        date
+      );
 
       container.appendChild(card);
     });
@@ -1260,12 +1459,14 @@ function startAdminRefresh() {
   stopAdminRefresh();
 
   adminRefreshTimer = setInterval(() => {
+
     if (
       isAdmin() &&
       $("adminPage")?.classList.contains("active")
     ) {
       renderAdmin();
     }
+
   }, 60000);
 }
 
@@ -1301,9 +1502,12 @@ function startVoice() {
   };
 
   recognition.onresult = event => {
-    const text = event.results[0][0].transcript;
+
+    const text =
+      event.results[0][0].transcript;
 
     if ($("messageInput")) {
+
       $("messageInput").value = (
         $("messageInput").value + " " + text
       ).trim();
@@ -1329,9 +1533,10 @@ function speakText(text) {
 
   speechSynthesis.cancel();
 
-  const utterance = new SpeechSynthesisUtterance(
-    String(text || "")
-  );
+  const utterance =
+    new SpeechSynthesisUtterance(
+      String(text || "")
+    );
 
   utterance.lang = "fr-FR";
   utterance.rate = 1;
@@ -1342,6 +1547,7 @@ function speakText(text) {
 /* ================= DÉMARRAGE ================= */
 
 document.addEventListener("DOMContentLoaded", () => {
+
   applySavedTheme();
 
   switchAuth("login");
@@ -1349,9 +1555,11 @@ document.addEventListener("DOMContentLoaded", () => {
   $("messageInput")?.addEventListener(
     "input",
     event => {
+
       const textarea = event.target;
 
       textarea.style.height = "auto";
+
       textarea.style.height =
         Math.min(textarea.scrollHeight, 150) + "px";
     }
@@ -1360,4 +1568,4 @@ document.addEventListener("DOMContentLoaded", () => {
   checkSession();
 });
 
-/* ================= FIN TAYA IA V21.0.3 ================= */
+/* ================= FIN TAYA IA V22 ================= */
