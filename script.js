@@ -1,7 +1,8 @@
 /* =========================================================
-   TAYA IA V22.0.0 — FRONTEND
+   TAYA IA V22.1 — FRONTEND
    BY MARUCE SOLDADO 🇬🇳
    Backend officiel V22
+   MESSAGERIE ADMIN CORRIGÉE
    ========================================================= */
 
 "use strict";
@@ -24,6 +25,11 @@ let abortController = null;
 let isGenerating = false;
 let presenceTimer = null;
 let adminRefreshTimer = null;
+
+/* MESSAGERIE ADMIN */
+
+let openSupportUserId = null;
+let supportReplySending = false;
 
 /* ================= OUTILS ================= */
 
@@ -101,6 +107,7 @@ function saveSession(token, user) {
   currentUser = user;
 
   localStorage.setItem(STORAGE.token, token);
+
   localStorage.setItem(
     STORAGE.user,
     JSON.stringify(user)
@@ -110,6 +117,8 @@ function saveSession(token, user) {
 function clearSession() {
   authToken = null;
   currentUser = null;
+
+  openSupportUserId = null;
 
   localStorage.removeItem(STORAGE.token);
   localStorage.removeItem(STORAGE.user);
@@ -158,12 +167,18 @@ function formatDate(date) {
 
 function setText(id, value) {
   const el = $(id);
-  if (el) el.textContent = value;
+
+  if (el) {
+    el.textContent = value;
+  }
 }
 
 function setHTML(id, value) {
   const el = $(id);
-  if (el) el.innerHTML = value;
+
+  if (el) {
+    el.innerHTML = value;
+  }
 }
 
 /* ================= AUTHENTIFICATION ================= */
@@ -283,7 +298,6 @@ async function submitAuth(event) {
 
   try {
 
-    // ROUTES CORRIGÉES POUR V22
     const endpoint = isRegister
       ? "/register"
       : "/login";
@@ -536,6 +550,10 @@ function showPage(page) {
 
   if (page === "admin") {
     renderAdmin();
+  }
+
+  if (page === "contact") {
+    loadMyContactMessages();
   }
 
   if (page === "chat") {
@@ -1235,7 +1253,7 @@ async function sendContactMessage() {
 
     toast("Ton message a été envoyé à Maruce.");
 
-    loadMyContactMessages();
+    await loadMyContactMessages();
 
   } catch (err) {
 
@@ -1245,6 +1263,8 @@ async function sendContactMessage() {
     );
   }
 }
+
+/* AFFICHAGE DES MESSAGES CÔTÉ UTILISATEUR */
 
 async function loadMyContactMessages() {
   if (!authToken || !$("myContactMessages")) return;
@@ -1266,15 +1286,36 @@ async function loadMyContactMessages() {
 
     messages.forEach(item => {
 
-      const p = document.createElement("p");
+      const isAdminMessage =
+        item.sender_role === "admin" ||
+        item.sender_role === "administrator";
 
-      p.textContent =
-        `${item.sender_role === "admin" ? "Maruce" : "Moi"} : ` +
-        `${item.message || ""} ` +
-        `(${formatDate(item.created_at)})`;
+      const card = document.createElement("div");
 
-      box.appendChild(p);
+      card.className = isAdminMessage
+        ? "support-bubble admin-bubble"
+        : "support-bubble user-bubble";
+
+      const sender = document.createElement("strong");
+
+      sender.textContent = isAdminMessage
+        ? "👑 Maruce"
+        : "Moi";
+
+      const content = document.createElement("p");
+
+      content.textContent = item.message || "";
+
+      const date = document.createElement("small");
+
+      date.textContent = formatDate(item.created_at);
+
+      card.append(sender, content, date);
+
+      box.appendChild(card);
     });
+
+    box.scrollTop = box.scrollHeight;
 
   } catch (err) {
 
@@ -1315,14 +1356,18 @@ async function renderAdmin() {
     setText("adminUserCount", users.length);
     setText("adminMessageCount", messages.length);
 
+    const userMap = new Map(
+      users.map(user => [
+        String(user.id),
+        user
+      ])
+    );
+
     renderAdminUsers(users);
 
     renderAdminMessages(
       messages,
-      new Map(users.map(user => [
-        String(user.id),
-        user
-      ]))
+      userMap
     );
 
   } catch (err) {
@@ -1333,11 +1378,15 @@ async function renderAdmin() {
     messagesContainer.textContent =
       "Impossible de charger les messages.";
 
+    console.error("Administration :", err);
+
     toast(
       "Erreur administration : " + err.message
     );
   }
 }
+
+/* ================= UTILISATEURS ADMIN ================= */
 
 function renderAdminUsers(users) {
   const container = $("adminUsers");
@@ -1390,6 +1439,13 @@ function renderAdminUsers(users) {
   });
 }
 
+/* ================= MESSAGES ADMIN ================= */
+
+/*
+  Les messages sont regroupés par utilisateur.
+  Chaque utilisateur possède une conversation.
+*/
+
 function renderAdminMessages(messages, userMap) {
   const container = $("adminMessages");
 
@@ -1403,54 +1459,433 @@ function renderAdminMessages(messages, userMap) {
     return;
   }
 
-  messages
-    .slice()
-    .sort((a, b) =>
-      new Date(b.created_at || 0) -
-      new Date(a.created_at || 0)
-    )
-    .forEach(message => {
+  const conversations = new Map();
 
-      const user = userMap.get(
-        String(message.user_id || "")
+  messages.forEach(message => {
+
+    const userId = String(message.user_id || "");
+
+    if (!userId) return;
+
+    if (!conversations.has(userId)) {
+      conversations.set(userId, []);
+    }
+
+    conversations.get(userId).push(message);
+  });
+
+  const conversationList = Array.from(
+    conversations.entries()
+  ).map(([userId, userMessages]) => {
+
+    userMessages.sort((a, b) =>
+      new Date(a.created_at || 0) -
+      new Date(b.created_at || 0)
+    );
+
+    const lastMessage =
+      userMessages[userMessages.length - 1];
+
+    const unread = userMessages.filter(message =>
+      message.sender_role !== "admin" &&
+      message.sender_role !== "administrator" &&
+      !message.read_at
+    ).length;
+
+    return {
+      userId,
+      userMessages,
+      lastMessage,
+      unread
+    };
+
+  }).sort((a, b) =>
+    new Date(b.lastMessage?.created_at || 0) -
+    new Date(a.lastMessage?.created_at || 0)
+  );
+
+  if (openSupportUserId) {
+
+    const selected = conversationList.find(
+      conversation =>
+        conversation.userId === String(openSupportUserId)
+    );
+
+    if (selected) {
+      renderSupportConversation(
+        container,
+        selected,
+        userMap
       );
+      return;
+    }
 
-      const card = document.createElement("div");
-      card.className = "admin-message-card inbox-card";
+    openSupportUserId = null;
+  }
 
-      const header = document.createElement("div");
-      header.className = "message-header";
+  renderSupportInbox(
+    container,
+    conversationList,
+    userMap
+  );
+}
 
-      const sender = document.createElement("strong");
+/* ================= LISTE DES CONVERSATIONS ================= */
 
-      sender.textContent =
-        user?.name ||
-        user?.full_name ||
-        "Utilisateur";
+function renderSupportInbox(
+  container,
+  conversations,
+  userMap
+) {
+  const title = document.createElement("h3");
 
-      const phone = document.createElement("small");
-      phone.textContent = user?.phone || "";
+  title.textContent = "📩 Boîte de réception";
 
-      const content = document.createElement("p");
-      content.textContent = message.message || "";
+  container.appendChild(title);
 
-      const date = document.createElement("small");
-      date.textContent = formatDate(message.created_at);
+  const description = document.createElement("p");
 
-      const type = document.createElement("small");
-      type.textContent = "Message de support";
+  description.className = "muted-text";
 
-      header.append(sender, phone);
+  description.textContent =
+    "Consulte les messages envoyés par les utilisateurs de TAYA IA.";
 
-      card.append(
-        header,
-        type,
-        content,
-        date
+  container.appendChild(description);
+
+  if (!conversations.length) {
+    const empty = document.createElement("p");
+
+    empty.textContent =
+      "Aucune conversation disponible.";
+
+    container.appendChild(empty);
+    return;
+  }
+
+  conversations.forEach(conversation => {
+
+    const user = userMap.get(
+      conversation.userId
+    );
+
+    const card = document.createElement("div");
+
+    card.className = "admin-message-card inbox-card support-inbox-card";
+
+    const header = document.createElement("div");
+
+    header.className = "message-header";
+
+    const name = document.createElement("strong");
+
+    name.textContent =
+      user?.name ||
+      user?.full_name ||
+      "Utilisateur";
+
+    const phone = document.createElement("small");
+
+    phone.textContent =
+      user?.phone || "Numéro non disponible";
+
+    header.append(name, phone);
+
+    const lastMessage = document.createElement("p");
+
+    lastMessage.textContent =
+      String(
+        conversation.lastMessage?.message || ""
+      ).slice(0, 150);
+
+    const date = document.createElement("small");
+
+    date.textContent = formatDate(
+      conversation.lastMessage?.created_at
+    );
+
+    const status = document.createElement("div");
+
+    status.className = "support-status";
+
+    if (conversation.unread > 0) {
+
+      status.textContent =
+        `🔴 ${conversation.unread} message(s) non lu(s)`;
+
+    } else {
+
+      status.textContent =
+        "✓ Conversation consultée";
+    }
+
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.className = "primary-button";
+
+    button.textContent = "Lire et répondre";
+
+    button.addEventListener("click", () => {
+      openSupportConversation(
+        conversation.userId
       );
-
-      container.appendChild(card);
     });
+
+    card.append(
+      header,
+      lastMessage,
+      date,
+      status,
+      button
+    );
+
+    container.appendChild(card);
+  });
+}
+
+/* ================= OUVRIR UNE CONVERSATION ================= */
+
+async function openSupportConversation(userId) {
+  if (!isAdmin()) {
+    toast("Accès réservé à l'administration.");
+    return;
+  }
+
+  openSupportUserId = String(userId);
+
+  try {
+
+    /*
+      On récupère les messages pour marquer
+      les messages reçus comme lus.
+    */
+
+    const result = await api("/admin/messages");
+
+    const messages = result.messages || [];
+
+    const unreadMessages = messages.filter(message =>
+      String(message.user_id) === String(userId) &&
+      message.sender_role !== "admin" &&
+      message.sender_role !== "administrator" &&
+      !message.read_at
+    );
+
+    for (const message of unreadMessages) {
+
+      await api(
+        `/admin/messages/${encodeURIComponent(message.id)}/read`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({})
+        }
+      );
+    }
+
+    await renderAdmin();
+
+  } catch (err) {
+
+    console.error(
+      "Ouverture conversation :",
+      err
+    );
+
+    toast(
+      "Impossible d'ouvrir cette conversation : " +
+      err.message
+    );
+  }
+}
+
+/* ================= AFFICHER UNE CONVERSATION ================= */
+
+function renderSupportConversation(
+  container,
+  conversation,
+  userMap
+) {
+  const user = userMap.get(
+    conversation.userId
+  );
+
+  const header = document.createElement("div");
+
+  header.className = "support-chat-header";
+
+  const back = document.createElement("button");
+
+  back.type = "button";
+  back.className = "secondary-button";
+  back.textContent = "← Retour aux messages";
+
+  back.addEventListener("click", () => {
+    openSupportUserId = null;
+    renderAdmin();
+  });
+
+  const title = document.createElement("h3");
+
+  title.textContent =
+    user?.name ||
+    user?.full_name ||
+    "Utilisateur";
+
+  const phone = document.createElement("p");
+
+  phone.textContent =
+    user?.phone || "Numéro non disponible";
+
+  header.append(back, title, phone);
+
+  container.appendChild(header);
+
+  const conversationBox = document.createElement("div");
+
+  conversationBox.className = "support-conversation";
+
+  conversation.userMessages.forEach(message => {
+
+    const isAdminMessage =
+      message.sender_role === "admin" ||
+      message.sender_role === "administrator";
+
+    const bubble = document.createElement("div");
+
+    bubble.className = isAdminMessage
+      ? "support-bubble admin-bubble"
+      : "support-bubble user-bubble";
+
+    const sender = document.createElement("strong");
+
+    sender.textContent = isAdminMessage
+      ? "👑 Maruce"
+      : "👤 " + (
+          user?.name ||
+          user?.full_name ||
+          "Utilisateur"
+        );
+
+    const content = document.createElement("p");
+
+    content.textContent =
+      message.message || "";
+
+    const date = document.createElement("small");
+
+    date.textContent =
+      formatDate(message.created_at);
+
+    bubble.append(sender, content, date);
+
+    conversationBox.appendChild(bubble);
+  });
+
+  container.appendChild(conversationBox);
+
+  const form = document.createElement("form");
+
+  form.className = "admin-reply-form";
+
+  const label = document.createElement("label");
+
+  label.textContent =
+    "Répondre à " +
+    (
+      user?.name ||
+      user?.full_name ||
+      "cet utilisateur"
+    );
+
+  const textarea = document.createElement("textarea");
+
+  textarea.id = "adminReplyInput";
+  textarea.placeholder = "Écris ta réponse à l'utilisateur...";
+  textarea.required = true;
+
+  const button = document.createElement("button");
+
+  button.type = "submit";
+  button.className = "primary-button";
+  button.textContent = "Envoyer ma réponse";
+
+  const status = document.createElement("small");
+
+  status.id = "adminReplyStatus";
+
+  form.append(
+    label,
+    textarea,
+    button,
+    status
+  );
+
+  form.addEventListener("submit", async event => {
+
+    event.preventDefault();
+
+    const message = textarea.value.trim();
+
+    if (!message) {
+      toast("Écris une réponse avant de l'envoyer.");
+      return;
+    }
+
+    if (supportReplySending) return;
+
+    supportReplySending = true;
+
+    button.disabled = true;
+    button.textContent = "Envoi en cours...";
+
+    status.textContent = "";
+
+    try {
+
+      await api(
+        `/admin/messages/${encodeURIComponent(conversation.userId)}/reply`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            message
+          })
+        }
+      );
+
+      textarea.value = "";
+
+      status.textContent =
+        "Réponse envoyée avec succès.";
+
+      toast("Ta réponse a été envoyée.");
+
+      await renderAdmin();
+
+    } catch (err) {
+
+      console.error("Réponse admin :", err);
+
+      status.textContent =
+        "Erreur : " + err.message;
+
+      toast(
+        "Impossible d'envoyer la réponse : " +
+        err.message
+      );
+
+    } finally {
+
+      supportReplySending = false;
+
+      button.disabled = false;
+      button.textContent = "Envoyer ma réponse";
+    }
+  });
+
+  container.appendChild(form);
+
+  conversationBox.scrollTop =
+    conversationBox.scrollHeight;
 }
 
 /* ================= RAFRAÎCHISSEMENT ADMIN ================= */
@@ -1568,4 +2003,4 @@ document.addEventListener("DOMContentLoaded", () => {
   checkSession();
 });
 
-/* ================= FIN TAYA IA V22 ================= */
+/* ================= FIN TAYA IA V22.1 ================= */
